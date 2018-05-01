@@ -1,0 +1,1 @@
+//retrieve slug / resolve slug to page function
