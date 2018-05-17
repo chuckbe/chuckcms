@@ -81,7 +81,7 @@ class PageBlockController extends Controller
     public function moveUp(Request $request)
     {
         // AUTHORIZE ... COMES HERE
-        $pageblock = $this->pageblock->moveUpById($request->get('pageblock_id'));
+        $pageblock = $this->pageBlockRepository->moveUpById($request->get('pageblock_id'));
         return $pageblock;
     }
 
@@ -94,7 +94,7 @@ class PageBlockController extends Controller
     public function moveDown(Request $request)
     {
         // AUTHORIZE ... COMES HERE
-        $pageblock = $this->pageblock->moveDownById($request->get('pageblock_id'));
+        $pageblock = $this->pageBlockRepository->moveDownById($request->get('pageblock_id'));
         return $pageblock;
     }
 }

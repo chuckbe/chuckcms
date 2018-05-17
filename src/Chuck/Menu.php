@@ -16,7 +16,7 @@ class Menu
         $menulist = $menulist->pluck('name', 'id')->prepend('Select menu', 0)->all();
 
         if ((request()->has("action") && empty(request()->input("menu"))) || request()->input("menu") == '0') {
-            return view('vendor.chuck-menu.menu-dashboard')->with("menulist", $menulist);
+            return view('chuckcms::vendor.chuck-menu.menu-dashboard')->with("menulist", $menulist);
         } else {
 
             $menu = Menus::find(request()->input("menu"));

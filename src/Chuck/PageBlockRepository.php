@@ -2,6 +2,9 @@
 
 namespace Chuckbe\Chuckcms\Chuck;
 
+use Chuckbe\Chuckcms\Models\Template;
+use Chuckbe\Chuckcms\Models\Page;
+use Chuckbe\Chuckcms\Models\PageBlock;
 use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Repeater;
 
@@ -9,6 +12,12 @@ use App\Http\Requests;
 
 class PageBlockRepository
 {
+    public function __construct(PageBlock $pageblock)
+    {
+        $this->pageblock = $pageblock;
+    }
+
+
     public function getRenderedByPageBlocks($ogpageblocks)
     {
         $pageblocks = [];
@@ -143,30 +152,30 @@ class PageBlockRepository
 
     public function moveUpById($id)
     {
-        $pageblock = $this->find($id);
+        $pageblock = $this->pageblock->find($id);
         $og_order = $pageblock->order;
-        $target_pb = $this->where('page_id', $pageblock->page_id)->where('order', ($og_order - 1))->first();
+        $target_pb = $this->pageblock->where('page_id', $pageblock->page_id)->where('order', ($og_order - 1))->first();
 
         $pageblock->order = $og_order - 1;
         $target_pb->order = $og_order;
 
         $pageblock->update();
         $target_pb->update();
-        return $this->getRenderedById($pageblock->id);
+        return $this->getRenderedByPageBlock($pageblock);
     }
 
     public function moveDownById($id)
     {
-        $pageblock = $this->find($id);
+        $pageblock = $this->pageblock->find($id);
         $og_order = $pageblock->order;
-        $target_pb = $this->where('page_id', $pageblock->page_id)->where('order', ($og_order + 1))->first();
+        $target_pb = $this->pageblock->where('page_id', $pageblock->page_id)->where('order', ($og_order + 1))->first();
 
         $pageblock->order = $og_order + 1;
         $target_pb->order = $og_order;
 
         $pageblock->update();
         $target_pb->update();
-        return $this->getRenderedById($pageblock->id);
+        return $this->getRenderedByPageBlock($pageblock);
     }
 
     public function moveOrderDownByPageId($id)
