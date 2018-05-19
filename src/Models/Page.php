@@ -57,5 +57,5 @@ class Page extends Eloquent
         $page->save();
     }
 
-    public $translatable = ['title'];
+    public $translatable = ['title', 'slug'];
 }

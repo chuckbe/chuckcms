@@ -29,19 +29,31 @@ class PageController extends Controller
         $this->template = $template;
     }
 
-    public function index($slug = null, $slugger = null)
+    public function index($slug = null)
     {
         if($slug == null){
-            $slug = 'thuis';
-        } elseif($slug !== null && $slugger !== null) {
-            $slug = $slug . '/' . $slugger;
+            $page = $this->page->where('isHp', 1)->first();
+            $slug = $page->slug;
         } elseif($slug !== null){
             $slug = $slug;
+            $page = $this->page->where('slug->'.app()->getLocale(), $slug)->first();
+            if($page == null){
+               foreach(\LaravelLocalization::getSupportedLocales() as $localeCode => $properties){
+                    $page = $this->page->where('slug->'.$localeCode, $slug)->first();
+                    if($page !== null && $localeCode == app()->getLocale()) break;
+
+                    if($page !== null && $localeCode !== app()->getLocale()){
+                        //dd(app()->getLocale());
+                        app()->setLocale($localeCode); 
+                        \LaravelLocalization::setLocale($localeCode);
+                        
+                        return redirect($localeCode.'/'.$slug);
+                    } 
+                } 
+            }
+            if($page == null) abort(404);
         }
         
-        $page = $this->page->where('slug', $slug)->first();
-
-        if($page == null) return redirect()->route('page', ['slug' => 'thuis']);
         
         $ogpageblocks = $this->pageblock->getAllByPageId($page->id);
         $pageblocks = $this->pageBlockRepository->getRenderedByPageBlocks($ogpageblocks);

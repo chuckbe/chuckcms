@@ -43,6 +43,10 @@ class ChuckcmsServiceProvider extends ServiceProvider
         
 
         $this->app->register(
+            'Chuckbe\Chuckcms\Providers\ChuckLocaleConfigServiceProvider'
+        );
+
+        $this->app->register(
             'Chuckbe\Chuckcms\Providers\ChuckMenuServiceProvider'
         );
 

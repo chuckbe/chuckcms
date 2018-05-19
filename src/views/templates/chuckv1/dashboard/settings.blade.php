@@ -31,6 +31,12 @@
             <li class="nav-item">
               <a href="#" data-toggle="tab" data-target="#fade2"><span>Social Media</span></a>
             </li>
+            <li class="nav-item">
+              <a href="#" data-toggle="tab" data-target="#fade2"><span>Logo</span></a>
+            </li>
+            <li class="nav-item">
+              <a href="#" data-toggle="tab" data-target="#fade2"><span>Talen</span></a>
+            </li>
           </ul>
           <!-- Tab panes -->
           <div class="tab-content">

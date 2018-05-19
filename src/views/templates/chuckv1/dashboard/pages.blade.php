@@ -44,10 +44,11 @@
 						<table class="table table-hover table-condensed" id="condensedTable">
 						<thead>
 							<tr>
-								<th style="width:10%">ID</th>
+								<th style="width:5%">ID</th>
 								<th style="width:30%">Page</th>
-								<th style="width:30%">Status</th>
-								<th style="width:30%">Actions</th>
+								<th style="width:25%">Slug</th>
+								<th style="width:15%">Status</th>
+								<th style="width:25%">Actions</th>
 							</tr>
 						</thead>
 							<tbody>
@@ -55,11 +56,12 @@
 								<tr>
 									<td class="v-align-middle">{{ $page->id }}</td>
 							    	<td class="v-align-middle semi-bold">{{ $page->title }}</td>
+							    	<td class="v-align-middle">{{$page->slug}}</td>
 							    	<td class="v-align-middle">
 							    		@if($page->active == 1)
-											Actief
+											<span class="label label-success">Actief</span>
 							        	@else
-							        		Concept
+							        		<span class="label">Concept</span>
 							        	@endif 
 							    	</td>
 							    	<td class="v-align-middle semi-bold">

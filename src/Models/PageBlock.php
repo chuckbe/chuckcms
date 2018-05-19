@@ -16,10 +16,6 @@ class PageBlock extends Eloquent
         return $this->belongsTo('Chuckbe\Chuckcms\Models\Page');
     }
 
-    public function resources(){
-    	return $this->hasMany('Chuckbe\Chuckcms\Models\Resource');
-    }
-
     public function getAllByPageId($page_id)
     {
         $pageblocks = $this->where('page_id', $page_id)->orderBy('order', 'asc')->get();

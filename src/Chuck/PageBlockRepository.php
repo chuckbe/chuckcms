@@ -116,8 +116,8 @@ class PageBlockRepository
             $res_arr = explode('+', $resource);
             $res_slug = (string)$res_arr[0];
             $res_json = (string)$res_arr[1];
-            $res_object = Resource::where('page_block_id', $page_block_id)->where('slug', $res_slug)->first();
-            $json = $res_object->json;
+            $res_object = Resource::where('slug', $res_slug)->first();
+            $json = $res_object->json[app()->getLocale()];
             $match = $json[$res_json];
             $body = str_replace('[' . $res_slug . '+' . $res_json . ']', $match, $body);
         }

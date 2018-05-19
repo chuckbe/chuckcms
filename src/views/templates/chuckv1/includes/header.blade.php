@@ -23,6 +23,16 @@
             </ul>
             
             {!! ChuckMenu::renderFrontEnd() !!}
+
+            <ul class="nav navbar-nav pull-right">
+                @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                    <li>
+                        <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                            {{ $localeCode }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
         </div>
     </div>
 </nav>

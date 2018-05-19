@@ -39,8 +39,8 @@
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Slug</label>
-                        <input type="text" class="form-control" placeholder="Titel" id="page_slug" name="slug" value="{{ $page->slug }}" required disabled>
-                        <input type="hidden" class="form-control" id="page_slug_hidden" name="page_slug">
+                        <input type="text" class="form-control" placeholder="Titel" id="page_slug" name="slug" value="{{ $page->slug }}" required>
+                        <input type="hidden" class="form-control" value="{{ $page->slug }}" id="page_slug_hidden" name="page_slug">
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Template</label>

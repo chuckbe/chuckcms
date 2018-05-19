@@ -51,4 +51,17 @@ Route::group(['middleware' => ['web']], function() {
 	});
 });
 
-Route::get('/{slug?}/{slugger?}', 'Chuckbe\Chuckcms\Controllers\PageController@index')->name('page');
+Route::group(
+    [
+        'prefix' => LaravelLocalization::setLocale(),
+        'middleware' => [ 'Mcamara\LaravelLocalization\Middleware\localeSessionRedirect', 'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter', 'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath' ]
+    ],
+    function()
+    {
+
+		Route::get('/{slug?}', 'Chuckbe\Chuckcms\Controllers\PageController@index')->where('slug', '(.*)')->name('page');
+
+});
+
+
+

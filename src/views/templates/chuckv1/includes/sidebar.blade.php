@@ -34,6 +34,21 @@
           </li>
 
           <li class="">
+            <a href="{{ route('dashboard.settings') }}"><span class="title">Templates</span></a>
+            <span class="icon-thumbnail"><i data-feather="grid"></i></span>
+          </li>
+
+          <li class="">
+            <a href="{{ route('dashboard.settings') }}"><span class="title">Content</span></a>
+            <span class="icon-thumbnail"><i data-feather="box"></i></span>
+          </li>
+
+          <li class="">
+            <a href="{{ route('dashboard.settings') }}"><span class="title">Media</span></a>
+            <span class="icon-thumbnail"><i data-feather="airplay"></i></span>
+          </li>
+
+          <li class="">
             <a href="{{ route('dashboard.settings') }}">
               <span class="title">Instellingen</span>
             </a>
