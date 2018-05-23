@@ -34,6 +34,11 @@ class PageBlock extends Eloquent
     	return $this->find($id);
     }
 
+    public function getCountByPageId($page_id)
+    {
+        return $this->where('page_id', $page_id)->count();
+    }
+
 
 
     public function moveUpById($id)//@todo add to pageblock repository
@@ -69,15 +74,27 @@ class PageBlock extends Eloquent
         $pageblocks = $this->where('page_id', $id)->increment('order');
     }
 
-    public function addBlockTop($contents, $page)//@todo add to pageblock repository
+    public function addBlockTop($contents, $page, $name)//@todo add to pageblock repository
     {
         $this->moveOrderDownByPageId($page->id);
         $pageblock = new PageBlock();
         $pageblock->page_id = $page->id;
-        $pageblock->name = "Dit is een test";
-        $pageblock->slug = "slug3";
+        $pageblock->name = $name;
+        $pageblock->slug = $name;
         $pageblock->body = $contents;
         $pageblock->order = 1;
+        $pageblock->save();
+        return $pageblock;
+    }
+
+    public function addBlockBottom($contents, $page, $name)//@todo add to pageblock repository
+    {
+        $pageblock = new PageBlock();
+        $pageblock->page_id = $page->id;
+        $pageblock->name = $name;
+        $pageblock->slug = $name;
+        $pageblock->body = $contents;
+        $pageblock->order = $this->getCountByPageId($page->id) + 1;
         $pageblock->save();
         return $pageblock;
     }

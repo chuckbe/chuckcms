@@ -8,8 +8,7 @@ use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
 use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Repeater;
 use Chuckbe\Chuckcms\Models\Template;
-
-use App\User;
+use Chuckbe\Chuckcms\Models\User;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -44,7 +43,7 @@ class DashboardController extends Controller
         $template = $this->template->where('active', 1)->where('type', 'admin')->first();
         $front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
         
-        return view('chuckcms::templates.'.$template->slug.'.dashboard.dashboard', compact('template', 'front_template'));
+        return view('chuckcms::backend.dashboard.index', compact('template', 'front_template'));
     }
 
     /**
@@ -58,7 +57,7 @@ class DashboardController extends Controller
         $front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
         $pages = $this->page->get();
         
-        return view('chuckcms::templates.'.$template->slug.'.dashboard.pages', compact('template', 'front_template', 'pages'));
+        return view('chuckcms::backend.pages.index', compact('template', 'front_template', 'pages'));
     }
 
     /**
@@ -71,7 +70,7 @@ class DashboardController extends Controller
         $template = $this->template->where('active', 1)->where('type', 'admin')->first();
         $templates = $this->template->where('active', 1)->where('type', 'default')->get();
         $page = $this->page->getByIdWithBlocks($page_id);
-        return view('chuckcms::templates.'.$template->slug.'.dashboard.pages.edit', compact('template', 'templates', 'page'));
+        return view('chuckcms::backend.pages.edit', compact('template', 'templates', 'page'));
     }
 
     /**
@@ -83,7 +82,7 @@ class DashboardController extends Controller
     {
         $template = $this->template->where('active', 1)->where('type', 'admin')->first();
         $templates = $this->template->where('active', 1)->where('type', 'default')->get();
-        return view('chuckcms::templates.'.$template->slug.'.dashboard.pages.create', compact('template', 'templates', 'page'));
+        return view('chuckcms::backend.pages.create', compact('template', 'templates', 'page'));
     }
 
     /**
@@ -93,7 +92,7 @@ class DashboardController extends Controller
      */
     public function pageSave(Request $request)
     {
-        $this->validate(request(), [
+        $this->validate(request(), [ //@todo create custom Request class for page validation
             'page_title' => 'max:185',
         ]);
         if($request['create']){
@@ -111,11 +110,23 @@ class DashboardController extends Controller
      */
     public function pageEditBuilder($page_id)
     {
-        $template = $this->template->where('active', 1)->where('type', 'admin')->first();
         $page = $this->page->getByIdWithBlocks($page_id);
-
+        $template = $this->template->where('id', $page->template_id)->where('type', 'default')->first();
+        $block_dir = array_slice(scandir('chuckbe/chuckcms/blocks/chuckv2/'), 2);
+        $blocks = [];
+        foreach($block_dir as $block){
+            if((strpos($block, '.html') !== false)){
+                $blockname = 
+                $blocks[] = array(
+                    'name' => str_replace('.html', '', $block),
+                    'location' => 'chuckbe/chuckcms/blocks/chuckv2/'.$block,
+                    'img' => 'chuckbe/chuckcms/blocks/chuckv2/'.str_replace('.html', '.jpg', $block)
+                );
+            }
+        }
+        //dd($blocks);
         $pageblocks = $this->pageBlockRepository->getRenderedByPageBlocks($this->pageblock->getAllByPageId($page->id));
-        return view('chuckcms::templates.'.$template->slug.'.dashboard.pages.pagebuilder', compact('template', 'page', 'pageblocks'));
+        return view('chuckcms::backend.pages.pagebuilder.index', compact('template', 'page', 'pageblocks', 'blocks'));
     }
 
     /**
@@ -129,7 +140,7 @@ class DashboardController extends Controller
         $front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
         $pages = $this->page->get();
         
-        return view('chuckcms::templates.'.$template->slug.'.dashboard.menus', compact('template', 'front_template', 'pages'));
+        return view('chuckcms::backend.menus.index', compact('template', 'front_template', 'pages'));
     }
 
     /**
@@ -144,7 +155,7 @@ class DashboardController extends Controller
         $pages = $this->page->get();
         
         
-        return view('chuckcms::templates.'.$template->slug.'.dashboard.templates', compact('template', 'all_templates', 'pages'));
+        return view('chuckcms::backend.templates.index', compact('template', 'all_templates', 'pages'));
     }
 
     /**
@@ -158,7 +169,7 @@ class DashboardController extends Controller
         $front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
         $users = $this->user->get();
         
-        return view('chuckcms::templates.'.$template->slug.'.dashboard.users', compact('template', 'front_template', 'users'));
+        return view('chuckcms::backend.users.index', compact('template', 'front_template', 'users'));
     }
 
     /**
@@ -172,6 +183,6 @@ class DashboardController extends Controller
         $front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
         $pages = $this->page->get();
         
-        return view('chuckcms::templates.'.$template->slug.'.dashboard.settings', compact('template', 'front_template', 'pages'));
+        return view('chuckcms::backend.settings.index', compact('template', 'front_template', 'pages'));
     }
 }

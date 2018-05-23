@@ -1,0 +1,178 @@
+ @import 'variables.scss';
+ /* ----------------------------------------------------------------------
+    Page title
+-------------------------------------------------------------------------*/
+ 
+ #page-title {
+     clear: both;
+     padding: 160px 0;
+     background-color: $grey;
+     border-bottom: 1px solid $light;
+     border-top: 1px solid $light;
+     position: relative;
+     /*
+     min-height: 560px;
+     height: 1px;
+*/
+     background-color: $dark;
+     .container {
+         /*      position: relative;
+       top: 50%;
+         transform: translateY(-50%);*/
+     }
+     .page-title {
+         width: 70%;
+         padding: 0;
+         float: left;
+         >h1 {
+             font-family: $font-family-2;
+             font-size: 50px;
+             font-style: normal;
+             font-weight: 700;
+             line-height: 50px;
+             letter-spacing: -2px;
+             color: $white;
+             margin-top: 0;
+             margin-bottom: 20px;
+         }
+         >span {
+             color: $white;
+             font-weight: 100;
+             font-size: 16px;
+             font-family: $font-family-1;
+             opacity: .7;
+         }
+     }
+     .breadcrumb {
+         width: 30%;
+         opacity: .6;
+         float: right;
+         text-align: right;
+         ul {
+             li {
+                 +li:before {
+                     background-color: $white;
+                 }
+                 a {
+                     color: $white;
+                 }
+             }
+         }
+     }
+     /* page title center*/
+     &.page-title-center {
+         .page-title {
+             float: none;
+             text-align: center;
+             width: 100%;
+             margin-bottom: 20px;
+         }
+         .breadcrumb {
+             float: none;
+             text-align: center;
+             width: 100%;
+         }
+     }
+     /* page header right*/
+     &.page-title-right {
+         .page-title {
+             float: right;
+             text-align: right;
+         }
+         .breadcrumb {
+             float: left;
+             text-align: left;
+         }
+     }
+     &.page-title-classic {
+         background-color: $grey;
+         border-bottom: 1px solid $light;
+         border-top: 1px solid $light;
+          padding: 50px 0;
+         .page-title {
+             float: left;
+             width: 70%;
+             >h1 {
+                 display: block;
+                 font-size: 28px;
+                 font-weight: 600;
+                 line-height: 32px;
+                 margin-bottom: 0;
+                 margin-top: 0;
+                 font-weight: 400;
+                 text-transform: uppercase;
+                 color: #555555;
+                 letter-spacing: 0;
+             }
+             >span {
+                 color: $dark;
+                 font-weight: 100;
+                 font-size: 16px;
+                 font-family: $font-family-1;
+                 opacity: .7;
+             }
+         }
+         .breadcrumb {
+             opacity: .6;
+             float: right;
+             width: 30%;
+             text-align: right;
+             ul {
+                 li {
+                     +li:before {
+                         background-color: $dark;
+                     }
+                     a {
+                         color: $dark;
+                     }
+                 }
+             }
+         }
+     }
+     &.dark {
+         .page-title {
+             >h1 {
+                 color: $dark;
+             }
+             >span {
+                 color: $dark;
+             }
+         }
+         .breadcrumb {
+             ul {
+                 li {
+                     +li:before {
+                         background-color: $dark;
+                     }
+                     a {
+                         color: $dark;
+                     }
+                 }
+             }
+         }
+     }
+ }
+ 
+ @media (max-width: 991px) {
+     #page-title,
+     #page-title.page-title-classic {
+        padding: 50px 0 !important;
+         .page-title {
+             float: none;
+             width: 100%;
+             text-align: left;
+             display: block;
+             margin-bottom: 10px;
+             >h1 {
+                 font-size: 30px;
+                 margin-bottom: 0;
+             }
+         }
+         .breadcrumb {
+             float: none;
+             width: 100%;
+             text-align: left;
+             display: block;
+         }
+     }
+ }

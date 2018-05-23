@@ -1,0 +1,7 @@
+/*
+ *  Project: Scrolly : parallax is easy as a matter of fact !
+ *  Description: Based on jQuery boilerplate
+ *  Author: Victor C. / Octave & Octave web agency
+ *  Licence: MIT
+ */
+!function(t,i){"function"==typeof define&&define.amd?define(["jquery"],i):i(t.jQuery)}(this,function(t){"use strict";function i(i,o){this.element=i,this.$element=t(this.element),this.options=t.extend({},e,o),this._defaults=e,this._name=s,this.init()}var s="scrolly",e={bgParallax:!1};i.prototype.init=function(){var i=this;this.startPosition=this.$element.position().top,this.offsetTop=this.$element.offset().top,this.height=this.$element.outerHeight(!0),this.velocity=this.$element.attr("data-velocity"),this.bgStart=parseInt(this.$element.attr("data-fit"),10),t(document).scroll(function(){i.didScroll=!0}),setInterval(function(){i.didScroll&&(i.didScroll=!1,i.scrolly())},10)},i.prototype.scrolly=function(){var i=t(window).scrollTop(),s=t(window).height(),e=this.startPosition;this.offsetTop>=i+s?this.$element.addClass("scrolly-invisible"):e=this.$element.hasClass("scrolly-invisible")?this.startPosition+(i+(s-this.offsetTop))*this.velocity:this.startPosition+i*this.velocity,this.bgStart&&(e+=this.bgStart),this.options.bgParallax===!0?this.$element.css({backgroundPositionY: e+"px"}):this.$element.css({top:e})},t.fn[s]=function(e){return this.each(function(){t.data(this,"plugin_"+s)||t.data(this,"plugin_"+s,new i(this,e))})}});

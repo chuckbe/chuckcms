@@ -45,20 +45,6 @@ class PageBlockController extends Controller
     }
 
     /**
-     * Add a block to the top of the page.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function addBlockTop()
-    {
-        // AUTHORIZE ... COMES HERE
-        $contents = File::get('blocks/chuckv1/content-three-cols.html');
-        $page = $this->page->getById(1);
-        $pageblock = $this->pageblock->addBlockTop($contents, $page);
-        return $pageblock;
-    }
-
-    /**
      * Show the application dashboard.
      *
      * @param  Request $request
@@ -96,5 +82,50 @@ class PageBlockController extends Controller
         // AUTHORIZE ... COMES HERE
         $pageblock = $this->pageBlockRepository->moveDownById($request->get('pageblock_id'));
         return $pageblock;
+    }
+
+    /**
+     * Delete the resource from the page.
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        // AUTHORIZE ... COMES HERE
+        $status = $this->pageBlockRepository->deleteById($request->get('pageblock_id'));
+        return $status;
+    }
+
+    /**
+     * Add Block From Location To Top of Page and Store to Database
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function addBlockTop(Request $request)
+    {
+        // AUTHORIZE ... COMES HERE
+        $contents = File::get($request['location']);
+        $page = $this->page->getById($request['page_id']);
+        $pageblock = $this->pageblock->addBlockTop($contents, $page, $request['name']);
+        //return $pageblock;
+        return 'success';
+    }
+
+    /**
+     * Add Block From Location To Bottom of Page and Store to Database
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function addBlockBottom(Request $request)
+    {
+        // AUTHORIZE ... COMES HERE
+        $contents = File::get($request['location']);
+        $page = $this->page->getById($request['page_id']);
+        $pageblock = $this->pageblock->addBlockTop($contents, $page);
+        //return $pageblock;
+        return 'success';
     }
 }

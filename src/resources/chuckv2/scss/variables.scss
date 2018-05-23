@@ -1,0 +1,51 @@
+/* ----------------------------------------------------------------------
+	Base Colors
+-------------------------------------------------------------------------*/
+
+/*Colors*/
+$base-color:                     #1abc9c;
+$body-color:                     #565656;
+
+$primary-color:                  #26B8F3;
+$success-color:                  #81c868;
+$info-color:                     #34d3eb;
+$warning-color:                  #ffbd4a;
+$danger-color:                   #c30000;
+
+$white:                          #ffffff;
+$black:                          #000000;
+$grey:                           #F2F2F4;
+$dark:                           #252525;
+$darker:                         #292929;
+$dark-light:                     #9d9d9d;
+$light:                          #eeeeee;
+$dark-grey:                      #262626;
+$slate-grey:                     #444444;
+$silver:                         #cccccc;
+ 
+ 
+/*Typography*/
+$font-family-1:                  'Open Sans', 'Helvetica', 'Arial', sans-serif;
+$font-family-2:                  'Montserrat', 'Helvetica', 'Arial', sans-serif;
+$font-family-3:                  'Raleway', 'Helvetica', 'Arial', sans-serif;
+$font-family-4:                  'Roboto', 'Helvetica', 'Arial', sans-serif;
+$font-family-5:                  'Nunito', 'Helvetica', 'Arial', sans-serif;
+$font-family-6:                  'Poppins', 'Helvetica', 'Arial', sans-serif;
+$font-family-7:                  'Merriweather';
+
+$menu-font:                      $font-family-3; 
+ 
+ 
+/*Header*/
+$header-height:                  80px;
+$header-line-height:             80px; 
+
+/*Side Panel*/
+$side-panel-width:               300px; 
+
+/*Margins*/
+$default-margin:                 14px;
+
+/*Transitions*/
+$transition-ease:                all 0.3s ease;
+ 

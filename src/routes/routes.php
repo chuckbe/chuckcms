@@ -23,16 +23,22 @@ Route::group(['middleware' => ['web']], function() {
 		Route::get('/dashboard', 'Chuckbe\Chuckcms\Controllers\DashboardController@index')->name('dashboard');
 	// Dashboard Pages Routes...
 		Route::get('/dashboard/pages', 'Chuckbe\Chuckcms\Controllers\DashboardController@pages')->name('dashboard.pages');
-		Route::get('/dashboard/page/create', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageCreate')->name('dashboard.page.create');
+		Route::group(['middleware' => ['permission:create pages']], function () {
+		    Route::get('/dashboard/page/create', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageCreate')->name('dashboard.page.create');
+		});
 		Route::post('/dashboard/page/save', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageSave')->name('dashboard.page.save');
-		Route::get('/dashboard/page/{page_id}-edit', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageEdit')->name('dashboard.page.edit');
+		Route::group(['middleware' => ['permission:edit pages']], function () {
+			Route::get('/dashboard/page/{page_id}-edit', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageEdit')->name('dashboard.page.edit');
+		});
 	// Dashboard Page Builder Routes...
 		Route::get('/dashboard/page/{page_id}-edit/builder', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageEditBuilder')->name('dashboard.page.edit.pagebuilder');
-		Route::get('/dashboard/page/add_block', 'Chuckbe\Chuckcms\Controllers\PageBlockController@addBlockTop')->name('dashboard.page.add_block.pagebuilder');
 		Route::post('/pageblock/show', 'Chuckbe\Chuckcms\Controllers\PageBlockController@show')->name('api.pageblock.show');
 		Route::post('/pageblock/update', 'Chuckbe\Chuckcms\Controllers\PageBlockController@update')->name('api.pageblock.update');
 		Route::post('/pageblock/move-up', 'Chuckbe\Chuckcms\Controllers\PageBlockController@moveUp')->name('api.pageblock.move_up');
 		Route::post('/pageblock/move-down', 'Chuckbe\Chuckcms\Controllers\PageBlockController@moveDown')->name('api.pageblock.move_down');
+		Route::post('/pageblock/add-block-top', 'Chuckbe\Chuckcms\Controllers\PageBlockController@addBlockTop')->name('api.pageblock.add_block_top');
+		Route::post('/pageblock/add-block-bottom', 'Chuckbe\Chuckcms\Controllers\PageBlockController@addBlockBottom')->name('api.pageblock.add_block_bottom');
+		Route::post('/pageblock/delete', 'Chuckbe\Chuckcms\Controllers\PageBlockController@delete')->name('api.pageblock.delete');
 	// Dashboard Menus Routes...
 		Route::get('/dashboard/menus', 'Chuckbe\Chuckcms\Controllers\DashboardController@menus')->name('dashboard.menus');
 		$path = rtrim(config('menu.route_path'));

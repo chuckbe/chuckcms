@@ -1,0 +1,131 @@
+// Modal
+.modal-content {
+    border-radius: 4px;
+    padding: 10px;
+}
+.modal-title::after {
+    border-top: 1px solid #eee;
+    content: "";
+    display: block;
+    height: 1px;
+    margin: 16px 0 -12px;
+    width: 100%;
+}
+.modal-header,
+.modal-footer {
+    border: none;
+}
+.modal-backdrop {
+    bottom: 0;
+}
+
+/*Strip*/
+
+.modal-strip {
+    background-color: #1abc9c;
+    bottom: 0;
+    color: #fff;
+    left: 0;
+    padding: 18px;
+    position: fixed;
+    width: 100%;
+    display: inline-block;
+    transform: translate3d(0px, 200px, 0px);
+    transition: all 0.7s ease 0s;
+    z-index: 999 !important;
+    .btn,
+    h5,
+    h4,
+    h3,
+    h2,
+    h1 {
+        margin-bottom: 0;
+    }
+    a {
+        color: #fff;
+    }
+    &.modal-top {
+        bottom: auto;
+        top: 0;
+        transform: translate3d(0px, -200px, 0px);
+    }
+    &.modal-left {
+        bottom: auto;
+        top: auto;
+        left: 0;
+        right: auto;
+        width: 30%;
+        transform: none;
+    }
+    &.modal-right {
+        transform: translate3d(0px, 0px, 0px);
+        bottom: auto;
+        top: 0;
+    }
+    &.modal-active {
+        transform: translate3d(0px, 0px, 0px);
+    }
+}
+
+
+/* Zoom-out effect*/
+.mfp-zoom-out {
+  
+  /* start state */
+  .mfp-content {
+    opacity: 0;
+    transition: all 0.3s ease-in-out; 
+    transform: scale(1.3); 
+  }
+  
+  &.mfp-bg {
+    opacity: 0;
+	  transition: all 0.3s ease-out;
+  }
+  
+  /* animate in */
+  &.mfp-ready {
+    .mfp-content {
+      opacity: 1;
+      transform: scale(1); 
+    }
+    &.mfp-bg {
+      opacity: 0.8;
+    }
+  }
+  
+  /* animate out */
+  &.mfp-removing {
+    
+    .mfp-content {
+      transform: scale(1.3); 
+      opacity: 0;
+    }
+    &.mfp-bg {
+      opacity: 0;
+    }
+    
+  }
+  
+}
+
+.mfp-ready .modal {
+  background: #fff;
+  border-radius: 4px;
+  display: block;
+  margin: 0 auto;
+  max-width: 500px;
+  padding: 40px;
+  position: relative;
+  z-index: 1050;
+}
+
+.modal .video-wrap video,
+.modal .iframe-wrap iframe,
+.modal .audio-wrap audio{
+    width: 100%;
+}
+
+.modal iframe {
+    margin-bottom: -10px;
+}

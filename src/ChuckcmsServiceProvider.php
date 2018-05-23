@@ -13,6 +13,8 @@ class ChuckcmsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+
         include __DIR__.'/Routes/routes.php';
         
         $this->loadMigrationsFrom(__DIR__.'/migrations');
@@ -22,7 +24,11 @@ class ChuckcmsServiceProvider extends ServiceProvider
         ], 'public');
 
         $this->publishes([
-            __DIR__ . '/config' => config_path('menu'),
+            __DIR__ . '/config/menu.php' => config_path('menu'),
+        ]);
+
+        $this->publishes([
+            __DIR__ . '/config/lfm.php' => config_path('lfm'),
         ]);
     }
 
@@ -33,6 +39,8 @@ class ChuckcmsServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app['App\User'] = $this->app['Chuckbe\Chuckcms\Models\User'];
+
         $this->app->make('Chuckbe\Chuckcms\Controllers\PageController');
         $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\ForgotPasswordController');
         $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\LoginController');
@@ -43,7 +51,7 @@ class ChuckcmsServiceProvider extends ServiceProvider
         
 
         $this->app->register(
-            'Chuckbe\Chuckcms\Providers\ChuckLocaleConfigServiceProvider'
+            'Chuckbe\Chuckcms\Providers\ChuckConfigServiceProvider'
         );
 
         $this->app->register(
@@ -55,6 +63,10 @@ class ChuckcmsServiceProvider extends ServiceProvider
 
         $this->mergeConfigFrom(
             __DIR__ . '/config/menu.php', 'menu'
+        );
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/config/lfm.php', 'lfm'
         );
     }
 }

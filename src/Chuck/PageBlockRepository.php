@@ -183,6 +183,29 @@ class PageBlockRepository
         $pageblocks = $this->where('page_id', $id)->increment('order');
     }
 
+    public function moveOrderUpByPageId($id)
+    {
+        $pageblocks = $this->where('page_id', $id)->decrement('order');
+    }
+
+    public function deleteById($id)
+    {
+        $pageblock = $this->pageblock->find($id);
+        if($pageblock){
+            $og_order = $pageblock->order;
+            //Decrement order of following pageblocks
+            $pageblocks = $this->pageblock->where('page_id', $pageblock->page_id)->where('order', '>', $og_order)->decrement('order');
+            //Delete pageblock
+            if($pageblock->delete()){
+                return 'success';
+            } else {
+                return 'error';
+            }
+        } else {
+            return 'false';
+        }
+    }
+
     public function addBlockTop($contents, $page)
     {
         $this->moveOrderDownByPageId($page->id);

@@ -1,0 +1,335 @@
+/* ----------------------------------------------------------------
+Carousels
+-----------------------------------------------------------------*/
+
+@import '../variables.scss';
+
+/* Owl Carousel - Controls
+-----------------------------------------------------------------*/
+
+.owl-carousel {
+    .owl-dots,
+    .owl-nav {
+        text-align: center;
+        -webkit-tap-highlight-color: transparent;
+        line-height: 1;
+    }
+    .owl-nav {
+        [class*="owl-"] {
+            width: 42px;
+            height: 42px;
+            line-height: 42px;
+            margin: -23px 0 0;
+            display: block;
+            position: absolute;
+            top: 50%;
+            z-index: 10;
+            cursor: pointer;
+            text-align: center;
+            transition: all .2s ease 0s;
+            color: $dark-grey;
+            background-color: $white;
+            text-align: center;
+            z-index: 200;
+            border: 2px solid $white;
+            box-sizing: initial;
+            opacity: 0;
+            border-radius: 50%;
+            i {
+                line-height: 42px;
+                color: $dark-grey;
+                font-size: 22px
+            }
+            &:hover {
+                background-color: $base-color;
+                border-color: $base-color;
+                i {
+                    color: $white;
+                }
+            }
+        }
+        .owl-next {
+            right: 0px;
+            .fa-angle-right {
+                margin-right: -2px;
+            }
+        }
+        .owl-prev {
+            left: 0px;
+            .fa-angle-left {
+                margin-left: -2px;
+            }
+        }
+    }
+    &:hover {
+        .owl-next {
+            left: auto;
+            right: 10px;
+            opacity: 1;
+        }
+        .owl-prev {
+            right: auto;
+            left: 10px;
+            opacity: 1;
+        }
+    }
+    &.arrows-visibile {
+        .owl-next {
+            left: auto;
+            right: 10px;
+            opacity: 1;
+        }
+        .owl-prev {
+            right: auto;
+            left: 10px;
+            opacity: 1;
+        }
+    }
+    &.arrows-dark {
+        .owl-nav {
+            [class*="owl-"] {
+                color: $white;
+                border-color: $dark;
+                background-color: $dark;
+                i {
+                    color: $white;
+                }
+                &:hover {
+                    background-color: $dark;
+                    i {
+                        color: $white;
+                    }
+                }
+            }
+        }
+    }
+    &.arrows-grey {
+        .owl-nav {
+            [class*="owl-"] {
+                color: $dark;
+                border: 2px solid $dark-light;
+                background-color: $dark-light;
+                i {
+                    color: $dark-light;
+                }
+                &:hover {
+                    background-color: $dark-light;
+                    i {
+                        color: $dark;
+                    }
+                }
+            }
+        }
+    }
+    &.arrows-large {
+        .owl-nav {
+            [class*="owl-"] {
+                width: 78px;
+                height: 78px;
+                line-height: 78px;
+                i {
+                    line-height: 78px;
+                    font-size: 28px;
+                }
+            }
+        }
+    }
+    &.arrows-creative {
+        .owl-nav {
+            [class*="owl-"] {
+                i {
+                    color: $white;
+                }
+                background-color: transparent;
+                border: 0;
+                &:hover {
+                    color: #262626;
+                    background-color: $base-color;
+                }
+            }
+        }
+    }
+    &.arrows-only {
+        .owl-nav {
+            [class*="owl-"] {
+                border: 0;
+                i {
+                    font-size: 28px;
+                }
+            }
+        }
+    }
+}
+@media (max-width: 991px) {
+    .owl-carousel {
+        .owl-nav {
+            [class*="owl-"] {
+                width: 32px;
+                height: 32px;
+                line-height: 32px;
+                i {
+                    line-height: 32px;
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+}
+
+/* Carousel dots */
+
+.owl-carousel {
+    .owl-controls {
+        .owl-dots {
+            margin-bottom: 20px;
+            margin-top: 20px;
+            position: relative;
+            .owl-dot {
+                display: inline-block;
+                zoom: 1;
+                *display: inline;
+                span {
+                    position: relative;
+                    display: block;
+                    float: left;
+                    margin: 0 4px;
+                    width: 10px;
+                    height: 10px;
+                    cursor: pointer;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    background-color: transparent;
+                    box-shadow: inset 0 0 0 2px $silver;
+                    transition: background 0.3s ease;
+                    &:after {
+                        outline: medium none;
+                        text-indent: -999em;
+                        border-radius: 50%;
+                        overflow: hidden;
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        height: 0;
+                        left: 0;
+                        width: 100%;
+                        background-color: $silver;
+                        box-shadow: 0 0 1px $silver;
+                        transition: height 0.3s ease;
+                    }
+                }
+                &.active span:after {
+                    height: 100%;
+                }
+            }
+        }
+    }
+    /* dots inside */
+    &.dots-inside {
+        .owl-controls {
+            height: 0;
+        }
+        .owl-dots {
+            bottom: 30px;
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+    }
+    /* dots top */
+    &.dots-inside-top {
+        .owl-dots {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+    }
+    &.dots-outside-top {
+        .owl-dots {
+            position: absolute;
+            right: 0;
+            top: -46px;
+        }
+    }
+    /* dots dark */
+    &.dots-dark .owl-dots {
+        .owl-dot {
+            span {
+                box-shadow: inset 0 0 0 2px $dark;
+                &:after {
+                    background-color: $dark;
+                }
+            }
+            &.active span:after {
+                height: 100%;
+            }
+        }
+    }
+    /* dots dark */
+    &.dots-grey .owl-dots {
+        .owl-dot {
+            span {
+                box-shadow: inset 0 0 0 2px $dark-light;
+                &:after {
+                    background-color: $dark-light;
+                }
+            }
+            &.active span:after {
+                height: 100%;
+            }
+        }
+    }
+    &.dots-creative {
+        .owl-controls {
+            height: 0;
+        }
+        .owl-dots {
+            bottom: 30px;
+            margin-bottom: 0;
+            margin-top: 0;
+            .owl-dot {
+                span {
+                    opacity: 0.5;
+                    box-shadow: none;
+                    border-radius: 0;
+                    background-color: $white;
+                    height: 4px;
+                    width: 30px;
+                    &:after {
+                        border-radius: 0;
+                        background-color: $white;
+                    }
+                }
+                &.active span {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+.carousel-promotion {
+    .owl-stage-outer {
+        overflow: unset !important;
+        .owl-item {
+            opacity: .3;
+            transition: opacity 400ms ease;
+            &.active {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+/* Owl Carousel - Settings
+-----------------------------------------------------------------*/
+
+.carousel {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .3s ease;
+    &.carousel-loaded {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+.item-video {
+    height: 420px;
+}
