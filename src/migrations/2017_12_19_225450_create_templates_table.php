@@ -20,6 +20,9 @@ class CreateTemplatesTable extends Migration
             $table->string('type');
             $table->string('version');
             $table->string('author');
+            $table->longText('fonts');
+            $table->longText('css');
+            $table->longText('js');
             $table->integer('active');
             $table->timestamps();
         });

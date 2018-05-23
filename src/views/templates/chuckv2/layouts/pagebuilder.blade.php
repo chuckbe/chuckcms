@@ -19,9 +19,7 @@
 
     <!-- Wrapper -->
     <div id="wrapper">
-        @include('chuckcms::templates.' . $template->slug . '.includes.header')
-            @yield('content')
-        @include('chuckcms::templates.' . $template->slug . '.includes.footer')
+        @yield('content')
     </div>
     <!-- end: Wrapper -->
 

@@ -1,10 +1,10 @@
-@extends('chuckcms::backend.layouts.pagebuilder')
+@extends('chuckcms::backend.layouts.builder')
 
 @section('content')
-<div class="container">
-    <div class="row">
+<div>
+    <div>
         <a id="add_block_top" style="border:none;color:dodgerblue;">
-            <div class="panel panel-default mb-none" style="background:#ececec;border:dashed dodgerblue 4px;">
+            <div class="panel panel-default mb-none" style="background:#ececec;border:dashed dodgerblue 4px;margin-bottom:0px;">
                 <div class="panel-body text-center">
 					<h3>PAGINA BLOCK TOEVOEGEN</h3>
                 </div>
@@ -13,8 +13,8 @@
     </div>
 </div>
 
-<div class="container pageblock_container" style="background:#FFF;">
-	<div class="row">
+<div class="pageblock_container" style="background:#FFF;">
+	<div>
 		@if($pageblocks !== null)
 	        @foreach($pageblocks as $pageblock)
 	            <div class="pageblock_body_container" id="pageblock-{{ $pageblock['id'] }}" data-order="{{ $pageblock['order'] }}" data-id="{{ $pageblock['id'] }}">
@@ -33,7 +33,7 @@
 		            	@endcan
 		            	@can('code pagebuilder')
 		            		<a href="" class="btn btn-sm btn-primary pb_control_edit" data-id="{{ $pageblock['id'] }}">
-		            			<i class="fa fa-file-code"></i>
+		            			<i class="fa fa-code"></i>
 		            		</a>
 		            		<a href="" class="btn btn-sm btn-success pb_control_save_code not_shown" data-id="{{ $pageblock['id'] }}">
 		            			<i class="fa fa-check"></i>
@@ -59,10 +59,10 @@
 	</div>
 </div>
 
-<div class="container">
-    <div class="row">
-        <a id="add_block_bottom">
-            <div class="panel panel-default">
+<div>
+    <div>
+        <a id="add_block_bottom" style="border:none;color:dodgerblue;">
+            <div class="panel panel-default" style="background:#ececec;border:dashed dodgerblue 4px;margin-bottom:0px;">
                 <div class="panel-body text-center">
 					<h3>PAGINA BLOCK TOEVOEGEN</h3>
                 </div>
@@ -211,10 +211,43 @@
   </div>
 </div>
 
+ <div id="modal_image_editor" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      	<div class="modal-header">
+        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+        	<h4 class="modal-title">Bewerken:</h4>
+      	</div>
+      	<div class="modal-body">
+      		<div class="form-group">
+      			<div class="input-group">
+					<span class="input-group-btn">
+						<a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
+							<i class="fa fa-picture-o"></i> Choose
+						</a>
+					</span>
+					<input id="thumbnail" class="form-control edit_image_value" id="edit_image_value" type="text" name="filepath">
+	        		<input type="hidden" class="edit_image_element" name="edit_element">
+				</div>
+				<img id="holder" style="margin-top:15px;max-height:100px;">
+	        </div>
+      	</div>
+      	<div class="modal-footer">
+        	<button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button>
+        	<button type="button" class="btn btn-success" data-dismiss="modal">Bewerken</button>
+      	</div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('css')
 <style>
+i{
+	margin-right:0px!important;
+}
 .not_shown{
 	display:none;
 }
@@ -270,6 +303,7 @@
 @section('scripts')
 	<script src="{{ URL::to('chuckbe/chuckcms/js/plugins/sweetalert2.all.js') }}"></script>
 	<script src="{{ URL::to('chuckbe/chuckcms/js/plugins/ace/ace.js') }}"></script>
+	 <script src="{{ URL::to('vendor/laravel-filemanager/js/lfm.js') }}"></script>
 	<script>
 		$( document ).ready(function() {
 			init();
@@ -499,34 +533,33 @@
 				
 
 			function init () {
+				//init media manager inputs 
+				var domain = "{{ URL::to('dashboard/media')}}";
+				$('#lfm').filemanager('image', {prefix: domain});
+
+				//init add block buttons for modals
 				$('#add_block_top').click(function (event) {
 			        $('#modal_add_block_top').modal('show')
 			    });
-
 			    $('#add_block_bottom').click(function (event) {
 			        $('#modal_add_block_bottom').modal('show')
 			    });
 
-
+			    //remove first and last block's 'move-up' and 'move-down' buttons
 				var first_order = $('.pageblock_body_container:first-child').attr('data-order');
 				var last_order = $('.pageblock_body_container:last-child').attr('data-order');
-				$('.pageblock_body_container .pb_control_move_down').each(function(){
-					
+				$('.pageblock_body_container .pb_control_move_down').each(function(){	
 					 	$(this).removeClass('hidden');
 					 	if( $(this).attr('data-order') == last_order ) {
 					 		$(this).addClass('hidden');
 					 	}
 				});
 				$('.pageblock_body_container .pb_control_move_up').each(function(){
-					
 					 	$(this).removeClass('hidden');
 					 	if( $(this).attr('data-order') == first_order ) {
 					 		$(this).addClass('hidden');
 					 	}
-					
 				});
-
-
 
 				// EDIT INSIDE PAGEBLOCK HTML THROUGH MODAL FORMS
 			    $('.pageblock_body h1[data-content="title"]').hover(
@@ -648,6 +681,24 @@
 						console.log(content);
 				  		$('#text_edit_value').html(content);
 				        $('#modal_text_editor').modal('show');
+				    });
+				});
+
+
+				$('.pageblock_body img[data-type="image"]').each(function(){
+					var content = $(this).attr('src');
+				  	$(this).click(function (event) {
+				  		var el = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 12);
+						$(this).attr('data-unique', el);
+						var pbid = $(this).parents( ".pageblock_body" ).attr('data-pbid');
+						$(this).attr('data-pbid', pbid);
+						var eltype = $(this).prop('nodeName');
+						var index = $(this).closest("#pageblock_body_"+pbid+"").find(eltype).index(this);
+						$("#pageblock_body_raw_"+pbid+" "+eltype+"").eq(index).attr('data-unique', el);
+				  		$('input.edit_image_value').val(content);
+				  		$('input.edit_image_element').val(el);
+				  		$('img#holder').attr('src', content);
+				        $('#modal_image_editor').modal('show');
 				    });
 				});
 			}

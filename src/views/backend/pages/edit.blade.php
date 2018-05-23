@@ -1,4 +1,4 @@
-@extends('chuckcms::templates.' . $template->slug . '.layouts.boarder')
+@extends('chuckcms::backend.layouts.admin')
 
 @section('content')
 <!-- START CONTAINER FLUID -->
