@@ -41,4 +41,14 @@ class LoginController extends Controller
     {
         return view('chuckcms::auth.login', compact('errors'));
     }
+
+    protected function validateLogin(\Illuminate\Http\Request $request)
+    {
+        $this->validate($request, [
+            $this->username() => 'required|exists:users,' . $this->username() . ',active,1',
+            'password' => 'required',
+        ], [
+            $this->username() . '.exists' => 'The selected email is invalid or the account is not active.'
+        ]);
+    }
 }

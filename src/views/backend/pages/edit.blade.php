@@ -44,7 +44,7 @@
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Template</label>
-                        <select class="full-width" data-init-plugin="select2" name="template_id">
+                        <select class="full-width" data-init-plugin="select2" name="template_id" data-minimum-results-for-search="-1">
 							@foreach($templates as $tmpl)
 								<option value="{{ $tmpl->id }}" @if($tmpl->id == $page->template_id) selected @endif>{{ $tmpl->name }} (v{{ $tmpl->version }})</option>
 							@endforeach
@@ -52,7 +52,7 @@
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Actief</label>
-                        <select class="full-width" data-init-plugin="select2" name="active">
+                        <select class="full-width" data-init-plugin="select2" name="active" data-minimum-results-for-search="-1">
 							<option value="1" @if($page->active == 1) selected @endif>Actief</option>
 							<option value="0" @if($page->active == 0) selected @endif>Concept</option>
 						</select>

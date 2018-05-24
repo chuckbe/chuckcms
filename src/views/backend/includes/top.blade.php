@@ -139,14 +139,14 @@
           <div class="dropdown pull-right hidden-md-down">
             <button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span class="thumbnail-wrapper d32 circular inline">
-              <img src="{{ URL::to('chuckbe/chuckcms/assets/img/profiles/avatar.jpg') }}" alt="" data-src="{{ URL::to('chuckbe/chuckcms/assets/img/profiles/avatar.jpg') }}" data-src-retina="{{ URL::to('chuckbe/chuckcms/assets/img/profiles/avatar_small2x.jpg') }}" width="32" height="32">
+              <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}" alt="" data-src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}" data-src-retina="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}" width="32" height="32">
               </span>
             </button>
             <div class="dropdown-menu dropdown-menu-right profile-dropdown" role="menu">
-              <a href="#" class="dropdown-item"><i class="pg-settings_small"></i> Settings</a>
-              <a href="#" class="dropdown-item"><i class="pg-outdent"></i> Feedback</a>
-              <a href="#" class="dropdown-item"><i class="pg-signals"></i> Help</a>
-              <a href="#" class="clearfix bg-master-lighter dropdown-item">
+              <a href="{{ route('dashboard.settings') }}" class="dropdown-item"><i class="pg-settings_small"></i> Instellingen</a>
+              <a href="https://cms.chuck.be/feedback" class="dropdown-item"><i class="pg-outdent"></i> Feedback</a>
+              <a href="https://cms.chuck.be/support" class="dropdown-item"><i class="pg-signals"></i> Help</a>
+              <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="clearfix bg-master-lighter dropdown-item">
                 <span class="pull-left">Logout</span>
                 <span class="pull-right"><i class="pg-power"></i></span>
               </a>

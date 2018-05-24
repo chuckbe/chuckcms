@@ -52,9 +52,12 @@ Route::group(['middleware' => ['web']], function() {
 		Route::get('/dashboard/templates', 'Chuckbe\Chuckcms\Controllers\DashboardController@templates')->name('dashboard.templates');
 	// Dashboard Users Routes...
 		Route::get('/dashboard/users', 'Chuckbe\Chuckcms\Controllers\DashboardController@users')->name('dashboard.users');
+		Route::post('/dashboard/user/invite', 'Chuckbe\Chuckcms\Controllers\UserController@invite')->name('dashboard.users.invite');
 	// Dashboard Settings Routes...
 		Route::get('/dashboard/settings', 'Chuckbe\Chuckcms\Controllers\DashboardController@settings')->name('dashboard.settings');
 	});
+	Route::get('/activate/user/{token}', 'Chuckbe\Chuckcms\Controllers\UserController@activateIndex')->name('activate.user.index');
+	Route::post('/activate/user', 'Chuckbe\Chuckcms\Controllers\UserController@activate')->name('activate.user');
 });
 
 Route::group(

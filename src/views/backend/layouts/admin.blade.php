@@ -216,6 +216,9 @@
       <!-- END Overlay Content !-->
     </div>
     <!-- END OVERLAY -->
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        {{ csrf_field() }}
+    </form>
     <!-- BEGIN VENDOR JS -->
     <script src="{{ URL::to('chuckbe/chuckcms/assets/plugins/feather-icons/feather.min.js') }}" type="text/javascript"></script>
     <script src="{{ URL::to('chuckbe/chuckcms/assets/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
