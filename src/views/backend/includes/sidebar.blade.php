@@ -34,7 +34,7 @@
           </li>
 
           <li class="">
-            <a href="{{ route('dashboard.settings') }}"><span class="title">Templates</span></a>
+            <a href="{{ route('dashboard.templates') }}"><span class="title">Templates</span></a>
             <span class="icon-thumbnail"><i data-feather="grid"></i></span>
           </li>
 

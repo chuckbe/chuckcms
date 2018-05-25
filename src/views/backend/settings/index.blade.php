@@ -52,17 +52,12 @@
                         <input type="text" class="form-control" placeholder="Titel" id="page_slug" name="slug" value="" required disabled>
                       </div>
                       <div class="form-group form-group-default required ">
-                        <label>Template</label>
-                        <select class="full-width" data-init-plugin="select2" name="template_id">
-							<option value="">Optie</option>
-						</select>
+                        <label>Domein</label>
+                        <input type="text" class="form-control" placeholder="Titel" id="page_slug" name="slug" value="" required disabled>
                       </div>
                       <div class="form-group form-group-default required ">
-                        <label>Actief</label>
-                        <select class="full-width" data-init-plugin="select2" name="active">
-							<option value="1">Actief</option>
-							<option value="0">Concept</option>
-						</select>
+                        <label>Google Analytics</label>
+                        <textarea id="meta_description" name="meta_description" placeholder="Meta Beschrijving" style="height:105px;" class="form-control" required>Beschrijving</textarea>
                       </div>
                 </div>
               </div>
