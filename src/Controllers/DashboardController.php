@@ -7,6 +7,7 @@ use Chuckbe\Chuckcms\Models\PageBlock;
 use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
 use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Repeater;
+use Chuckbe\Chuckcms\Models\Site;
 use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\User;
 
@@ -21,9 +22,10 @@ class DashboardController extends Controller
      *
      * @return void
      */
-    public function __construct(Template $template, Page $page, PageBlock $pageblock, PageBlockRepository $pageBlockRepository, Resource $resource, Repeater $repeater, User $user)
+    public function __construct(Template $template, Site $site, Page $page, PageBlock $pageblock, PageBlockRepository $pageBlockRepository, Resource $resource, Repeater $repeater, User $user)
     {
         $this->template = $template;
+        $this->site = $site;
         $this->page = $page;
         $this->pageblock = $pageblock;
         $this->pageBlockRepository = $pageBlockRepository;
@@ -182,7 +184,8 @@ class DashboardController extends Controller
         $template = $this->template->where('active', 1)->where('type', 'admin')->first();
         $front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
         $pages = $this->page->get();
+        $site = $this->site->first(); //change method to get active site
         
-        return view('chuckcms::backend.settings.index', compact('template', 'front_template', 'pages'));
+        return view('chuckcms::backend.settings.index', compact('template', 'front_template', 'pages', 'site'));
     }
 }

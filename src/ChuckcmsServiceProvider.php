@@ -30,6 +30,10 @@ class ChuckcmsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/config/lfm.php' => config_path('lfm'),
         ]);
+
+        $this->publishes([
+            __DIR__ . '/config/lang.php' => config_path('lang'),
+        ]);
     }
 
     /**
@@ -51,6 +55,10 @@ class ChuckcmsServiceProvider extends ServiceProvider
         
 
         $this->app->register(
+            'Chuckbe\Chuckcms\Providers\ChuckSiteServiceProvider'
+        );
+
+        $this->app->register(
             'Chuckbe\Chuckcms\Providers\ChuckConfigServiceProvider'
         );
 
@@ -59,7 +67,9 @@ class ChuckcmsServiceProvider extends ServiceProvider
         );
 
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+        $loader->alias('ChuckSite', 'Chuckbe\Chuckcms\Facades\Site');
         $loader->alias('ChuckMenu', 'Chuckbe\Chuckcms\Facades\Menu');
+
 
         $this->mergeConfigFrom(
             __DIR__ . '/config/menu.php', 'menu'
@@ -67,6 +77,10 @@ class ChuckcmsServiceProvider extends ServiceProvider
 
         $this->mergeConfigFrom(
             __DIR__ . '/config/lfm.php', 'lfm'
+        );
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/config/lang.php', 'lang'
         );
     }
 }

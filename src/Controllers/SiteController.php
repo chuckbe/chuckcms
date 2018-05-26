@@ -20,34 +20,38 @@ class SiteController extends Controller
         $this->site = $site;
     }
 
-    public function invite(Request $request)
+    public function save(Request $request)
     {
-        $this->validate(request(), [ //@todo create custom Request class for page validation
-            'name' => 'max:185|required',
-            'email' => 'email|required|unique:users',
-            'role' => 'required|in:user,moderator,administrator,super-admin'
+        //validate the request
+        $this->validate(request(), [ //@todo create custom Request class for site validation
+            'site_name' => 'max:185|required',
+            'site_slug' => 'max:70',
+            'site_domain' => 'required',
+            'socialmedia.*' => 'string|nullable',
+            'logo.*' => 'string|nullable',
+            'integrations.*' => 'string|nullable',
+            'lang' => 'array',
+            'site_id' => 'required|nullable'
         ]);
 
-        do {
-            //generate a random string using Laravel's str_random helper
-            $token = str_random(24);
-        } //check if the token already exists and if it does, try again
-        while ($this->user->where('token', $token)->first());
-        // create the user
-        $user = $this->user->create([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'token' => $token,
-            'password' => bcrypt($token)
-        ]);
-        // add role
-        $user->assignRole($request->get('role'));
-
-        //send the email
-        //@todo send notification with token url
+        //create array for settings json
+        $settings = [];
+        foreach($request->get('socialmedia') as $smKey => $smValue){$settings['socialmedia'][$smKey] = $smValue;}
+        foreach($request->get('logo') as $logoKey => $logoValue){$settings['logo'][$logoKey] = $logoValue;}
+        foreach($request->get('integrations') as $igsKey => $igsValue){$settings['integrations'][$igsKey] = $igsValue;}
+        $settings['lang'] = implode(",",$request->get('lang'));
+        
+        // updateOrCreate the site
+        $site = $this->site->updateOrCreate(
+            ['id' => $request->get('site_id')],
+            ['name' => $request->get('site_name'),
+            'slug' => $request->get('site_slug'),
+            'domain' => $request->get('site_domain'),
+            'settings' => $settings]
+        );
 
         //redirect back
-        return redirect()->back()->with('notification', 'Gebruiker uitgenodigd!');
+        return redirect()->route('dashboard.settings')->with('notification', 'Instellingen opgeslagen!');
     }
 
     public function activateIndex($token)

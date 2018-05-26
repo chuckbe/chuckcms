@@ -2,6 +2,8 @@
 
 namespace Chuckbe\Chuckcms\Providers;
 
+use ChuckSite;
+
 use Illuminate\Support\ServiceProvider;
 
 class ChuckConfigServiceProvider extends ServiceProvider
@@ -13,7 +15,18 @@ class ChuckConfigServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        config([
+            // mcamara/laravel-localization
+            'laravellocalization.supportedLocales' => ChuckSite::getSupportedLocales(),
+            'laravellocalization.useAcceptLanguageHeader' => true,
+            'laravellocalization.hideDefaultLocaleInURL' => false,
+
+            // UniSharp/laravel-filemanager
+            'lfm_config.url_prefix' => 'dashboard/mediacenter',
+
+            // laravel/laravel
+            'auth.providers.users.model' => \Chuckbe\Chuckcms\Models\User::class
+        ]);
     }
 
     /**
@@ -23,21 +36,6 @@ class ChuckConfigServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        config([
-            // mcamara/laravel-localization
-			'laravellocalization.supportedLocales' => [
-				'nl' => array( 'name' => 'Dutch', 'script' => 'Latn', 'native' => 'Nederlands' ),
-				'en'  => array( 'name' => 'English', 'script' => 'Latn', 'native' => 'English' ),
-                'fr'  => array( 'name' => 'French', 'script' => 'Latn', 'native' => 'français' ),
-			],
-			'laravellocalization.useAcceptLanguageHeader' => true,
-			'laravellocalization.hideDefaultLocaleInURL' => false,
-
-            // UniSharp/laravel-filemanager
-            'lfm_config.url_prefix' => 'dashboard/mediacenter',
-
-            // laravel/laravel
-            'auth.providers.users.model' => \Chuckbe\Chuckcms\Models\User::class
-		]);
+        
     }
 }

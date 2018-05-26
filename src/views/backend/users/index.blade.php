@@ -25,16 +25,7 @@
     <script type="text/javascript" src="{{ URL::to('chuckbe/chuckcms/assets/plugins/datatables-responsive/js/lodash.min.js') }}"></script>
     <script src="{{ URL::to('chuckbe/chuckcms/assets/js/tables.js') }}" type="text/javascript"></script>
     @if (session('notification'))
-    <script>
-	$(document).ready(function() {
-	    // Apply the plugin to the body 
-	   $('.page-container').pgNotification({
-	   	message: "{{ session('notification') }}",
-	   	position: 'bottom-right',
-	   	timeout: 0
-	   }).show();
-	});
-	</script>
+    	@include('chuckcms::backend.includes.notification')
 	@endif
 @endsection
 

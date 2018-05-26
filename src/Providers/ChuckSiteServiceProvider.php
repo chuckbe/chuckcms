@@ -4,7 +4,7 @@ namespace Chuckbe\Chuckcms\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class ChuckMenuServiceProvider extends ServiceProvider
+class ChuckSiteServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -23,8 +23,8 @@ class ChuckMenuServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('ChuckMenu',function(){
-            return new \Chuckbe\Chuckcms\Chuck\Accessors\Menu;
+        $this->app->bind('ChuckSite',function(){
+            return new \Chuckbe\Chuckcms\Chuck\Accessors\Site;
         });
     }
 }
