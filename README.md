@@ -21,6 +21,10 @@ php artisan vendor:publish --tag=chuckcmspublic --force
 php artisan vendor:publish --tag=chuckcmsconfig --force
 ```
 - publish error views?
-- add permission/role middleware
+- Add Spatie's Permission package middleware to HTTP Kernel
+```
+'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+```
 - migrate
 - seed
