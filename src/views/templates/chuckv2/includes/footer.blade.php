@@ -22,7 +22,9 @@
                         <div class="social-icons social-icons-border float-left m-t-20">
                             <ul>
                                 <li class="social-rss"><a href="#"><i class="fa fa-rss"></i></a></li>
-                                <li class="social-facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                @if(ChuckSite::getSetting('socialmedia.facebook') !== null)
+                                <li class="social-facebook"><a href="{{ ChuckSite::getSetting('socialmedia.facebook') }}"><i class="fa fa-facebook"></i></a></li>
+                                @endif
                                 <li class="social-twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
                                 <li class="social-vimeo"><a href="#"><i class="fa fa-vimeo"></i></a></li>
                                 <li class="social-youtube"><a href="#"><i class="fa fa-youtube"></i></a></li>

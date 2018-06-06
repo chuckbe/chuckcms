@@ -3,6 +3,9 @@
 namespace Chuckbe\Chuckcms\Controllers;
 
 use Chuckbe\Chuckcms\Models\Site;
+use Chuckbe\Chuckcms\Chuck\SiteRepository;
+use Chuckbe\Chuckcms\Models\User;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -10,14 +13,18 @@ use App\Http\Controllers\Controller;
 class SiteController extends Controller
 {
     private $site;
+    private $siteRepository;
+    private $user;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Site $site)
+    public function __construct(Site $site, SiteRepository $siteRepository, User $user)
     {
         $this->site = $site;
+        $this->siteRepository = $siteRepository;
+        $this->user = $user;
     }
 
     public function save(Request $request)
@@ -34,21 +41,8 @@ class SiteController extends Controller
             'site_id' => 'required|nullable'
         ]);
 
-        //create array for settings json
-        $settings = [];
-        foreach($request->get('socialmedia') as $smKey => $smValue){$settings['socialmedia'][$smKey] = $smValue;}
-        foreach($request->get('logo') as $logoKey => $logoValue){$settings['logo'][$logoKey] = $logoValue;}
-        foreach($request->get('integrations') as $igsKey => $igsValue){$settings['integrations'][$igsKey] = $igsValue;}
-        $settings['lang'] = implode(",",$request->get('lang'));
-        
-        // updateOrCreate the site
-        $site = $this->site->updateOrCreate(
-            ['id' => $request->get('site_id')],
-            ['name' => $request->get('site_name'),
-            'slug' => $request->get('site_slug'),
-            'domain' => $request->get('site_domain'),
-            'settings' => $settings]
-        );
+        //update or create settings
+        $site = $this->siteRepository->updateOrCreateFromRequest($request);
 
         //redirect back
         return redirect()->route('dashboard.settings')->with('notification', 'Instellingen opgeslagen!');

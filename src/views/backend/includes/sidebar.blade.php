@@ -39,6 +39,11 @@
           </li>
 
           <li class="">
+            <a href="{{ route('dashboard.forms') }}"><span class="title">Formulieren</span></a>
+            <span class="icon-thumbnail"><i data-feather="clipboard"></i></span>
+          </li>
+
+          <li class="">
             <a href="{{ route('dashboard.settings') }}"><span class="title">Content</span></a>
             <span class="icon-thumbnail"><i data-feather="box"></i></span>
           </li>

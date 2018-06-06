@@ -50,6 +50,10 @@ Route::group(['middleware' => ['web']], function() {
 	    Route::post($path . '/updateitem', array('as' => 'hupdateitem', 'uses' => 'Chuckbe\Chuckcms\Controllers\MenuController@updateitem'));
 	// Dashboard Templates Routes...
 		Route::get('/dashboard/templates', 'Chuckbe\Chuckcms\Controllers\DashboardController@templates')->name('dashboard.templates');
+	// Dashboard Forms Routes...
+		Route::get('/dashboard/forms', 'Chuckbe\Chuckcms\Controllers\FormController@index')->name('dashboard.forms');
+		Route::get('/dashboard/forms/create', 'Chuckbe\Chuckcms\Controllers\FormController@create')->name('dashboard.forms.create');
+	
 	// Dashboard Users Routes...
 		Route::get('/dashboard/users', 'Chuckbe\Chuckcms\Controllers\DashboardController@users')->name('dashboard.users');
 		Route::post('/dashboard/user/invite', 'Chuckbe\Chuckcms\Controllers\UserController@invite')->name('dashboard.users.invite');
@@ -59,6 +63,8 @@ Route::group(['middleware' => ['web']], function() {
 	});
 	Route::get('/activate/user/{token}', 'Chuckbe\Chuckcms\Controllers\UserController@activateIndex')->name('activate.user.index');
 	Route::post('/activate/user', 'Chuckbe\Chuckcms\Controllers\UserController@activate')->name('activate.user');
+
+	Route::post('/forms/validate', 'Chuckbe\Chuckcms\Controllers\FormController@postForm')->name('forms.validate');
 });
 
 Route::group(

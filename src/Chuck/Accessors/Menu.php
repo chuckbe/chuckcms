@@ -1,6 +1,6 @@
 <?php
 
-namespace Chuckbe\Chuckcms\Chuck;
+namespace Chuckbe\Chuckcms\Chuck\Accessors;
 
 use App\Http\Requests;
 use Chuckbe\Chuckcms\Models\Menus;

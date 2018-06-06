@@ -13,8 +13,6 @@ class ChuckcmsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
-
         include __DIR__.'/Routes/routes.php';
         
         $this->loadMigrationsFrom(__DIR__.'/migrations');
@@ -52,7 +50,6 @@ class ChuckcmsServiceProvider extends ServiceProvider
         $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\ResetPasswordController');
         
         $this->loadViewsFrom(__DIR__.'/views', 'chuckcms');
-        
 
         $this->app->register(
             'Chuckbe\Chuckcms\Providers\ChuckSiteServiceProvider'

@@ -2,6 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Chuck;
 
+use Chuckbe\Chuckcms\Models\Form;
 use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\PageBlock;
@@ -9,6 +10,8 @@ use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Repeater;
 
 use App\Http\Requests;
+
+use View;
 
 class PageBlockRepository
 {
@@ -23,8 +26,11 @@ class PageBlockRepository
         $pageblocks = [];
         foreach($ogpageblocks as $pageblock){
             $findThis = $this->getResources($pageblock->body, '[', ']');
+            
             // THERE ARE DYNAMICS IN THIS PAGEBLOCK, LET'S RETRIEVE IT
             if(count($findThis) > 0){
+                //@todo LOOP OVER findThis variable and resolve order for rendering
+                
                 // PAGEBLOCK CONTAINS A LOOP, LET'S RETRIEVE IT
                 if (strpos($findThis[0], 'LOOP') !== false) {
                     $repeater_slug = implode(" ",$this->getResources($pageblock->body, '[LOOP=', ']'));
@@ -32,8 +38,12 @@ class PageBlockRepository
                     
                     $newbody = str_replace('[LOOP='.$repeater_slug.']'.$repeater_body.'[/LOOP]',$this->getRepeaterContents($repeater_slug, $repeater_body),$pageblock->body);
 
-                // THERE IS NO LOOP, SO JUST RETRIEVE THE DYNAMIC CONTENT
-                } else{
+                // THERE IS NO LOOP, CONTINUE
+                }elseif(strpos($findThis[0], 'FORM') !== false) {// PAGEBLOCK CONTAINS A FORM, LET'S RETRIEVE IT
+                    $form_slug = implode(" ",$this->getResources($pageblock->body, '[FORM=', ']'));
+                    
+                    $newbody = $this->getFormHtml($form_slug,$pageblock->body);
+                }else{// THERE IS NO FORM, SO JUST RETRIEVE THE DYNAMIC CONTENT
                     $newbody = $this->getResourceContent($findThis, $pageblock->id, $pageblock->body);//Maybe write a function in the model?    
                 }
             } else {
@@ -57,6 +67,8 @@ class PageBlockRepository
         $findThis = $this->getResources($pageblock->body, '[', ']');
         // THERE ARE DYNAMICS IN THIS PAGEBLOCK, LET'S RETRIEVE IT
         if(count($findThis) > 0){
+            //@todo LOOP OVER findThis variable and resolve order for rendering
+            
             // PAGEBLOCK CONTAINS A LOOP, LET'S RETRIEVE IT
             if (strpos($findThis[0], 'LOOP') !== false) {
                 $repeater_slug = implode(" ",$this->getResources($pageblock->body, '[LOOP=', ']'));
@@ -64,9 +76,16 @@ class PageBlockRepository
                 
                 $newbody = str_replace('[LOOP='.$repeater_slug.']'.$repeater_body.'[/LOOP]',$this->getRepeaterContents($repeater_slug, $repeater_body),$pageblock->body);
 
-            // THERE IS NO LOOP, SO JUST RETRIEVE THE DYNAMIC CONTENT
-            } else{
-                $newbody = $this->getResourceContent($findThis, $pageblock->id, $pageblock->body);  
+            // THERE IS NO LOOP, CONTINUE
+            }
+            
+            if(strpos($findThis[0], 'FORM') !== false) {// PAGEBLOCK CONTAINS A FORM, LET'S RETRIEVE IT
+                $form_slug = implode(" ",$this->getResources($pageblock->body, '[FORM=', ']'));
+                
+                $newbody = $this->getFormHtml($form_slug,$pageblock->body);
+                $pageblock->body = $newbody;
+            } else{// THERE IS NO FORM, SO JUST RETRIEVE THE DYNAMIC CONTENT
+                $newbody = $this->getResourceContent($findThis, $pageblock->id, $pageblock->body);//Maybe write a function in the model?    
             }
         } else {
             $newbody = $pageblock->body;
@@ -122,6 +141,18 @@ class PageBlockRepository
             $body = str_replace('[' . $res_slug . '+' . $res_json . ']', $match, $body);
         }
         return $body;
+    }
+
+    public function getFormHtml($form_slug, $page_block_body)
+    {
+        $slug = $form_slug;        
+        $form = Form::where('slug', $slug)->first();
+
+        $render = View::make('chuckcms::backend.forms.render', ['form' => $form])->render();
+        
+        $html = str_replace('[FORM=' . $slug . ']', $render, $page_block_body);
+        
+        return $html;
     }
 
     public function getRepeaterContents($repeater_slug, $page_block_body)

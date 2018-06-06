@@ -21,4 +21,9 @@ class Site
     	return $arr;
     }
 
+    public static function getSetting($var)
+    {
+        return SiteRepository::getSettingByName($var);
+    }
+
 }
