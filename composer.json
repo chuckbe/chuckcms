@@ -22,7 +22,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Chuckbe\\Chuckcms": "src"
+            "Chuckbe\\Chuckcms\\": "src"
         }
     },
     "extra": {
