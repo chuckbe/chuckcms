@@ -19,19 +19,13 @@ class ChuckcmsServiceProvider extends ServiceProvider
         
         $this->publishes([
             __DIR__.'/resources' => public_path('chuckbe/chuckcms'),
-        ], 'public');
+        ], 'chuckcmspublic');
 
         $this->publishes([
             __DIR__ . '/config/menu.php' => config_path('menu'),
-        ]);
-
-        $this->publishes([
             __DIR__ . '/config/lfm.php' => config_path('lfm'),
-        ]);
-
-        $this->publishes([
             __DIR__ . '/config/lang.php' => config_path('lang'),
-        ]);
+        ], 'chuckcmsconfig');
     }
 
     /**
