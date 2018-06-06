@@ -1,7 +1,11 @@
 {
     "name": "chuckbe/chuckcms",
-    "description": "A lightweight Laravel CMS & CRM offering marketing automation and easy control of a website.",
+    "description": "A lightweight Laravel CMS for easy control of a website.",
+    "keywords": ["chuckbe", "chuckcms", "cms", "laravel", "php"],
+    "homepage": "https://github.com/chuckbe/chuckcms",
     "require": {
+        "php": ">=7.0.0",
+        "laravel/framework": "~5.5||~5.6",
         "barryvdh/laravel-dompdf": "^0.8.1",
         "spatie/laravel-newsletter": "^4.1",
         "mollie/laravel-mollie": "^1.5",
@@ -16,5 +20,20 @@
             "email": "karel@chuck.be"
         }
     ],
-    "minimum-stability": "dev"
+    "autoload": {
+        "psr-4": {
+            "Chuckbe\\Chuckcms": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Chuckbe\\Chuckcms\\ChuckcmsServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "minimum-stability": "dev",
 }
