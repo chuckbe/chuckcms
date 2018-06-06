@@ -4,7 +4,7 @@ namespace Chuckbe\Chuckcms\Chuck\Accessors;
 
 use Chuckbe\Chuckcms\Chuck\SiteRepository;
 
-use DB;
+use Illuminate\Support\Facades\Schema;
 
 use App\Http\Requests;
 
@@ -13,10 +13,11 @@ class Site
 
     public static function getSupportedLocales()
     {
-        if(DB::hasTable('sites')){
+        if(Schema::hasTable('sites')){
             $settings = SiteRepository::getSettings();
         } else {
-            $settings = 'nl';
+            $settings = [];
+            $settings['lang'] = 'en,nl';
         }
     	$arr = [];
     	foreach(config('lang.allLocales') as $langKey => $langValue){
