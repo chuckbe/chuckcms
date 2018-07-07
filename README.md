@@ -27,4 +27,10 @@ php artisan vendor:publish --tag=chuckcmsconfig --force
 'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
 ```
 - migrate
+```
+php artisan migrate
+```
 - seed
+```
+php artisan db:seed --class=Chuckbe\\Chuckcms\\migrations\\seeds\\PermissionRolesTableSeeder
+```

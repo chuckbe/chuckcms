@@ -15,6 +15,7 @@ class Site
     {
         if(Schema::hasTable('sites')){
             $settings = SiteRepository::getSettings();
+            if($settings == null) $settings=[];$settings['lang']='en,nl';
         } else {
             $settings = [];
             $settings['lang'] = 'en,nl';

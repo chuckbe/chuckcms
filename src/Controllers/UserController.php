@@ -2,6 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
+use Chuckbe\Chuckcms\Chuck\UserRepository;
 use Chuckbe\Chuckcms\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -10,14 +11,16 @@ use App\Http\Controllers\Controller;
 class UserController extends Controller
 {
     private $user;
+    private $userRepository;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, UserRepository $userRepository)
     {
         $this->user = $user;
+        $this->userRepository = $userRepository
     }
 
     public function invite(Request $request)
@@ -28,17 +31,12 @@ class UserController extends Controller
             'role' => 'required|in:user,moderator,administrator,super-admin'
         ]);
 
-        do {
-            //generate a random string using Laravel's str_random helper
-            $token = str_random(24);
-        } //check if the token already exists and if it does, try again
-        while ($this->user->where('token', $token)->first());
         // create the user
         $user = $this->user->create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
-            'token' => $token,
-            'password' => bcrypt($token)
+            'token' => $this->userRepository->createToken(),
+            'password' => bcrypt($this->userRepository->createToken())
         ]);
         // add role
         $user->assignRole($request->get('role'));

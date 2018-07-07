@@ -42,10 +42,10 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $template = $this->template->where('active', 1)->where('type', 'admin')->first();
-        $front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
+        //$template = $this->template->where('active', 1)->where('type', 'admin')->first();
+        //$front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
         
-        return view('chuckcms::backend.dashboard.index', compact('template', 'front_template'));
+        return view('chuckcms::backend.dashboard.index');
     }
 
     /**
@@ -55,11 +55,11 @@ class DashboardController extends Controller
      */
     public function pages()
     {
-        $template = $this->template->where('active', 1)->where('type', 'admin')->first();
-        $front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
+        // $template = $this->template->where('active', 1)->where('type', 'admin')->first();
+        // $front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
         $pages = $this->page->get();
         
-        return view('chuckcms::backend.pages.index', compact('template', 'front_template', 'pages'));
+        return view('chuckcms::backend.pages.index', compact('pages'));
     }
 
     /**

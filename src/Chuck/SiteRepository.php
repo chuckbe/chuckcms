@@ -11,7 +11,9 @@ class SiteRepository
 {
     public static function getSettings()
     {
-    	return Site::first()->settings;
+        if(Site::first()) return Site::first()->settings;
+        return null;
+    	
     }
 
     public static function getSettingByName($var)

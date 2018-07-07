@@ -2,7 +2,8 @@
 
 namespace Chuckbe\Chuckcms\Controllers\Auth;
 
-use App\User;
+use Chuckbe\Chuckcms\Models\User;
+use Chuckbe\Chuckcms\Chuck\UserRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -30,12 +31,20 @@ class RegisterController extends Controller
     protected $redirectTo = '/dashboard';
 
     /**
+     * User Repository.
+     *
+     * @var string
+     */
+    private $userRepository;
+
+    /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(UserRepository $userRepository)
     {
+        $this->userRepository = $userRepository;
         $this->middleware('guest');
     }
 
@@ -71,6 +80,8 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'token' => $this->userRepository->createToken(),
+            'active' => 1,
         ]);
     }
 }
