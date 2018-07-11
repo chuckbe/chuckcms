@@ -14,5 +14,17 @@
 	</div>
 @endforeach
 
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+	<input type="hidden" value="{{ csrf_token() }}" name="_token">
+	<input type="hidden" value="{{ $form->slug }}" name="_form_slug">
 	<button type="submit" class="{{ $form->form['button']['class'] }}" id="{{ $form->form['button']['id'] }}">{{ $form->form['button']['label'] }}</button>
 </form>

@@ -8,7 +8,7 @@
 <form action="{{ route('dashboard.forms.save') }}" method="POST">
 <div class="card card-transparent">
   <div class="card-header ">
-    <div class="card-title">Maak een nieuw formulier
+    <div class="card-title">Bewerk formulier
     </div>
   </div>
   <div class="card-block">
@@ -37,17 +37,18 @@
                 <div class="col-lg-12">
                       <div class="form-group form-group-default required ">
                         <label>Titel</label>
-                        <input type="text" class="form-control" placeholder="Titel" id="form_title" name="form_title"  required>
+                        <input type="text" class="form-control" placeholder="Titel" id="form_title" name="form_title" value="{{ $form->title }}" required>
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Slug</label>
-                        <input type="text" class="form-control" placeholder="Slug" id="form_slug" name="form_slug" required>
+                        <input type="text" class="form-control" placeholder="Slug" id="form_slug" name="form_slug" value="{{ $form->slug }}" required disabled>
+                        <input type="hidden" class="form-control" placeholder="Slug" id="form_slug" name="form_slug" value="{{ $form->slug }}" required>
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Bestanden toegestaan</label>
                         <select class="full-width" data-init-plugin="select2" name="files_allowed" data-minimum-results-for-search="-1">
-            							<option value="true">Ja</option>
-            							<option value="false" selected>Nee</option>
+            							<option value="true" @if($form->form['files'] == 'true') selected @endif>Ja</option>
+            							<option value="false" @if($form->form['files'] !== 'true') selected @endif>Nee</option>
             						</select>
                       </div>
                 </div>
@@ -55,25 +56,26 @@
             </div>
 
             <div class="tab-pane fade" id="ffields">
-              <div class="row">
+              @foreach($form->form['fields'] as $fKey => $fValue)
+              <div class="row field-input-group">
                 <div class="col-lg-12">
                   <div class="row">
                     <div class="col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Slug</label>
-                        <input type="text" class="form-control" placeholder="Veld Slug" id="fields_slug" name="fields_slug[]" required>
+                        <input type="text" class="form-control" placeholder="Veld Slug" id="fields_slug" name="fields_slug[]" value="{{ str_replace($form->slug . '_', '', $fKey) }}" required>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Label</label>
-                        <input type="text" class="form-control" placeholder="Veld Label" id="fields_label" name="fields_label[]" required>
+                        <input type="text" class="form-control" placeholder="Veld Label" id="fields_label" name="fields_label[]" value="{{ $fValue['label'] }}" required>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Type</label>
-                        <input type="text" class="form-control" placeholder="Veld Type" id="fields_type" name="fields_type[]" required>
+                        <input type="text" class="form-control" placeholder="Veld Type" id="fields_type" name="fields_type[]" value="{{ $fValue['type'] }}" required>
                       </div>
                     </div>
                   </div>
@@ -81,13 +83,13 @@
                     <div class="col-md-6">
                       <div class="form-group form-group-default required ">
                         <label>Veld Class</label>
-                        <input type="text" class="form-control" placeholder="Veld Class" id="fields_class" name="fields_class[]" required>
+                        <input type="text" class="form-control" placeholder="Veld Class" id="fields_class" name="fields_class[]" value="{{ $fValue['class'] }}" required>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group form-group-default required ">
                         <label>Veld Placeholder</label>
-                        <input type="text" class="form-control" placeholder="Veld Placeholder" id="fields_placeholder" name="fields_placeholder[]" required>
+                        <input type="text" class="form-control" placeholder="Veld Placeholder" id="fields_placeholder" name="fields_placeholder[]" value="{{ $fValue['placeholder'] }}" required>
                       </div>
                     </div>
                   </div>
@@ -95,13 +97,13 @@
                     <div class="col-md-6">
                       <div class="form-group form-group-default required ">
                         <label>Veld Validatie</label>
-                        <input type="text" class="form-control" placeholder="Veld validatie" id="fields_validation" name="fields_validation[]" required>
+                        <input type="text" class="form-control" placeholder="Veld validatie" id="fields_validation" name="fields_validation[]" value="{{ $fValue['validation'] }}" required>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group form-group-default required ">
                         <label>Veld Waarde</label>
-                        <input type="text" class="form-control" placeholder="waarde van veld" id="fields_value" name="fields_value[]" required>
+                        <input type="text" class="form-control" placeholder="waarde van veld" id="fields_value" name="fields_value[]" value="{{ $fValue['value'] ? $fValue['value'] : ' ' }}" required>
                       </div>
                     </div>
                   </div>
@@ -109,13 +111,13 @@
                     <div class="col-sm-6">
                       <div class="form-group form-group-default required">
                         <label>Veld Attribute Naam</label>
-                        <input type="text" class="form-control" placeholder="Veld Attribute Naam" id="fields_attributes_name" name="fields_attributes_name[]" required>
+                        <input type="text" class="form-control" placeholder="Veld Attribute Naam" id="fields_attributes_name" name="fields_attributes_name[]" value="@foreach($fValue['attributes'] as $attrKey => $attrValue){{$attrKey}}@if($loop->iteration > 1);@endif @endforeach" required>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group form-group-default required">
                         <label>Veld Attribute Waarde</label>
-                        <input type="text" class="form-control" placeholder="Veld Attribute Waarde" id="fields_attributes_value" name="fields_attributes_value[]" required>
+                        <input type="text" class="form-control" placeholder="Veld Attribute Waarde" id="fields_attributes_value" name="fields_attributes_value[]" value="@foreach($fValue['attributes'] as $attrKey => $attrValue){{$attrValue}}@if($loop->iteration > 1);@endif @endforeach" required>
                       </div>
                     </div>{{-- 
                     <div class="col-md-2">
@@ -127,12 +129,14 @@
                   <div class="form-group form-group-default">
                     <label>Verplicht veld</label>
                     <select class="full-width" data-init-plugin="select2" name="fields_required[]" data-minimum-results-for-search="-1">
-                      <option value="true">Ja</option>
-                      <option value="false" selected>Nee</option>
+                      <option value="true" @if($fValue['required'] == 'true') selected @endif>Ja</option>
+                      <option value="false" @if($fValue['required'] !== 'true') selected @endif>Nee</option>
                     </select>
                   </div>
                 </div>
               </div>
+              <hr>
+              @endforeach
               <div class="row">
                 <div class="col-lg-12">
                   <button class="btn btn-primary btn-lg" id="add_extra_field_btn"><i class="fa fa-plus"></i> Extra veld toevoegen</button>
@@ -146,8 +150,8 @@
                       <div class="form-group form-group-default required ">
                         <label>Submissies opslaan in databank</label>
                         <select class="full-width" data-init-plugin="select2" name="action_store" data-minimum-results-for-search="-1">
-                          <option value="true" selected>Ja</option>
-                          <option value="false">Nee</option>
+                          <option value="true" @if($form->form['actions']['store'] == 'true') selected @endif>Ja</option>
+                          <option value="false" @if($form->form['actions']['store'] !== 'true') selected @endif>Nee</option>
                         </select>
                       </div>
                 </div>
@@ -158,46 +162,49 @@
                       <div class="form-group form-group-default">
                         <label>Submissies verzenden</label>
                         <select class="full-width" data-init-plugin="select2" name="action_send" data-minimum-results-for-search="-1">
-                          <option value="true" selected>Ja</option>
-                          <option value="false">Nee</option>
+                          <option value="true" @if($form->form['actions']['send'] !== 'false') selected @endif>Ja</option>
+                          <option value="false" @if($form->form['actions']['send'] == 'false') selected @endif>Nee</option>
                         </select>
                       </div>
 
+                      @foreach($form->form['actions']['send'] as $sendKey => $sendValue)
                       <div class="form-group form-group-default required ">
                         <label>Slug</label>
-                        <input type="text" class="form-control" placeholder="slug" id="action_send_slug" name="action_send_slug[]" required>
+                        <input type="text" class="form-control" placeholder="slug" id="action_send_slug" name="action_send_slug[]" value="{{ $sendKey }}" required>
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>E-mailadres geaddresseerde</label>
-                        <input type="text" class="form-control" placeholder="E-mailadres Geaddresseerde" id="action_send_to" name="action_send_to[]" required>
+                        <input type="text" class="form-control" placeholder="E-mailadres Geaddresseerde" id="action_send_to" name="action_send_to[]" value="{{ $sendValue['to'] }}" required>
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Naam geaddresseerde</label>
-                        <input type="text" class="form-control" placeholder="Naam Geaddresseerde" id="action_send_to_name" name="action_send_to_name[]" required>
+                        <input type="text" class="form-control" placeholder="Naam Geaddresseerde" id="action_send_to_name" name="action_send_to_name[]" value="{{ $sendValue['to_name'] }}" required>
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>E-mailadres afzender</label>
-                        <input type="text" class="form-control" placeholder="E-mailadres Afzender" id="action_send_from" name="action_send_from[]" required>
+                        <input type="text" class="form-control" placeholder="E-mailadres Afzender" id="action_send_from" name="action_send_from[]" value="{{ $sendValue['from'] }}" required>
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Naam afzender</label>
-                        <input type="text" class="form-control" placeholder="Naam Afzender" id="action_send_from_name" name="action_send_from_name[]" required>
+                        <input type="text" class="form-control" placeholder="Naam Afzender" id="action_send_from_name" name="action_send_from_name[]" value="{{ $sendValue['from_name'] }}" required>
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Onderwerp</label>
-                        <input type="text" class="form-control" placeholder="Onderwerp" id="action_send_subject" name="action_send_subject[]" required>
+                        <input type="text" class="form-control" placeholder="Onderwerp" id="action_send_subject" name="action_send_subject[]" value="{{ $sendValue['subject'] }}" required>
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Body</label>
-                        <textarea id="meta_keywords" name="action_send_body[]" placeholder="Hier gaat je bericht in" style="min-height:210px!important;" class="form-control" required></textarea>
+                        <textarea id="meta_keywords" name="action_send_body[]" placeholder="Hier gaat je bericht in" style="min-height:210px!important;" class="form-control" required>{{ $sendValue['body'] }}</textarea>
                       </div>
                       <div class="form-group form-group-default">
                         <label>Bestanden verzenden</label>
                         <select class="full-width" data-init-plugin="select2" name="action_send_files[]" data-minimum-results-for-search="-1">
-                          <option value="true">Ja</option>
-                          <option value="false" selected>Nee</option>
+                          <option value="true" @if($sendValue['files'] == 'true') selected @endif>Ja</option>
+                          <option value="false" @if($sendValue['files'] !== 'true') selected @endif>Nee</option>
                         </select>
                       </div>
+                      <hr>
+                      @endforeach
                 </div>
               </div>
 
@@ -205,7 +212,7 @@
                 <div class="col-lg-12">
                       <div class="form-group form-group-default required ">
                         <label>Doorsturen naar (URL)</label>
-                        <input type="text" class="form-control" placeholder="Hyperlink om naar door te sturen" id="action_redirect" name="action_redirect" required>
+                        <input type="text" class="form-control" placeholder="Hyperlink om naar door te sturen" id="action_redirect" name="action_redirect" value="{{ $form->form['actions']['redirect'] }}" required>
                       </div>
                 </div>
               </div>
@@ -217,15 +224,15 @@
                 <div class="col-lg-12">
                       <div class="form-group form-group-default required ">
                         <label>Label</label>
-                        <input type="text" class="form-control" placeholder="Label bv. Verzenden" id="button_label" name="button_label" required>
+                        <input type="text" class="form-control" placeholder="Label bv. Verzenden" id="button_label" name="button_label" value="{{ $form->form['button']['label'] }}" required>
                       </div>
                       <div class="form-group form-group-default">
                         <label>Class</label>
-                        <input type="text" class="form-control" placeholder="Class" id="button_class" name="button_class">
+                        <input type="text" class="form-control" placeholder="Class" id="button_class" name="button_class" value="{{ $form->form['button']['class'] }}">
                       </div>
                       <div class="form-group form-group-default">
                         <label>ID</label>
-                        <input type="text" class="form-control" placeholder="ID" id="button_id" name="button_id">
+                        <input type="text" class="form-control" placeholder="ID" id="button_id" name="button_id" value="{{ $form->form['button']['id'] }}">
                       </div>
                 </div>
               </div>
@@ -234,6 +241,7 @@
           <br>
           <p class="pull-right">
             <input type="hidden" name="_token" value="{{ Session::token() }}">
+            <input type="hidden" name="form_id" value="{{ $form->id }}">
             <button type="submit" name="create" class="btn btn-success btn-cons pull-right" value="1">Opslaan</button>
             <a type="button" href="{{ route('dashboard.pages') }}" class="btn btn-default btn-cons pull-right">Annuleren</a>
           </p>

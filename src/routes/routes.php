@@ -53,6 +53,10 @@ Route::group(['middleware' => ['web']], function() {
 	// Dashboard Forms Routes...
 		Route::get('/dashboard/forms', 'Chuckbe\Chuckcms\Controllers\FormController@index')->name('dashboard.forms');
 		Route::get('/dashboard/forms/create', 'Chuckbe\Chuckcms\Controllers\FormController@create')->name('dashboard.forms.create');
+		Route::get('/dashboard/forms/{slug}/edit', 'Chuckbe\Chuckcms\Controllers\FormController@edit')->name('dashboard.forms.edit');
+		Route::get('/dashboard/forms/{slug}/entries', 'Chuckbe\Chuckcms\Controllers\FormController@entries')->name('dashboard.forms.entries');
+		Route::get('/dashboard/forms/{slug}/delete', 'Chuckbe\Chuckcms\Controllers\FormController@delete')->name('dashboard.forms.delete');
+		Route::post('/dashboard/forms/save', 'Chuckbe\Chuckcms\Controllers\FormController@save')->name('dashboard.forms.save');
 	
 	// Dashboard Users Routes...
 		Route::get('/dashboard/users', 'Chuckbe\Chuckcms\Controllers\DashboardController@users')->name('dashboard.users');
@@ -70,7 +74,7 @@ Route::group(['middleware' => ['web']], function() {
 Route::group(
     [
         'prefix' => LaravelLocalization::setLocale(),
-        'middleware' => [ 'Mcamara\LaravelLocalization\Middleware\localeSessionRedirect', 'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter', 'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath' ]
+        'middleware' => [ 'Mcamara\LaravelLocalization\Middleware\localeSessionRedirect', 'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter', 'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath', 'web' ]
     ],
     function()
     {
@@ -78,6 +82,7 @@ Route::group(
 		Route::get('/{slug?}', 'Chuckbe\Chuckcms\Controllers\PageController@index')->where('slug', '(.*)')->name('page');
 
 });
+
 
 
 

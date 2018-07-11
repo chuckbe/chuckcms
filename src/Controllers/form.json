@@ -1,0 +1,73 @@
+{"fields":{
+	"contact_name":{
+		"label":"Naam",
+		"type":"text",
+		"class":"form-control",
+		"placeholder":"Jouw naam",
+		"validation":"required|min:3",
+		"value":"",
+		"attributes":{"minlength":"3"},
+		"required":"true"
+		},
+	"contact_subject":{
+		"label":"Onderwerp",
+		"type":"text",
+		"class":"form-control",
+		"placeholder":"Onderwerp",
+		"validation":"required|min:3",
+		"value":"",
+		"attributes":{"minlength":"3"},
+		"required":"true"
+		},
+	"contact_email":{
+		"label":"E-mailadres",
+		"type":"email",
+		"class":"form-control",
+		"placeholder":"naam@domein.com",
+		"validation":"required|email",
+		"value":"",
+		"attributes":{"minlength":"3"},
+		"required":"true"
+		},
+	"contact_message":{
+		"label":"Bericht",
+		"type":"textarea",
+		"class":"form-control",
+		"placeholder":"Jouw bericht",
+		"validation":"required|max:1000",
+		"value":"",
+		"attributes":{"rows":"10"},
+		"required":"true"
+		}
+	},
+"actions":{
+	"store":"true",
+	"send":{
+		"admin":{
+			"to":"siteowner@chuck.be",
+			"to_name":"ChuckCMS baas",
+			"from":"[contact_email]",
+			"from_name":"[contact_name]",
+			"subject":"Contactformulier aanvraag",
+			"body":"Dit is de aanvraag:: [contact_message]",
+			"files":"false"
+			},
+		"submission":{
+			"to":"[contact_email]",
+			"to_name":"[contact_name]",
+			"from":"siteowner@chuck.be",
+			"from_name":"ChuckCms",
+			"subject":"Contactformulier aanvraag kopie",
+			"body":"Kopie van uw aanvraag:: [contact_message]",
+			"files":"false"
+			}
+		},
+	"redirect":"https://chuck.be"
+	},
+"files":"true",
+"button":{
+	"class":"btn btn-primary",
+	"label":"Verzenden",
+	"id":"contact_form_submit_button"
+	}
+}

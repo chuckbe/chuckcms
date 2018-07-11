@@ -12,6 +12,7 @@ use Chuckbe\Chuckcms\Models\Repeater;
 use App\Http\Requests;
 
 use View;
+use Session;
 
 class PageBlockRepository
 {
@@ -147,9 +148,7 @@ class PageBlockRepository
     {
         $slug = $form_slug;        
         $form = Form::where('slug', $slug)->first();
-
         $render = View::make('chuckcms::backend.forms.render', ['form' => $form])->render();
-        
         $html = str_replace('[FORM=' . $slug . ']', $render, $page_block_body);
         
         return $html;

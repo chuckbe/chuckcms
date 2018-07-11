@@ -41,6 +41,16 @@ class PermissionRolesTableSeeder extends Seeder
         Permission::create(['name' => 'create templates']);
         Permission::create(['name' => 'edit templates']);
         Permission::create(['name' => 'delete templates']);
+        // forms
+        Permission::create(['name' => 'show forms']);
+        Permission::create(['name' => 'create forms']);
+        Permission::create(['name' => 'edit forms']);
+        Permission::create(['name' => 'delete forms']);
+        // form entries
+        Permission::create(['name' => 'show formentries']);
+        Permission::create(['name' => 'create formentries']);
+        Permission::create(['name' => 'edit formentries']);
+        Permission::create(['name' => 'delete formentries']);
         // media
         Permission::create(['name' => 'show media']);
         Permission::create(['name' => 'create media']);
@@ -71,6 +81,10 @@ class PermissionRolesTableSeeder extends Seeder
 
         	'show templates',
 
+            'show forms',
+
+            'show formentries',
+
         	'show media',
 
         	'show users',
@@ -97,6 +111,12 @@ class PermissionRolesTableSeeder extends Seeder
         	'show templates',
         	'create templates',
         	'edit templates',
+
+            'show forms',
+            'create forms',
+            'edit forms',
+
+            'show formentries',
 
         	'show media',
         	'create media',
@@ -134,6 +154,16 @@ class PermissionRolesTableSeeder extends Seeder
         	'create templates',
         	'edit templates',
         	'delete templates',
+
+            'show forms',
+            'create forms',
+            'edit forms',
+            'delete forms',
+
+            'show formentries',
+            'create formentries',
+            'edit formentries',
+            'delete formentries',
 
         	'show media',
         	'create media',

@@ -3,21 +3,28 @@
 namespace Chuckbe\Chuckcms\Controllers;
 
 use Chuckbe\Chuckcms\Models\Form;
+use Chuckbe\Chuckcms\Models\FormEntry;
+use Chuckbe\Chuckcms\Mail\FormActionMail;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use Mail;
+
 class FormController extends Controller
 {
     private $form;
+    private $formEntry;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Form $form)
+    public function __construct(Form $form, FormEntry $formEntry)
     {
         $this->form = $form;
+        $this->formEntry = $formEntry;
     }
 
     public function index()
@@ -32,17 +39,110 @@ class FormController extends Controller
         return view('chuckcms::backend.forms.create');
     }
 
+    public function edit($slug)
+    {
+        $form = $this->form->getBySlug($slug);
+        return view('chuckcms::backend.forms.edit', compact('form'));
+    }
+
     public function save(Request $request)
     {
-        $forms = $this->form->get();
+        $form = [];
+        $form_slug = $request->get('form_slug');
+        $fields_slug = $request->get('fields_slug');
+
+        for ($i=0; $i < count($fields_slug); $i++) { 
+            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['label'] = $request->get('fields_label')[$i];
+            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['type'] = $request->get('fields_type')[$i];
+            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['class'] = $request->get('fields_class')[$i];
+            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['placeholder'] = $request->get('fields_placeholder')[$i];
+            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['validation'] = $request->get('fields_validation')[$i];
+            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['value'] = $request->get('fields_value')[$i];
+
+            for ($k=0; $k < count(explode(';',$request->get('fields_attributes_name')[$i])); $k++) { 
+                $form['fields'][$form_slug . '_' . $fields_slug[$i]]['attributes'][explode(';',$request->get('fields_attributes_name')[$i])[$k]] = explode(';',$request->get('fields_attributes_value')[$i])[$k];
+            }
+            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['required'] = $request->get('fields_required')[$i];
+        }
+
+        $form['actions']['store'] = $request->get('action_store');
+        if($request->get('action_send') == true) {
+            for ($g=0; $g < count($request->get('action_send_slug')); $g++) { 
+                $form['actions']['send'][$request->get('action_send_slug')[$g]]['to'] = $request->get('action_send_to')[$g];
+                $form['actions']['send'][$request->get('action_send_slug')[$g]]['to_name'] = $request->get('action_send_to_name')[$g];
+                $form['actions']['send'][$request->get('action_send_slug')[$g]]['from'] = $request->get('action_send_from')[$g];
+                $form['actions']['send'][$request->get('action_send_slug')[$g]]['from_name'] = $request->get('action_send_from_name')[$g];
+                $form['actions']['send'][$request->get('action_send_slug')[$g]]['subject'] = $request->get('action_send_subject')[$g];
+                $form['actions']['send'][$request->get('action_send_slug')[$g]]['body'] = $request->get('action_send_body')[$g];
+                $form['actions']['send'][$request->get('action_send_slug')[$g]]['files'] = $request->get('action_send_files')[$g];
+            }
+
+        }
+        $form['actions']['redirect'] = $request->get('action_redirect');
+
+        $form['files'] = $request->get('files_allowed');
+
+        $form['button']['class'] = $request->get('button_class');
+        $form['button']['label'] = $request->get('button_label');
+        $form['button']['id'] = $request->get('button_id');
+
+        // updateOrCreate the site
+        $result = Form::updateOrCreate(
+            ['id' => $request->get('form_id')],
+            ['title' => $request->get('form_title'),
+            'slug' => $request->get('form_slug'),
+            'form' => $form]
+        );
         
-        return view('chuckcms::backend.forms.index', compact('forms'));
+        return redirect()->route('dashboard.forms');
     }
 
     public function postForm(Request $request)
     {
-        $forms = $this->form->get();
+        $slug = $request->get('_form_slug');
+        $form = $this->form->getBySlug($slug);
+        $rules = $form->getRules();
+        $this->validate(request(), $rules);
+        $store = $form->storeEntry($request);
+        if($store == 'success'){
+            //send emails 
+            //here
+            foreach($form->form['actions']['send'] as $sendKey => $sendValue){
+                $mailData = $form->getMailData($sendValue, $request);
+                Mail::send(new FormActionMail($mailData));
+            }
+            return redirect()->to($form->form['actions']['redirect']);
+        }else {
+            // error catching ... ?
+        }
         
         return view('chuckcms::backend.forms.index', compact('forms'));
+    }
+
+    /**
+     * Delete the form.
+     *
+     * @param  $slug
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($slug)
+    {
+        // AUTHORIZE ... COMES HERE
+        $status = $this->form->deleteBySlug($slug);
+        return $status;
+    }
+
+    /**
+     * Show the form entries.
+     *
+     * @param  $slug
+     * @return \Illuminate\Http\Response
+     */
+    public function entries($slug)
+    {
+        // AUTHORIZE ... COMES HERE
+        $form = $this->form->getBySlug($slug);
+        $entries = $this->formEntry->getBySlug($slug);
+        return view('chuckcms::backend.forms.entries', compact('form', 'entries'));
     }
 }
