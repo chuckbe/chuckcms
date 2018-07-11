@@ -4,7 +4,7 @@ namespace Chuckbe\Chuckcms\Models;
 
 use Eloquent;
 
-class FormEntry extends Eloquent
+class Content extends Eloquent
 {
 	/**
      * The attributes that are mass assignable.
@@ -12,20 +12,15 @@ class FormEntry extends Eloquent
      * @var array
      */
     protected $fillable = [
-        'slug', 'entry'
+        'slug', 'type', 'content'
     ];
 
     protected $casts = [
-        'entry' => 'array',
+        'content' => 'array',
     ];
 
     public function getBySlug($slug)
     {
         return $this->where('slug', $slug)->get();
-    }
-
-    public function getById($id)
-    {
-        return $this->where('id', $id)->first();
     }
 }

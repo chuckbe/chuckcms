@@ -44,13 +44,23 @@
           </li>
 
           <li class="">
-            <a href="{{ route('dashboard.settings') }}"><span class="title">Content</span></a>
+            <a href="javascript:;"><span class="title">Content</span>
+            <span class=" arrow"></span></a>
             <span class="icon-thumbnail"><i data-feather="box"></i></span>
-          </li>
-
-          <li class="">
-            <a href="{{ route('unisharp.lfm.show') }}"><span class="title">Media</span></a>
-            <span class="icon-thumbnail"><i data-feather="airplay"></i></span>
+            <ul class="sub-menu">
+              <li class="">
+                <a href="{{ route('unisharp.lfm.show') }}">Media</a>
+                <span class="icon-thumbnail"><i data-feather="airplay"></i></span>
+              </li>
+              <li class="">
+                <a href="{{ route('dashboard.content.resources') }}">Resources</a>
+                <span class="icon-thumbnail">re</span>
+              </li>
+              <li class="">
+                <a href="{{ route('dashboard.content.repeaters') }}">Repeaters</a>
+                <span class="icon-thumbnail">rp</span>
+              </li>
+            </ul>
           </li>
 
           <li class="">

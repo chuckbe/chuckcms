@@ -1,7 +1,7 @@
 @extends('chuckcms::backend.layouts.admin')
 
 @section('title')
-	Formulier Ingaves
+	Formulier '{{ $form->slug }}' Ingave #{{ $entry->id}}
 @endsection
 
 @section('css')
@@ -41,22 +41,16 @@
 						<thead>
 							<tr>
 								<th style="width:5%">ID</th>
-								<th style="width:60%">Slug</th>
-								<th style="width:35%">Actions</th>
+								<th style="width:35%">Veld</th>
+								<th style="width:60%">Waarde</th>
 							</tr>
 						</thead>
 							<tbody>
-								@foreach($entries as $entry)
+								@foreach($entry->entry as $entryKey => $entryValue)
 								<tr>
-									<td class="v-align-middle">{{ $entry->id }}</td>
-							    	<td class="v-align-middle semi-bold">{{ $form->slug }}</td>
-							    	<td class="v-align-middle semi-bold">
-							    		@can('show formentries')
-							    		<a href="{{ route('dashboard.forms.entry', ['slug' => $form->slug, 'id' => $entry->id]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
-							    			<i data-feather="edit-2"></i> bekijken
-							    		</a>
-							    		@endcan
-							    	</td>
+									<td class="v-align-middle">{{ $loop->iteration }}</td>
+									<td class="v-align-middle">{{ $entryKey }}</td>
+							    	<td class="v-align-middle semi-bold">{{ $entryValue }}</td>
 							  	</tr>
 							  	@endforeach
 							</tbody>

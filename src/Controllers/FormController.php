@@ -145,4 +145,19 @@ class FormController extends Controller
         $entries = $this->formEntry->getBySlug($slug);
         return view('chuckcms::backend.forms.entries', compact('form', 'entries'));
     }
+
+    /**
+     * Show the form entry.
+     *
+     * @param  $slug
+     * @param  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function entry($slug, $id)
+    {
+        // AUTHORIZE ... COMES HERE
+        $form = $this->form->getBySlug($slug);
+        $entry = $this->formEntry->getById($id);
+        return view('chuckcms::backend.forms.entries.index', compact('form', 'entry'));
+    }
 }

@@ -138,8 +138,11 @@
               <hr>
               @endforeach
               <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                   <button class="btn btn-primary btn-lg" id="add_extra_field_btn"><i class="fa fa-plus"></i> Extra veld toevoegen</button>
+                </div>
+                <div class="col-lg-6">
+                  <button class="btn btn-warning btn-lg" id="remove_last_field_btn" @if(count($form->form['fields']) == 1) style="display:none;" @endif><i class="fa fa-minus"></i> Laatste veld verwijderen</button>
                 </div>
               </div>
             </div>
@@ -154,11 +157,7 @@
                           <option value="false" @if($form->form['actions']['store'] !== 'true') selected @endif>Nee</option>
                         </select>
                       </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-lg-12">
+                      <hr>
                       <div class="form-group form-group-default">
                         <label>Submissies verzenden</label>
                         <select class="full-width" data-init-plugin="select2" name="action_send" data-minimum-results-for-search="-1">
@@ -166,27 +165,45 @@
                           <option value="false" @if($form->form['actions']['send'] == 'false') selected @endif>Nee</option>
                         </select>
                       </div>
+                      <hr>
+                </div>
+              </div>
 
-                      @foreach($form->form['actions']['send'] as $sendKey => $sendValue)
+              <div class="submissions_container_wrapper" @if($form->form['actions']['send'] == 'false') style="display:none;" @endif>
+                @foreach($form->form['actions']['send'] as $sendKey => $sendValue)
+                <div class="row submissions_container_row">
+                  <div class="col-lg-12">
                       <div class="form-group form-group-default required ">
                         <label>Slug</label>
                         <input type="text" class="form-control" placeholder="slug" id="action_send_slug" name="action_send_slug[]" value="{{ $sendKey }}" required>
                       </div>
-                      <div class="form-group form-group-default required ">
-                        <label>E-mailadres geaddresseerde</label>
-                        <input type="text" class="form-control" placeholder="E-mailadres Geaddresseerde" id="action_send_to" name="action_send_to[]" value="{{ $sendValue['to'] }}" required>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group form-group-default required ">
+                            <label>E-mailadres geaddresseerde</label>
+                            <input type="text" class="form-control" placeholder="E-mailadres Geaddresseerde" id="action_send_to" name="action_send_to[]" value="{{ $sendValue['to'] }}" required>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group form-group-default required ">
+                            <label>Naam geaddresseerde</label>
+                            <input type="text" class="form-control" placeholder="Naam Geaddresseerde" id="action_send_to_name" name="action_send_to_name[]" value="{{ $sendValue['to_name'] }}" required>
+                          </div>
+                        </div>
                       </div>
-                      <div class="form-group form-group-default required ">
-                        <label>Naam geaddresseerde</label>
-                        <input type="text" class="form-control" placeholder="Naam Geaddresseerde" id="action_send_to_name" name="action_send_to_name[]" value="{{ $sendValue['to_name'] }}" required>
-                      </div>
-                      <div class="form-group form-group-default required ">
-                        <label>E-mailadres afzender</label>
-                        <input type="text" class="form-control" placeholder="E-mailadres Afzender" id="action_send_from" name="action_send_from[]" value="{{ $sendValue['from'] }}" required>
-                      </div>
-                      <div class="form-group form-group-default required ">
-                        <label>Naam afzender</label>
-                        <input type="text" class="form-control" placeholder="Naam Afzender" id="action_send_from_name" name="action_send_from_name[]" value="{{ $sendValue['from_name'] }}" required>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group form-group-default required ">
+                            <label>E-mailadres afzender</label>
+                            <input type="text" class="form-control" placeholder="E-mailadres Afzender" id="action_send_from" name="action_send_from[]" value="{{ $sendValue['from'] }}" required>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group form-group-default required ">
+                            <label>Naam afzender</label>
+                            <input type="text" class="form-control" placeholder="Naam Afzender" id="action_send_from_name" name="action_send_from_name[]" value="{{ $sendValue['from_name'] }}" required>
+                          </div>
+                        </div>
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Onderwerp</label>
@@ -204,9 +221,21 @@
                         </select>
                       </div>
                       <hr>
-                      @endforeach
+                  </div>
+                </div>
+                @endforeach
+              </div>
+
+              <div class="row">
+                <div class="col-lg-6">
+                  <button class="btn btn-primary btn-lg" id="add_extra_action_btn" @if($form->form['actions']['send'] == 'false') style="display:none;" @endif><i class="fa fa-plus"></i> Extra actie toevoegen</button>
+                </div>
+                <div class="col-lg-6">
+                  <button class="btn btn-warning btn-lg" id="remove_last_action_btn" @if(count($form->form['actions']['send']) == 1) style="display:none;" @endif><i class="fa fa-minus"></i> Laatste actie verwijderen</button>
                 </div>
               </div>
+
+              <hr>
 
               <div class="row">
                 <div class="col-lg-12">
@@ -272,6 +301,55 @@
 			    $("#page_slug").val(slug_text);
           $("#page_slug_hidden").val(slug_text);    
 			});
+
+      $('#add_extra_field_btn').click(function(){
+        $('.field_row_container:first').clone().appendTo('.field_container_wrapper');
+        if($('.field_row_container').length > 1){
+          $('#remove_last_field_btn').show();
+        }
+      });
+
+      $('#remove_last_field_btn').click(function(){
+        if($('.field_row_container').length > 1){
+          $('.field_row_container:last').remove();
+          if($('.field_row_container').length == 1){
+            $('#remove_last_field_btn').hide();
+          }
+        }
+      });
+
+      $('select[name=action_send]').change(function(){
+        if($('select[name=action_send]').val() == 'true'){
+          $('.submissions_container_wrapper').show();
+          $('#add_extra_action_btn').show();
+          if($('.submissions_container_row').length > 1){
+            $('#remove_last_action_btn').show();
+          }
+        }
+
+        if($('select[name=action_send]').val() == 'false'){
+          $('.submissions_container_wrapper').hide();
+          $('#add_extra_action_btn').hide();
+          $('#remove_last_action_btn').hide();
+        }
+      });
+      
+
+      $('#add_extra_action_btn').click(function(){
+        $('.submissions_container_row:first').clone().appendTo('.submissions_container_wrapper');
+        if($('.submissions_container_row').length > 1){
+          $('#remove_last_action_btn').show();
+        }
+      });
+
+      $('#remove_last_action_btn').click(function(){
+        if($('.submissions_container_row').length > 1){
+          $('.submissions_container_row:last').remove();
+          if($('.submissions_container_row').length == 1){
+            $('#remove_last_action_btn').hide();
+          }
+        }
+      });
 
 		});
 	</script>
