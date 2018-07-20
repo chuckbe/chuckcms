@@ -5,8 +5,8 @@
 @endsection
 
 @section('add_record')
-	@can('create pages')
-	<a href="{{ route('dashboard.content.resources.create') }}" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuwe Template Toe</a>
+	@can('create templates')
+	{{-- <a href="{{ route('dashboard.content.resources.create') }}" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuwe Template Toe</a> --}}
 	@endcan
 @endsection
 
@@ -77,14 +77,14 @@
 							    	<td class="v-align-middle">(v{{ $tmp->version }})</td>
 							    	<td class="v-align-middle semi-bold">
 							    		@can('edit templates')
-							    		<a href="{{ route('dashboard.content.resources.edit', ['slug' => $tmp->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    		{{-- <a href="{{ route('dashboard.content.resources.edit', ['slug' => $tmp->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
 							    			<i data-feather="edit-2"></i> edit
-							    		</a>
+							    		</a> --}}
 							    		@endcan
 							    		@can('delete templates')
-							    		<a href="{{ route('dashboard.forms.delete', ['slug' => $tmp->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    		{{-- <a href="{{ route('dashboard.forms.delete', ['slug' => $tmp->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
 							    			<i data-feather="trash"></i> delete
-							    		</a>
+							    		</a> --}}
 							    		@endcan
 							    	</td>
 							  	</tr>
