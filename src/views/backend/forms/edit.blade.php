@@ -272,7 +272,7 @@
             <input type="hidden" name="_token" value="{{ Session::token() }}">
             <input type="hidden" name="form_id" value="{{ $form->id }}">
             <button type="submit" name="create" class="btn btn-success btn-cons pull-right" value="1">Opslaan</button>
-            <a type="button" href="{{ route('dashboard.pages') }}" class="btn btn-default btn-cons pull-right">Annuleren</a>
+            <a href="{{ route('dashboard.forms') }}" class="pull-right"><button type="button" class="btn btn-info btn-cons">Annuleren</button></a>
           </p>
         </div>
       </div>

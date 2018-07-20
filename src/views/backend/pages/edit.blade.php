@@ -84,7 +84,7 @@
             <input type="hidden" name="page_id" value="{{ $page->id }}">
             <input type="hidden" name="_token" value="{{ Session::token() }}">
             <button type="submit" name="update" class="btn btn-success btn-cons pull-right" value="1">Opslaan</button>
-            <a type="button" href="{{ route('dashboard.pages') }}" class="btn btn-default btn-cons pull-right">Annuleren</a>
+            <a href="{{ route('dashboard.pages') }}" class="pull-right"><button type="button" class="btn btn-info btn-cons">Annuleren</button></a>
           </p>
         </div>
       </div>
