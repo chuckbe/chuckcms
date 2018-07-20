@@ -23,6 +23,7 @@ class CreateTemplatesTable extends Migration
             $table->longText('fonts');
             $table->longText('css');
             $table->longText('js');
+            $table->longText('json');
             $table->integer('active');
             $table->timestamps();
         });
