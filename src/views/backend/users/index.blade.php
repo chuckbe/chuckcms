@@ -43,10 +43,16 @@
 						<a class="reload" href="javascript:;"></a>
 						<a class="remove" href="javascript:;"></a>
 					</div>
+				    <div class="pull-right">
+				    	<div class="col-xs-12">
+				    		<input type="text" id="search-table" class="form-control pull-right" placeholder="Search">
+				    	</div>
+				    </div>
+				    <div class="clearfix"></div>
 				</div>
 				<div class="card-block">
 					<div class="table-responsive">
-						<table class="table table-hover table-condensed" id="condensedTable">
+						<table class="table table-hover table-condensed" id="condensedTable" data-table-count="10">
 						<thead>
 							<tr>
 								<th style="width:10%">ID</th>

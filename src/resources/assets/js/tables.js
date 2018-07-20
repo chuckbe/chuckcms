@@ -113,15 +113,29 @@
     // if they exceed the cell width
     var initCondensedTable = function() {
         var table = $('#condensedTable');
+        var tableCount = $('#condensedTable').attr('data-table-count');
+        
+        if(tableCount == undefined){
+            tableCount = 5;
+        }
 
         var settings = {
-            "sDom": "t",
+            "sDom": "<t><'row'<p i>>",
             "destroy": true,
-            "paging": false,
-            "scrollCollapse": true
+            "scrollCollapse": true,
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ ",
+                "sInfo": "Showing <b>_START_ to _END_</b> of _TOTAL_ entries"
+            },
+            "iDisplayLength": Number(tableCount)
         };
 
         table.dataTable(settings);
+
+        // search box for table
+        $('#search-table').keyup(function() {
+            table.fnFilter($(this).val());
+        });
     }
 
     initBasicTable();
