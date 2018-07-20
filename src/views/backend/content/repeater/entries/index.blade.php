@@ -6,7 +6,7 @@
 
 @section('add_record')
 	@can('create pages')
-	<a href="{{ route('dashboard.content.repeaters.create') }}" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuwe --- Toe</a>
+	<a href="{{ route('dashboard.content.repeaters.create') }}" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuwe {{ $content->slug }} Toe</a>
 	@endcan
 @endsection
 
@@ -47,24 +47,31 @@
 						<thead>
 							<tr>
 								<th style="width:5%">ID</th>
-								<th style="width:35%">Slug</th>
-								<th style="width:60%">Actions</th>
+								@foreach($content->content['fields'] as $rKey => $rValue)
+									@if($rValue['table'] == 'true')
+									<th style="width:25%">
+										{{ str_replace($content->slug . '_', '', $rKey) }}
+									</th>
+									@endif
+								@endforeach
+								<th style="width:20%">Actions</th>
 							</tr>
 						</thead>
 							<tbody>
 								@foreach($repeaters as $repeater)
 								<tr>
 									<td class="v-align-middle">{{ $repeater->id }}</td>
-							    	<td class="v-align-middle">{{$repeater->slug}}</td>
+							    	@foreach($content->content['fields'] as $rKey => $rValue)
+										@if($rValue['table'] == 'true')
+										<td class="v-align-middle">
+											{{ $repeater->json[str_replace($content->slug . '_', '', $rKey)] }}
+										</td>
+										@endif
+									@endforeach
 							    	<td class="v-align-middle semi-bold">
 							    		@can('edit forms')
 							    		<a href="{{ route('dashboard.content.resources.edit', ['slug' => $repeater->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
 							    			<i data-feather="edit-2"></i> edit
-							    		</a>
-							    		@endcan
-							    		@can('show formentries')
-							    		<a href="{{ route('dashboard.content.repeaters.entries', ['slug' => $repeater->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
-							    			<i data-feather="clipboard"></i> entries
 							    		</a>
 							    		@endcan
 							    		@can('delete forms')

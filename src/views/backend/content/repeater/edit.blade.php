@@ -132,6 +132,13 @@
                       <option value="false" @if($fValue['required'] !== 'true') selected @endif>Nee</option>
                     </select>
                   </div>
+                  <div class="form-group form-group-default">
+                      <label>Toon in tabel</label>
+                      <select class="full-width" data-init-plugin="select2" name="fields_table[]" data-minimum-results-for-search="-1">
+                        <option value="true" @if($fValue['table'] == 'true') selected @endif>Ja</option>
+                        <option value="false" @if($fValue['table'] !== 'true') selected @endif>Nee</option>
+                      </select>
+                    </div>
                 </div>
               </div>
               <hr>

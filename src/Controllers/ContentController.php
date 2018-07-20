@@ -112,6 +112,7 @@ class ContentController extends Controller
                 $content['fields'][$content_slug . '_' . $fields_slug[$i]]['attributes'][explode(';',$request->get('fields_attributes_name')[$i])[$k]] = explode(';',$request->get('fields_attributes_value')[$i])[$k];
             }
             $content['fields'][$content_slug . '_' . $fields_slug[$i]]['required'] = $request->get('fields_required')[$i];
+            $content['fields'][$content_slug . '_' . $fields_slug[$i]]['table'] = $request->get('fields_table')[$i];
         }
 
         $content['actions']['store'] = $request->get('action_store');
@@ -135,7 +136,8 @@ class ContentController extends Controller
 
     public function repeaterEntriesIndex($slug)
     {
+        $content = Content::where('slug', $slug)->first();
         $repeaters = $this->repeater->where('slug', $slug)->get();
-        return view('chuckcms::backend.content.repeater.entries.index', compact('repeaters'));
+        return view('chuckcms::backend.content.repeater.entries.index', compact('content','repeaters'));
     }
 }

@@ -132,6 +132,13 @@
                         <option value="false" selected>Nee</option>
                       </select>
                     </div>
+                    <div class="form-group form-group-default">
+                      <label>Toon in tabel</label>
+                      <select class="full-width" data-init-plugin="select2" name="fields_table[]" data-minimum-results-for-search="-1">
+                        <option value="true">Ja</option>
+                        <option value="false" selected>Nee</option>
+                      </select>
+                    </div>
                     <hr>
                   </div>
                 </div>
