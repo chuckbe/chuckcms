@@ -1,4 +1,48 @@
 {"fields":{
+	"blogs_title":{
+		"label":"Titel",
+		"type":"text",
+		"class":"form-control",
+		"placeholder":"Titel van de blog*",
+		"validation":"required|min:3",
+		"value":"",
+		"attributes":{"minlength":"3"},
+		"required":"true"
+		},
+	"blogs_subtitle":{
+		"label":"Subtitel",
+		"type":"text",
+		"class":"form-control",
+		"placeholder":"Subtitel van de blog*",
+		"validation":"required|min:3",
+		"value":"",
+		"attributes":{"minlength":"3"},
+		"required":"true"
+		},
+	"blogs_body":{
+		"label":"Body",
+		"type":"textarea",
+		"class":"form-control",
+		"placeholder":"Body van de blog*",
+		"validation":"required|max:1000",
+		"value":"",
+		"attributes":{"rows":"10"},
+		"required":"true"
+		}
+	},
+"actions":{
+	"store":"true",
+	"detail":{
+		"url":"blog/[blogs_slug]",
+		"page":"default"
+		}
+	},
+"files":"true"
+}
+
+
+
+{"fields":{
 	"contact_name":{
 		"label":"Naam",
 		"type":"text",

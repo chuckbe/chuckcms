@@ -114,15 +114,15 @@ class DashboardController extends Controller
     {
         $page = $this->page->getByIdWithBlocks($page_id);
         $template = $this->template->where('id', $page->template_id)->where('type', 'default')->first();
-        $block_dir = array_slice(scandir('chuckbe/chuckcms/blocks/chuckv2/'), 2);
+        $block_dir = array_slice(scandir('chuckbe/'.$template->slug.'/blocks'), 2);
         $blocks = [];
         foreach($block_dir as $block){
             if((strpos($block, '.html') !== false)){
                 $blockname = 
                 $blocks[] = array(
                     'name' => str_replace('.html', '', $block),
-                    'location' => 'chuckbe/chuckcms/blocks/chuckv2/'.$block,
-                    'img' => 'chuckbe/chuckcms/blocks/chuckv2/'.str_replace('.html', '.jpg', $block)
+                    'location' => 'chuckbe/'.$template->slug.'/blocks/'.$block,
+                    'img' => 'chuckbe/'.$template->slug.'/blocks/'.str_replace('.html', '.jpg', $block)
                 );
             }
         }

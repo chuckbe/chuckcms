@@ -15,4 +15,13 @@ class Template extends Eloquent
         'css' => 'array',
         'js' => 'array',
     ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'slug', 'type', 'version', 'author', 'active', 'fonts', 'css', 'js'
+    ];
 }

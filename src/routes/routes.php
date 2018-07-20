@@ -60,8 +60,17 @@ Route::group(['middleware' => ['web']], function() {
 		Route::post('/dashboard/forms/save', 'Chuckbe\Chuckcms\Controllers\FormController@save')->name('dashboard.forms.save');
 	// Dashboard Content Routes...
 		Route::get('/dashboard/content/resources', 'Chuckbe\Chuckcms\Controllers\ContentController@resourceIndex')->name('dashboard.content.resources');
+		Route::get('/dashboard/content/resources/create', 'Chuckbe\Chuckcms\Controllers\ContentController@resourceCreate')->name('dashboard.content.resources.create');
+		Route::get('/dashboard/content/resources/{slug}/edit', 'Chuckbe\Chuckcms\Controllers\ContentController@resourceEdit')->name('dashboard.content.resources.edit');
+		Route::post('/dashboard/content/resources/save', 'Chuckbe\Chuckcms\Controllers\ContentController@resourceSave')->name('dashboard.content.resources.save');
 
 		Route::get('/dashboard/content/repeaters', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterIndex')->name('dashboard.content.repeaters');
+		Route::get('/dashboard/content/repeaters/create', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterCreate')->name('dashboard.content.repeaters.create');
+		//Route::post('/dashboard/content/repeaters/new', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterNew')->name('dashboard.content.resources.new');
+		Route::post('/dashboard/content/repeaters/save', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterSave')->name('dashboard.content.repeaters.save');
+		Route::get('/dashboard/content/repeaters/{slug}/edit', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterEdit')->name('dashboard.content.repeaters.edit');
+		Route::get('/dashboard/content/repeaters/{slug}/entries', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterEntriesIndex')->name('dashboard.content.repeaters.entries');
+
 	// Dashboard Users Routes...
 		Route::get('/dashboard/users', 'Chuckbe\Chuckcms\Controllers\DashboardController@users')->name('dashboard.users');
 		Route::post('/dashboard/user/invite', 'Chuckbe\Chuckcms\Controllers\UserController@invite')->name('dashboard.users.invite');

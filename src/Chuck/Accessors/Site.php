@@ -15,11 +15,8 @@ class Site
     {
         if(Schema::hasTable('sites')){
             $settings = SiteRepository::getSettings();
-            if($settings == null) $settings=[];$settings['lang']='en,nl';
-        } else {
-            $settings = [];
-            $settings['lang'] = 'en,nl';
-        }
+            if($settings == null){ $settings=[];$settings['lang']='en,nl'; }
+        } 
     	$arr = [];
     	foreach(config('lang.allLocales') as $langKey => $langValue){
     		if( in_array($langKey, explode(',',$settings['lang']) ) ){

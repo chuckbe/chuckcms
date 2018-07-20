@@ -21,6 +21,9 @@ class ChuckConfigServiceProvider extends ServiceProvider
             'laravellocalization.useAcceptLanguageHeader' => true,
             'laravellocalization.hideDefaultLocaleInURL' => false,
 
+            'app.locale' => 'nl',
+            'app.fallback_locale' => 'en',
+
             // UniSharp/laravel-filemanager
             'lfm_config.url_prefix' => 'dashboard/mediacenter',
 

@@ -28,14 +28,15 @@ class Menu
 
     }
 
-    public function renderFrontEnd()
+    public function renderFrontEnd($tslug = null)
     {
         $menu = Menus::find(1);
         $menuitems = new MenuItems();
         $menus = $menuitems->getall(1);
 
         $data = ['menus' => $menus, 'indmenu' => $menu];
-        return view('chuckcms::vendor.chuck-menu.menu-front-end', $data);
+        if($tslug == null) return view('chuckcms::vendor.chuck-menu.menu-front-end', $data);
+        return view($tslug.'::vendor.chuck-menu.menu-front-end', $data);
     }
 
     public function scripts()

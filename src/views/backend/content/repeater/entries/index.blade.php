@@ -1,12 +1,12 @@
 @extends('chuckcms::backend.layouts.admin')
 
 @section('title')
-	Resources
+	Repeater | ChuckCMS
 @endsection
 
 @section('add_record')
 	@can('create pages')
-	<a href="{{ route('dashboard.content.resources.create') }}" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuwe Resource Toe</a>
+	<a href="{{ route('dashboard.content.repeaters.create') }}" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuwe --- Toe</a>
 	@endcan
 @endsection
 
@@ -33,7 +33,7 @@
 		<!-- START card -->
 			<div class="card card-transparent">
 				<div class="card-header ">
-					<div class="card-title">Resources</div>
+					<div class="card-title">Repeaters</div>
 					<div class="tools">
 						<a class="collapse" href="javascript:;"></a>
 						<a class="config" data-toggle="modal" href="#grid-config"></a>
@@ -52,18 +52,23 @@
 							</tr>
 						</thead>
 							<tbody>
-								@foreach($resources as $resource)
+								@foreach($repeaters as $repeater)
 								<tr>
-									<td class="v-align-middle">{{ $resource->id }}</td>
-							    	<td class="v-align-middle">{{$resource->slug}}</td>
+									<td class="v-align-middle">{{ $repeater->id }}</td>
+							    	<td class="v-align-middle">{{$repeater->slug}}</td>
 							    	<td class="v-align-middle semi-bold">
 							    		@can('edit forms')
-							    		<a href="{{ route('dashboard.content.resources.edit', ['slug' => $resource->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    		<a href="{{ route('dashboard.content.resources.edit', ['slug' => $repeater->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
 							    			<i data-feather="edit-2"></i> edit
 							    		</a>
 							    		@endcan
+							    		@can('show formentries')
+							    		<a href="{{ route('dashboard.content.repeaters.entries', ['slug' => $repeater->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    			<i data-feather="clipboard"></i> entries
+							    		</a>
+							    		@endcan
 							    		@can('delete forms')
-							    		<a href="{{ route('dashboard.forms.delete', ['slug' => $resource->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    		<a href="{{ route('dashboard.forms.delete', ['slug' => $repeater->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
 							    			<i data-feather="trash"></i> delete
 							    		</a>
 							    		@endcan

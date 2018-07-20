@@ -127,7 +127,7 @@
                           </span>
                           <input id="thumbnail" class="form-control" accept="image/x-png" type="text" name="logo[href]" value="{{ $site->settings['logo']['href'] }}">
                         </div>
-                        <img id="logoholder" src="{{ $site->settings['logo']['href'] }}" style="margin-top:15px;max-height:100px;">
+                        <img id="logoholder" src="{{ URL::to('/') }}{{ $site->settings['logo']['href'] }}" style="margin-top:15px;max-height:100px;">
                       </div>
                 </div>
               </div>

@@ -65,7 +65,11 @@
 
     @if($template->js)
     @foreach($template->js as $jsname => $jsraw)
-    <script src="{{ asset($jsraw) }}"></script>
+        @if($cssraw['asset'] == true)
+            <script src="{{ asset($jsraw['href']) }}"></script>
+        @else
+            <script src="{{ $jsraw['href'] }}"></script>
+        @endif
     @endforeach
     @endif
     @yield('scripts')
