@@ -24,8 +24,8 @@
     <link href="{{ URL::to('chuckbe/chuckcms/assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" media="screen" />
     <link href="{{ URL::to('chuckbe/chuckcms/assets/plugins/switchery/css/switchery.min.css') }}" rel="stylesheet" type="text/css" media="screen" />
     <link href="{{ URL::to('chuckbe/chuckcms/pages/css/pages-icons.css') }}" rel="stylesheet" type="text/css">
-    <link class="main-stylesheet" href="{{ URL::to('chuckbe/chuckcms/pages/css/themes/light.css') }}" rel="stylesheet" type="text/css" />
     @yield('css')
+    <link class="main-stylesheet" href="{{ URL::to('chuckbe/chuckcms/pages/css/themes/light.css') }}" rel="stylesheet" type="text/css" />
   </head>
   <body class="fixed-header menu-pin">
     @include('chuckcms::backend.includes.sidebar')
