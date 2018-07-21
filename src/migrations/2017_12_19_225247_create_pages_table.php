@@ -20,12 +20,7 @@ class CreatePagesTable extends Migration
             $table->string('title');
             $table->string('slug');
             $table->integer('active');
-            $table->string('meta_title');
-            $table->string('meta_og_title');
-            $table->text('meta_keywords');
-            $table->longText('meta_description');
-            $table->longText('meta_og_description');
-            $table->string('meta_og_image');
+            $table->longText('meta');
             $table->timestamps();
         });
     }

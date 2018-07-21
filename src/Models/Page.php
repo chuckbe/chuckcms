@@ -58,4 +58,8 @@ class Page extends Eloquent
     }
 
     public $translatable = ['title', 'slug'];
+
+    protected $casts = [
+        'meta' => 'array',
+    ];
 }
