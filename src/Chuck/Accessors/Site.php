@@ -31,4 +31,9 @@ class Site
         return SiteRepository::getSettingByName($var);
     }
 
+    public static function getSettings()
+    {
+        return SiteRepository::getSettings();
+    }
+
 }

@@ -30,37 +30,37 @@
           <!-- Tab panes -->
           <div class="tab-content">
             @foreach(ChuckSite::getSupportedLocales() as $langKey => $langValue)
-            <div class="tab-pane fade show @if($loop->iteration == 1) active @endif" id="tab_resource_{{ $langKey }}">
+            <div class="tab-pane fade show @if($loop->iteration == 1) active @endif tab_page_wrapper" id="tab_resource_{{ $langKey }}">
               <h4>{{ $langValue['name'] }}</h4>
               <div class="row column-seperation">
                 <div class="col-lg-12">
                   <div class="form-group form-group-default required ">
                     <label>Titel</label>
-                    <input type="text" class="form-control" placeholder="Titel" id="page_title" name="page_title[{{ $langKey }}][]" required>
+                    <input type="text" class="form-control page_title" placeholder="Titel" id="page_title" name="page_title[{{ $langKey }}]" data-lang="{{ $langKey }}" data-url="http://package.local" required>
                   </div>
                   <div class="form-group form-group-default required ">
                     <label>Slug</label>
-                    <input type="text" class="form-control" placeholder="Titel" id="page_slug" name="slug[{{ $langKey }}][]"  required>
-                    <input type="hidden" class="form-control" id="page_slug_hidden" name="page_slug[{{ $langKey }}][]">
+                    <input type="text" class="form-control page_slug page_slug_{{ $langKey }}" placeholder="Titel" id="page_slug" name="slug[{{ $langKey }}]" data-lang="{{ $langKey }}" data-url="http://package.local" required>
+                    <input type="hidden" class="form-control page_slug_hidden_{{ $langKey }}" id="page_slug_hidden" name="page_slug[{{ $langKey }}]">
                   </div>
                   <hr>
                   <div class="serp-preview">
-                      <a class="serp-title" href="/">[title]</a><br>
-                      <a class="serp-url" href="/">[url]</a><br>
-                      <p class="serp-desc">[description]</p>
+                      <a class="serp-title serp_title_{{ $langKey }}" href="/">[title]</a><br>
+                      <a class="serp-url serp_url_{{ $langKey }}" href="/">[url]</a><br>
+                      <p class="serp-desc serp_desc_{{ $langKey }}">[description]</p>
                   </div>
                   <hr>
                   <div class="form-group form-group-default required">
-                    <label>Meta Titel*</label>
-                    <input type="text" class="form-control" placeholder="Meta Titel" id="meta_title" name="meta_title[{{ $langKey }}][]" required>
+                    <label>Meta Titel</label>
+                    <input type="text" class="form-control meta_title meta_title_{{ $langKey }}" placeholder="Meta Titel" id="meta_title" name="meta_title[{{ $langKey }}]" data-lang="{{ $langKey }}" required>
                   </div>
                   <div class="form-group form-group-default required">
-                    <label>Meta Beschrijving*</label>
-                    <textarea id="meta_description" name="meta_description[{{ $langKey }}][]" placeholder="Meta Beschrijving" style="height:55px;" class="form-control" required></textarea>
+                    <label>Meta Beschrijving</label>
+                    <textarea id="meta_description" name="meta_description[{{ $langKey }}]" placeholder="Meta Beschrijving" style="height:55px;" class="form-control meta_description_{{ $langKey }} meta_description" data-lang="{{ $langKey }}" required></textarea>
                   </div>
                   <div class="form-group form-group-default required">
-                    <label>Meta Sleutelwoorden*</label>
-                    <textarea id="meta_keywords" name="meta_keywords[{{ $langKey }}][]" placeholder="Meta Sleutelwoorden" style="height:55px;" class="form-control" required></textarea>
+                    <label>Meta Sleutelwoorden</label>
+                    <textarea id="meta_keywords" name="meta_keywords[{{ $langKey }}]" placeholder="Meta Sleutelwoorden" style="height:55px;" class="form-control" required></textarea>
                   </div>
                   <hr>
 
@@ -169,7 +169,7 @@
     width: 540px !important;
     clear: both  !important;
     /* codepen styling */
-    margin: 25px 15px !important
+    margin: 40px 15px !important
   }
 
   .serp-preview .serp-title {
@@ -257,12 +257,38 @@
 
       });
 
-      $('.meta_field_wrapper').each(function() {
-        $("#page_title").keyup(function(){
+      $('.tab_page_wrapper').each(function() {
+        $('.page_title').keyup(function(){
             var text = $(this).val();
+            var lang = $(this).attr('data-lang');
+            var url_path = $(this).attr('data-url');
             slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
-            $("#page_slug").val(slug_text);
-            $("#page_slug_hidden").val(slug_text);    
+            $('.page_slug_'+lang).val(slug_text);
+            $('.page_slug_hidden_'+lang).val(slug_text);
+            $('.meta_title_'+lang).val(text).change();
+            $('.serp_title_'+lang).text(text); 
+            $('.serp_url_'+lang).text(url_path+'/'+slug_text);
+        });
+
+        $('.page_slug').keyup(function(){
+            var text = $(this).val();
+            var lang = $(this).attr('data-lang');
+            var url_path = $(this).attr('data-url');
+            slug_text = text.toLowerCase().replace(/ +/g,'-');
+            $('.page_slug_hidden_'+lang).val(slug_text);
+            $('.serp_url_'+lang).text(url_path+'/'+slug_text);
+        });
+
+        $('.meta_title').keyup(function(){
+            var text = $(this).val();
+            var lang = $(this).attr('data-lang');
+            $('.serp_title_'+lang).text(text);
+        });
+
+        $('.meta_description').keyup(function(){
+            var text = $(this).val();
+            var lang = $(this).attr('data-lang');
+            $('.serp_desc_'+lang).text(text);
         });
       });
     });
