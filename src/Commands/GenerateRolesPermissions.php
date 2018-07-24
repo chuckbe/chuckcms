@@ -46,70 +46,74 @@ class GenerateRolesPermissions extends Command
 
         // create permissions
         // pages
-        Permission::create(['name' => 'show pages']);
-        Permission::create(['name' => 'create pages']);
-        Permission::create(['name' => 'edit pages']);
-        Permission::create(['name' => 'delete pages']);
-        Permission::create(['name' => 'show pagebuilder']);
-        Permission::create(['name' => 'edit pagebuilder']);
-        Permission::create(['name' => 'code pagebuilder']);
+        Permission::firstOrCreate(['name' => 'show pages']);
+        Permission::firstOrCreate(['name' => 'create pages']);
+        Permission::firstOrCreate(['name' => 'edit pages']);
+        Permission::firstOrCreate(['name' => 'delete pages']);
+        Permission::firstOrCreate(['name' => 'show pagebuilder']);
+        Permission::firstOrCreate(['name' => 'edit pagebuilder']);
+        Permission::firstOrCreate(['name' => 'code pagebuilder']);
+        Permission::firstOrCreate(['name' => 'delete pagebuilder']);
         // menus
-        Permission::create(['name' => 'show menus']);
-        Permission::create(['name' => 'create menus']);
-        Permission::create(['name' => 'edit menus']);
-        Permission::create(['name' => 'delete menus']);
-        Permission::create(['name' => 'create links']);
-        Permission::create(['name' => 'edit links']);
-        Permission::create(['name' => 'delete links']);
+        Permission::firstOrCreate(['name' => 'show menus']);
+        Permission::firstOrCreate(['name' => 'create menus']);
+        Permission::firstOrCreate(['name' => 'edit menus']);
+        Permission::firstOrCreate(['name' => 'delete menus']);
         // templates
-        Permission::create(['name' => 'show templates']);
-        Permission::create(['name' => 'create templates']);
-        Permission::create(['name' => 'edit templates']);
-        Permission::create(['name' => 'delete templates']);
+        Permission::firstOrCreate(['name' => 'show templates']);
+        Permission::firstOrCreate(['name' => 'create templates']);
+        Permission::firstOrCreate(['name' => 'edit templates']);
+        Permission::firstOrCreate(['name' => 'delete templates']);
         // forms
-        Permission::create(['name' => 'show forms']);
-        Permission::create(['name' => 'create forms']);
-        Permission::create(['name' => 'edit forms']);
-        Permission::create(['name' => 'delete forms']);
+        Permission::firstOrCreate(['name' => 'show forms']);
+        Permission::firstOrCreate(['name' => 'create forms']);
+        Permission::firstOrCreate(['name' => 'edit forms']);
+        Permission::firstOrCreate(['name' => 'delete forms']);
         // form entries
-        Permission::create(['name' => 'show formentry']);
-        Permission::create(['name' => 'show formentries']);
-        Permission::create(['name' => 'create formentries']);
-        Permission::create(['name' => 'edit formentries']);
-        Permission::create(['name' => 'delete formentries']);
+        Permission::firstOrCreate(['name' => 'show formentry']);
+        Permission::firstOrCreate(['name' => 'show formentries']);
+        Permission::firstOrCreate(['name' => 'create formentries']);
+        Permission::firstOrCreate(['name' => 'edit formentries']);
+        Permission::firstOrCreate(['name' => 'delete formentries']);
         // media
-        Permission::create(['name' => 'show media']);
-        Permission::create(['name' => 'create media']);
-        Permission::create(['name' => 'edit media']);
-        Permission::create(['name' => 'delete media']);
+        Permission::firstOrCreate(['name' => 'show media']);
+        Permission::firstOrCreate(['name' => 'create media']);
+        Permission::firstOrCreate(['name' => 'edit media']);
+        Permission::firstOrCreate(['name' => 'delete media']);
         // user
-        Permission::create(['name' => 'show users']);
-        Permission::create(['name' => 'create users']);
-        Permission::create(['name' => 'edit users']);
-        Permission::create(['name' => 'delete users']);
+        Permission::firstOrCreate(['name' => 'show users']);
+        Permission::firstOrCreate(['name' => 'invite users']);
+        Permission::firstOrCreate(['name' => 'edit users']);
+        Permission::firstOrCreate(['name' => 'delete users']);
         // content
-        Permission::create(['name' => 'show content']);
-        Permission::create(['name' => 'create content']);
-        Permission::create(['name' => 'edit content']);
-        Permission::create(['name' => 'delete content']);
+        Permission::firstOrCreate(['name' => 'show content']);
+        Permission::firstOrCreate(['name' => 'create content']);
+        Permission::firstOrCreate(['name' => 'edit content']);
+        Permission::firstOrCreate(['name' => 'delete content']);
         // resource
-        Permission::create(['name' => 'show resource']);
-        Permission::create(['name' => 'create resource']);
-        Permission::create(['name' => 'edit resource']);
-        Permission::create(['name' => 'delete resource']);
+        Permission::firstOrCreate(['name' => 'show resource']);
+        Permission::firstOrCreate(['name' => 'create resource']);
+        Permission::firstOrCreate(['name' => 'edit resource']);
+        Permission::firstOrCreate(['name' => 'delete resource']);
         // repeaters
-        Permission::create(['name' => 'show repeaters']);
-        Permission::create(['name' => 'create repeaters']);
-        Permission::create(['name' => 'edit repeaters']);
-        Permission::create(['name' => 'delete repeaters']);
+        Permission::firstOrCreate(['name' => 'show repeaters']);
+        Permission::firstOrCreate(['name' => 'create repeaters']);
+        Permission::firstOrCreate(['name' => 'edit repeaters']);
+        Permission::firstOrCreate(['name' => 'delete repeaters']);
+
+        Permission::firstOrCreate(['name' => 'show repeaters entries']);
+        Permission::firstOrCreate(['name' => 'create repeaters entry']);
+        Permission::firstOrCreate(['name' => 'edit repeaters entry']);
+        Permission::firstOrCreate(['name' => 'delete repeaters entry']);
         // settings
-        Permission::create(['name' => 'show settings']);
-        Permission::create(['name' => 'create settings']);
-        Permission::create(['name' => 'edit settings']);
-        Permission::create(['name' => 'delete settings']);
+        Permission::firstOrCreate(['name' => 'show settings']);
+        Permission::firstOrCreate(['name' => 'create settings']);
+        Permission::firstOrCreate(['name' => 'edit settings']);
+        Permission::firstOrCreate(['name' => 'delete settings']);
 
         // create roles and assign created permissions
-        $role = Role::create(['name' => 'user']);
+        $role = Role::firstOrCreate(['name' => 'user']);
+        $role->revokePermissionTo(Permission::all());
         $role->givePermissionTo([
             'show pages',
 
@@ -133,10 +137,13 @@ class GenerateRolesPermissions extends Command
 
             'show repeaters',
 
+            'show repeaters entries',
+
             'show settings'
         ]);
 
-        $role = Role::create(['name' => 'moderator']);
+        $role = Role::firstOrCreate(['name' => 'moderator']);
+        $role->revokePermissionTo(Permission::all());
         $role->givePermissionTo([
             'show pages',
             'create pages',
@@ -146,9 +153,6 @@ class GenerateRolesPermissions extends Command
             'show menus',
             'create menus',
             'edit menus',
-            'create links',
-            'edit links',
-            'delete links',
 
             'show templates',
             'create templates',
@@ -166,7 +170,7 @@ class GenerateRolesPermissions extends Command
             'edit media',
 
             'show users',
-            'create users',
+            'invite users',
             'edit users',
 
             'show content',
@@ -181,10 +185,15 @@ class GenerateRolesPermissions extends Command
             'create repeaters',
             'edit repeaters',
 
+            'show repeaters entries',
+            'create repeaters entry',
+            'edit repeaters entry',
+
             'show settings'
         ]);
 
-        $role = Role::create(['name' => 'administrator']);
+        $role = Role::firstOrCreate(['name' => 'administrator']);
+        $role->revokePermissionTo(Permission::all());
         $role->givePermissionTo([
             'show pages',
             'create pages',
@@ -192,14 +201,12 @@ class GenerateRolesPermissions extends Command
             'delete pages',
             'show pagebuilder',
             'edit pagebuilder',
+            'delete pagebuilder',
 
             'show menus',
             'create menus',
             'edit menus',
             'delete menus',
-            'create links',
-            'edit links',
-            'delete links',
 
             'show templates',
             'create templates',
@@ -223,14 +230,9 @@ class GenerateRolesPermissions extends Command
             'delete media',
 
             'show users',
-            'create users',
+            'invite users',
             'edit users',
             'delete users',
-
-            'show content',
-            'create content',
-            'edit content',
-            'delete content',
 
             'show content',
             'create content',
@@ -247,18 +249,24 @@ class GenerateRolesPermissions extends Command
             'edit repeaters',
             'delete repeaters',
 
+            'show repeaters entries',
+            'create repeaters entry',
+            'edit repeaters entry',
+            'delete repeaters entry',
+
             'show settings',
             'create settings',
             'edit settings',
             'delete settings'
         ]);
 
-        $role = Role::create(['name' => 'super-admin']);
+        $role = Role::firstOrCreate(['name' => 'super-admin']);
+        $role->revokePermissionTo(Permission::all());
         $role->givePermissionTo(Permission::all());
 
-        $this->info('.         .');
-        $this->info('..         ..');
-        $this->info('...         ...');
+        $this->info('   .      .');
+        $this->info('  ..       ..');
+        $this->info(' ...        ...');
         $this->info('.... AWESOME ....');
         $this->info('...         ...');
         $this->info('..         ..');
@@ -270,8 +278,13 @@ class GenerateRolesPermissions extends Command
         $this->info('...         ...');
         $this->info('..         ..');
         $this->info('.         .');
+        $this->info('───────────────▄▄───▐█');
+        $this->info('───▄▄▄───▄██▄──█▀───█─▄');
+        $this->info('─▄██▀█▌─██▄▄──▐█▀▄─▐█▀');
+        $this->info('▐█▀▀▌───▄▀▌─▌─█─▌──▌─▌');
+        $this->info('▌▀▄─▐──▀▄─▐▄─▐▄▐▄─▐▄─▐▄');
         $this->info(' ');
-        $this->info('New site: '.$name.' ('.$domain.') generated successfully');
+        $this->info('Successfully generated all default roles and permissions.');
         $this->info(' ');
     
 
