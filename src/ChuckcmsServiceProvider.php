@@ -3,6 +3,7 @@
 namespace Chuckbe\Chuckcms;
 
 use Chuckbe\Chuckcms\Commands\GenerateSuperAdmin;
+use Chuckbe\Chuckcms\Commands\GenerateSite;
 use Illuminate\Support\ServiceProvider;
 
 class ChuckcmsServiceProvider extends ServiceProvider
@@ -19,6 +20,7 @@ class ChuckcmsServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 GenerateSuperAdmin::class,
+                GenerateSite::class,
             ]);
         }
         
@@ -26,13 +28,13 @@ class ChuckcmsServiceProvider extends ServiceProvider
         
         $this->publishes([
             __DIR__.'/resources' => public_path('chuckbe/chuckcms'),
-        ], 'chuckcmspublic');
+        ], 'chuckcms-public');
 
         $this->publishes([
             __DIR__ . '/config/menu.php' => config_path('menu'),
             __DIR__ . '/config/lfm.php' => config_path('lfm'),
             __DIR__ . '/config/lang.php' => config_path('lang'),
-        ], 'chuckcmsconfig');
+        ], 'chuckcms-config');
     }
 
     /**

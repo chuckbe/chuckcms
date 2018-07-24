@@ -14,25 +14,39 @@ ChuckCMS was created to add CMS functionality to an existing Laravel project. Th
 ```
 composer require chuckbe/chuckcms
 ```
+
 - Publish public assets
 ```
-php artisan vendor:publish --tag=chuckcmspublic --force
+php artisan vendor:publish --tag=chuckcms-public --force
 ```
+
 - Eventually publish config files
 ```
-php artisan vendor:publish --tag=chuckcmsconfig --force
+php artisan vendor:publish --tag=chuckcms-config --force
 ```
+
 - publish error views?
-- Add Spatie's Permission package middleware to HTTP Kernel
+
+- Add Spatie's Permission package middleware to App\Kernel $protectedMiddleware array
 ```
 'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
 'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
 ```
+
 - migrate
 ```
 php artisan migrate
 ```
+
 - seed
 ```
 php artisan db:seed --class=Chuckbe\\Chuckcms\\migrations\\seeds\\PermissionRolesTableSeeder
+```
+- make a new site with following command
+```
+php artisan chuckcms:generate-site
+```
+- make a new super admin with following command
+```
+php artisan chuckcms:generate-super-admin
 ```

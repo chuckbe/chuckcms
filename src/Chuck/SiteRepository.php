@@ -51,4 +51,13 @@ class SiteRepository
         return $result;
     }
 
+    public static function createFromArray($array)
+    {
+        
+        // updateOrCreate the site
+        $result = Site::create($array);
+
+        return $result;
+    }
+
 }
