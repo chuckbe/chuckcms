@@ -47,6 +47,7 @@ class PermissionRolesTableSeeder extends Seeder
         Permission::create(['name' => 'edit forms']);
         Permission::create(['name' => 'delete forms']);
         // form entries
+        Permission::create(['name' => 'show formentry']);
         Permission::create(['name' => 'show formentries']);
         Permission::create(['name' => 'create formentries']);
         Permission::create(['name' => 'edit formentries']);
@@ -66,6 +67,16 @@ class PermissionRolesTableSeeder extends Seeder
         Permission::create(['name' => 'create content']);
         Permission::create(['name' => 'edit content']);
         Permission::create(['name' => 'delete content']);
+        // resource
+        Permission::create(['name' => 'show resource']);
+        Permission::create(['name' => 'create resource']);
+        Permission::create(['name' => 'edit resource']);
+        Permission::create(['name' => 'delete resource']);
+        // repeaters
+        Permission::create(['name' => 'show repeaters']);
+        Permission::create(['name' => 'create repeaters']);
+        Permission::create(['name' => 'edit repeaters']);
+        Permission::create(['name' => 'delete repeaters']);
         // settings
         Permission::create(['name' => 'show settings']);
         Permission::create(['name' => 'create settings']);
@@ -82,6 +93,8 @@ class PermissionRolesTableSeeder extends Seeder
         	'show templates',
 
             'show forms',
+            
+            'show formentry',
 
             'show formentries',
 
@@ -90,6 +103,10 @@ class PermissionRolesTableSeeder extends Seeder
         	'show users',
 
         	'show content',
+
+            'show resource',
+
+            'show repeaters',
 
         	'show settings'
         ]);
@@ -117,6 +134,7 @@ class PermissionRolesTableSeeder extends Seeder
             'edit forms',
 
             'show formentries',
+            'show formentry',
 
         	'show media',
         	'create media',
@@ -129,6 +147,14 @@ class PermissionRolesTableSeeder extends Seeder
         	'show content',
         	'create content',
         	'edit content',
+
+            'show resource',
+            'create resource',
+            'edit resource',
+
+            'show repeaters',
+            'create repeaters',
+            'edit repeaters',
 
         	'show settings'
         ]);
@@ -161,6 +187,7 @@ class PermissionRolesTableSeeder extends Seeder
             'delete forms',
 
             'show formentries',
+            'show formentry',
             'create formentries',
             'edit formentries',
             'delete formentries',
@@ -179,6 +206,21 @@ class PermissionRolesTableSeeder extends Seeder
         	'create content',
         	'edit content',
         	'delete content',
+
+            'show content',
+            'create content',
+            'edit content',
+            'delete content',
+
+            'show resource',
+            'create resource',
+            'edit resource',
+            'delete resource',
+
+            'show repeaters',
+            'create repeaters',
+            'edit repeaters',
+            'delete repeaters',
 
         	'show settings',
         	'create settings',

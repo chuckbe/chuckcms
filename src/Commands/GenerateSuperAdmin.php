@@ -30,6 +30,13 @@ class GenerateSuperAdmin extends Command
     protected $userRepository;
 
     /**
+     * The user model implementation.
+     *
+     * @var User
+     */
+    protected $user;
+
+    /**
      * Create a new command instance.
      *
      * @return void
