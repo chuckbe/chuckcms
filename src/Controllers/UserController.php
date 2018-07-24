@@ -3,10 +3,12 @@
 namespace Chuckbe\Chuckcms\Controllers;
 
 use Chuckbe\Chuckcms\Chuck\UserRepository;
+use Chuckbe\Chuckcms\Mail\UserActivationMail;
 use Chuckbe\Chuckcms\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Mail;
 
 class UserController extends Controller
 {
@@ -20,7 +22,7 @@ class UserController extends Controller
     public function __construct(User $user, UserRepository $userRepository)
     {
         $this->user = $user;
-        $this->userRepository = $userRepository
+        $this->userRepository = $userRepository;
     }
 
     public function invite(Request $request)
@@ -42,7 +44,16 @@ class UserController extends Controller
         $user->assignRole($request->get('role'));
 
         //send the email
-        //@todo send notification with token url
+        $mailData = [];
+        $mailData['from'] = 'no-reply@chuckcms.com';
+        $mailData['from_name'] = 'No Reply | ChuckCMS';
+        $mailData['to'] = $user->email;
+        $mailData['to_name'] = $user->name;
+        $mailData['token'] = $user->token;
+
+        //dd($mailData);
+
+        Mail::send(new UserActivationMail($mailData));
 
         //redirect back
         return redirect()->back()->with('notification', 'Gebruiker uitgenodigd!');

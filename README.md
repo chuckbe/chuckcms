@@ -38,14 +38,16 @@ php artisan vendor:publish --tag=chuckcms-config --force
 php artisan migrate
 ```
 
-- seed
-```
-php artisan db:seed --class=Chuckbe\\Chuckcms\\migrations\\seeds\\PermissionRolesTableSeeder
-```
-- make a new site with following command
+- generate a new site with following command
 ```
 php artisan chuckcms:generate-site
 ```
+
+- generate all default roles and permission
+```
+php artisan chuckcms:generate-roles-permissions
+```
+
 - make a new super admin with following command
 ```
 php artisan chuckcms:generate-super-admin
