@@ -2,6 +2,7 @@
 
 namespace Chuckbe\Chuckcms;
 
+use Chuckbe\Chuckcms\Commands\GenerateSuperAdmin;
 use Illuminate\Support\ServiceProvider;
 
 class ChuckcmsServiceProvider extends ServiceProvider
@@ -14,6 +15,12 @@ class ChuckcmsServiceProvider extends ServiceProvider
     public function boot()
     {
         include __DIR__.'/Routes/routes.php';
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                GenerateSuperAdmin::class,
+            ]);
+        }
         
         $this->loadMigrationsFrom(__DIR__.'/migrations');
         

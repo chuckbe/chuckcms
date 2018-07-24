@@ -59,6 +59,6 @@ class PageController extends Controller
         $pageblocks = $this->pageBlockRepository->getRenderedByPageBlocks($ogpageblocks);
         $template = $this->template->where('active', 1)->where('id', $page->template_id)->first();
         
-        return view($template->slug.'::templates.'.$template->slug.'.page', compact('template', 'page', 'pageblocks'));
+        return view($template->hintpath.'::templates.'.$template->slug.'.page', compact('template', 'page', 'pageblocks'));
     }
 }
