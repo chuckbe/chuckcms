@@ -23,6 +23,6 @@ class Template extends Eloquent
      * @var array
      */
     protected $fillable = [
-        'name', 'slug', 'type', 'version', 'author', 'active', 'fonts', 'css', 'js', 'json'
+        'name', 'slug', 'hintpath', 'path', 'type', 'version', 'author', 'active', 'fonts', 'css', 'js', 'json'
     ];
 }

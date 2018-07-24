@@ -17,6 +17,8 @@ class CreateTemplatesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('slug');
+            $table->string('hintpath');
+            $table->string('path');
             $table->string('type');
             $table->string('version');
             $table->string('author');
