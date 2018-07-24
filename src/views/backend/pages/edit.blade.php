@@ -189,6 +189,10 @@
     $( document ).ready(function() { 
     init(); 
 
+    if( $('.meta_field_row').length > 1){
+      $('.remove_meta_field_btn').show();
+    }
+
     function init() {
       $(".resource_slug_input").keyup(function(){
           var text = $(this).val();
@@ -204,6 +208,8 @@
           $(".meta_key[data-order="+iOrder+"]").val(slug_text);   
           
       });
+
+      
     }
       $('.add_meta_field_btn').click(function(){
         $('.meta_field_row:first').clone().appendTo('.meta_field_wrapper');
@@ -227,6 +233,8 @@
 
         init();
       });
+
+
 
       $('.remove_meta_field_btn').click(function(){
         

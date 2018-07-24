@@ -78,9 +78,7 @@ class PageBlockRepository
                 $newbody = str_replace('[LOOP='.$repeater_slug.']'.$repeater_body.'[/LOOP]',$this->getRepeaterContents($repeater_slug, $repeater_body),$pageblock->body);
 
             // THERE IS NO LOOP, CONTINUE
-            }
-            
-            if(strpos($findThis[0], 'FORM') !== false) {// PAGEBLOCK CONTAINS A FORM, LET'S RETRIEVE IT
+            }elseif(strpos($findThis[0], 'FORM') !== false) {// PAGEBLOCK CONTAINS A FORM, LET'S RETRIEVE IT
                 $form_slug = implode(" ",$this->getResources($pageblock->body, '[FORM=', ']'));
                 
                 $newbody = $this->getFormHtml($form_slug,$pageblock->body);

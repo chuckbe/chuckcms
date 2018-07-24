@@ -33,6 +33,7 @@ Route::group(['middleware' => ['web']], function() {
 		});
 	// Dashboard Page Builder Routes...
 		Route::get('/dashboard/page/{page_id}-edit/builder', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageEditBuilder')->name('dashboard.page.edit.pagebuilder');
+		Route::get('/dashboard/page/{page_id}/raw', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageRaw')->name('dashboard.page.raw');
 		Route::post('/pageblock/show', 'Chuckbe\Chuckcms\Controllers\PageBlockController@show')->name('api.pageblock.show');
 		Route::post('/pageblock/update', 'Chuckbe\Chuckcms\Controllers\PageBlockController@update')->name('api.pageblock.update');
 		Route::post('/pageblock/move-up', 'Chuckbe\Chuckcms\Controllers\PageBlockController@moveUp')->name('api.pageblock.move_up');

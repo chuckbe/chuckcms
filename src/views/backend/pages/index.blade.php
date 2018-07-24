@@ -43,7 +43,7 @@
 				</div>
 				<div class="card-block">
 					<div class="table-responsive">
-						<table class="table table-hover table-condensed" id="condensedTable">
+						<table class="table table-hover table-condensed" id="condensedTable" data-table-count="6">
 						<thead>
 							<tr>
 								<th style="width:5%">ID</th>
