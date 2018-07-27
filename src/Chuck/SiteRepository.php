@@ -11,7 +11,9 @@ class SiteRepository
 {
     public static function getSettings()
     {
-        if(Site::first()) return Site::first()->settings;
+        if(Site::first()) {
+            return Site::first()->settings;
+        }
         return null;
     	
     }

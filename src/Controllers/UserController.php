@@ -4,7 +4,9 @@ namespace Chuckbe\Chuckcms\Controllers;
 
 use Chuckbe\Chuckcms\Chuck\UserRepository;
 use Chuckbe\Chuckcms\Mail\UserActivationMail;
+use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\User;
+use ChuckSite;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -19,10 +21,25 @@ class UserController extends Controller
      *
      * @return void
      */
-    public function __construct(User $user, UserRepository $userRepository)
+    public function __construct(User $user, UserRepository $userRepository, Template $template)
     {
         $this->user = $user;
         $this->userRepository = $userRepository;
+        $this->template = $template;
+    }
+
+    /**
+     * Show the dashboard -> users.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $template = $this->template->where('active', 1)->where('type', 'admin')->first();
+        $front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
+        $users = $this->user->get();
+        
+        return view('chuckcms::backend.users.index', compact('template', 'front_template', 'users'));
     }
 
     public function invite(Request $request)
@@ -50,10 +67,13 @@ class UserController extends Controller
         $mailData['to'] = $user->email;
         $mailData['to_name'] = $user->name;
         $mailData['token'] = $user->token;
+        $mailData['user'] = \Auth::user();
+
+        $settings = ChuckSite::getSettings();
 
         //dd($mailData);
 
-        Mail::send(new UserActivationMail($mailData));
+        Mail::send(new UserActivationMail($mailData, $settings));
 
         //redirect back
         return redirect()->back()->with('notification', 'Gebruiker uitgenodigd!');

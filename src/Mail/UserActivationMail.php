@@ -13,14 +13,17 @@ class UserActivationMail extends Mailable
 
     public $mailData;
 
+    public $settings;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($mailData)
+    public function __construct($mailData, $settings)
     {
         $this->mailData = $mailData;
+        $this->settings = $settings;
     }
 
     /**
@@ -32,7 +35,7 @@ class UserActivationMail extends Mailable
     {
         return $this->from($this->mailData['from'], $this->mailData['from_name'])
                     ->to($this->mailData['to'], $this->mailData['to_name'])
-                    ->subject('Activeer je account op domein.be')
+                    ->subject('Activeer je account op '.$this->settings['domain'])
                     ->view('chuckcms::backend.mails.userActivationMail');
     }
 }

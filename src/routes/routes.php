@@ -182,7 +182,7 @@ Route::group(['middleware' => ['web']], function() {
 		
 	// Dashboard Users Routes...
 		Route::group(['middleware' => ['permission:show users']], function () {
-			Route::get('/dashboard/users', 'Chuckbe\Chuckcms\Controllers\DashboardController@users')->name('dashboard.users');
+			Route::get('/dashboard/users', 'Chuckbe\Chuckcms\Controllers\UserController@index')->name('dashboard.users');
 		});
 
 		Route::group(['middleware' => ['permission:invite users']], function () {

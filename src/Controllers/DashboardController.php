@@ -162,20 +162,6 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function users()
-    {
-        $template = $this->template->where('active', 1)->where('type', 'admin')->first();
-        $front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
-        $users = $this->user->get();
-        
-        return view('chuckcms::backend.users.index', compact('template', 'front_template', 'users'));
-    }
-
-    /**
-     * Show the dashboard -> pages.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function settings()
     {
         $template = $this->template->where('active', 1)->where('type', 'admin')->first();

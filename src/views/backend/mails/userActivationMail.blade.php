@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Bedankt om je te registreren.</title>
+<title>Je bent uitgenodigd voor een account op {{ $settings['domain'] }}</title>
+<!-- Thanks Litmus -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -102,12 +103,12 @@
 
 <!-- HIDDEN PREHEADER TEXT -->
 <div style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
-    Registreer nu je account op domein.be
+    {{ $mailData['user']->name }} heeft jou een uitnodiging verzonden om jouw ChuckCMS account te activeren
 </div>
 
 <!-- HEADER -->
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
-	@if(ChuckSite::getSetting('logo.href') !== null)    
+    @if($settings['logo']['href'] !== null)
     <tr>
         <td bgcolor="#ffffff" align="center">
             <!--[if (gte mso 9)|(IE)]>
@@ -117,9 +118,9 @@
             <![endif]-->
             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px;" class="wrapper">
                 <tr>
-                    <td align="center" valign="top" style="padding: 25px 0;" class="logo">
-                        <a href="#" target="_blank">
-                            <img alt="Logo" src="{{ ChuckSite::getSetting('logo.href') }}" width="250" style="display: block; font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px;" border="0">
+                    <td align="center" valign="top" style="padding: 15px 0;" class="logo">
+                        <a href="{{ $settings['domain'] }}" target="_blank">
+                            <img alt="Logo" src="{{ $settings['domain'] }}{{ $settings['logo']['href'] }}" height="60" style="display: block; font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px;" border="0">
                         </a>
                     </td>
                 </tr>
@@ -133,7 +134,7 @@
     </tr>
     @endif
     <tr>
-        <td bgcolor="#ffffff" align="center" style="padding: 15px;">
+        <td bgcolor="#D8F1FF" align="center" style="padding: 70px 15px 70px 15px;" class="section-padding">
             <!--[if (gte mso 9)|(IE)]>
             <table align="center" border="0" cellspacing="0" cellpadding="0" width="500">
             <tr>
@@ -142,43 +143,38 @@
             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px;" class="responsive-table">
                 <tr>
                     <td>
-                        <!-- COPY -->
+                        <!-- HERO IMAGE -->
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
-                                <td align="left" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding-copy">
-                                	<h2>Bedankt om je te registreren voor domein.com</h2>
-                                    <button class="btn btn-primary">Activeer je account</button>
+                                  <td class="padding" align="center">
+                                    <a href="{{ $settings['domain'] }}" target="_blank"><img src="{{ URL::to('chuckbe/chuckcms/assets/img/mails/chuckcms.png') }}" width="500" height="300" border="0" alt="Insert alt text here" style="display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;" class="img-max"></a>
                                 </td>
                             </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-            <!--[if (gte mso 9)|(IE)]>
-            </td>
-            </tr>
-            </table>
-            <![endif]-->
-        </td>
-    </tr>
-    
-    <tr>
-        <td bgcolor="#ffffff" align="center" style="padding: 15px;">
-            <!--[if (gte mso 9)|(IE)]>
-            <table align="center" border="0" cellspacing="0" cellpadding="0" width="500">
-            <tr>
-            <td align="center" valign="top" width="500">
-            <![endif]-->
-            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 500px;" class="responsive-table">
-                <tr>
-                    <td>
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
                                 <td>
                                     <!-- COPY -->
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
-                                            <td align="left" style="padding: 0 0 0 0; font-size: 14px; line-height: 18px; font-family: Helvetica, Arial, sans-serif; color: #aaaaaa; font-style: italic;" class="padding-copy"></td>
+                                            <td align="center" style="font-size: 25px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;" class="padding">Ongelimiteerde Mogelijkheden</td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" class="padding">Met het ChuckCMS systeem kan jij de website: {{ $settings['domain'] }} makkelijk gaan beheren. Heb je nog vragen of wil je nog meer weten? Kijk dan eens op: https://chuckcms.com</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <!-- BULLETPROOF BUTTON -->
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td align="center" style="padding-top: 25px;" class="padding">
+                                                <table border="0" cellspacing="0" cellpadding="0" class="mobile-button-container">
+                                                    <tr>
+                                                        <td align="center" style="border-radius: 3px;" bgcolor="#256F9C"><a href="{{ route('activate.user.index', ['token' => $mailData['token']]) }}" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; border-radius: 3px; padding: 15px 25px; border: 1px solid #256F9C; display: inline-block;" class="mobile-button">Activeer jouw account &rarr;</a></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
                                         </tr>
                                     </table>
                                 </td>
@@ -205,9 +201,11 @@
             <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" style="max-width: 500px;" class="responsive-table">
                 <tr>
                     <td align="center" style="font-size: 12px; line-height: 18px; font-family: Helvetica, Arial, sans-serif; color:#666666;">
-                        
+                        ADRES
                         <br>
-                        
+                        {{-- <a href="http://litmus.com" target="_blank" style="color: #666666; text-decoration: none;">Unsubscribe</a>
+                        <span style="font-family: Arial, sans-serif; font-size: 12px; color: #444444;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                        <a href="http://litmus.com" target="_blank" style="color: #666666; text-decoration: none;">View this email in your browser</a> --}}
                     </td>
                 </tr>
             </table>
