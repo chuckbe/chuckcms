@@ -27,6 +27,7 @@ php artisan vendor:publish --tag=chuckcms-config --force
 
 - publish error views?
 
+
 - Add Spatie's Permission package middleware to App\Kernel $protectedMiddleware array
 ```
 'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
