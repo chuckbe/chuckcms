@@ -17,6 +17,18 @@ class ChuckcmsServiceProvider extends ServiceProvider
     public function boot()
     {
         include __DIR__.'/Routes/routes.php';
+        
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        
+        $this->publishes([
+            __DIR__.'/resources' => public_path('chuckbe/chuckcms'),
+        ], 'chuckcms-public');
+
+        $this->publishes([
+            __DIR__ . '/../config/menu.php' => config_path('menu'),
+            __DIR__ . '/../config/lfm.php' => config_path('lfm'),
+            __DIR__ . '/../config/lang.php' => config_path('lang'),
+        ], 'chuckcms-config');
 
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -25,18 +37,6 @@ class ChuckcmsServiceProvider extends ServiceProvider
                 GenerateRolesPermissions::class,
             ]);
         }
-        
-        $this->loadMigrationsFrom(__DIR__.'/migrations');
-        
-        $this->publishes([
-            __DIR__.'/resources' => public_path('chuckbe/chuckcms'),
-        ], 'chuckcms-public');
-
-        $this->publishes([
-            __DIR__ . '/config/menu.php' => config_path('menu'),
-            __DIR__ . '/config/lfm.php' => config_path('lfm'),
-            __DIR__ . '/config/lang.php' => config_path('lang'),
-        ], 'chuckcms-config');
     }
 
     /**
@@ -74,15 +74,15 @@ class ChuckcmsServiceProvider extends ServiceProvider
 
 
         $this->mergeConfigFrom(
-            __DIR__ . '/config/menu.php', 'menu'
+            __DIR__ . '/../config/menu.php', 'menu'
         );
 
         $this->mergeConfigFrom(
-            __DIR__ . '/config/lfm.php', 'lfm'
+            __DIR__ . '/../config/lfm.php', 'lfm'
         );
 
         $this->mergeConfigFrom(
-            __DIR__ . '/config/lang.php', 'lang'
+            __DIR__ . '/../config/lang.php', 'lang'
         );
     }
 }

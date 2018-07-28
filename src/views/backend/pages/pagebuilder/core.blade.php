@@ -71,7 +71,7 @@ i{
 
 @section('scripts')
 	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-	<script src="{{ URL::to('chuckbe/chuckcms/js/plugins/ace/ace.js') }}"></script>
+	<script src="https://cdn.chuck.be/plugins/ace/ace.js"></script>
 @endsection
 
 @section('content')

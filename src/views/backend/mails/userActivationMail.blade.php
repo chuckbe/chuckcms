@@ -147,7 +147,7 @@
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tr>
                                   <td class="padding" align="center">
-                                    <a href="{{ $settings['domain'] }}" target="_blank"><img src="{{ URL::to('chuckbe/chuckcms/assets/img/mails/chuckcms.png') }}" width="500" height="300" border="0" alt="Insert alt text here" style="display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;" class="img-max"></a>
+                                    <a href="{{ $settings['domain'] }}" target="_blank"><img src="https://cdn.chuck.be/assets/img/mails/chuckcms.png" width="500" height="300" border="0" alt="Insert alt text here" style="display: block; padding: 0; color: #666666; text-decoration: none; font-family: Helvetica, arial, sans-serif; font-size: 16px;" class="img-max"></a>
                                 </td>
                             </tr>
                             <tr>

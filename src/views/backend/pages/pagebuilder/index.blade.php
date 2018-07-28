@@ -209,8 +209,8 @@
 
 @section('scripts')
 	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-	<script src="{{ URL::to('chuckbe/chuckcms/js/plugins/sweetalert2.all.js') }}"></script>
-	<script src="{{ URL::to('chuckbe/chuckcms/js/plugins/ace/ace.js') }}"></script>
+	<script src="https://cdn.chuck.be/plugins/sweetalert2.all.js"></script>
+	<script src="https://cdn.chuck.be/plugins/ace/ace.js"></script>
 	 <script src="{{ URL::to('vendor/laravel-filemanager/js/lfm.js') }}"></script>
 	<script>
 
