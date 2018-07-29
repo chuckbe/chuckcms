@@ -168,15 +168,16 @@ Route::group(['middleware' => ['web']], function() {
 		});
 
 		Route::group(['middleware' => ['permission:create repeaters entry']], function () {
-			
+			Route::get('/dashboard/content/repeaters/{slug}/create', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterEntriesCreate')->name('dashboard.content.repeaters.entries.create');
+			Route::post('/dashboard/content/repeaters/entries/save', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterEntriesSave')->name('dashboard.content.repeaters.entries.save');
 		});
 
 		Route::group(['middleware' => ['permission:edit repeaters entry']], function () {
-			
+			Route::get('/dashboard/content/repeaters/{slug}/edit/{id}', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterEntriesEdit')->name('dashboard.content.repeaters.entries.edit');
 		});
 
 		Route::group(['middleware' => ['permission:delete repeaters entry']], function () {
-			
+			Route::post('/dashboard/content/repeaters/entries/delete', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterEntriesDelete')->name('dashboard.content.repeaters.entries.delete');
 		});
 		//Route::post('/dashboard/content/repeaters/new', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterNew')->name('dashboard.content.resources.new');
 		

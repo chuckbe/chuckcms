@@ -234,6 +234,17 @@
 	
 	<script>
 		$( document ).ready(function() { 
+      function destroySelect2(){
+        var $select = $('.select2').select2();
+        $select.each(function(i,item){
+          $(item).select2("destroy");
+        });
+      };
+
+      function initSelect2(){
+        $('.select2').select2();
+      };
+
 			$("#content_slug").keyup(function(){
 			    var text = $(this).val();
 			    slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
@@ -241,10 +252,12 @@
 			});
 
       $('#add_extra_field_btn').click(function(){
+        destroySelect2();
         $('.field_row_container:first').clone().appendTo('.field_container_wrapper');
         if($('.field_row_container').length > 1){
           $('#remove_last_field_btn').show();
         }
+        initSelect2();
       });
 
       $('#remove_last_field_btn').click(function(){

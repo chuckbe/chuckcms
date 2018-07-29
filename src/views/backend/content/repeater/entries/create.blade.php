@@ -13,7 +13,7 @@
         <div class="card card-transparent">
           
           <div class="card-header ">
-            <div class="card-title">Bewerk huidige {{ $content->slug }} ingave</div>
+            <div class="card-title">Maak een nieuwe {{ $content->slug }} ingave</div>
           </div>
 
           <div class="card-block">
@@ -21,16 +21,15 @@
               <div class="col-lg-12">
 
                 @foreach($content->content['fields'] as $keyName => $input)
-                  @php ($cleanKey = str_replace($content->slug . '_', '', $keyName) )
                   <div class="form-group form-group-default @if($input['required'] == 'true') required @endif">
                     @if($input['type'] == 'text' || $input['type'] == 'email' || $input['type'] == 'password')
                       <label for="{{$keyName}}">{{ $input['label'] }}</label>
-                      <input type="{{ $input['type'] }}" name="{{$keyName}}" class="{{ $input['class'] }}" placeholder="{{ $input['placeholder'] }}" @if(array_key_exists($cleanKey, $repeater->json)) value="{{ $repeater->json[$cleanKey] }}" @endif  @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>
+                      <input type="{{ $input['type'] }}" name="{{$keyName}}" class="{{ $input['class'] }}" placeholder="{{ $input['placeholder'] }}" value="{{ $input['value'] }}" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>
                     @endif
 
                     @if($input['type'] == 'textarea')
                       <label for="{{ $keyName }}">{{ $input['label'] }}</label>
-                      <textarea name="{{ $keyName }}" class="{{ $input['class'] }}" placeholder="{{ $input['placeholder'] }}" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>@if(array_key_exists($cleanKey, $repeater->json)){{ $repeater->json[$cleanKey] }}@endif</textarea>
+                      <textarea name="{{ $keyName }}" class="{{ $input['class'] }}" placeholder="{{ $input['placeholder'] }}" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>{{ $input['value'] }}</textarea>
                     @endif
                   </div>
                 @endforeach
@@ -52,8 +51,7 @@
           <p class="pull-right">
             <input type="hidden" name="_token" value="{{ Session::token() }}">
             <input type="hidden" name="content_slug" value="{{ $content->slug }}">
-            <input type="hidden" name="repeater_id" value="{{ $repeater->id }}">
-            <button type="submit" name="edit" class="btn btn-success btn-cons pull-right" value="1">Opslaan</button>
+            <button type="submit" name="create" class="btn btn-success btn-cons pull-right" value="1">Opslaan</button>
             <a href="{{ route('dashboard.content.repeaters.entries', ['slug' => $content->slug]) }}" class="pull-right"><button type="button" class="btn btn-info btn-cons">Annuleren</button></a>
           </p>
         </div>

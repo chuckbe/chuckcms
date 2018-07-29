@@ -168,21 +168,9 @@ class DashboardController extends Controller
     {
         $page = $this->page->getByIdWithBlocks($page_id);
         $template = $this->template->where('id', $page->template_id)->where('type', 'default')->first();
-        $block_dir = array_slice(scandir('chuckbe/'.$template->slug.'/blocks'), 2);
-        $blocks = [];
-        foreach($block_dir as $block){
-            if((strpos($block, '.html') !== false)){
-                $blockname = 
-                $blocks[] = array(
-                    'name' => str_replace('.html', '', $block),
-                    'location' => 'chuckbe/'.$template->slug.'/blocks/'.$block,
-                    'img' => 'chuckbe/'.$template->slug.'/blocks/'.str_replace('.html', '.jpg', $block)
-                );
-            }
-        }
-        //dd($blocks);
         $pageblocks = $this->pageBlockRepository->getRenderedByPageBlocks($this->pageblock->getAllByPageId($page->id));
-        return view('chuckcms::backend.pages.pagebuilder.core', compact('template', 'page', 'pageblocks', 'blocks'));
+
+        return view('chuckcms::backend.pages.pagebuilder.core', compact('template', 'page', 'pageblocks'));
     }
 
     /**

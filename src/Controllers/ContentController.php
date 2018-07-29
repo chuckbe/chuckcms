@@ -11,7 +11,6 @@ use Chuckbe\Chuckcms\Models\User;
 use ChuckSite;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 class ContentController extends Controller
@@ -139,5 +138,45 @@ class ContentController extends Controller
         $content = Content::where('slug', $slug)->first();
         $repeaters = $this->repeater->where('slug', $slug)->get();
         return view('chuckcms::backend.content.repeater.entries.index', compact('content','repeaters'));
+    }
+
+    public function repeaterEntriesCreate($slug)
+    {
+        $content = Content::where('slug', $slug)->first();
+        return view('chuckcms::backend.content.repeater.entries.create', compact('content'));
+    }
+
+    public function repeaterEntriesSave(Request $request)
+    {
+        $slug = $request->get('content_slug');
+        $content = $this->content->getBySlug($slug);
+        $rules = $content->getRules();
+        $this->validate(request(), $rules);
+        $store = $content->storeEntry($request);
+        if($store == 'success'){
+            return redirect()->route('dashboard.content.repeaters.entries', ['slug' => $slug]);
+        }else {
+            // error catching ... ?
+        }
+    }
+
+    public function repeaterEntriesEdit($slug, $id)
+    {
+        $content = Content::where('slug', $slug)->first();
+        $repeater = Repeater::where('id', $id)->first();
+        return view('chuckcms::backend.content.repeater.entries.edit', compact('content', 'repeater'));
+    }
+
+    /**
+     * Delete the resource from the page.
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function repeaterEntriesDelete(Request $request)
+    {
+        // AUTHORIZE ... COMES HERE
+        $status = $this->content->deleteById($request->get('repeater_id'));
+        return $status;
     }
 }

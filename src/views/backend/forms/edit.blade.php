@@ -56,8 +56,9 @@
             </div>
 
             <div class="tab-pane fade" id="ffields">
+              <div class="field_container_wrapper">
               @foreach($form->form['fields'] as $fKey => $fValue)
-              <div class="row field-input-group">
+              <div class="row field-input-group field_row_container">
                 <div class="col-lg-12">
                   <div class="row">
                     <div class="col-md-4">
@@ -128,7 +129,7 @@
                   </div>
                   <div class="form-group form-group-default">
                     <label>Verplicht veld</label>
-                    <select class="full-width" data-init-plugin="select2" name="fields_required[]" data-minimum-results-for-search="-1">
+                    <select class="full-width select2" data-init-plugin="select2" name="fields_required[]" data-minimum-results-for-search="-1">
                       <option value="true" @if($fValue['required'] == 'true') selected @endif>Ja</option>
                       <option value="false" @if($fValue['required'] !== 'true') selected @endif>Nee</option>
                     </select>
@@ -137,12 +138,13 @@
               </div>
               <hr>
               @endforeach
+              </div>
               <div class="row">
                 <div class="col-lg-6">
-                  <button class="btn btn-primary btn-lg" id="add_extra_field_btn"><i class="fa fa-plus"></i> Extra veld toevoegen</button>
+                  <button class="btn btn-primary btn-lg" type="button" id="add_extra_field_btn"><i class="fa fa-plus"></i> Extra veld toevoegen</button>
                 </div>
                 <div class="col-lg-6">
-                  <button class="btn btn-warning btn-lg" id="remove_last_field_btn" @if(count($form->form['fields']) == 1) style="display:none;" @endif><i class="fa fa-minus"></i> Laatste veld verwijderen</button>
+                  <button class="btn btn-warning btn-lg" type="button" id="remove_last_field_btn" @if(count($form->form['fields']) == 1) style="display:none;" @endif><i class="fa fa-minus"></i> Laatste veld verwijderen</button>
                 </div>
               </div>
             </div>
@@ -295,6 +297,18 @@
 	
 	<script>
 		$( document ).ready(function() { 
+      function destroySelect2(){
+        var $select = $('.select2').select2();
+        $select.each(function(i,item){
+          $(item).select2("destroy");
+        });
+      };
+
+      function initSelect2(){
+        $('.select2').select2();
+      };
+
+
 			$("#page_title").keyup(function(){
 			    var text = $(this).val();
 			    slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
@@ -303,10 +317,12 @@
 			});
 
       $('#add_extra_field_btn').click(function(){
+        destroySelect2();
         $('.field_row_container:first').clone().appendTo('.field_container_wrapper');
         if($('.field_row_container').length > 1){
           $('#remove_last_field_btn').show();
         }
+        initSelect2();
       });
 
       $('#remove_last_field_btn').click(function(){

@@ -127,7 +127,7 @@
                     </div>
                     <div class="form-group form-group-default">
                       <label>Verplicht veld</label>
-                      <select class="full-width" data-init-plugin="select2" name="fields_required[]" data-minimum-results-for-search="-1">
+                      <select class="full-width select2" data-init-plugin="select2" name="fields_required[]" data-minimum-results-for-search="-1">
                         <option value="true">Ja</option>
                         <option value="false" selected>Nee</option>
                       </select>
@@ -293,6 +293,17 @@
 	
 	<script>
 		$( document ).ready(function() { 
+      function destroySelect2(){
+        var $select = $('.select2').select2();
+        $select.each(function(i,item){
+          $(item).select2("destroy");
+        });
+      };
+
+      function initSelect2(){
+        $('.select2').select2();
+      };
+
 			$("#page_title").keyup(function(){
 			    var text = $(this).val();
 			    slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
@@ -301,10 +312,12 @@
 			});
 
       $('#add_extra_field_btn').click(function(){
+        destroySelect2();
         $('.field_row_container:first').clone().appendTo('.field_container_wrapper');
         if($('.field_row_container').length > 1){
           $('#remove_last_field_btn').show();
         }
+        initSelect2();
       });
 
       $('#remove_last_field_btn').click(function(){
