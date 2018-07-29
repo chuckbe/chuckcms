@@ -19,52 +19,29 @@
       	<div class="modal-body">
       		<form action="">
       			<div class="panel-group">
+      				@foreach($blocks as $bKey => $bValue)
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title">
-								<a data-toggle="collapse" href="#collapse1">Sliders & Headers</a>
+								<a data-toggle="collapse" href="#{{ $bKey }}" style="text-transform:capitalize">{{ str_replace('-', ' ', $bKey) }}</a>
 							</h4>
 						</div>
-						<div id="collapse1" class="panel-collapse collapse">
-							<div class="panel-body">Panel Body</div>
-							<div class="panel-footer">Panel Footer</div>
-						</div>
-					</div>
-
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-								<a data-toggle="collapse" href="#collapse2">Content</a>
-							</h4>
-						</div>
-						<div id="collapse2" class="panel-collapse collapse">
+						<div id="{{ $bKey }}" class="panel-collapse collapse">
 							<div class="panel-body">
 								<div class="col-sm-12">
-									@foreach($blocks as $block)
+									@foreach($bValue as $block)
 									<div class="col-sm-3">
 										<a class="pb_add_block_top_button" data-location="{{ $block['location'] }}" data-name="{{ $block['name'] }}">
-											<img src="{{ URL::to($block['img']) }}" class="img-responsive" alt="{{ $block['name'] }}">
+											<img src="{{ URL::to($block['img']) }}" class="img-responsive text-center" alt="{{ $block['name'] }}" style="margin:0 auto 0 auto;">
 											<p class="text-center">{{ $block['name'] }}</p>
 										</a>
 									</div>
 									@endforeach
 								</div>
 							</div>
-							<div class="panel-footer">Panel Footer</div>
 						</div>
 					</div>
-
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h4 class="panel-title">
-								<a data-toggle="collapse" href="#collapse3">CTA's</a>
-							</h4>
-						</div>
-						<div id="collapse3" class="panel-collapse collapse">
-							<div class="panel-body">Panel Body</div>
-							<div class="panel-footer">Panel Footer</div>
-						</div>
-					</div>
+					@endforeach
 				</div>
       		</form>
       	</div>
@@ -173,14 +150,14 @@
     <div class="modal-content">
       	<div class="modal-header">
         	<button type="button" class="close" data-dismiss="modal">&times;</button>
-        	<h4 class="modal-title">Bewerken:</h4>
+        	<h4 class="modal-title">Wijzig afbeelding:</h4>
       	</div>
       	<div class="modal-body">
       		<div class="form-group">
       			<div class="input-group">
 					<span class="input-group-btn">
 						<a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-							<i class="fa fa-picture-o"></i> Choose
+							<i class="fa fa-camera"></i> Kies
 						</a>
 					</span>
 					<input id="thumbnail" class="form-control edit_image_value" id="edit_image_value" type="text" name="filepath">
@@ -191,7 +168,7 @@
       	</div>
       	<div class="modal-footer">
         	<button type="button" class="btn btn-default" data-dismiss="modal">Sluiten</button>
-        	<button type="button" class="btn btn-success" data-dismiss="modal">Bewerken</button>
+        	<button type="button" class="btn btn-success" id="edit_image_btn">Bewerken</button>
       	</div>
     </div>
   </div>
@@ -209,8 +186,8 @@
 
 @section('scripts')
 	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-	<script src="https://cdn.chuck.be/plugins/sweetalert2.all.js"></script>
-	<script src="https://cdn.chuck.be/plugins/ace/ace.js"></script>
+	<script src="https://cdn.chuck.be/assets/plugins/sweetalert2.all.js"></script>
+	<script src="https://cdn.chuck.be/assets/plugins/ace/ace.js"></script>
 	 <script src="{{ URL::to('vendor/laravel-filemanager/js/lfm.js') }}"></script>
 	<script>
 

@@ -1,4 +1,4 @@
-@extends('chuckcms-template-nairobi::templates.' . $template->slug . '.layouts.builder')
+@extends($template->hintpath . '::templates.' . $template->slug . '.layouts.builder')
 
 @section('title')
     {{ $page->title }}
@@ -6,7 +6,7 @@
 
 @section('meta')
 <meta name="author" content="ChuckCMS" />
-<meta name="description" content="Template Antwerp">
+<meta name="description" content="Pagebuilder ChuckCMS">
 @endsection
 
 @section('css')
@@ -71,7 +71,7 @@ i{
 
 @section('scripts')
 	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-	<script src="https://cdn.chuck.be/plugins/ace/ace.js"></script>
+	<script src="https://cdn.chuck.be/assets/plugins/ace/ace.js"></script>
 @endsection
 
 @section('content')

@@ -114,21 +114,49 @@ class DashboardController extends Controller
     {
         $page = $this->page->getByIdWithBlocks($page_id);
         $template = $this->template->where('id', $page->template_id)->where('type', 'default')->first();
-        $block_dir = array_slice(scandir('chuckbe/'.$template->slug.'/blocks'), 2);
-        $blocks = [];
-        foreach($block_dir as $block){
-            if((strpos($block, '.html') !== false)){
-                $blockname = 
-                $blocks[] = array(
-                    'name' => str_replace('.html', '', $block),
-                    'location' => 'chuckbe/'.$template->slug.'/blocks/'.$block,
-                    'img' => 'chuckbe/'.$template->slug.'/blocks/'.str_replace('.html', '.jpg', $block)
-                );
-            }
-        }
-        //dd($blocks);
         $pageblocks = $this->pageBlockRepository->getRenderedByPageBlocks($this->pageblock->getAllByPageId($page->id));
+
+        $block_dir = array_slice(scandir('chuckbe/'.$template->slug.'/blocks'), 2);        
+        $blocks = $this->dirToArray($template->path.'/blocks');
+        
         return view('chuckcms::backend.pages.pagebuilder.index', compact('template', 'page', 'pageblocks', 'blocks'));
+    }
+
+    public function dirToArray($dir) { 
+   
+        $result = array(); 
+
+        $cdir = scandir($dir); 
+        foreach ($cdir as $key => $value) 
+        { 
+            if (!in_array($value,array(".",".."))) { 
+                if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) { 
+                    $result[$value] = $this->dirToArray($dir . DIRECTORY_SEPARATOR . $value); 
+                } 
+                else { 
+                    if ($value !== '.DS_Store' && (strpos($value, '.html') !== false) ) {
+                        $blockKey = str_replace('.html', '', $value);
+                        $blockName = str_replace('-', ' ', $blockKey);
+                        if (file_exists($dir . DIRECTORY_SEPARATOR . $blockKey . '.jpg')) {
+                           $blockImage = $dir . DIRECTORY_SEPARATOR . $blockKey . '.jpg';
+                        } elseif (file_exists($dir . DIRECTORY_SEPARATOR . $blockKey . '.jpeg')) {
+                            $blockImage = $dir . DIRECTORY_SEPARATOR . $blockKey . '.jpeg';
+                        } elseif (file_exists($dir . DIRECTORY_SEPARATOR . $blockKey . '.png')) {
+                            $blockImage = $dir . DIRECTORY_SEPARATOR . $blockKey . '.png';
+                        } else {
+                            $blockImage = 'https://ui-avatars.com/api/?length=5&size=150&name=BLOCK&background=0D8ABC&color=fff&font-size=0.2';
+                        }
+                        $result[$blockKey] = array(
+                            'name' => $blockName,
+                            'location' => $dir . DIRECTORY_SEPARATOR . $value,
+                            'img' => $blockImage
+                        );
+                    }
+                } 
+            } 
+        } 
+
+        return $result; 
     }
 
     /**
