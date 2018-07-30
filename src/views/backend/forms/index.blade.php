@@ -5,7 +5,7 @@
 @endsection
 
 @section('add_record')
-	@can('create pages')
+	@can('create forms')
 	<a href="{{ route('dashboard.forms.create') }}" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuw Formulier Toe</a>
 	@endcan
 @endsection
@@ -24,6 +24,58 @@
     <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
     <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
     <script src="https://cdn.chuck.be/assets/js/tables.js" type="text/javascript"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/sweetalert2.all.js"></script>
+    <script>
+    $( document ).ready(function (){
+    	$('.form_delete').each(function(){
+			var form_id = $(this).attr("data-id");
+			var token = '{{ Session::token() }}';
+		  	$(this).click(function (event) {
+		  		event.preventDefault();
+		  		swal({
+					title: 'Are you sure?',
+					text: "This will also delete all of the form entries. You won't be able to revert this!",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Yes, delete it!'
+				}).then((result) => {
+				  	if (result.value) { 
+				  		$.ajax({
+	                        method: 'POST',
+	                        url: "{{ route('dashboard.forms.delete') }}",
+	                        data: { 
+	                        	form_id: form_id, 
+	                        	_token: token
+	                        }
+	                    })
+	                    .done(function (data) {
+	                    	if(data == 'success'){
+	                    		$(".form_line[data-id='"+form_id+"']").first().remove();
+	                    		swal(
+						      		'Deleted!',
+						      		'The form and its entries has been deleted.',
+						      		'success'
+						    	)
+	                    	} else {
+	                    		swal(
+						      		'Oops!',
+						      		'Something went wrong...',
+						      		'danger'
+						    	)
+	                    	}
+
+	                        
+	                    });
+				    	
+				  	}
+				})
+		    });
+		});
+    });
+
+    </script>
 @endsection
 
 @section('content')
@@ -54,13 +106,13 @@
 						</thead>
 							<tbody>
 								@foreach($forms as $form)
-								<tr>
+								<tr class="form_line" data-id="{{ $form->id }}">
 									<td class="v-align-middle">{{ $form->id }}</td>
 							    	<td class="v-align-middle semi-bold">{{ $form->title }}</td>
 							    	<td class="v-align-middle">{{$form->slug}}</td>
 							    	<td class="v-align-middle semi-bold">
 							    		@can('edit forms')
-							    		<a href="{{ route('dashboard.forms.edit', ['slug' => $form->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    		<a href="{{ route('dashboard.forms.edit', ['slug' => $form->slug]) }}" class="btn btn-primary btn-sm btn-rounded m-r-20">
 							    			<i data-feather="edit-2"></i> edit
 							    		</a>
 							    		@endcan
@@ -70,7 +122,7 @@
 							    		</a>
 							    		@endcan
 							    		@can('delete forms')
-							    		<a href="{{ route('dashboard.forms.delete', ['slug' => $form->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    		<a href="#" class="btn btn-danger btn-sm btn-rounded m-r-20 form_delete" data-id="{{ $form->id }}">
 							    			<i data-feather="trash"></i> delete
 							    		</a>
 							    		@endcan

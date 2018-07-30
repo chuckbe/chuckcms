@@ -2,12 +2,12 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
+use Chuckbe\Chuckcms\Mail\FormActionMail;
 use Chuckbe\Chuckcms\Models\Form;
 use Chuckbe\Chuckcms\Models\FormEntry;
-use Chuckbe\Chuckcms\Mail\FormActionMail;
+use Chuckbe\Chuckcms\Models\Template;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Mail;
@@ -16,15 +16,17 @@ class FormController extends Controller
 {
     private $form;
     private $formEntry;
+    private $template;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Form $form, FormEntry $formEntry)
+    public function __construct(Form $form, FormEntry $formEntry, Template $template)
     {
         $this->form = $form;
         $this->formEntry = $formEntry;
+        $this->template = $template;
     }
 
     public function index()
@@ -36,13 +38,15 @@ class FormController extends Controller
 
     public function create()
     {
-        return view('chuckcms::backend.forms.create');
+        $emailTemplates = $this->template->getEmailTemplates();
+        return view('chuckcms::backend.forms.create', compact('emailTemplates'));
     }
 
     public function edit($slug)
     {
         $form = $this->form->getBySlug($slug);
-        return view('chuckcms::backend.forms.edit', compact('form'));
+        $emailTemplates = $this->template->getEmailTemplates();
+        return view('chuckcms::backend.forms.edit', compact('form', 'emailTemplates'));
     }
 
     public function save(Request $request)
@@ -75,6 +79,7 @@ class FormController extends Controller
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['subject'] = $request->get('action_send_subject')[$g];
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['body'] = $request->get('action_send_body')[$g];
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['files'] = $request->get('action_send_files')[$g];
+                $form['actions']['send'][$request->get('action_send_slug')[$g]]['template'] = $request->get('action_send_template')[$g];
             }
 
         }
@@ -122,13 +127,13 @@ class FormController extends Controller
     /**
      * Delete the form.
      *
-     * @param  $slug
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function delete($slug)
+    public function delete(Request $request)
     {
         // AUTHORIZE ... COMES HERE
-        $status = $this->form->deleteBySlug($slug);
+        $status = $this->form->deleteById($request->get('form_id'));
         return $status;
     }
 

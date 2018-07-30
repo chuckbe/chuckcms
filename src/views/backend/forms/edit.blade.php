@@ -46,7 +46,7 @@
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Bestanden toegestaan</label>
-                        <select class="full-width" data-init-plugin="select2" name="files_allowed" data-minimum-results-for-search="-1">
+                        <select class="full-width select2" data-init-plugin="select2" name="files_allowed" data-minimum-results-for-search="-1">
             							<option value="true" @if($form->form['files'] == 'true') selected @endif>Ja</option>
             							<option value="false" @if($form->form['files'] !== 'true') selected @endif>Nee</option>
             						</select>
@@ -154,7 +154,7 @@
                 <div class="col-lg-12">
                       <div class="form-group form-group-default required ">
                         <label>Submissies opslaan in databank</label>
-                        <select class="full-width" data-init-plugin="select2" name="action_store" data-minimum-results-for-search="-1">
+                        <select class="full-width select2" data-init-plugin="select2" name="action_store" data-minimum-results-for-search="-1">
                           <option value="true" @if($form->form['actions']['store'] == 'true') selected @endif>Ja</option>
                           <option value="false" @if($form->form['actions']['store'] !== 'true') selected @endif>Nee</option>
                         </select>
@@ -162,7 +162,7 @@
                       <hr>
                       <div class="form-group form-group-default">
                         <label>Submissies verzenden</label>
-                        <select class="full-width" data-init-plugin="select2" name="action_send" data-minimum-results-for-search="-1">
+                        <select class="full-width select2" data-init-plugin="select2" name="action_send" data-minimum-results-for-search="-1">
                           <option value="true" @if($form->form['actions']['send'] !== 'false') selected @endif>Ja</option>
                           <option value="false" @if($form->form['actions']['send'] == 'false') selected @endif>Nee</option>
                         </select>
@@ -217,11 +217,23 @@
                       </div>
                       <div class="form-group form-group-default">
                         <label>Bestanden verzenden</label>
-                        <select class="full-width" data-init-plugin="select2" name="action_send_files[]" data-minimum-results-for-search="-1">
+                        <select class="full-width select2" data-init-plugin="select2" name="action_send_files[]" data-minimum-results-for-search="-1">
                           <option value="true" @if($sendValue['files'] == 'true') selected @endif>Ja</option>
                           <option value="false" @if($sendValue['files'] !== 'true') selected @endif>Nee</option>
                         </select>
                       </div>
+                      <div class="form-group form-group-default">
+                          <label>E-mail template</label>
+                          <select class="full-width select2" data-init-plugin="select2" name="action_send_template[]" data-minimum-results-for-search="-1">
+                            @foreach($emailTemplates as $template => $emails)
+                            <optgroup label="Template: '{{ $template }}'">
+                              @foreach($emails['files'] as $file)
+                                <option value="{{ $emails['hintpath'] . '::templates.' . $template . '.mails.' . $file }}" @if($sendValue['template'] == $emails['hintpath'] . '::templates.' . $template . '.mails.' . $file) selected @endif>{{ $file }} - {{ $template }}</option>
+                              @endforeach
+                            </optgroup>
+                            @endforeach
+                          </select>
+                        </div>
                       <hr>
                   </div>
                 </div>

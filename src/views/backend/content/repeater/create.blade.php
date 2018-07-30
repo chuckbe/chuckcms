@@ -38,14 +38,14 @@
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Type Content</label>
-                        <select class="full-width" data-init-plugin="select2" name="content_type" data-minimum-results-for-search="-1">
+                        <select class="full-width select2" data-init-plugin="select2" name="content_type" data-minimum-results-for-search="-1">
                           <option value="repeater" selected>Repeater</option>
                           <option value="module">Module</option>
                         </select>
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Bestanden toegestaan</label>
-                        <select class="full-width" data-init-plugin="select2" name="files_allowed" data-minimum-results-for-search="-1">
+                        <select class="full-width select2" data-init-plugin="select2" name="files_allowed" data-minimum-results-for-search="-1">
             							<option value="true">Ja</option>
             							<option value="false" selected>Nee</option>
             						</select>
@@ -127,14 +127,14 @@
                     </div>
                     <div class="form-group form-group-default">
                       <label>Verplicht veld</label>
-                      <select class="full-width" data-init-plugin="select2" name="fields_required[]" data-minimum-results-for-search="-1">
+                      <select class="full-width select2" data-init-plugin="select2" name="fields_required[]" data-minimum-results-for-search="-1">
                         <option value="true">Ja</option>
                         <option value="false" selected>Nee</option>
                       </select>
                     </div>
                     <div class="form-group form-group-default">
                       <label>Toon in tabel</label>
-                      <select class="full-width" data-init-plugin="select2" name="fields_table[]" data-minimum-results-for-search="-1">
+                      <select class="full-width select2" data-init-plugin="select2" name="fields_table[]" data-minimum-results-for-search="-1">
                         <option value="true">Ja</option>
                         <option value="false" selected>Nee</option>
                       </select>
@@ -159,7 +159,7 @@
                 <div class="col-lg-12">
                       <div class="form-group form-group-default required ">
                         <label>Submissies opslaan in databank</label>
-                        <select class="full-width" data-init-plugin="select2" name="action_store" data-minimum-results-for-search="-1">
+                        <select class="full-width select2" data-init-plugin="select2" name="action_store" data-minimum-results-for-search="-1">
                           <option value="true" selected>Ja</option>
                           <option value="false">Nee</option>
                         </select>
@@ -167,7 +167,7 @@
                       <hr>
                       <div class="form-group form-group-default required ">
                         <label>Detailpagina voor entries</label>
-                        <select class="full-width" data-init-plugin="select2" name="action_detail" data-minimum-results-for-search="-1">
+                        <select class="full-width select2" data-init-plugin="select2" name="action_detail" data-minimum-results-for-search="-1">
                           <option value="true">Ja</option>
                           <option value="false" selected>Nee</option>
                         </select>
@@ -185,24 +185,13 @@
                     </div>
                     <div class="form-group form-group-default">
                       <label>Pagina-type</label>
-                      <select class="full-width" data-init-plugin="select2" name="action_detail_page" data-minimum-results-for-search="-1">
+                      <select class="full-width select2" data-init-plugin="select2" name="action_detail_page" data-minimum-results-for-search="-1">
                         <option value="default" selected>Default</option>
                         <option value="other">Other type</option>
                       </select>
                     </div>
                     <hr>
                   </div>
-                </div>
-              </div>
-
-
-              <hr>
-              <div class="row">
-                <div class="col-lg-12">
-                      <div class="form-group form-group-default required ">
-                        <label>Doorsturen naar (URL)</label>
-                        <input type="text" class="form-control" placeholder="Hyperlink om naar door te sturen" id="action_redirect" name="action_redirect" required>
-                      </div>
                 </div>
               </div>
 

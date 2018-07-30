@@ -62,10 +62,26 @@ class Form extends Eloquent
         }
     }
 
+    public function deleteById($id)
+    {
+        $form = $this->where('id', $id)->first();
+        if($form){
+            FormEntry::where('slug', $form->slug)->delete();
+            if($form->delete()){
+                return 'success';
+            } else {
+                return 'error';
+            }
+        } else {
+            return 'false';
+        }
+    }
+
     public function deleteBySlug($slug)
     {
         $form = $this->where('slug', $slug)->first();
         if($form){
+            FormEntry::where('slug', $slug)->delete();
             if($form->delete()){
                 return 'success';
             } else {

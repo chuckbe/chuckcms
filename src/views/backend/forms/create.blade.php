@@ -45,7 +45,7 @@
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Bestanden toegestaan</label>
-                        <select class="full-width" data-init-plugin="select2" name="files_allowed" data-minimum-results-for-search="-1">
+                        <select class="full-width select2" data-init-plugin="select2" name="files_allowed" data-minimum-results-for-search="-1">
             							<option value="true">Ja</option>
             							<option value="false" selected>Nee</option>
             						</select>
@@ -152,7 +152,7 @@
                 <div class="col-lg-12">
                       <div class="form-group form-group-default required ">
                         <label>Submissies opslaan in databank</label>
-                        <select class="full-width" data-init-plugin="select2" name="action_store" data-minimum-results-for-search="-1">
+                        <select class="full-width select2" data-init-plugin="select2" name="action_store" data-minimum-results-for-search="-1">
                           <option value="true" selected>Ja</option>
                           <option value="false">Nee</option>
                         </select>
@@ -160,7 +160,7 @@
                       <hr>
                       <div class="form-group form-group-default">
                         <label>Submissies verzenden</label>
-                        <select class="full-width" data-init-plugin="select2" name="action_send" data-minimum-results-for-search="-1">
+                        <select class="full-width select2" data-init-plugin="select2" name="action_send" data-minimum-results-for-search="-1">
                           <option value="true">Ja</option>
                           <option value="false" selected>Nee</option>
                         </select>
@@ -174,19 +174,19 @@
                   <div class="col-lg-12">
                         <div class="form-group form-group-default required ">
                           <label>Slug</label>
-                          <input type="text" class="form-control" placeholder="slug" id="action_send_slug" name="action_send_slug[]" required>
+                          <input type="text" class="form-control" placeholder="slug" id="action_send_slug" name="action_send_slug[]">
                         </div>
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group form-group-default required ">
                               <label>E-mailadres geaddresseerde</label>
-                              <input type="text" class="form-control" placeholder="E-mailadres Geaddresseerde" id="action_send_to" name="action_send_to[]" required>
+                              <input type="text" class="form-control" placeholder="E-mailadres Geaddresseerde" id="action_send_to" name="action_send_to[]">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group form-group-default required ">
                               <label>Naam geaddresseerde</label>
-                              <input type="text" class="form-control" placeholder="Naam Geaddresseerde" id="action_send_to_name" name="action_send_to_name[]" required>
+                              <input type="text" class="form-control" placeholder="Naam Geaddresseerde" id="action_send_to_name" name="action_send_to_name[]">
                             </div>
                           </div>
                         </div>
@@ -195,30 +195,42 @@
                           <div class="col-md-6">
                             <div class="form-group form-group-default required ">
                               <label>E-mailadres afzender</label>
-                              <input type="text" class="form-control" placeholder="E-mailadres Afzender" id="action_send_from" name="action_send_from[]" required>
+                              <input type="text" class="form-control" placeholder="E-mailadres Afzender" id="action_send_from" name="action_send_from[]">
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group form-group-default required ">
                               <label>Naam afzender</label>
-                              <input type="text" class="form-control" placeholder="Naam Afzender" id="action_send_from_name" name="action_send_from_name[]" required>
+                              <input type="text" class="form-control" placeholder="Naam Afzender" id="action_send_from_name" name="action_send_from_name[]">
                             </div>
                           </div>
                         </div>
                         
                         <div class="form-group form-group-default required ">
                           <label>Onderwerp</label>
-                          <input type="text" class="form-control" placeholder="Onderwerp" id="action_send_subject" name="action_send_subject[]" required>
+                          <input type="text" class="form-control" placeholder="Onderwerp" id="action_send_subject" name="action_send_subject[]">
                         </div>
                         <div class="form-group form-group-default required ">
                           <label>Body</label>
-                          <textarea id="meta_keywords" name="action_send_body[]" placeholder="Hier gaat je bericht in" style="min-height:210px!important;" class="form-control" required></textarea>
+                          <textarea id="meta_keywords" name="action_send_body[]" placeholder="Hier gaat je bericht in" style="min-height:210px!important;" class="form-control"></textarea>
                         </div>
-                        <div class="form-group form-group-default">
+                        <div class="form-group form-group-default required">
                           <label>Bestanden verzenden</label>
-                          <select class="full-width" data-init-plugin="select2" name="action_send_files[]" data-minimum-results-for-search="-1">
+                          <select class="full-width select2" data-init-plugin="select2" name="action_send_files[]" data-minimum-results-for-search="-1">
                             <option value="true">Ja</option>
                             <option value="false" selected>Nee</option>
+                          </select>
+                        </div>
+                        <div class="form-group form-group-default required">
+                          <label>E-mail template</label>
+                          <select class="full-width select2" data-init-plugin="select2" name="action_send_template[]" data-minimum-results-for-search="-1">
+                            @foreach($emailTemplates as $template => $emails)
+                            <optgroup label="Template: '{{ $template }}'">
+                              @foreach($emails['files'] as $file)
+                                <option value="{{ $emails['hintpath'] . '::templates.' . $template . '.mails.' . $file }}">{{ $file }} - {{ $template }}</option>
+                              @endforeach
+                            </optgroup>
+                            @endforeach
                           </select>
                         </div>
                         <hr>

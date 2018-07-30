@@ -115,12 +115,12 @@
 									@endforeach
 							    	<td class="v-align-middle semi-bold">
 							    		@can('edit repeaters entry')
-							    		<a href="{{ route('dashboard.content.repeaters.entries.edit', ['slug' => $repeater->slug, 'id' => $repeater->id]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    		<a href="{{ route('dashboard.content.repeaters.entries.edit', ['slug' => $repeater->slug, 'id' => $repeater->id]) }}" class="btn btn-primary btn-sm btn-rounded m-r-20">
 							    			<i data-feather="edit-2"></i> edit
 							    		</a>
 							    		@endcan
 							    		@can('delete repeaters entry')
-							    		<a href="{{ route('dashboard.forms.delete', ['slug' => $repeater->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20 repeater_delete" data-id="{{ $repeater->id }}">
+							    		<a href="#" class="btn btn-danger btn-sm btn-rounded m-r-20 repeater_delete" data-id="{{ $repeater->id }}">
 							    			<i data-feather="trash"></i> delete
 							    		</a>
 							    		@endcan

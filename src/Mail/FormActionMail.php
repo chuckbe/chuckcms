@@ -33,6 +33,6 @@ class FormActionMail extends Mailable
         return $this->from($this->mailData['from'], $this->mailData['from_name'])
                     ->to($this->mailData['to'], $this->mailData['to_name'])
                     ->subject($this->mailData['subject'])
-                    ->view('chuckcms::templates.chuckv1.mails.form');
+                    ->view($this->mailData['template']);
     }
 }

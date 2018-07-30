@@ -5,7 +5,7 @@
 @endsection
 
 @section('add_record')
-	@can('create pages')
+	@can('create repeaters')
 	<a href="{{ route('dashboard.content.repeaters.create') }}" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuwe Repeater Toe</a>
 	@endcan
 @endsection
@@ -57,18 +57,18 @@
 									<td class="v-align-middle">{{ $repeater->id }}</td>
 							    	<td class="v-align-middle">{{$repeater->slug}}</td>
 							    	<td class="v-align-middle semi-bold">
-							    		@can('edit forms')
-							    		<a href="{{ route('dashboard.content.repeaters.edit', ['slug' => $repeater->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    		@can('edit repeaters')
+							    		<a href="{{ route('dashboard.content.repeaters.edit', ['slug' => $repeater->slug]) }}" class="btn btn-primary btn-sm btn-rounded m-r-20">
 							    			<i data-feather="edit-2"></i> edit
 							    		</a>
 							    		@endcan
-							    		@can('show formentries')
+							    		@can('show repeaters entries')
 							    		<a href="{{ route('dashboard.content.repeaters.entries', ['slug' => $repeater->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
 							    			<i data-feather="clipboard"></i> entries
 							    		</a>
 							    		@endcan
-							    		@can('delete forms')
-							    		<a href="{{ route('dashboard.forms.delete', ['slug' => $repeater->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    		@can('delete repeaters')
+							    		<a href="{{ route('dashboard.forms.delete', ['slug' => $repeater->slug]) }}" class="btn btn-danger btn-sm btn-rounded m-r-20">
 							    			<i data-feather="trash"></i> delete
 							    		</a>
 							    		@endcan

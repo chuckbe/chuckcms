@@ -103,7 +103,7 @@ Route::group(['middleware' => ['web']], function() {
 		});
 
 		Route::group(['middleware' => ['permission:delete forms']], function () {
-			Route::get('/dashboard/forms/{slug}/delete', 'Chuckbe\Chuckcms\Controllers\FormController@delete')->name('dashboard.forms.delete');
+			Route::post('/dashboard/forms/delete', 'Chuckbe\Chuckcms\Controllers\FormController@delete')->name('dashboard.forms.delete');
 		});
 	// Dashboard Forms Entries Routes...
 		Route::group(['middleware' => ['permission:show formentry']], function () {
