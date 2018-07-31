@@ -86,7 +86,7 @@ class GenerateSite extends Command
             $settings['socialmedia']['vimeo'] = 'https://vimeo.com/chuckcms';
             $settings['integrations']['ga-id'] = null;
             $settings['integrations']['g-site-verification'] = null;
-            $settings['logo']['href'] = '/chuckbe/chuckcms/assets/img/logo.png';
+            $settings['logo']['href'] = '/chuckbe/chuckcms/chuckcms-logo.png';
             $settings['lang'] = 'nl,en';
             $settings['domain'] = $domain;
             // create the site
