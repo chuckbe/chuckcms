@@ -6,31 +6,6 @@ use Chuckbe\Chuckcms\Models\Site;
 
 class SiteRepository
 {
-    public static function getSettings()
-    {
-        if (Site::first()) {
-            return Site::first()->settings;
-        }
-
-        return null;
-    }
-
-    public static function getSettingByName($var)
-    {
-        $result = self::resolveParameter($var, Site::first()->settings);
-        
-        return $result ? $result : null;
-    }
-
-    private static function resolveParameter($var, $parameters)
-    {
-        $split = explode('.', $var);
-        foreach ($split as $value) {
-            $parameters = $parameters[$value];
-        }
-
-        return $parameters;
-    }
 
     public static function updateOrCreateFromRequest($req)
     {
