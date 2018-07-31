@@ -30,7 +30,7 @@ class TemplateController extends Controller
      */
     public function index()
     {
-        $all_templates = $this->template->where('active', 1)->where('type', 'default')->get();
+        $templates = $this->template->where('active', 1)->where('type', 'default')->get();
         
         $pages = $this->page->get();
         
