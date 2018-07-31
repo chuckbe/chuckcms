@@ -214,7 +214,7 @@ $prefix = \Config::get('lfm.url_prefix', \Config::get('lfm.prefix', 'laravel-fil
 $as = 'unisharp.lfm.';
 $namespace = '\UniSharp\LaravelFilemanager\Controllers';
 
-// make sure authenticated
+// Routes for Package : Laravel Filemanager
 Route::group(compact('middleware', 'prefix', 'as', 'namespace'), function () {
 
     // Show LFM
@@ -303,7 +303,7 @@ Route::group(compact('middleware', 'prefix', 'as', 'namespace'), function () {
 Route::group([
 	'prefix' => LaravelLocalization::setLocale(),
    	'middleware' => [ 
-   		'Mcamara\LaravelLocalization\Middleware\localeSessionRedirect', 
+   		'Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect', 
    		'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter', 
    		'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath', 
    		'web' 
