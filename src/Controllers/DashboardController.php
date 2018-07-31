@@ -174,11 +174,9 @@ class DashboardController extends Controller
      */
     public function settings()
     {
-        $template = $this->template->where('active', 1)->where('type', 'admin')->first();
-        $front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
         $pages = $this->page->get();
         $site = $this->site->first(); //change method to get active site
         
-        return view('chuckcms::backend.settings.index', compact('template', 'front_template', 'pages', 'site'));
+        return view('chuckcms::backend.settings.index', compact('pages', 'site'));
     }
 }
