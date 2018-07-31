@@ -25,8 +25,11 @@ php artisan vendor:publish --tag=chuckcms-public --force
 php artisan vendor:publish --tag=chuckcms-config --force
 ```
 
-### Add Spatie's Permission package middleware to App\Http\Kernel.php
-```
+### Add Permission middleware from the Spatie package
+```php
+// App\Http\Kernel.php
+
+
 protected $routeMiddleware = [
     ...
     'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
