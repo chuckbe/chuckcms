@@ -25,9 +25,9 @@ class ChuckcmsServiceProvider extends ServiceProvider
         ], 'chuckcms-public');
 
         $this->publishes([
-            __DIR__ . '/../config/menu.php' => config_path('menu'),
-            __DIR__ . '/../config/lfm.php' => config_path('lfm'),
-            __DIR__ . '/../config/lang.php' => config_path('lang'),
+            __DIR__ . '/../config/menu.php' => config_path('menu.php'),
+            __DIR__ . '/../config/lfm.php' => config_path('lfm.php'),
+            __DIR__ . '/../config/lang.php' => config_path('lang.php'),
         ], 'chuckcms-config');
 
         if ($this->app->runningInConsole()) {
