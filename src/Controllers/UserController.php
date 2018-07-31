@@ -4,7 +4,6 @@ namespace Chuckbe\Chuckcms\Controllers;
 
 use Chuckbe\Chuckcms\Chuck\UserRepository;
 use Chuckbe\Chuckcms\Mail\UserActivationMail;
-use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\User;
 use ChuckSite;
 use Illuminate\Http\Request;
@@ -21,11 +20,10 @@ class UserController extends Controller
      *
      * @return void
      */
-    public function __construct(User $user, UserRepository $userRepository, Template $template)
+    public function __construct(User $user, UserRepository $userRepository)
     {
         $this->user = $user;
         $this->userRepository = $userRepository;
-        $this->template = $template;
     }
 
     /**
@@ -35,11 +33,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $template = $this->template->where('active', 1)->where('type', 'admin')->first();
-        $front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
         $users = $this->user->get();
         
-        return view('chuckcms::backend.users.index', compact('template', 'front_template', 'users'));
+        return view('chuckcms::backend.users.index', compact('users'));
     }
 
     public function invite(Request $request)
