@@ -7,7 +7,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Chuckbe\Chuckcms\Models\Page;
-use Chuckbe\Chuckcms\Models\Template;
 
 use Chuckbe\Chuckcms\Models\Menus;
 use Chuckbe\Chuckcms\Models\MenuItems;
@@ -20,9 +19,8 @@ class MenuController extends Controller
      *
      * @return void
      */
-    public function __construct(Template $template, Page $page)
+    public function __construct(Page $page)
     {
-        $this->template = $template;
         $this->page = $page;
     }
 
@@ -33,11 +31,9 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $template = $this->template->where('active', 1)->where('type', 'admin')->first();
-        $front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
         $pages = $this->page->get();
         
-        return view('chuckcms::backend.menus.index', compact('template', 'front_template', 'pages'));
+        return view('chuckcms::backend.menus.index', compact('pages'));
     }
 
     public function createnewmenu()
