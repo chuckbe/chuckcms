@@ -4,52 +4,52 @@
 
 ## Instructions
 
-- How to use these instructions?
+### How to use these instructions?
 
 ChuckCMS was created to add CMS functionality to an existing Laravel project. The package will take over all incoming routes except for existing one you might have for custom functionality. ChuckCMS will work best in a fresh installation, this package is not created for adding it to existing projects.
 
-### Installation guide
+## Installation guide
 
-- Install with composer
+### Install with composer
 ```
 composer require chuckbe/chuckcms
 ```
 
-- Publish public assets
+### Publish public assets
 ```
 php artisan vendor:publish --tag=chuckcms-public --force
 ```
 
-- Eventually publish config files
+### Eventually publish config files
 ```
 php artisan vendor:publish --tag=chuckcms-config --force
 ```
 
-- publish error views?
-
-
-- Add Spatie's Permission package middleware to App\Kernel $protectedMiddleware array
+### Add Spatie's Permission package middleware to App\Http\Kernel.php
 ```
-'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
-'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+protected $routeMiddleware = [
+    ...
+    'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+    'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+];
 ```
 
-- migrate
+### migrate
 ```
 php artisan migrate
 ```
 
-- generate a new site with following command
+### generate a new site with following command
 ```
 php artisan chuckcms:generate-site
 ```
 
-- generate all default roles and permission
+### generate all default roles and permission
 ```
 php artisan chuckcms:generate-roles-permissions
 ```
 
-- make a new super admin with following command
+### make a new super admin with following command
 ```
 php artisan chuckcms:generate-super-admin
 ```
