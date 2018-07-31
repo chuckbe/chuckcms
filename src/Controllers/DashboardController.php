@@ -41,10 +41,7 @@ class DashboardController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //$template = $this->template->where('active', 1)->where('type', 'admin')->first();
-        //$front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
-        
+    { 
         return view('chuckcms::backend.dashboard.index');
     }
 
@@ -55,8 +52,6 @@ class DashboardController extends Controller
      */
     public function pages()
     {
-        // $template = $this->template->where('active', 1)->where('type', 'admin')->first();
-        // $front_template = $this->template->where('active', 1)->where('type', 'default')->where('slug', $template->slug)->first();
         $pages = $this->page->get();
         
         return view('chuckcms::backend.pages.index', compact('pages'));
@@ -69,10 +64,9 @@ class DashboardController extends Controller
      */
     public function pageEdit($page_id)
     {
-        $template = $this->template->where('active', 1)->where('type', 'admin')->first();
         $templates = $this->template->where('active', 1)->where('type', 'default')->get();
         $page = $this->page->getByIdWithBlocks($page_id);
-        return view('chuckcms::backend.pages.edit', compact('template', 'templates', 'page'));
+        return view('chuckcms::backend.pages.edit', compact('templates', 'page'));
     }
 
     /**

@@ -30,12 +30,10 @@ class TemplateController extends Controller
      */
     public function index()
     {
-        $template = $this->template->where('active', 1)->where('type', 'admin')->first();
-        
         $all_templates = $this->template->where('active', 1)->where('type', 'default')->get();
         
         $pages = $this->page->get();
         
-        return view('chuckcms::backend.templates.index', compact('template', 'all_templates', 'pages'));
+        return view('chuckcms::backend.templates.index', compact('templates', 'pages'));
     }
 }

@@ -61,7 +61,7 @@
 							</tr>
 						</thead>
 							<tbody>
-								@foreach($all_templates as $tmp)
+								@foreach($templates as $tmp)
 								<tr>
 									<td class="v-align-middle">{{ $tmp->id }}</td>
 							    	<td class="v-align-middle">{{$tmp->slug}}</td>
