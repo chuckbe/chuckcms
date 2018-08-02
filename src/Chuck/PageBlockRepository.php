@@ -38,6 +38,8 @@ class PageBlockRepository
                     }
                 }
             }
+            
+
             $findThis = $this->getResources($body, '[', ']');
             
             // THERE ARE DYNAMICS IN THIS PAGEBLOCK, LET'S RETRIEVE IT
@@ -49,7 +51,7 @@ class PageBlockRepository
                     $repeater_slug = implode(" ",$this->getResources($body, '[LOOP=', ']'));
                     $repeater_body = implode(" ",$this->getResources($body, '[LOOP='.$repeater_slug.']', '[/LOOP]'));
                     
-                    $newbody = str_replace('[LOOP='.$repeater_slug.']'.$repeater_body.'[/LOOP]',$this->getRepeaterContents($repeater_slug, $repeater_body),$pageblock->body);
+                    $newbody = str_replace('[LOOP='.$repeater_slug.']'.$repeater_body.'[/LOOP]',$this->getRepeaterContents($repeater_slug, $repeater_body),$body);
 
                 // THERE IS NO LOOP, CONTINUE
                 }elseif(strpos($findThis[0], 'FORM') !== false) {// PAGEBLOCK CONTAINS A FORM, LET'S RETRIEVE IT
@@ -181,12 +183,13 @@ class PageBlockRepository
             $explode = explode(' LIMIT=', $repeater_slug);
             $slug = $explode[0];
             $limit = (int)$explode[1];
-            $contents = Repeater::where('slug', $slug)->limit($limit)->get();
+            $contents = Repeater::where('slug', $slug)->take($limit)->get();
         } else {
             $contents = Repeater::where('slug', $slug)->get();
         }
         $resources = $this->getResources($page_block_body, '[' . $slug . '+', ']');
         $new_body = [];
+        $i = 0;
         foreach($contents as $content){
             $body = $page_block_body;
             foreach ($resources as $resource) {
@@ -195,6 +198,7 @@ class PageBlockRepository
                 $body = str_replace('[' . $slug . '+' . $resource . ']', $match, $body);
             }
             $new_body[] = $body;
+            $i++;
         }
         $str_body = implode(" ", $new_body);
         return $str_body;

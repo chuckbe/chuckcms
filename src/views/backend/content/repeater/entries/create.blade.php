@@ -26,7 +26,18 @@
                       <label for="{{$keyName}}">{{ $input['label'] }}</label>
                       <input type="{{ $input['type'] }}" name="{{$keyName}}" class="{{ $input['class'] }}" placeholder="{{ $input['placeholder'] }}" value="{{ $input['value'] }}" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>
                     @endif
-
+                    @if($input['type'] == 'image_link')
+                        <label for="{{$keyName}}">{{ $input['label'] }}</label>
+                        <div class="input-group">
+                          <span class="input-group-btn">
+                            <a id="lfm" data-input="{{$keyName.'_'.$loop->iteration}}_input" data-preview="{{$keyName.'_'.$loop->iteration}}_logoholder" class="btn btn-primary img_lfm_link" style="color:#FFF">
+                              <i class="fa fa-picture-o"></i> {{ $input['placeholder'] }}
+                            </a>
+                          </span>
+                          <input id="{{$keyName.'_'.$loop->iteration}}_input" name="{{$keyName}}" class="img_lfm_input {{ $input['class'] }}" accept="image/x-png" type="text" value="{{ $input['value'] }}" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>
+                        </div>
+                        <img id="{{$keyName.'_'.$loop->iteration}}_logoholder" src="" style="margin-top:15px;max-height:100px;">
+                    @endif
                     @if($input['type'] == 'textarea')
                       <label for="{{ $keyName }}">{{ $input['label'] }}</label>
                       <textarea name="{{ $keyName }}" class="{{ $input['class'] }}" placeholder="{{ $input['placeholder'] }}" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>{{ $input['value'] }}</textarea>
@@ -71,7 +82,18 @@
 @endsection
 
 @section('scripts')
+  <script src="{{ URL::to('vendor/laravel-filemanager/js/lfm.js') }}"></script>
   <script>
-    
+    $( document ).ready(function() { 
+      
+      init();
+
+      function init () {
+        //init media manager inputs 
+        var domain = "{{ URL::to('dashboard/media')}}";
+        $('.img_lfm_link').filemanager('image', {prefix: domain});
+      }
+
+    });
   </script>
 @endsection
