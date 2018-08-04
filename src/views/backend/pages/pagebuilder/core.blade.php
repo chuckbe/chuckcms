@@ -52,6 +52,9 @@ i{
 .pageblock_body_raw{
 	display:none;
 }
+.pageblock_body_code{
+	display:none;
+}
 	.pb_element_title_hover{
 		-webkit-box-shadow: 0px 0px 0px 6px rgba(255,0,0,1)!important;
 		-moz-box-shadow: 0px 0px 0px 6px rgba(255,0,0,1)!important;
@@ -127,6 +130,9 @@ i{
 	            	</div>
 	            	<div class="pageblock_body_raw" id="pageblock_body_raw_{{ $pageblock['id'] }}" data-pbid="{{ $pageblock['id'] }}">
 	            		{!! $pageblock['raw'] !!}
+	            	</div>
+	            	<div class="pageblock_body_code" id="pageblock_body_code_{{ $pageblock['id'] }}" data-pbid="{{ $pageblock['id'] }}">
+	            		{{ $pageblock['raw'] }}
 	            	</div>
 	            </div>
 			@endforeach
