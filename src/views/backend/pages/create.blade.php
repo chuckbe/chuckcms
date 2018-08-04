@@ -40,7 +40,7 @@
                   </div>
                   <div class="form-group form-group-default required ">
                     <label>Slug</label>
-                    <input type="text" class="form-control page_slug page_slug_{{ $langKey }}" placeholder="Titel" id="page_slug" name="slug[{{ $langKey }}]" data-lang="{{ $langKey }}" data-url="http://package.local" required>
+                    <input type="text" class="form-control page_slug page_slug_{{ $langKey }}" placeholder="Titel" id="page_slug" name="slug[{{ $langKey }}]" data-lang="{{ $langKey }}" data-url="{{ ChuckSite::getSetting('domain') }}" required>
                     <input type="hidden" class="form-control page_slug_hidden_{{ $langKey }}" id="page_slug_hidden" name="page_slug[{{ $langKey }}]">
                   </div>
                   <hr>

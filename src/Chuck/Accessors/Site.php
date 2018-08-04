@@ -74,7 +74,11 @@ class Site
     {
         $split = explode('.', $var);
         foreach ($split as $value) {
-            $settings = $settings[$value];
+            if(array_key_exists($value, $settings)) {
+                $settings = $settings[$value];
+            } else {
+                return null;
+            }
         }
 
         return $settings;
