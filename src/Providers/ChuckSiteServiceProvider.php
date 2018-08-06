@@ -26,12 +26,13 @@ class ChuckSiteServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('ChuckSite',function(){
-            $site = Site::first();
-            if($site == null) {
-                throw new Exception('Whoops! No Site Defined...');
-            }
-            return new \Chuckbe\Chuckcms\Chuck\Accessors\Site($site, \App::make(SiteRepository::class));
-        });
+        $site = Site::first();
+        if($site == null) {
+            throw new Exception('Whoops! No Site Defined...');
+        } else {
+            $this->app->singleton('ChuckSite',function(){   
+                return new \Chuckbe\Chuckcms\Chuck\Accessors\Site($site, \App::make(SiteRepository::class));
+            });
+        }
     }
 }

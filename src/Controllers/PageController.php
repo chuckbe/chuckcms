@@ -32,7 +32,7 @@ class PageController extends Controller
     public function index($slug = null)
     {
         if($slug == null){
-            $page = $this->page->where('isHp', 1)->first();
+            $page = $this->page->where('isHp', 1)->firstOrFail();
             $slug = $page->slug;
         } elseif($slug !== null){
             $slug = $slug;

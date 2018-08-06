@@ -3,6 +3,7 @@
 namespace Chuckbe\Chuckcms\Providers;
 
 use ChuckSite;
+use Chuckbe\Chuckcms\Models\Site;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -16,11 +17,6 @@ class ChuckConfigServiceProvider extends ServiceProvider
     public function boot()
     {
         config([
-            // mcamara/laravel-localization
-            'laravellocalization.supportedLocales' => ChuckSite::getSupportedLocales(),
-            'laravellocalization.useAcceptLanguageHeader' => true,
-            'laravellocalization.hideDefaultLocaleInURL' => false,
-
             'app.locale' => 'nl',
             'app.fallback_locale' => 'en',
 
@@ -30,6 +26,22 @@ class ChuckConfigServiceProvider extends ServiceProvider
             // laravel/laravel
             'auth.providers.users.model' => \Chuckbe\Chuckcms\Models\User::class
         ]);
+
+        $site = Site::first();
+        if($site !== null) {
+            config([
+                // mcamara/laravel-localization
+                'laravellocalization.supportedLocales' => ChuckSite::getSupportedLocales(),
+                'laravellocalization.useAcceptLanguageHeader' => true,
+                'laravellocalization.hideDefaultLocaleInURL' => false,
+            ]);
+        } else {
+            config([
+                'laravellocalization.supportedLocales' => config('lang.supportedLocales'),
+                'laravellocalization.useAcceptLanguageHeader' => true,
+                'laravellocalization.hideDefaultLocaleInURL' => false,
+            ]);
+        }
     }
 
     /**

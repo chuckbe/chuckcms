@@ -24,7 +24,7 @@ class Site
 
     public static function forSite($site)
     {
-        return new static($school, \App::make(SiteRepository::class));
+        return new static($site, \App::make(SiteRepository::class));
     }
 
     private function getSiteSettings(SiteModel $site)
