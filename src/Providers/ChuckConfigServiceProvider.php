@@ -32,8 +32,8 @@ class ChuckConfigServiceProvider extends ServiceProvider
             config([
                 // mcamara/laravel-localization
                 'laravellocalization.supportedLocales' => ChuckSite::getSupportedLocales(),
-                'laravellocalization.useAcceptLanguageHeader' => true,
-                'laravellocalization.hideDefaultLocaleInURL' => false,
+                'laravellocalization.useAcceptLanguageHeader' => config('lang.useAcceptLanguageHeader'),
+                'laravellocalization.hideDefaultLocaleInURL' => config('lang.hideDefaultLocaleInURL'),
             ]);
         } else {
             config([

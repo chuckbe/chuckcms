@@ -12,11 +12,13 @@ use App\Http\Requests;
 class Site
 {
     private $siteRepository;
+    private $currentSite;
     private $siteSettings;
     private $siteSupportedLocales;
 
     public function __construct(SiteModel $site, SiteRepository $siteRepository) 
     {
+        $this->currentSite = $this->getCurrentSite($site);
         $this->siteSettings = $this->getSiteSettings($site);
         $this->siteSupportedLocales = $this->getSiteSupportedLocales($site);
         $this->siteRepository = $siteRepository;
@@ -31,6 +33,11 @@ class Site
     {
         $settings = $site->settings;
         return $settings;
+    }
+
+    private function getCurrentSite(SiteModel $site)
+    {
+        return $site;
     }
 
     private function getSiteSupportedLocales(SiteModel $site)
@@ -64,6 +71,12 @@ class Site
         return $setting ? $setting : null;
     }
 
+    public function getSite($var)
+    {
+        $setting = $this->resolveSiteAttribute($var, $this->currentSite);
+        return $setting ? $setting : null;
+    }
+
     public function getSupportedLocales()
     {
         $supportedLocales = $this->siteSupportedLocales;
@@ -82,6 +95,19 @@ class Site
         }
 
         return $settings;
+    }
+
+    private function resolveSiteAttribute($var, $currentSite)
+    {
+        if($var == 'domain') {
+            return $currentSite->domain;
+        }
+        if($var == 'name') {
+            return $currentSite->name;
+        }
+        if($var == 'slug') {
+            return $currentSite->slug;
+        }
     }
 
 }

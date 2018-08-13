@@ -46,6 +46,20 @@ class Page extends Eloquent
             $meta[$langKey]['og-title'] = $values->get('meta_title')[$langKey];
             $meta[$langKey]['og-description'] = $values->get('meta_description')[$langKey];
             $meta[$langKey]['og-site_name'] = $values->get('meta_title')[$langKey];
+            if($values->get('meta_robots_index')[$langKey] == '1') {
+                $index = 'index, ';
+            } else {
+                $index = 'noindex, ';
+            }
+
+            if($values->get('meta_robots_follow')[$langKey] == '1') {
+                $follow = 'follow';
+            } else {
+                $follow = 'nofollow';
+            }
+
+            $meta[$langKey]['robots'] = $index . $follow;
+            $meta[$langKey]['googlebots'] = $index . $follow;
             for ($i=0; $i < count($values->get('meta_key')[$langKey]); $i++) { 
                 $meta[$langKey][$values->get('meta_key')[$langKey][$i]] = $values->get('meta_value')[$langKey][$i];
             }

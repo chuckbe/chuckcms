@@ -298,4 +298,7 @@ return [
         'nl'          => ['name' => 'Dutch',                  'script' => 'Latn', 'native' => 'Nederlands', 'regional' => 'nl_NL'],
         'en'          => ['name' => 'English',                'script' => 'Latn', 'native' => 'English', 'regional' => 'en_GB'],
     ],
+
+    'useAcceptLanguageHeader' => true,
+    'hideDefaultLocaleInURL' => true,
 ];

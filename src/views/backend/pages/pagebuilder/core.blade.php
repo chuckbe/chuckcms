@@ -69,11 +69,39 @@ i{
 		cursor: pointer!important;
 	}
 
+	.pb_element_link_hover{
+		-webkit-box-shadow: 0px 0px 0px 2px rgba(0,0,255,1)!important;
+		-moz-box-shadow: 0px 0px 0px 2px rgba(0,0,255,1)!important;
+		box-shadow: 0px 0px 0px 2px rgba(0,0,255,1)!important;
+		cursor: pointer!important;
+	}
+
+	.pb_element_img_hover{
+		-webkit-box-shadow: 0px 0px 0px 2px rgba(0,255,0,1)!important;
+		-moz-box-shadow: 0px 0px 0px 2px rgba(0,255,0,1)!important;
+		box-shadow: 0px 0px 0px 2px rgba(0,255,0,1)!important;
+		cursor: pointer!important;
+	}
+
+	.pb_element_bg_hover{
+		-webkit-box-shadow: 0px 0px 0px 2px rgba(0,255,255,1)!important;
+		-moz-box-shadow: 0px 0px 0px 2px rgba(0,255,255,1)!important;
+		box-shadow: 0px 0px 0px 2px rgba(0,255,255,1)!important;
+		cursor: pointer!important;
+	}
+
+	.pb_element_icon_hover{
+		-webkit-box-shadow: 0px 0px 0px 2px rgba(255,0,255,1)!important;
+		-moz-box-shadow: 0px 0px 0px 2px rgba(255,0,255,1)!important;
+		box-shadow: 0px 0px 0px 2px rgba(255,0,255,1)!important;
+		cursor: pointer!important;
+	}
+
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 @endsection
 
 @section('scripts')
-	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 	<script src="https://cdn.chuck.be/assets/plugins/ace/ace.js"></script>
 @endsection
 
