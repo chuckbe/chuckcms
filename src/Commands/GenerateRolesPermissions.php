@@ -82,7 +82,7 @@ class GenerateRolesPermissions extends Command
         Permission::firstOrCreate(['name' => 'delete media']);
         // user
         Permission::firstOrCreate(['name' => 'show users']);
-        Permission::firstOrCreate(['name' => 'invite users']);
+        Permission::firstOrCreate(['name' => 'create users']);
         Permission::firstOrCreate(['name' => 'edit users']);
         Permission::firstOrCreate(['name' => 'delete users']);
         // content
