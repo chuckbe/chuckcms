@@ -30,13 +30,20 @@
 							<div class="panel-body">
 								<div class="col-sm-12">
 									@foreach($bValue as $block)
-									<div class="col-sm-3">
+									
+                  <div class="col-sm-3">
 										<a class="pb_add_block_top_button" data-location="{{ $block['location'] }}" data-name="{{ $block['name'] }}">
+                      <p class="text-center">{{ $block['name'] }}</p>
 											<img src="{{ URL::to($block['img']) }}" class="img-responsive text-center" alt="{{ $block['name'] }}" style="margin:0 auto 0 auto;">
-											<p class="text-center">{{ $block['name'] }}</p>
 										</a>
 									</div>
-									@endforeach
+                  
+                  @if($loop->iteration % 4 == 0)
+                    <div class="clearfix"></div>
+                    <br><br>
+                  @endif
+									
+                  @endforeach
 								</div>
 							</div>
 						</div>
@@ -189,7 +196,7 @@
       	<div class="modal-body">
       		<div class="form-group">
       			<label for="link">Link Value</label>
-      			<input class="form-control link_edit_value" id="link_edit_value">
+            <textarea id="link_edit_value" cols="30" rows="10" class="form-control link_edit_value"></textarea>
       			<input type="hidden" class="link_edit_element">
 	        </div>
 
@@ -207,6 +214,11 @@
 	        	<label for="href">STYLE</label>
       			<input class="form-control link_edit_style_value" id="link_edit_style_value">
 	        </div>
+
+          <div class="form-group">
+            <label for="href">TARGET</label>
+            <input class="form-control link_edit_target_value" id="link_edit_target_value">
+          </div>
 
       	</div>
       	<div class="modal-footer">
@@ -504,12 +516,13 @@
 			iframe.find('.pageblock_body a[data-type="link"]').each(function(){
 			  	$(this).click(function (event) {
 			  		event.preventDefault();
-			  		var content = $(this).text();
+			  		var content = $(this).html();
 			  		var el = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 12);
 			  		
 			  		var hrefval = $(this).attr('href');
 			  		var classval = $(this).attr('class');
 			  		var styleval = $(this).attr('style');
+            var targetval = $(this).attr('target');
 
 					$(this).attr('data-unique', el);
 					var pbid = $(this).parents( ".pageblock_body" ).attr('data-pbid');
@@ -523,6 +536,7 @@
 			  		$('#link_edit_href_value').val(hrefval);
 			  		$('#link_edit_class_value').val(classval);
 			  		$('#link_edit_style_value').val(styleval);
+            $('#link_edit_target_value').val(targetval);
 			        $('#modal_link_editor').modal('show');
 			    });
 			});
@@ -533,22 +547,25 @@
 				var hrefval = $('#link_edit_href_value').val();
 		  		var classval = $('#link_edit_class_value').val();
 		  		var styleval = $('#link_edit_style_value').val();
-				replaceLink(el, content, hrefval, classval, styleval);
+          var targetval = $('#link_edit_target_value').val();
+				replaceLink(el, content, hrefval, classval, styleval, targetval);
 				iframe.find('.pb_control_save[data-id='+pbid+']').removeClass('not_shown');
 				iframe.find('.pb_control_save[data-id='+pbid+']').addClass('shown');
 				$('#modal_link_editor').modal('hide');
 			});
 
-			function replaceLink (el, content, hrefval, classval, styleval) {
+			function replaceLink (el, content, hrefval, classval, styleval, targetval) {
 				iframe.find('.pageblock_body').find("[data-unique='"+el+"']").html(content);
 				iframe.find('.pageblock_body').find("[data-unique='"+el+"']").attr('href', hrefval);
 				iframe.find('.pageblock_body').find("[data-unique='"+el+"']").attr('class', classval);
 				iframe.find('.pageblock_body').find("[data-unique='"+el+"']").attr('style', styleval);
+        iframe.find('.pageblock_body').find("[data-unique='"+el+"']").attr('target', targetval);
 				iframe.find('.pageblock_body').find("[data-unique='"+el+"']").removeAttr('data-unique');
 				iframe.find('.pageblock_body_raw').find("[data-unique='"+el+"']").html(content);
 				iframe.find('.pageblock_body_raw').find("[data-unique='"+el+"']").attr('href', hrefval);
 				iframe.find('.pageblock_body_raw').find("[data-unique='"+el+"']").attr('class', classval);
 				iframe.find('.pageblock_body_raw').find("[data-unique='"+el+"']").attr('style', styleval);
+        iframe.find('.pageblock_body_raw').find("[data-unique='"+el+"']").attr('target', targetval);
 				iframe.find('.pageblock_body_raw').find("[data-unique='"+el+"']").removeAttr('data-unique');
 			}
 
@@ -591,7 +608,8 @@
 			function replaceBackground (el, content) {
 				iframe.find('.pageblock_body').find("[data-unique='"+el+"']").css('background-image', 'url(' + window.location.protocol + '//' + window.location.hostname + content + ')');
 				iframe.find('.pageblock_body').find("[data-unique='"+el+"']").removeAttr('data-unique');
-				iframe.find('.pageblock_body_raw').find("[data-unique='"+el+"']").css('background-image', 'url(' + '[%URL%]' + content + ')').attr('src', '[%URL%]' + content);
+
+				iframe.find('.pageblock_body_raw').find("[data-unique='"+el+"']").css('background-image', 'url(' + '[%URL%]' + content + ')');
 				iframe.find('.pageblock_body_raw').find("[data-unique='"+el+"']").removeAttr('data-unique');
 			}
 
@@ -851,7 +869,7 @@
 		                    });
 					    	swal(
 					      		'Deleted!',
-					      		'Your file has been deleted.',
+					      		'Your block has been deleted.',
 					      		'success'
 					    	)
 					  	}
@@ -1049,7 +1067,7 @@
 			    });
 			});
 
-			iframe.find('.pb_add_block_top_button').each(function(){
+			$( document ).find('.pb_add_block_top_button').each(function(){
 				var pb_name = $(this).attr("data-name");
 				var pb_location = $(this).attr("data-location");
 			  	$(this).click(function (event) {
