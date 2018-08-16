@@ -186,7 +186,7 @@ Route::group(['middleware' => ['web']], function() {
 			Route::get('/dashboard/users', 'Chuckbe\Chuckcms\Controllers\UserController@index')->name('dashboard.users');
 		});
 
-		Route::group(['middleware' => ['permission:invite users']], function () {
+		Route::group(['middleware' => ['permission:create users']], function () {
 			Route::post('/dashboard/user/invite', 'Chuckbe\Chuckcms\Controllers\UserController@invite')->name('dashboard.users.invite');
 		});
 		
