@@ -170,7 +170,7 @@ class GenerateRolesPermissions extends Command
             'edit media',
 
             'show users',
-            'invite users',
+            'create users',
             'edit users',
 
             'show content',
@@ -230,7 +230,7 @@ class GenerateRolesPermissions extends Command
             'delete media',
 
             'show users',
-            'invite users',
+            'create users',
             'edit users',
             'delete users',
 
