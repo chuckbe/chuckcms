@@ -6,6 +6,7 @@ use ChuckSite;
 use Chuckbe\Chuckcms\Models\Site;
 
 use Illuminate\Support\ServiceProvider;
+use Schema;
 
 class ChuckConfigServiceProvider extends ServiceProvider
 {
@@ -32,7 +33,7 @@ class ChuckConfigServiceProvider extends ServiceProvider
         } else {
             $site = null;
         }
-        
+
         if($site !== null) {
             config([
                 // mcamara/laravel-localization
