@@ -27,7 +27,12 @@ class ChuckConfigServiceProvider extends ServiceProvider
             'auth.providers.users.model' => \Chuckbe\Chuckcms\Models\User::class
         ]);
 
-        $site = Site::first();
+        if(Schema::hasTable('sites')){
+            $site = Site::first();
+        } else {
+            $site = null;
+        }
+        
         if($site !== null) {
             config([
                 // mcamara/laravel-localization
