@@ -18,6 +18,7 @@ composer require chuckbe/chuckcms
 ### Publish public assets
 ```
 php artisan vendor:publish --tag=chuckcms-public --force
+php artisan vendor:publish --tag=lfm_public //Laravel Filemanager by UniSharp
 ```
 
 ### Eventually publish config files
