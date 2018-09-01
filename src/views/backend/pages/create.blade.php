@@ -62,10 +62,6 @@
                     <label>Meta Sleutelwoorden</label>
                     <textarea id="meta_keywords" name="meta_keywords[{{ $langKey }}]" placeholder="Meta Sleutelwoorden" style="height:55px;" class="form-control" required></textarea>
                   </div>
-                  <div class="form-group form-group-default required">
-                    <label>Meta Robots Indexeren</label>
-                    <input type="text" class="form-control meta_robots_index meta_robots_index_{{ $langKey }}" placeholder="Meta Titel" id="meta_title" name="meta_robots_index[{{ $langKey }}]" data-lang="{{ $langKey }}" required>
-                  </div>
                   <div class="form-group form-group-default input-group">
                     <div class="form-input-group">
                       <label class="inline">Meta Robots Indexeren</label>
