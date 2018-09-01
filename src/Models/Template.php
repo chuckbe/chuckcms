@@ -31,7 +31,7 @@ class Template extends Eloquent
         $templates = $this->where('active', 1)->where('type', 'default')->get();
         $emailTemplates = [];
         foreach ($templates as $template) {
-            $mailDir = array_slice(scandir(base_path('packages/'.$template->path.'/src/views/templates/'.$template->slug.'/mails')), 2);
+            $mailDir = array_slice(scandir(base_path('vendor/'.$template->path.'/src/views/templates/'.$template->slug.'/mails')), 2);
             if (count($mailDir) > 0) {
                 $emailTemplates[$template->slug]['hintpath'] = $template->hintpath;
                 foreach($mailDir as $mdKey => $mdValue) {
