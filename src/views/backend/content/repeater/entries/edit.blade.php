@@ -37,7 +37,7 @@
                           </span>
                           <input id="{{$keyName.'_'.$loop->iteration}}_input" name="{{$keyName}}" class="img_lfm_input {{ $input['class'] }}" accept="image/x-png" type="text" @if(array_key_exists($cleanKey, $repeater->json)) value="{{ $repeater->json[$cleanKey] }}" @endif  @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>
                         </div>
-                        <img id="{{$keyName.'_'.$loop->iteration}}_logoholder" @if(array_key_exists($cleanKey, $repeater->json)) src="{{ URL::to('/')}}{{ $repeater->json[$cleanKey] }}" @elseif src="" @endif style="margin-top:15px;max-height:100px;">
+                        <img id="{{$keyName.'_'.$loop->iteration}}_logoholder" @if(array_key_exists($cleanKey, $repeater->json)) src="{{ URL::to('/')}}{{ $repeater->json[$cleanKey] }}" @else src="" @endif style="margin-top:15px;max-height:100px;">
                     @endif
                     @if($input['type'] == 'textarea')
                       <label for="{{ $keyName }}">{{ $input['label'] }}</label>
