@@ -81,6 +81,23 @@ Route::group(['middleware' => ['web']], function() {
 		    Route::post($path . '/deleteitemmenu', array('as' => 'hdeleteitemmenu', 'uses' => 'Chuckbe\Chuckcms\Controllers\MenuController@deleteitemmenu'));
 		    Route::post($path . '/deletemenug', array('as' => 'hdeletemenug', 'uses' => 'Chuckbe\Chuckcms\Controllers\MenuController@deletemenug'));
 		});
+
+	// Dashboard Redirects Routes...
+		Route::group(['middleware' => ['permission:show menus']], function () {
+			Route::get('/dashboard/redirects', 'Chuckbe\Chuckcms\Controllers\RedirectController@index')->name('dashboard.redirects');
+		});
+
+		Route::group(['middleware' => ['permission:create menus']], function () {
+			
+		});
+
+		Route::group(['middleware' => ['permission:edit menus']], function () {
+			
+		});
+
+		Route::group(['middleware' => ['permission:delete menus']], function () {
+			
+		});
 		
 		
 	// Dashboard Templates Routes...

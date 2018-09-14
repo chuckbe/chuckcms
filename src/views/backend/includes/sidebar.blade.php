@@ -24,8 +24,19 @@
           </li>
 
           <li class="">
-            <a href="{{ route('dashboard.menus') }}"><span class="title">Menus</span></a>
+            <a href="javascript:;"><span class="title">Navigatie</span>
+            <span class=" arrow"></span></a>
             <span class="icon-thumbnail"><i data-feather="list"></i></span>
+            <ul class="sub-menu">
+              <li class="">
+                <a href="{{ route('dashboard.menus') }}">Menu's</a>
+                <span class="icon-thumbnail">me</span>
+              </li>
+              <li class="">
+                <a href="{{ route('dashboard.content.resources') }}">Redirects</a>
+                <span class="icon-thumbnail">re</span>
+              </li>
+            </ul>
           </li>
 
           <li class="">
