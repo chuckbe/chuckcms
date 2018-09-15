@@ -9,4 +9,6 @@ class Resource extends Eloquent
     protected $casts = [
         'json' => 'array',
     ];
+
+    protected $fillable = ['slug','json'];
 }

@@ -58,8 +58,7 @@ class ContentController extends Controller
             'resource_value.*' => 'required'
         ]);
 
-        $resource = Resource::where('slug', $request->get('slug')[0])->first();
-        $resource->page_block_id = 1;
+        $resource = Resource::firstOrNew(['slug' => $request->get('slug')[0]]);
         $resource->slug = $request->get('slug')[0];
         $json = [];
         foreach(ChuckSite::getSupportedLocales() as $langKey => $langValue){
