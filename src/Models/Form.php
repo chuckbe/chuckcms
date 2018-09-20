@@ -99,8 +99,10 @@ class Form extends Eloquent
             $findThis = $this->getResources($sendValue, '[', ']');
             if(count($findThis) > 0){
             
-                $inputSlug = $findThis[0];
-                $inputData = str_replace('[' . $findThis[0] . ']', $input->get($findThis[0]), $sendValue);
+                foreach($findThis as $founded){
+                    $sendValue = str_replace('[' . $founded . ']', $input->get($founded), $sendValue);
+                }
+                $inputData = $sendValue;
                 
             } else {
                 $inputData = $sendValue;
