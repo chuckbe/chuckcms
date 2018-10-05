@@ -4,6 +4,7 @@ namespace Chuckbe\Chuckcms;
 
 use Chuckbe\Chuckcms\Commands\GenerateSuperAdmin;
 use Chuckbe\Chuckcms\Commands\GenerateSite;
+use Chuckbe\Chuckcms\Commands\GenerateSitemap;
 use Chuckbe\Chuckcms\Commands\GenerateRolesPermissions;
 use Illuminate\Support\ServiceProvider;
 
@@ -34,6 +35,7 @@ class ChuckcmsServiceProvider extends ServiceProvider
             $this->commands([
                 GenerateSuperAdmin::class,
                 GenerateSite::class,
+                GenerateSitemap::class,
                 GenerateRolesPermissions::class,
             ]);
         }

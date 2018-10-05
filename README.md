@@ -57,3 +57,12 @@ php artisan chuckcms:generate-roles-permissions
 ```
 php artisan chuckcms:generate-super-admin
 ```
+
+### Go to http://yourapp.local/dashboard/pages
+
+### Create a new page
+
+### Generate a sitemap
+```
+php artisan chuckcms:generate-sitemap
+```
