@@ -2,10 +2,13 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
+use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
+
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\PageBlock;
-use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
+use Chuckbe\Chuckcms\Models\Redirect;
 use Chuckbe\Chuckcms\Models\Template;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -15,17 +18,19 @@ class PageController extends Controller
     private $page;
     private $pageblock;
     private $pageBlockRepository;
+    private $redirect;
     private $template;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Page $page, PageBlock $pageblock, PageBlockRepository $pageBlockRepository, Template $template)
+    public function __construct(Page $page, PageBlock $pageblock, PageBlockRepository $pageBlockRepository, Redirect $redirect, Template $template)
     {
         $this->page = $page;
         $this->pageblock = $pageblock;
         $this->pageBlockRepository = $pageBlockRepository;
+        $this->redirect = $redirect;
         $this->template = $template;
     }
 
@@ -33,9 +38,11 @@ class PageController extends Controller
     {
         if($slug == null){
             $page = $this->page->where('isHp', 1)->firstOrFail();
-            $slug = $page->slug;
         } elseif($slug !== null){
-            $slug = $slug;
+            $redirect = $this->redirect->where('slug', $slug)->first();
+            if($redirect !== null){
+                return redirect($redirect->to, $redirect->type);
+            }
             $page = $this->page->where('slug->'.app()->getLocale(), $slug)->first();
             if($page == null){
                foreach(\LaravelLocalization::getSupportedLocales() as $localeCode => $properties){

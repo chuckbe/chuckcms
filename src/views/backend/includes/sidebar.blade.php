@@ -33,7 +33,7 @@
                 <span class="icon-thumbnail">me</span>
               </li>
               <li class="">
-                <a href="{{ route('dashboard.content.resources') }}">Redirects</a>
+                <a href="{{ route('dashboard.redirects') }}">Redirects</a>
                 <span class="icon-thumbnail">re</span>
               </li>
             </ul>

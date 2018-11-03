@@ -5,8 +5,8 @@
 @endsection
 
 @section('add_record')
-	@can('create pages')
-	<a href="{{ route('dashboard.page.create') }}" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuwe Redirect Toe</a>
+	@can('create redirects')
+	<a href="#" data-target="#createRedirectModal" data-toggle="modal" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuwe Redirect Toe</a>
 	@endcan
 @endsection
 
@@ -24,6 +24,32 @@
     <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
     <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
     <script src="https://cdn.chuck.be/assets/js/tables.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+
+    	$("#create_redirect_slug").keyup(function(){
+		    var text = $(this).val();
+		    slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
+		    $("#create_redirect_slug").val(slug_text);  
+		});
+
+    });
+
+    function editModal(id, slug, to, type){
+    	$('#edit_redirect_id').val(id);
+    	$('#edit_redirect_slug').val(slug);
+    	$('#edit_redirect_to').val(to);
+    	$('#edit_redirect_type').val(type).trigger('change');
+    	$('#editRedirectModal').modal('show');
+    }
+
+    function deleteModal(id, slug, to){
+    	$('#delete_redirect_id').val(id);
+    	$('#delete_redirect_slug').text(slug);
+    	$('#delete_redirect_to').text(to);
+    	$('#deleteRedirectModal').modal('show');
+    }
+    </script>
 @endsection
 
 @section('content')
@@ -47,34 +73,31 @@
 						<thead>
 							<tr>
 								<th style="width:5%">ID</th>
-								<th style="width:30%">Van</th>
-								<th style="width:25%">Naar</th>
-								<th style="width:15%">Status</th>
+								<th style="width:20%">Van</th>
+								<th style="width:35%">Naar</th>
+								<th style="width:15%">Type</th>
 								<th style="width:25%">Actions</th>
 							</tr>
 						</thead>
 							<tbody>
-								@foreach($pages as $page)
+								@foreach($redirects as $redirect)
 								<tr>
-									<td class="v-align-middle">{{ $page->id }}</td>
-							    	<td class="v-align-middle semi-bold">{{ $page->title }}</td>
-							    	<td class="v-align-middle">{{$page->slug}}</td>
+									<td class="v-align-middle">{{ $redirect->id }}</td>
+							    	<td class="v-align-middle semi-bold">{{ $redirect->slug }}</td>
+							    	<td class="v-align-middle">{{$redirect->to }}</td>
 							    	<td class="v-align-middle">
-							    		@if($page->active == 1)
-											<span class="label label-success">Actief</span>
-							        	@else
-							        		<span class="label">Concept</span>
-							        	@endif 
+							    		<span class="label label-success">{{$redirect->type}}</span>
 							    	</td>
 							    	<td class="v-align-middle semi-bold">
-							    		@can('edit pages')
-							    		<a href="{{ route('dashboard.page.edit', ['page_id' => $page->id]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    		@can('edit redirects')
+							    		<a href="#" onclick="editModal({{ $redirect->id }}, '{{ $redirect->slug }}', '{{ $redirect->to }}', {{ $redirect->type }} )" class="btn btn-default btn-sm btn-rounded m-r-20">
 							    			<i data-feather="edit-2"></i> edit
 							    		</a>
 							    		@endcan
-							    		@can('show pagebuilder')
-							    		<a href="{{ route('dashboard.page.edit.pagebuilder', ['page_id' => $page->id]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
-							    			<i data-feather="edit"></i> builder
+
+							    		@can('delete redirects')
+							    		<a href="#" onclick="deleteModal({{ $redirect->id }}, '{{ $redirect->slug }}', '{{ $redirect->to }}')" class="btn btn-danger btn-sm btn-rounded m-r-20">
+							    			<i data-feather="trash"></i> delete
 							    		</a>
 							    		@endcan
 							    	</td>
@@ -89,4 +112,13 @@
 		</div>
     </div>
 </div>
+@can('create redirects')
+	@include('chuckcms::backend.redirects._create_modal')
+@endcan
+@can('edit redirects')
+	@include('chuckcms::backend.redirects._edit_modal')
+@endcan
+@can('delete redirects')
+	@include('chuckcms::backend.redirects._delete_modal')
+@endcan
 @endsection
