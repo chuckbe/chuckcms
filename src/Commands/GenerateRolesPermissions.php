@@ -90,6 +90,11 @@ class GenerateRolesPermissions extends Command
         Permission::firstOrCreate(['name' => 'create content']);
         Permission::firstOrCreate(['name' => 'edit content']);
         Permission::firstOrCreate(['name' => 'delete content']);
+        // redirects
+        Permission::firstOrCreate(['name' => 'show redirects']);
+        Permission::firstOrCreate(['name' => 'create redirects']);
+        Permission::firstOrCreate(['name' => 'edit redirects']);
+        Permission::firstOrCreate(['name' => 'delete redirects']);
         // resource
         Permission::firstOrCreate(['name' => 'show resource']);
         Permission::firstOrCreate(['name' => 'create resource']);
@@ -139,7 +144,9 @@ class GenerateRolesPermissions extends Command
 
             'show repeaters entries',
 
-            'show settings'
+            'show settings',
+
+            'show redirects'
         ]);
 
         $role = Role::firstOrCreate(['name' => 'moderator']);
@@ -189,7 +196,11 @@ class GenerateRolesPermissions extends Command
             'create repeaters entry',
             'edit repeaters entry',
 
-            'show settings'
+            'show settings',
+
+            'show redirects',
+            'create redirects',
+            'edit redirects'
         ]);
 
         $role = Role::firstOrCreate(['name' => 'administrator']);
@@ -257,7 +268,12 @@ class GenerateRolesPermissions extends Command
             'show settings',
             'create settings',
             'edit settings',
-            'delete settings'
+            'delete settings',
+
+            'show redirects',
+            'create redirects',
+            'edit redirects',
+            'delete redirects'
         ]);
 
         $role = Role::firstOrCreate(['name' => 'super-admin']);

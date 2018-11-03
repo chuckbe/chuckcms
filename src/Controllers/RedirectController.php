@@ -6,10 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use Chuckbe\Chuckcms\Models\Page;
-
-use Chuckbe\Chuckcms\Models\Menus;
-use Chuckbe\Chuckcms\Models\MenuItems;
+use Chuckbe\Chuckcms\Models\Redirect;
 
 class RedirectController extends Controller
 {
@@ -19,9 +16,9 @@ class RedirectController extends Controller
      *
      * @return void
      */
-    public function __construct(Page $page)
+    public function __construct(Redirect $redirect)
     {
-        $this->page = $page;
+        $this->redirect = $redirect;
     }
 
     /**
@@ -31,90 +28,59 @@ class RedirectController extends Controller
      */
     public function index()
     {
-        $pages = $this->page->get();
+        $redirects = $this->redirect->get();
         
-        return view('chuckcms::backend.redirects.index', compact('pages'));
+        return view('chuckcms::backend.redirects.index', compact('redirects'));
     }
 
-    public function createnewmenu()
+    public function create(Request $request)
     {
+        //$request['slug'] = str_slug($request->slug, '-');
 
-        $menu = new Menus();
-        $menu->name = request()->input("menuname");
-        $menu->save();
-        return json_encode(array("resp" => $menu->id));
-    }
+        $this->validate($request, [ //@todo create custom Request class for redirect validation
+            'slug' => 'max:185|required|unique:redirects',
+            'to' => 'required|max:185',
+            'type' => 'required|numeric|in:301,302'
+        ]);
 
-    public function deleteitemmenu()
-    {
-        $menuitem = MenuItems::find(request()->input("id"));
+        $redirect = Redirect::firstOrNew(
+            ['slug' => $request['slug']], 
+            ['to' => $request['to'], 
+            'type' => $request['type']]);
 
-        $menuitem->delete();
-    }
-
-    public function deletemenug()
-    {
-        $menus = new MenuItems();
-        $getall = $menus->getall(request()->input("id"));
-        if (count($getall) == 0) {
-            $menudelete = Menus::find(request()->input("id"));
-            $menudelete->delete();
-
-            return json_encode(array("resp" => "you delete this item"));
-        } else {
-            return json_encode(array("resp" => "You have to delete all items first", "error" => 1));
-
+        if($redirect->save()){
+            return redirect()->route('dashboard.redirects');
         }
     }
 
-    public function updateitem()
+    public function update(Request $request)
     {
-        $arraydata = request()->input("arraydata");
-        if (is_array($arraydata)) {
-            foreach ($arraydata as $value) {
-                $menuitem = MenuItems::find($value['id']);
-                $menuitem->label = $value['label'];
-                $menuitem->link = $value['link'];
-                $menuitem->class = $value['class'];
-                $menuitem->save();
-            }
-        } else {
-            $menuitem = MenuItems::find(request()->input("id"));
-            $menuitem->label = request()->input("label");
-            $menuitem->link = request()->input("url");
-            $menuitem->class = request()->input("clases");
-            $menuitem->save();
-        }
+        //$request['slug'] = str_slug($request->slug, '-');
+
+        $this->validate($request, [ //@todo create custom Request class for redirect validation
+            'id' => 'required',
+            'slug' => 'required|max:185',
+            'to' => 'required|max:185',
+            'type' => 'required|numeric|in:301,302'
+        ]);
+
+        $redirect = Redirect::where('id', $request['id'])->update([
+            'slug' => $request['slug'], 
+            'to' => $request['to'], 
+            'type' => $request['type']
+        ]);
+
+        return redirect()->route('dashboard.redirects');
     }
 
-    public function addcustommenu()
+    public function delete(Request $request)
     {
+        $this->validate($request, ['id' => 'required']);
 
-        $menuitem = new MenuItems();
-        $menuitem->label = request()->input("labelmenu");
-        $menuitem->link = request()->input("linkmenu");
-        $menuitem->menu = request()->input("idmenu");
-        $menuitem->sort = MenuItems::getNextSortRoot(request()->input("idmenu"));
-        $menuitem->save();
+        $redirect = Redirect::where('id', $request['id'])->first();
 
-    }
-
-    public function generatemenucontrol()
-    {
-        $menu = Menus::find(request()->input("idmenu"));
-        $menu->name = request()->input("menuname");
-        $menu->save();
-        if (is_array(request()->input("arraydata"))) {
-            foreach (request()->input("arraydata") as $value) {
-
-                $menuitem = MenuItems::find($value["id"]);
-                $menuitem->parent = $value["parent"];
-                $menuitem->sort = $value["sort"];
-                $menuitem->depth = $value["depth"];
-                $menuitem->save();
-            }
+        if($redirect->delete()){
+            return redirect()->route('dashboard.redirects');
         }
-        echo json_encode(array("resp" => 1));
-
     }
 }
