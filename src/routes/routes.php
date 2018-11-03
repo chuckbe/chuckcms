@@ -83,20 +83,20 @@ Route::group(['middleware' => ['web']], function() {
 		});
 
 	// Dashboard Redirects Routes...
-		Route::group(['middleware' => ['permission:show menus']], function () {
+		Route::group(['middleware' => ['permission:show redirects']], function () {
 			Route::get('/dashboard/redirects', 'Chuckbe\Chuckcms\Controllers\RedirectController@index')->name('dashboard.redirects');
 		});
 
-		Route::group(['middleware' => ['permission:create menus']], function () {
-			
+		Route::group(['middleware' => ['permission:create redirects']], function () {
+			Route::post('/dashboard/redirects/create', 'Chuckbe\Chuckcms\Controllers\RedirectController@create')->name('dashboard.redirects.create');
 		});
 
-		Route::group(['middleware' => ['permission:edit menus']], function () {
-			
+		Route::group(['middleware' => ['permission:edit redirects']], function () {
+			Route::post('/dashboard/redirects/update', 'Chuckbe\Chuckcms\Controllers\RedirectController@update')->name('dashboard.redirects.update');
 		});
 
-		Route::group(['middleware' => ['permission:delete menus']], function () {
-			
+		Route::group(['middleware' => ['permission:delete redirects']], function () {
+			Route::post('/dashboard/redirects/delete', 'Chuckbe\Chuckcms\Controllers\RedirectController@delete')->name('dashboard.redirects.delete');
 		});
 		
 		
