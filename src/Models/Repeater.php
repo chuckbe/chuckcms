@@ -12,7 +12,7 @@ class Repeater extends Eloquent
      * @var array
      */
     protected $fillable = [
-        'slug', 'json'
+        'slug', 'url', 'page', 'json'
     ];
 
     protected $casts = [

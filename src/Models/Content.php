@@ -38,8 +38,8 @@ class Content extends Eloquent
     public function storeEntry($input)
     {
         $slug = $input->get('content_slug');
-        $url = $this->getUrlFromInput($this->content['actions']['store']['detail']['url'], $input);
-        $page = $this->content['actions']['store']['detail']['page'];
+        $url = $this->getUrlFromInput($this->content['actions']['detail']['url'], $input);
+        $page = $this->content['actions']['detail']['page'];
         
         $json = [];
         foreach($this->content['fields'] as $fieldKey => $fieldValue){
@@ -84,7 +84,7 @@ class Content extends Eloquent
         $fields = $this->getContents($url, '[', ']');
         $finalUrl = $url;
         foreach($fields as $field){
-            $finalUrl = str_replace('['.$field.']', $input->get($field), $finalUrl)
+            $finalUrl = str_replace('['.$field.']', $input->get($field), $finalUrl);
         }
         return $finalUrl;
     }
