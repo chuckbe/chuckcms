@@ -38,6 +38,8 @@ class Content extends Eloquent
     public function storeEntry($input)
     {
         $slug = $input->get('content_slug');
+        $url = $this->getUrlFromInput($this->content['actions']['store']['detail']['url'], $input);
+        $page = $this->content['actions']['store']['detail']['page'];
         
         $json = [];
         foreach($this->content['fields'] as $fieldKey => $fieldValue){
@@ -58,6 +60,8 @@ class Content extends Eloquent
         Repeater::updateOrCreate(
             ['id' => $input->get('repeater_id')],
             ['slug' => $slug,
+            'url' => $url,
+            'page' => $page,
             'json' => $json
         ]);
         
@@ -73,5 +77,34 @@ class Content extends Eloquent
         } else {
             return 'error';
         }
+    }
+
+    public function getUrlFromInput($url, $input)
+    {
+        $fields = $this->getContents($url, '[', ']');
+        $finalUrl = $url;
+        foreach($fields as $field){
+            $finalUrl = str_replace('['.$field.']', $input->get($field), $finalUrl)
+        }
+        return $finalUrl;
+    }
+
+    public function getContents($str, $startDelimiter, $endDelimiter) 
+    {
+        $contents = array();
+        $startDelimiterLength = strlen($startDelimiter);
+        $endDelimiterLength = strlen($endDelimiter);
+        $startFrom = $contentStart = $contentEnd = 0;
+        while (false !== ($contentStart = strpos($str, $startDelimiter, $startFrom))) {
+        $contentStart += $startDelimiterLength;
+        $contentEnd = strpos($str, $endDelimiter, $contentStart);
+        if (false === $contentEnd) {
+          break;
+        }
+        $contents[] = substr($str, $contentStart, $contentEnd - $contentStart);
+        $startFrom = $contentEnd + $endDelimiterLength;
+        }
+
+        return $contents;
     }
 }
