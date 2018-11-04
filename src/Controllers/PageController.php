@@ -7,6 +7,7 @@ use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\PageBlock;
 use Chuckbe\Chuckcms\Models\Redirect;
+use Chuckbe\Chuckcms\Models\Repeater;
 use Chuckbe\Chuckcms\Models\Template;
 
 use Illuminate\Http\Request;
@@ -19,18 +20,26 @@ class PageController extends Controller
     private $pageblock;
     private $pageBlockRepository;
     private $redirect;
+    private $repeater;
     private $template;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Page $page, PageBlock $pageblock, PageBlockRepository $pageBlockRepository, Redirect $redirect, Template $template)
+    public function __construct(
+        Page $page, 
+        PageBlock $pageblock, 
+        PageBlockRepository $pageBlockRepository, 
+        Redirect $redirect, 
+        Repeater $repeater, 
+        Template $template)
     {
         $this->page = $page;
         $this->pageblock = $pageblock;
         $this->pageBlockRepository = $pageBlockRepository;
         $this->redirect = $redirect;
+        $this->repeater = $repeater;
         $this->template = $template;
     }
 
@@ -39,10 +48,18 @@ class PageController extends Controller
         if($slug == null){
             $page = $this->page->where('isHp', 1)->firstOrFail();
         } elseif($slug !== null){
+            
             $redirect = $this->redirect->where('slug', $slug)->first();
             if($redirect !== null){
                 return redirect($redirect->to, $redirect->type);
             }
+
+            $repeater = $this->repeater->where('url', $slug)->first();
+            if($repeater !== null){
+                $template = $this->template->where('type', 'default')->where('active', 1)->first(); // add template id from repeater settings
+                return view($template->hintpath.'::templates.'.$template->slug.'.'.$repeater->page, compact('template', 'repeater'));
+            }
+
             $page = $this->page->where('slug->'.app()->getLocale(), $slug)->first();
             if($page == null){
                foreach(\LaravelLocalization::getSupportedLocales() as $localeCode => $properties){
@@ -58,6 +75,7 @@ class PageController extends Controller
                     } 
                 } 
             }
+
             if($page == null) abort(404);
         }
         
