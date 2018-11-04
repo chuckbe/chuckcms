@@ -207,7 +207,6 @@ Route::group(['middleware' => ['web']], function() {
 			Route::post('/dashboard/user/invite', 'Chuckbe\Chuckcms\Controllers\UserController@invite')->name('dashboard.users.invite');
 		});
 		
-		
 	// Dashboard Settings / Sites Routes...
 		Route::group(['middleware' => ['permission:show settings']], function () {
 			Route::get('/dashboard/settings', 'Chuckbe\Chuckcms\Controllers\DashboardController@settings')->name('dashboard.settings');
