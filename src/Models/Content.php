@@ -38,8 +38,19 @@ class Content extends Eloquent
     public function storeEntry($input)
     {
         $slug = $input->get('content_slug');
-        $url = $this->getUrlFromInput($this->content['actions']['detail']['url'], $input);
-        $page = $this->content['actions']['detail']['page'];
+        if(is_array($this->content['actions']['detail'])){
+            if(array_key_exists('url', $this->content['actions']['detail'])) {
+                $url = $this->getUrlFromInput($this->content['actions']['detail']['url'], $input);    
+                $page = $this->content['actions']['detail']['page'];
+            } else {
+                $url = null;
+                $page = 'default';
+            }
+        } else {
+            $url = null;
+            $page = 'default';
+        }
+        
         
         $json = [];
         foreach($this->content['fields'] as $fieldKey => $fieldValue){

@@ -159,7 +159,7 @@
                 <div class="col-lg-12">
                       <div class="form-group form-group-default required ">
                         <label>Submissies opslaan in databank</label>
-                        <select class="full-width select2" data-init-plugin="select2" name="action_store" data-minimum-results-for-search="-1">
+                        <select class="full-width select2" data-init-plugin="select2" name="action_store" data-minimum-results-for-search="-1" required>
                           <option value="true" selected>Ja</option>
                           <option value="false">Nee</option>
                         </select>
@@ -167,7 +167,7 @@
                       <hr>
                       <div class="form-group form-group-default required ">
                         <label>Detailpagina voor entries</label>
-                        <select class="full-width select2" data-init-plugin="select2" name="action_detail" data-minimum-results-for-search="-1">
+                        <select class="full-width select2" data-init-plugin="select2" name="action_detail" data-minimum-results-for-search="-1" required>
                           <option value="true">Ja</option>
                           <option value="false" selected>Nee</option>
                         </select>
@@ -181,13 +181,18 @@
                   <div class="col-lg-12">
                     <div class="form-group form-group-default required ">
                       <label>Detailpagina URL</label>
-                      <input type="text" class="form-control" placeholder="Detailpagina URL" id="action_detail_url" name="action_detail_url" required>
+                      <input type="text" class="form-control" placeholder="Detailpagina URL" id="action_detail_url" name="action_detail_url" value=" ">
                     </div>
                     <div class="form-group form-group-default">
                       <label>Pagina-type</label>
                       <select class="full-width select2" data-init-plugin="select2" name="action_detail_page" data-minimum-results-for-search="-1">
-                        <option value="default" selected>Default</option>
-                        <option value="other">Other type</option>
+                        @foreach($pageViews as $template => $page)
+                        <optgroup label="Template: '{{ $template }}'">
+                          @foreach($page['files'] as $file)
+                            <option value="{{ $page['hintpath'] . '::templates.' . $template . '.' . $file }}" @if($loop->parent->first && $loop->first) selected @endif>{{ $file }} - {{ $template }}</option>
+                          @endforeach
+                        </optgroup>
+                        @endforeach
                       </select>
                     </div>
                     <hr>

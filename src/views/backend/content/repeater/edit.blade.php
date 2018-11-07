@@ -161,7 +161,7 @@
                 <div class="col-lg-12">
                       <div class="form-group form-group-default required ">
                         <label>Submissies opslaan in databank</label>
-                        <select class="full-width select2" data-init-plugin="select2" name="action_store" data-minimum-results-for-search="-1">
+                        <select class="full-width select2" data-init-plugin="select2" name="action_store" data-minimum-results-for-search="-1" required>
                           <option value="true" @if($repeater->content['actions']['store'] == 'true') selected @endif>Ja</option>
                           <option value="false" @if($repeater->content['actions']['store'] == 'false') selected @endif>Nee</option>
                         </select>
@@ -169,7 +169,7 @@
                       <hr>
                       <div class="form-group form-group-default required ">
                         <label>Detailpagina voor entries</label>
-                        <select class="full-width select2" data-init-plugin="select2" name="action_detail" data-minimum-results-for-search="-1">
+                        <select class="full-width select2" data-init-plugin="select2" name="action_detail" data-minimum-results-for-search="-1" required>
                           <option value="true" @if($repeater->content['actions']['detail'] !== 'false') selected @endif>Ja</option>
                           <option value="false" @if($repeater->content['actions']['detail'] == 'false') selected @endif>Nee</option>
                         </select>
@@ -183,13 +183,18 @@
                   <div class="col-lg-12">
                     <div class="form-group form-group-default required ">
                       <label>Detailpagina URL</label>
-                      <input type="text" class="form-control" placeholder="Detailpagina URL" id="action_detail_url" name="action_detail_url" value="{{ $repeater->content['actions']['detail']['url'] }}" required>
+                      <input type="text" class="form-control" placeholder="Detailpagina URL" id="action_detail_url" name="action_detail_url" value="{{ $repeater->content['actions']['detail']['url'] !== 'null' ? $repeater->content['actions']['detail']['url'] : 'null' }}">
                     </div>
                     <div class="form-group form-group-default">
                       <label>Pagina-type</label>
                       <select class="full-width select2" data-init-plugin="select2" name="action_detail_page" data-minimum-results-for-search="-1">
-                        <option value="default" @if($repeater->content['actions']['detail']['page'] == 'default') selected @endif>Default</option>
-                        <option value="other" @if($repeater->content['actions']['detail']['page'] == 'other') selected @endif>Other type</option>
+                        @foreach($pageViews as $template => $page)
+                        <optgroup label="Template: '{{ $template }}'">
+                          @foreach($page['files'] as $file)
+                            <option value="{{ $page['hintpath'] . '::templates.' . $template . '.' . $file }}" @if($repeater->content['actions']['detail']['page'] == $page['hintpath'] . '::templates.' . $template . '.' . $file) selected @endif>{{ $file }} - {{ $template }}</option>
+                          @endforeach
+                        </optgroup>
+                        @endforeach
                       </select>
                     </div>
                     <hr>

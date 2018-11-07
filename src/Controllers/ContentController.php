@@ -5,12 +5,14 @@ namespace Chuckbe\Chuckcms\Controllers;
 use Chuckbe\Chuckcms\Models\Content;
 use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Repeater;
-
+use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\User;
 
 use ChuckSite;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
+
 use App\Http\Controllers\Controller;
 
 class ContentController extends Controller
@@ -18,17 +20,19 @@ class ContentController extends Controller
     private $content;
     private $resource;
     private $repeater;
+    private $template;
     private $user;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Content $content, Resource $resource, Repeater $repeater, User $user)
+    public function __construct(Content $content, Resource $resource, Repeater $repeater, Template $template, User $user)
     {
         $this->content = $content;
         $this->resource = $resource;
         $this->repeater = $repeater;
+        $this->template = $template;
         $this->user = $user;
     }
 
@@ -83,13 +87,15 @@ class ContentController extends Controller
 
     public function repeaterCreate()
     {
-        return view('chuckcms::backend.content.repeater.create');
+        $pageViews = $this->template->getPageViews();
+        return view('chuckcms::backend.content.repeater.create', compact('pageViews'));
     }
 
     public function repeaterEdit($slug)
     {
+        $pageViews = $this->template->getPageViews();
         $repeater = Content::where('slug', $slug)->first();
-        return view('chuckcms::backend.content.repeater.edit', compact('repeater'));
+        return view('chuckcms::backend.content.repeater.edit', compact('pageViews', 'repeater'));
     }
 
     public function repeaterSave(Request $request)
@@ -114,9 +120,11 @@ class ContentController extends Controller
         }
 
         $content['actions']['store'] = $request->get('action_store');
-        if($request->get('action_detail') == true) {
+        if($request->get('action_detail') == 'true') {
             $content['actions']['detail']['url'] = $request->get('action_detail_url');
             $content['actions']['detail']['page'] = $request->get('action_detail_page');
+        } else {
+            $content['actions']['detail'] = 'false';
         }
 
         $content['files'] = $request->get('files_allowed');

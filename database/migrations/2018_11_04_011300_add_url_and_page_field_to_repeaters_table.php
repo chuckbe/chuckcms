@@ -14,8 +14,8 @@ class AddUrlAndPageFieldToRepeatersTable extends Migration
     public function up()
     {
         Schema::table('repeaters', function (Blueprint $table) {
-            $table->string('url')->default(null)->after('slug');
-            $table->string('page')->default('default')->after('url');
+            $table->string('url')->nullable()->default(null)->after('slug');
+            $table->string('page')->nullable()->default('default')->after('url');
         });
     
     }

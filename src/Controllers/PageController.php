@@ -56,8 +56,9 @@ class PageController extends Controller
 
             $repeater = $this->repeater->where('url', $slug)->first();
             if($repeater !== null){
-                $template = $this->template->where('type', 'default')->where('active', 1)->first(); // add template id from repeater settings
-                return view($template->hintpath.'::templates.'.$template->slug.'.'.$repeater->page, compact('template', 'repeater'));
+                $templateHintpath = explode('::', $repeater->page)[0];
+                $template = $this->template->where('type', 'default')->where('active', 1)->where('hintpath', $templateHintpath)->first();
+                return view($repeater->page, compact('template', 'repeater'));
             }
 
             $page = $this->page->where('slug->'.app()->getLocale(), $slug)->first();
