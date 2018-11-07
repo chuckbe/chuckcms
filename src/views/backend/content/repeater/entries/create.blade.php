@@ -83,12 +83,12 @@
 @endsection
 
 @section('css')
-<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+<link href="//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
 @endsection
 
 @section('scripts')
   <script src="{{ URL::to('vendor/laravel-filemanager/js/lfm.js') }}"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
   <script>
     $( document ).ready(function() { 
       
