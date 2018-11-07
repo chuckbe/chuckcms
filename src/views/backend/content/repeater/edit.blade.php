@@ -111,13 +111,13 @@
                     <div class="col-sm-6">
                       <div class="form-group form-group-default required">
                         <label>Veld Attribute Naam</label>
-                        <input type="text" class="form-control" placeholder="Veld Attribute Naam" id="fields_attributes_name" name="fields_attributes_name[]" value="@foreach($fValue['attributes'] as $attrKey => $attrValue){{$attrKey}}@if($loop->iteration > 1);@endif @endforeach" required>
+                        <input type="text" class="form-control" placeholder="Veld Attribute Naam" id="fields_attributes_name" name="fields_attributes_name[]" value="@foreach($fValue['attributes'] as $attrKey => $attrValue){{$loop->iteration > 1 ? ';' : ''}}{{$attrKey}}@endforeach" required>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group form-group-default required">
                         <label>Veld Attribute Waarde</label>
-                        <input type="text" class="form-control" placeholder="Veld Attribute Waarde" id="fields_attributes_value" name="fields_attributes_value[]" value="@foreach($fValue['attributes'] as $attrKey => $attrValue){{$attrValue}}@if($loop->iteration > 1);@endif @endforeach" required>
+                        <input type="text" class="form-control" placeholder="Veld Attribute Waarde" id="fields_attributes_value" name="fields_attributes_value[]" value="@foreach($fValue['attributes'] as $attrKey => $attrValue){{$loop->iteration > 1 ? ';' : ''}}{{$attrValue}}@endforeach" required>
                       </div>
                     </div>{{-- 
                     <div class="col-md-2">

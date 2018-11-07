@@ -43,6 +43,11 @@
                       <label for="{{ $keyName }}">{{ $input['label'] }}</label>
                       <textarea name="{{ $keyName }}" class="{{ $input['class'] }}" placeholder="{{ $input['placeholder'] }}" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>@if(array_key_exists($cleanKey, $repeater->json)){{ $repeater->json[$cleanKey] }}@endif</textarea>
                     @endif
+                    @if($input['type'] == 'wysiwyg')
+                      <label for="{{ $keyName }}">{{ $input['label'] }}</label>
+                      <textarea name="{{ $keyName }}" class="summernote-text-editor {{ $input['class'] }}" placeholder="{{ $input['placeholder'] }}" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>@if(array_key_exists($cleanKey, $repeater->json)){{ $repeater->json[$cleanKey] }}@endif</textarea>
+                    @endif
+
                   </div>
                 @endforeach
 
@@ -81,10 +86,12 @@
 @endsection
 
 @section('css')
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
 @endsection
 
 @section('scripts')
   <script src="{{ URL::to('vendor/laravel-filemanager/js/lfm.js') }}"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
   <script>
     $( document ).ready(function() { 
       
@@ -95,6 +102,10 @@
         var domain = "{{ URL::to('dashboard/media')}}";
         $('.img_lfm_link').filemanager('image', {prefix: domain});
       }
+
+      $('.summernote-text-editor').summernote({
+        fontNames: ['Arial', 'Arial Black', 'Open Sans', 'Helvetica', 'Helvetica Neue', 'Lato']
+      });
 
     });
   </script>

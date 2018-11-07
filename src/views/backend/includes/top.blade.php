@@ -9,7 +9,7 @@
             <img src="{{ URL::to('chuckbe/chuckcms/chuckcms-logo.png') }}" alt="logo" data-src="{{ URL::to('chuckbe/chuckcms/chuckcms-logo.png') }}" data-src-retina="{{ URL::to('chuckbe/chuckcms/chuckcms-logo.png') }}" height="22">
           </div>
           @yield('add_record')
-          <a href="#" class="search-link hidden-md-down" data-toggle="search"><i class="pg-search"></i>Type anywhere to <span class="bold">search</span></a>
+          {{-- <a href="#" class="search-link hidden-md-down" data-toggle="search"><i class="pg-search"></i>Type anywhere to <span class="bold">search</span></a> --}}
         </div>
         <div class="d-flex align-items-center">
           <!-- START NOTIFICATION LIST -->
