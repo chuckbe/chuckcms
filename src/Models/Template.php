@@ -51,8 +51,8 @@ class Template extends Eloquent
         $templates = $this->where('active', 1)->where('type', 'default')->get();
         $pageViews = [];
         foreach ($templates as $template) {
-            if(file_exists(base_path('vendor/'.$template->path.'/src/views/templates/'.$template->slug.'/mails'))){
-                $pageDir = array_slice(scandir(base_path('vendor/'.$template->path.'/src/views/templates/'.$template->slug.'/mails')), 2);
+            if(file_exists(base_path('vendor/'.$template->path.'/src/views/templates/'.$template->slug))){
+                $pageDir = array_slice(scandir(base_path('vendor/'.$template->path.'/src/views/templates/'.$template->slug)), 2);
                 if (count($pageDir) > 0) {
                     $pageViews[$template->slug]['hintpath'] = $template->hintpath;
                     foreach($pageDir as $pdKey => $pdValue) {
