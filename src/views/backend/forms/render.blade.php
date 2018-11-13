@@ -25,6 +25,7 @@
 @endif
 
 	<input type="hidden" value="{{ csrf_token() }}" name="_token">
+	{!! Honeypot::generate('chuckpot', 'chucktime') !!}
 	<input type="hidden" value="{{ $form->slug }}" name="_form_slug">
 	<button type="submit" class="{{ $form->form['button']['class'] }}" id="{{ $form->form['button']['id'] }}">{{ $form->form['button']['label'] }}</button>
 </form>
