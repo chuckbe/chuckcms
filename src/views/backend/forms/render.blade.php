@@ -1,4 +1,4 @@
-<form action="{{ route('forms.validate') }}" method="post" @if($form->form['files'] == 'true') enctype="multipart/form-data" @endif>
+<form id="ccms_form_{{ $form->slug }}" action="{{ route('forms.validate') }}" method="post" @if($form->form['files'] == 'true') enctype="multipart/form-data" @endif>
 	
 @foreach($form->form['fields'] as $keyName => $input)
 	<div class="form-group">
