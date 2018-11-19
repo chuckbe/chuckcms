@@ -52,7 +52,7 @@
     <!-- END PAGE CONTAINER -->
     @include('chuckcms::backend.includes.search')
     <!-- BEGIN VENDOR JS -->
-    <script src="https://cdn.chuck.be/assets/plugins/feather-icons/feather.min.js') }}" type="text/javascript"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/feather-icons/feather.min.js" type="text/javascript"></script>
     <script src="https://cdn.chuck.be/assets/plugins/pace/pace.min.js" type="text/javascript"></script>
     <script src="https://cdn.chuck.be/assets/plugins/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
     <script src="https://cdn.chuck.be/assets/plugins/modernizr.custom.js" type="text/javascript"></script>

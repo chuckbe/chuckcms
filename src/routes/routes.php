@@ -322,10 +322,10 @@ Route::group([
    		'Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect', 
    		'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter', 
    		'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath', 
-   		'web' 
+   		'web'
    		]
     ], function() {
-	Route::get('/{slug?}', 'Chuckbe\Chuckcms\Controllers\PageController@index')->where('slug', '(.*)')->name('page');
+	Route::any('/{slug?}', 'Chuckbe\Chuckcms\Controllers\PageController@index')->where('slug', '(.*)')->name('page')->fallback();
 });
 
 

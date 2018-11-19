@@ -80,6 +80,44 @@
             </a>
             <span class="icon-thumbnail"><i data-feather="cpu"></i></span>
           </li>
+
+          <li class="">
+            <hr>
+          </li>
+
+          @foreach($modules as $module)
+            @if($module->json['admin']['show_in_menu'] == true)
+            <li class="">
+              @if($module->json['admin']['menu']['has_submenu'] == true)
+              <a href="javascript:;">
+              @else
+              <a href="{{ route($module->json['admin']['menu']['route']) }}">
+              @endif
+              <span class="title">{{ $module->json['admin']['menu']['name'] }}</span>
+              @if($module->json['admin']['menu']['has_submenu'] == true)
+              <span class="arrow"></span>
+              @endif
+              </a>
+              <span class="icon-thumbnail"><i data-feather="{{ $module->json['admin']['menu']['icon'] }}"></i></span>
+              @if($module->json['admin']['menu']['has_submenu'] == true)
+              <ul class="sub-menu">
+                @foreach($module->json['admin']['menu']['submenu'] as $submenuKey => $submenu)
+                <li class="">
+                  <a href="{{ route($submenu['route']) }}">{{ $submenu['name'] }}</a>
+                  <span class="icon-thumbnail">
+                    @if($submenu['icon'] == true)
+                    <i data-feather="{{ $submenu['icon_data'] }}"></i>
+                    @else
+                    {{ $submenu['icon_data'] }}
+                    @endif
+                  </span>
+                </li>
+                @endforeach
+              </ul>
+              @endif
+            </li>
+            @endif
+          @endforeach
           
         </ul>
         <div class="clearfix"></div>

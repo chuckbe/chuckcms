@@ -17,7 +17,7 @@ class ChuckcmsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        include __DIR__.'/routes/routes.php';
+        $this->loadRoutesFrom(__DIR__.'/routes/routes.php');
         
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         
@@ -69,6 +69,10 @@ class ChuckcmsServiceProvider extends ServiceProvider
 
         $this->app->register(
             'Chuckbe\Chuckcms\Providers\ChuckMenuServiceProvider'
+        );
+
+        $this->app->register(
+            'Chuckbe\Chuckcms\Providers\ChuckDashboardSidebarViewComposerServiceProvider'
         );
 
         $this->app->register(
