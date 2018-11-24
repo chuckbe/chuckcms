@@ -100,6 +100,7 @@ class ContentController extends Controller
 
     public function repeaterSave(Request $request)
     {
+        //add validation / move to repository...
         $content = [];
         $content_slug = $request->get('content_slug');
         $fields_slug = $request->get('fields_slug');

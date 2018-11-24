@@ -103,7 +103,16 @@
               <ul class="sub-menu">
                 @foreach($module->json['admin']['menu']['submenu'] as $submenuKey => $submenu)
                 <li class="">
-                  <a href="{{ route($submenu['route']) }}">{{ $submenu['name'] }}</a>
+                  @if($submenu['has_submenu'] == true)
+                  <a href="javascript:;">
+                  @else
+                  <a href="{{ route($submenu['route']) }}">
+                  @endif
+                  <span class="title">{{ $submenu['name'] }}</span>
+                  @if($submenu['has_submenu'] == true)
+                  <span class="arrow"></span>
+                  @endif
+                  </a>
                   <span class="icon-thumbnail">
                     @if($submenu['icon'] == true)
                     <i data-feather="{{ $submenu['icon_data'] }}"></i>
@@ -111,6 +120,22 @@
                     {{ $submenu['icon_data'] }}
                     @endif
                   </span>
+                  @if($submenu['has_submenu'] == true)
+                  <ul class="sub-menu">
+                    @foreach($submenu['submenu'] as $subsubmenuKey => $subsubmenu)
+                    <li class="">
+                      <a href="{{ route($subsubmenu['route']) }}">{{ $subsubmenu['name'] }}</a>
+                      <span class="icon-thumbnail">
+                        @if($subsubmenu['icon'] == true)
+                        <i data-feather="{{ $subsubmenu['icon_data'] }}"></i>
+                        @else
+                        {{ $subsubmenu['icon_data'] }}
+                        @endif
+                      </span>
+                    </li>
+                    @endforeach
+                  </ul>
+                  @endif
                 </li>
                 @endforeach
               </ul>

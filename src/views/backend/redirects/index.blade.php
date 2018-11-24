@@ -1,7 +1,7 @@
 @extends('chuckcms::backend.layouts.admin')
 
 @section('title')
-	Pages
+	Redirects
 @endsection
 
 @section('add_record')
