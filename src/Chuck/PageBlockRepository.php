@@ -31,7 +31,7 @@ class PageBlockRepository
             $body = $pageblock->body;
             $findUrlTags = $this->getResources($body, '[%', '%]');
             $url = env('APP_URL', ChuckSite::getSetting('domain'));
-            if(count($findUrlTags > 0)) {
+            if(count($findUrlTags) > 0) {
                 foreach($findUrlTags as $foundUrlTag) {
                     if(strpos($foundUrlTag, 'URL') !== false) {
                         $body = str_replace('[%URL%]', $url, $body);
@@ -82,7 +82,7 @@ class PageBlockRepository
         $body = $pageblock->body;
         $findUrlTags = $this->getResources($body, '[%', '%]');
         $url = env('APP_URL', ChuckSite::getSetting('domain'));
-        if(count($findUrlTags > 0)) {
+        if(count($findUrlTags) > 0) {
             foreach($findUrlTags as $foundUrlTag) {
                 if(strpos($foundUrlTag, 'URL') !== false) {
                     $body = str_replace('[%URL%]', $url, $body);

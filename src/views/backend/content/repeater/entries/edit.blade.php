@@ -47,6 +47,22 @@
                       <label for="{{ $keyName }}">{{ $input['label'] }}</label>
                       <textarea name="{{ $keyName }}" class="summernote-text-editor {{ $input['class'] }}" placeholder="{{ $input['placeholder'] }}" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>@if(array_key_exists($cleanKey, $repeater->json)){{ $repeater->json[$cleanKey] }}@endif</textarea>
                     @endif
+                    @if($input['type'] == 'select2')
+                      <label for="{{ $keyName }}">{{ $input['label'] }}</label>
+                      <select class="full-width select2 {{ $input['class'] }}" data-init-plugin="select2" name="{{ $keyName }}" data-minimum-results-for-search="-1" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>
+                        @foreach(explode('|', $input['value']) as $s2Value)
+                        <option value="{{ $s2Value }}" @if(array_key_exists($cleanKey, $repeater->json)) @if($repeater->json[$cleanKey] == $s2Value) selected @endif @endif>{{ $s2Value }}</option>
+                        @endforeach
+                      </select>
+                    @endif
+                    @if($input['type'] == 'multiselect2')
+                      <label for="{{ $keyName }}">{{ $input['label'] }}</label>
+                      <select class="full-width select2 {{ $input['class'] }}" data-init-plugin="select2" name="{{ $keyName }}[]" data-minimum-results-for-search="-1" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif multiple="multiple">
+                        @foreach(explode('|', $input['value']) as $s2Value)
+                        <option value="{{ $s2Value }}" @if(array_key_exists($cleanKey, $repeater->json)) @foreach($repeater->json[$cleanKey] as $msValue) @if($msValue == $s2Value) selected @endif @endforeach @endif>{{ $s2Value }}</option>
+                        @endforeach
+                      </select> 
+                    @endif
 
                   </div>
                 @endforeach

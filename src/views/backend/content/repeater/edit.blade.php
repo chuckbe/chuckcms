@@ -75,7 +75,16 @@
                     <div class="col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Type</label>
-                        <input type="text" class="form-control" placeholder="Veld Type" id="fields_type" name="fields_type[]" value="{{ $fValue['type'] }}" required>
+                        <select class="full-width select2 form-control" data-init-plugin="select2" id="fields_type" name="fields_type[]" data-minimum-results-for-search="-1" required>
+                            <option value="text" @if($fValue['type'] == 'text') selected @endif>Text</option>
+                            <option value="email" @if($fValue['type'] == 'email') selected @endif>E-mail</option>
+                            <option value="password" @if($fValue['type'] == 'password') selected @endif>Password</option>
+                            <option value="image_link" @if($fValue['type'] == 'image_link') selected @endif>Image</option>
+                            <option value="textarea" @if($fValue['type'] == 'textarea') selected @endif>Textarea</option>
+                            <option value="wysiwyg" @if($fValue['type'] == 'wysiwyg') selected @endif>WYSIWYG</option>
+                            <option value="select2" @if($fValue['type'] == 'select2') selected @endif>Select2 (single)</option>
+                            <option value="multiselect2" @if($fValue['type'] == 'multiselect2') selected @endif>Select2 (multiple)</option>
+                          </select>
                       </div>
                     </div>
                   </div>
@@ -101,9 +110,9 @@
                       </div>
                     </div>
                     <div class="col-md-6">
-                      <div class="form-group form-group-default required ">
+                      <div class="form-group form-group-default">
                         <label>Veld Waarde</label>
-                        <input type="text" class="form-control" placeholder="waarde van veld" id="fields_value" name="fields_value[]" value="{{ $fValue['value'] ? $fValue['value'] : ' ' }}" required>
+                        <input type="text" class="form-control" placeholder="waarde van veld" id="fields_value" name="fields_value[]" value="{{ $fValue['value'] ? $fValue['value'] : ' ' }}">
                       </div>
                     </div>
                   </div>

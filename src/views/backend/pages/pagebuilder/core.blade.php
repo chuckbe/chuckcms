@@ -46,7 +46,7 @@ i{
 #pb_controls{
 	position: absolute;
 	right: 0;
-	z-index: 99;
+	z-index: 9999;
 }
 
 .pageblock_body_raw{
