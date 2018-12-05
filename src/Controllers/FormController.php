@@ -59,6 +59,7 @@ class FormController extends Controller
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['label'] = $request->get('fields_label')[$i];
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['type'] = $request->get('fields_type')[$i];
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['class'] = $request->get('fields_class')[$i];
+            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['parentclass'] = $request->get('fields_parentclass')[$i];
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['placeholder'] = $request->get('fields_placeholder')[$i];
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['validation'] = $request->get('fields_validation')[$i];
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['value'] = $request->get('fields_value')[$i];

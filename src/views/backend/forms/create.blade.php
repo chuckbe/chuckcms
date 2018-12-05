@@ -79,13 +79,19 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-4">
                         <div class="form-group form-group-default required ">
                           <label>Veld Class</label>
-                          <input type="text" class="form-control" placeholder="Veld Class" id="fields_class" name="fields_class[]" required>
+                          <input type="text" class="form-control" placeholder="Veld Class" id="fields_class" name="fields_class[]" value="form-control" required>
                         </div>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-4">
+                        <div class="form-group form-group-default ">
+                          <label>Ouder Veld Class</label>
+                          <input type="text" class="form-control" placeholder="Ouder Veld Class" id="fields_parentclass" name="fields_parentclass[]">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
                         <div class="form-group form-group-default required ">
                           <label>Veld Placeholder</label>
                           <input type="text" class="form-control" placeholder="Veld Placeholder" id="fields_placeholder" name="fields_placeholder[]" required>
@@ -100,9 +106,9 @@
                         </div>
                       </div>
                       <div class="col-md-6">
-                        <div class="form-group form-group-default required ">
+                        <div class="form-group form-group-default ">
                           <label>Veld Waarde</label>
-                          <input type="text" class="form-control" placeholder="waarde van veld" id="fields_value" name="fields_value[]" required>
+                          <input type="text" class="form-control" placeholder="waarde van veld" id="fields_value" name="fields_value[]">
                         </div>
                       </div>
                     </div>

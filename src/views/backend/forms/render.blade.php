@@ -1,7 +1,7 @@
 <form id="ccms_form_{{ $form->slug }}" action="{{ route('forms.validate') }}" method="post" @if($form->form['files'] == 'true') enctype="multipart/form-data" @endif>
 	
 @foreach($form->form['fields'] as $keyName => $input)
-	<div class="form-group">
+	<div class="form-group {{ $input['parentclass'] }}">
 		@if($input['type'] == 'text' || $input['type'] == 'email' || $input['type'] == 'password')
 			<label for="{{$keyName}}">{{ $input['label'] }}</label>
 			<input type="{{ $input['type'] }}" name="{{$keyName}}" class="{{ $input['class'] }}" placeholder="{{ $input['placeholder'] }}" value="{{ old($keyName) ? old($keyName) : $input['value'] }}" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>
