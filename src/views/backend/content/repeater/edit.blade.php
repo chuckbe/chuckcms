@@ -192,7 +192,7 @@
                   <div class="col-lg-12">
                     <div class="form-group form-group-default required ">
                       <label>Detailpagina URL</label>
-                      <input type="text" class="form-control" placeholder="Detailpagina URL" id="action_detail_url" name="action_detail_url" @if($repeater->content['actions']['detail'] == 'true') value="{{ $repeater->content['actions']['detail']['url'] !== 'null' ? $repeater->content['actions']['detail']['url'] : 'null' }}" @endif>
+                      <input type="text" class="form-control" placeholder="Detailpagina URL" id="action_detail_url" name="action_detail_url" @if($repeater->content['actions']['detail'] !== 'false') value="{{ $repeater->content['actions']['detail']['url'] !== 'null' ? $repeater->content['actions']['detail']['url'] : 'null' }}" @endif>
                     </div>
                     <div class="form-group form-group-default">
                       <label>Pagina-type</label>
