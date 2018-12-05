@@ -120,7 +120,7 @@
                 <div class="col-lg-12">
                   <hr>
                   <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Template</label>
                         <select class="full-width" data-init-plugin="select2" name="template_id" data-minimum-results-for-search="-1">
@@ -130,7 +130,7 @@
                         </select>
                       </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-md-3">
                       <div class="form-group form-group-default required ">
                         <label>Actief</label>
                         <select class="full-width" data-init-plugin="select2" name="active" data-minimum-results-for-search="-1">
@@ -139,7 +139,22 @@
                         </select>
                       </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-md-3">
+                      <div class="form-group form-group-default required ">
+                        <label>Pagina</label>
+                        <select class="full-width" data-init-plugin="select2" name="page" data-minimum-results-for-search="-1">
+                          <option value="">Standaard</option>
+                          @foreach($pageViews as $template => $view)
+                          <optgroup label="Template: '{{ $template }}'">
+                            @foreach($view['files'] as $file)
+                              <option value="{{ $view['hintpath'] . '::templates.' . $template . '.' . $file }}">{{ $file }} - {{ $template }}</option>
+                            @endforeach
+                          </optgroup>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
                       <div class="form-group form-group-default input-group">
                         <div class="form-input-group">
                           <label class="inline">Homepage</label>

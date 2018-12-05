@@ -67,6 +67,7 @@ class Page extends Eloquent
         $page->meta = $meta;
 
         $page->template_id = $values['template_id'];
+        $page->page = $values['page'];
         $page->active = $values['active'];
         $page->isHp = $values['isHp'];
 

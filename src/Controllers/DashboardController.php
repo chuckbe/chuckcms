@@ -66,7 +66,8 @@ class DashboardController extends Controller
     {
         $templates = $this->template->where('active', 1)->where('type', 'default')->get();
         $page = $this->page->getByIdWithBlocks($page_id);
-        return view('chuckcms::backend.pages.edit', compact('templates', 'page'));
+        $pageViews = $this->template->getPageViews();
+        return view('chuckcms::backend.pages.edit', compact('templates', 'page', 'pageViews'));
     }
 
     /**
@@ -78,7 +79,8 @@ class DashboardController extends Controller
     {
         $template = $this->template->where('active', 1)->where('type', 'admin')->first();
         $templates = $this->template->where('active', 1)->where('type', 'default')->get();
-        return view('chuckcms::backend.pages.create', compact('template', 'templates', 'page'));
+        $pageViews = $this->template->getPageViews();
+        return view('chuckcms::backend.pages.create', compact('template', 'templates', 'page', 'pageViews'));
     }
 
     /**

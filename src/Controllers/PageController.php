@@ -80,9 +80,15 @@ class PageController extends Controller
             if($page == null) abort(404);
         }
         
-        
         $ogpageblocks = $this->pageblock->getAllByPageId($page->id);
         $pageblocks = $this->pageBlockRepository->getRenderedByPageBlocks($ogpageblocks);
+        
+        if($page->page !== null) {
+            $template = $this->template->where('active', 1)->where('hintpath', explode('::', $page->page)[0])->first();
+
+            return view($page->page, compact('template', 'page', 'pageblocks'));
+        }
+
         $template = $this->template->where('active', 1)->where('id', $page->template_id)->first();
         
         return view($template->hintpath.'::templates.'.$template->slug.'.page', compact('template', 'page', 'pageblocks'));
