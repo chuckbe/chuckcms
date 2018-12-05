@@ -51,7 +51,18 @@ class Form extends Eloquent
             if($this->form['files'] == 'true'){
                 foreach($this->form['fields'] as $fieldKey => $fieldValue){
                     if($fieldValue['type'] == 'file'){
-                        //@todo save input files
+                        if($input->hasFile($fieldKey)){
+                            $avatar = $input->file($fieldKey);
+                            $filename = time() . '.' . $avatar->getClientOriginalExtension();
+                            if (!file_exists(public_path('/files/uploads/'))) {
+                                mkdir(public_path('/files/uploads/'), 0777, true);
+                            }
+                            $avatar->move( public_path('/files/uploads/'), $filename );
+                            $filepath = '/files/uploads/' . $filename;
+                        } else {
+                            $filepath = null;
+                        }
+                        $json[$fieldKey] = $filepath;
                     }
                 }
             }
@@ -102,7 +113,9 @@ class Form extends Eloquent
             if(count($findThis) > 0){
             
                 foreach($findThis as $founded){
-                    $sendValue = str_replace('[' . $founded . ']', $input->get($founded), $sendValue);
+                    if(strpos($founded, $sendKey) !== false) {
+                        $sendValue = str_replace('[' . $founded . ']', $input->get($founded), $sendValue);
+                    }
                 }
                 $inputData = $sendValue;
                 
