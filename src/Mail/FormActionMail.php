@@ -30,9 +30,17 @@ class FormActionMail extends Mailable
      */
     public function build()
     {
-        return $this->from($this->mailData['from'], $this->mailData['from_name'])
+        $mail = $this->from($this->mailData['from'], $this->mailData['from_name'])
                     ->to($this->mailData['to'], $this->mailData['to_name'])
                     ->subject($this->mailData['subject'])
                     ->view($this->mailData['template']);
+        if(is_array($this->mailData['files'])) {
+            foreach($this->mailData['files'] as $file) {
+                if($file !== null) {
+                    $mail->attach(public_path($file));    
+                }
+            }
+        }
+        return $mail;
     }
 }

@@ -41,16 +41,15 @@ class Template extends Eloquent
                         }    
                     }
                 }
-
-                if(file_exists(base_path('resources/views/vendor/'.$template->slug.'/templates/'.$template->slug.'/mails'))){
-                    $mailDirVendor = array_slice(scandir(base_path('resources/views/vendor/'.$template->slug.'/templates/'.$template->slug.'/mails')), 2);
-                    if (count($mailDirVendor) > 0) {
-                        $emailTemplates[$template->slug]['hintpath'] = $template->hintpath;
-                        foreach($mailDirVendor as $mdKey => $mdValue) {
-                            if (strpos($mdValue, '.blade.php')) {
-                                $emailTemplates[$template->slug]['files'][] = str_replace('.blade.php', '', $mdValue);
-                            }    
-                        }
+            }
+            if(file_exists(base_path('resources/views/vendor/'.$template->slug.'/templates/'.$template->slug.'/mails'))){
+                $mailDirVendor = array_slice(scandir(base_path('resources/views/vendor/'.$template->slug.'/templates/'.$template->slug.'/mails')), 2);
+                if (count($mailDirVendor) > 0) {
+                    $emailTemplates[$template->slug]['hintpath'] = $template->hintpath;
+                    foreach($mailDirVendor as $mdKey => $mdValue) {
+                        if (strpos($mdValue, '.blade.php')) {
+                            $emailTemplates[$template->slug]['files'][] = str_replace('.blade.php', '', $mdValue);
+                        }    
                     }
                 }
             }

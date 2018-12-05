@@ -68,10 +68,12 @@ class Form extends Eloquent
             }
             $entry->entry = $json;
             if($entry->save()){
-                return 'success';
+                return $entry;
+            } else {
+                return 'error';
             }
         }else {
-            return 'success';
+            return 'pass';
         }
     }
 
@@ -105,7 +107,7 @@ class Form extends Eloquent
         }
     }
 
-    public function getMailData($sendData, $input)
+    public function getMailData($sendData, $input, $entry)
     {
         $mailData = [];
         foreach($sendData as $sendKey => $sendValue){
@@ -113,7 +115,7 @@ class Form extends Eloquent
             if(count($findThis) > 0){
             
                 foreach($findThis as $founded){
-                    if(strpos($founded, $sendKey) !== false) {
+                    if(strpos($founded, $input->get('_form_slug')) !== false) {
                         $sendValue = str_replace('[' . $founded . ']', $input->get($founded), $sendValue);
                     }
                 }
@@ -124,6 +126,14 @@ class Form extends Eloquent
             }
 
             $mailData[$sendKey] = $inputData;
+            if($sendKey == 'files' && $sendValue == 'true') {
+                $mailData[$sendKey] = [];
+                foreach($this->form['fields'] as $fKey => $fValue) {
+                    if($fValue['type'] == 'file') {
+                        $mailData[$sendKey][] = $entry->entry[$fKey];
+                    }
+                }
+            }
         }
         return $mailData;
     }
