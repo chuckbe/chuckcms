@@ -23,24 +23,24 @@ Route::group(['middleware' => ['web']], function() {
 		Route::get('/dashboard', 'Chuckbe\Chuckcms\Controllers\DashboardController@index')->name('dashboard');
 	// Dashboard Pages Routes...
 		Route::group(['middleware' => ['permission:show pages']], function () {
-		    Route::get('/dashboard/pages', 'Chuckbe\Chuckcms\Controllers\DashboardController@pages')->name('dashboard.pages');
+		    Route::get('/dashboard/pages', 'Chuckbe\Chuckcms\Controllers\PageController@index')->name('dashboard.pages');
 		});
 		Route::group(['middleware' => ['permission:create pages']], function () {
-		    Route::get('/dashboard/page/create', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageCreate')->name('dashboard.page.create');
-		    Route::post('/dashboard/page/save', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageSave')->name('dashboard.page.save');
+		    Route::get('/dashboard/page/create', 'Chuckbe\Chuckcms\Controllers\PageController@create')->name('dashboard.page.create');
+		    Route::post('/dashboard/page/save', 'Chuckbe\Chuckcms\Controllers\PageController@save')->name('dashboard.page.save');
 		});
 		
 		Route::group(['middleware' => ['permission:edit pages']], function () {
-			Route::get('/dashboard/page/{page_id}-edit', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageEdit')->name('dashboard.page.edit');
+			Route::get('/dashboard/page/{page_id}-edit', 'Chuckbe\Chuckcms\Controllers\PageController@edit')->name('dashboard.page.edit');
 		});
 
 		Route::group(['middleware' => ['permission:delete pages']], function () {
-		    Route::post('/dashboard/page/delete', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageDelete')->name('dashboard.page.delete');
+		    Route::post('/dashboard/page/delete', 'Chuckbe\Chuckcms\Controllers\PageController@delete')->name('dashboard.page.delete');
 		});
 	// Dashboard Page Builder Routes...
 		Route::group(['middleware' => ['permission:show pagebuilder']], function () {
-			Route::get('/dashboard/page/{page_id}-edit/builder', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageEditBuilder')->name('dashboard.page.edit.pagebuilder');
-			Route::get('/dashboard/page/{page_id}/raw', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageRaw')->name('dashboard.page.raw');    
+			Route::get('/dashboard/page/{page_id}-edit/builder', 'Chuckbe\Chuckcms\Controllers\PageController@builderIndex')->name('dashboard.page.edit.pagebuilder');
+			Route::get('/dashboard/page/{page_id}/raw', 'Chuckbe\Chuckcms\Controllers\PageController@builderRaw')->name('dashboard.page.raw');    
 		});
 
 		Route::group(['middleware' => ['permission:edit pagebuilder']], function () {
@@ -50,11 +50,6 @@ Route::group(['middleware' => ['web']], function() {
 			Route::post('/pageblock/move-down', 'Chuckbe\Chuckcms\Controllers\PageBlockController@moveDown')->name('api.pageblock.move_down');
 			Route::post('/pageblock/add-block-top', 'Chuckbe\Chuckcms\Controllers\PageBlockController@addBlockTop')->name('api.pageblock.add_block_top');
 			Route::post('/pageblock/add-block-bottom', 'Chuckbe\Chuckcms\Controllers\PageBlockController@addBlockBottom')->name('api.pageblock.add_block_bottom');
-		});
-		
-		Route::group(['middleware' => ['permission:show pagebuilder']], function () {
-			Route::get('/dashboard/page/{page_id}-edit/builder', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageEditBuilder')->name('dashboard.page.edit.pagebuilder');
-			Route::get('/dashboard/page/{page_id}/raw', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageRaw')->name('dashboard.page.raw');    
 		});
 
 		Route::group(['middleware' => ['permission:delete pagebuilder']], function () {
@@ -317,7 +312,6 @@ Route::group(compact('middleware', 'prefix', 'as', 'namespace'), function () {
         'as' => 'getDelete',
     ]);
 
-    // Route::get('/demo', 'DemoController@index');
 });
 
 Route::group([
@@ -329,7 +323,7 @@ Route::group([
    		'web'
    		]
     ], function() {
-	Route::any('/{slug?}', 'Chuckbe\Chuckcms\Controllers\PageController@index')->where('slug', '(.*)')->name('page')->fallback();
+	Route::any('/{slug?}', 'Chuckbe\Chuckcms\Controllers\FrontEndController@index')->where('slug', '(.*)')->name('page')->fallback();
 });
 
 
