@@ -102,6 +102,21 @@ class DashboardController extends Controller
     }
 
     /**
+     * Delete the page and pageblocks.
+     *
+     * @return string
+     */
+    public function pageDelete(Request $request)
+    {
+        $this->validate(request(), [ //@todo create custom Request class for page validation
+            'page_id' => 'required',
+        ]);
+        
+        $status = $this->page->deleteById($request->get('page_id'));
+        return $status;
+    }
+
+    /**
      * Show the dashboard -> page edit page builder.
      *
      * @return \Illuminate\Http\Response

@@ -2,6 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
+use Chuckbe\Chuckcms\Models\PageBlock;
 use ChuckSite;
 
 use Eloquent;
@@ -94,6 +95,21 @@ class Page extends Eloquent
         $page->isHp = $values['isHp'];
 
         $page->save();
+    }
+
+    public function deleteById($id)
+    {
+        $page = $this->where('id', $id)->first();
+        if($page){
+            PageBlock::where('page_id', $page->id)->delete();
+            if($page->delete()){
+                return 'success';
+            } else {
+                return 'error';
+            }
+        } else {
+            return 'false';
+        }
     }
 
     public $translatable = ['title', 'slug'];

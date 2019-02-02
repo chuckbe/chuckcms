@@ -26,6 +26,7 @@ class ChuckcmsServiceProvider extends ServiceProvider
         ], 'chuckcms-public');
 
         $this->publishes([
+            __DIR__ . '/../config/chuckcms.php' => config_path('chuckcms.php'),
             __DIR__ . '/../config/menu.php' => config_path('menu.php'),
             __DIR__ . '/../config/lfm.php' => config_path('lfm.php'),
             __DIR__ . '/../config/lang.php' => config_path('lang.php'),
@@ -84,6 +85,10 @@ class ChuckcmsServiceProvider extends ServiceProvider
         $loader->alias('ChuckMenu', 'Chuckbe\Chuckcms\Facades\Menu');
         $loader->alias('Honeypot', 'Msurguy\Honeypot\HoneypotFacade');
 
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/chuckcms.php', 'chuckcms'
+        );
 
         $this->mergeConfigFrom(
             __DIR__ . '/../config/menu.php', 'menu'

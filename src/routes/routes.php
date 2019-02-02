@@ -2,19 +2,19 @@
 
 Route::group(['middleware' => ['web']], function() {
 // Login Routes...
-    Route::get('login', ['as' => 'login', 'uses' => 'Chuckbe\Chuckcms\Controllers\Auth\LoginController@showLoginForm']);
-    Route::post('login', ['as' => 'login.post', 'uses' => 'Chuckbe\Chuckcms\Controllers\Auth\LoginController@login']);
-    Route::post('logout', ['as' => 'logout', 'uses' => 'Chuckbe\Chuckcms\Controllers\Auth\LoginController@logout']);
+    Route::get('login', ['as' => 'login', 'uses' => config('chuckcms.auth.get_login.controller').'@'.config('chuckcms.auth.get_login.action')]);
+    Route::post('login', ['as' => 'login.post', 'uses' => config('chuckcms.auth.post_login.controller').'@'.config('chuckcms.auth.post_login.action')]);
+    Route::post('logout', ['as' => 'logout', 'uses' => config('chuckcms.auth.post_logout.controller').'@'.config('chuckcms.auth.post_logout.action')]);
 
 // Registration Routes...
-    Route::get('register', ['as' => 'register', 'uses' => 'Chuckbe\Chuckcms\Controllers\Auth\RegisterController@showRegistrationForm']);
-    Route::post('register', ['as' => 'register.post', 'uses' => 'Chuckbe\Chuckcms\Controllers\Auth\RegisterController@register']);
+    Route::get('register', ['as' => 'register', 'uses' => config('chuckcms.auth.get_register.controller').'@'.config('chuckcms.auth.get_register.action')]);
+    Route::post('register', ['as' => 'register.post', 'uses' => config('chuckcms.auth.post_register.controller').'@'.config('chuckcms.auth.post_register.action')]);
 
 // Password Reset Routes...
-    Route::get('password/reset', ['as' => 'password.reset', 'uses' => 'Chuckbe\Chuckcms\Controllers\Auth\ForgotPasswordController@showLinkRequestForm']);
-    Route::post('password/email', ['as' => 'password.email', 'uses' => 'Chuckbe\Chuckcms\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail']);
-    Route::get('password/reset/{token}', ['as' => 'password.reset.token', 'uses' => 'Chuckbe\Chuckcms\Controllers\Auth\ResetPasswordController@showResetForm']);
-    Route::post('password/reset', ['as' => 'password.reset.post', 'uses' => 'Chuckbe\Chuckcms\Controllers\Auth\ResetPasswordController@reset']);
+    Route::get('password/reset', ['as' => 'password.reset', 'uses' => config('chuckcms.auth.get_password_reset.controller').'@'.config('chuckcms.auth.get_password_reset.action')]);
+    Route::post('password/email', ['as' => 'password.email', 'uses' => config('chuckcms.auth.post_password_email.controller').'@'.config('chuckcms.auth.post_password_email.action')]);
+    Route::get('password/reset/{token}', ['as' => 'password.reset.token', 'uses' => config('chuckcms.auth.get_password_reset_token.controller').'@'.config('chuckcms.auth.get_password_reset_token.action')]);
+    Route::post('password/reset', ['as' => 'password.reset.post', 'uses' => config('chuckcms.auth.post_password_reset.controller').'@'.config('chuckcms.auth.post_password_reset.action')]);
 });
 
 Route::group(['middleware' => ['web']], function() {
@@ -32,6 +32,10 @@ Route::group(['middleware' => ['web']], function() {
 		
 		Route::group(['middleware' => ['permission:edit pages']], function () {
 			Route::get('/dashboard/page/{page_id}-edit', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageEdit')->name('dashboard.page.edit');
+		});
+
+		Route::group(['middleware' => ['permission:delete pages']], function () {
+		    Route::post('/dashboard/page/delete', 'Chuckbe\Chuckcms\Controllers\DashboardController@pageDelete')->name('dashboard.page.delete');
 		});
 	// Dashboard Page Builder Routes...
 		Route::group(['middleware' => ['permission:show pagebuilder']], function () {

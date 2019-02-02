@@ -57,7 +57,7 @@ class PageController extends Controller
             $repeater = $this->repeater->where('url', $slug)->first();
             if($repeater !== null){
                 $templateHintpath = explode('::', $repeater->page)[0];
-                $template = $this->template->where('type', 'default')->where('active', 1)->where('hintpath', $templateHintpath)->first();
+                $template = $this->template->where('active', 1)->where('hintpath', $templateHintpath)->first();
                 return view($repeater->page, compact('template', 'repeater'));
             }
 

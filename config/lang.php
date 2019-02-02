@@ -299,6 +299,8 @@ return [
         'en'          => ['name' => 'English',                'script' => 'Latn', 'native' => 'English', 'regional' => 'en_GB'],
     ],
 
+    'featuredLocale' => 'nl',
+
     'useAcceptLanguageHeader' => true,
     'hideDefaultLocaleInURL' => true,
 ];

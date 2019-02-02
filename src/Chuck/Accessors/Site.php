@@ -83,6 +83,11 @@ class Site
         return $supportedLocales ? $supportedLocales : null;
     }
 
+    public function getFeaturedLocale()
+    {
+        return config('lang.featuredLocale');
+    }
+
     private function resolveSetting($var, $settings)
     {
         $split = explode('.', $var);
