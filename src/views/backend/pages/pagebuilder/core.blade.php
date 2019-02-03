@@ -111,7 +111,7 @@ i{
         <a id="add_block_top" style="border:none;color:dodgerblue;">
             <div class="panel panel-default mb-none" style="background:#ececec;border:dashed dodgerblue 4px;margin-bottom:0px;">
                 <div class="panel-body text-center">
-					<h3>PAGINA BLOCK TOEVOEGEN</h3>
+					<h3 style="margin:20px 0!important;">PAGINA BLOCK TOEVOEGEN</h3>
                 </div>
             </div>
         </a>
@@ -173,7 +173,7 @@ i{
         <a id="add_block_bottom" style="border:none;color:dodgerblue;">
             <div class="panel panel-default" style="background:#ececec;border:dashed dodgerblue 4px;margin-bottom:0px;">
                 <div class="panel-body text-center">
-					<h3>PAGINA BLOCK TOEVOEGEN</h3>
+					<h3 style="margin:20px 0!important;">PAGINA BLOCK TOEVOEGEN</h3>
                 </div>
             </div>
         </a>

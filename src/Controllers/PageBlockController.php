@@ -124,7 +124,7 @@ class PageBlockController extends Controller
         // AUTHORIZE ... COMES HERE
         $contents = File::get($request['location']);
         $page = $this->page->getById($request['page_id']);
-        $pageblock = $this->pageblock->addBlockTop($contents, $page);
+        $pageblock = $this->pageblock->addBlockBottom($contents, $page, $request['name']);
         //return $pageblock;
         return 'success';
     }
