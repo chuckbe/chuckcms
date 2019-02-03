@@ -130,10 +130,10 @@ i{
 		            		<a href="" class="btn btn-sm btn-danger pb_control_delete" data-id="{{ $pageblock['id'] }}" data-order="{{ $pageblock['order'] }}">
 		            			<i class="fa fa-trash"></i>
 		            		</a>
-		            		<a href="" class="btn btn-sm btn-default pb_control_move_down" data-id="{{ $pageblock['id'] }}" data-order="{{ $pageblock['order'] }}">
+		            		<a href="" class="btn btn-sm btn-secondary pb_control_move_down" data-id="{{ $pageblock['id'] }}" data-order="{{ $pageblock['order'] }}">
 		            			<i class="fa fa-caret-down"></i>
 		            		</a>
-		            		<a href="" class="btn btn-sm btn-default pb_control_move_up" data-id="{{ $pageblock['id'] }}" data-order="{{ $pageblock['order'] }}">
+		            		<a href="" class="btn btn-sm btn-secondary pb_control_move_up" data-id="{{ $pageblock['id'] }}" data-order="{{ $pageblock['order'] }}">
 		            			<i class="fa fa-caret-up"></i>
 		            		</a>
 		            	@endcan
@@ -153,15 +153,9 @@ i{
 	            	</div>{{-- 
 	            	<div id="ace_editor_{{ $pageblock['id'] }}" class="ace_editor_height_null">
 	            	</div> --}}
-	            	<div class="pageblock_body" id="pageblock_body_{{ $pageblock['id'] }}" data-pbid="{{ $pageblock['id'] }}">
-	            		{!! $pageblock['body'] !!}
-	            	</div>
-	            	<div class="pageblock_body_raw" id="pageblock_body_raw_{{ $pageblock['id'] }}" data-pbid="{{ $pageblock['id'] }}">
-	            		{!! $pageblock['raw'] !!}
-	            	</div>
-	            	<div class="pageblock_body_code" id="pageblock_body_code_{{ $pageblock['id'] }}" data-pbid="{{ $pageblock['id'] }}">
-	            		{{ $pageblock['raw'] }}
-	            	</div>
+	            	<div class="pageblock_body" id="pageblock_body_{{ $pageblock['id'] }}" data-pbid="{{ $pageblock['id'] }}">{!! $pageblock['body'] !!}</div>
+	            	<div class="pageblock_body_raw" id="pageblock_body_raw_{{ $pageblock['id'] }}" data-pbid="{{ $pageblock['id'] }}">{!! $pageblock['raw'] !!}</div>
+	            	<div class="pageblock_body_code" id="pageblock_body_code_{{ $pageblock['id'] }}" data-pbid="{{ $pageblock['id'] }}">{{ $pageblock['raw'] }}</div>
 	            </div>
 			@endforeach
 	    @endif
