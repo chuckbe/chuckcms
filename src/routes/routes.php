@@ -204,6 +204,11 @@ Route::group(['middleware' => ['web']], function() {
 
 		Route::group(['middleware' => ['permission:create users']], function () {
 			Route::post('/dashboard/user/invite', 'Chuckbe\Chuckcms\Controllers\UserController@invite')->name('dashboard.users.invite');
+			Route::post('/dashboard/user/save', 'Chuckbe\Chuckcms\Controllers\UserController@save')->name('dashboard.users.save');
+		});
+
+		Route::group(['middleware' => ['permission:edit users']], function () {
+			Route::get('/dashboard/users/edit/{user}', 'Chuckbe\Chuckcms\Controllers\UserController@edit')->name('dashboard.users.edit');
 		});
 		
 	// Dashboard Settings / Sites Routes...

@@ -6,6 +6,10 @@ use Chuckbe\Chuckcms\Chuck\UserRepository;
 use Chuckbe\Chuckcms\Mail\UserActivationMail;
 use Chuckbe\Chuckcms\Models\User;
 use ChuckSite;
+
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -110,5 +114,54 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('login');
+    }
+
+    /**
+     * Show the edit user page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(User $user)
+    {
+        $roles = Role::all();
+        $permissions = Permission::all();
+        return view('chuckcms::backend.users.edit', compact('user', 'roles', 'permissions'));
+    }
+
+    public function save(Request $request)
+    {
+        $this->validate(request(), [ //@todo create custom Request class for page validation
+            'name' => 'max:185|required',
+            'email' => 'email|required',
+            'role' => 'required|in:user,moderator,administrator,super-admin'
+        ]);
+
+        // update the user
+        $user = $this->user->create([ // TODO CHANGE TO UPDATE METHOD
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'token' => $this->userRepository->createToken(),
+            'password' => bcrypt($this->userRepository->createToken())
+        ]);
+        // add role
+        $user->assignRole($request->get('role'));
+
+        //send the email
+        $mailData = [];
+        $mailData['from'] = 'no-reply@chuckcms.com';
+        $mailData['from_name'] = 'No Reply | ChuckCMS';
+        $mailData['to'] = $user->email;
+        $mailData['to_name'] = $user->name;
+        $mailData['token'] = $user->token;
+        $mailData['user'] = \Auth::user();
+
+        $settings = ChuckSite::getSettings();
+
+        //dd($mailData);
+
+        Mail::send(new UserActivationMail($mailData, $settings));
+
+        //redirect back
+        return redirect()->back()->with('notification', 'Gebruiker uitgenodigd!');
     }
 }

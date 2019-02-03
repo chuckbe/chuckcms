@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- START CONTAINER FLUID -->
-<div class=" container-fluid   container-fixed-lg">
+<div class=" container-fluid container-fixed-lg">
 
 <!-- START card -->
 <form action="{{ route('dashboard.page.save') }}" method="POST">
@@ -15,45 +15,26 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card card-transparent">
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs nav-tabs-linetriangle" data-init-reponsive-tabs="dropdownfx">
-            <li class="nav-item">
-              <a href="#" class="active" data-toggle="tab" data-target="#fade1"><span>Pagina</span></a>
-            </li>
-          </ul>
-          <!-- Tab panes -->
-          <div class="tab-content">
-            <div class="tab-pane fade show active" id="fade1">
-              <div class="row column-seperation">
-                <div class="col-lg-12">
-                      <div class="form-group form-group-default required ">
-                        <label>Naam</label>
-                        <input type="text" class="form-control" placeholder="Naam" id="user_name" name="name" value="{{ $user->name }}" required>
-                      </div>
-                      <div class="form-group form-group-default required ">
-                        <label>Email</label>
-                        <input type="email" class="form-control" placeholder="Email" id="user_email" name="email" value="{{ $user->email }}" required>
-                      </div>
-                      <div class="form-group form-group-default required ">
-                        <label>Rechten</label>
-                        <select class="full-width" data-init-plugin="select2" name="template_id">
-							@foreach($templates as $tmpl)
-								<option value="{{ $tmpl->id }}" @if($tmpl->id == $page->template_id) selected @endif>{{ $tmpl->name }} (v{{ $tmpl->version }})</option>
-							@endforeach
-						</select>
-                      </div>
-                      <div class="form-group form-group-default required ">
-                        <label>Actief</label>
-                        <select class="full-width" data-init-plugin="select2" name="active">
-							<option value="1" @if($page->active == 1) selected @endif>Actief</option>
-							<option value="0" @if($page->active == 0) selected @endif>Concept</option>
-						</select>
-                      </div>
-                </div>
-              </div>
+          
+          <div class="col-lg-12">
+            <div class="form-group form-group-default required ">
+              <label>Naam</label>
+              <input type="text" class="form-control" placeholder="Naam" id="user_name" name="name" value="{{ $user->name }}" required>
             </div>
-            
+            <div class="form-group form-group-default required ">
+              <label>Email</label>
+              <input type="email" class="form-control" placeholder="Email" id="user_email" name="email" value="{{ $user->email }}" required>
+            </div>
+            <div class="form-group form-group-default required ">
+              <label>Gebruikersrollen</label>
+              <select class="full-width" data-init-plugin="select2" multiple name="roles">
+  							@foreach($roles as $role)
+  								<option value="{{ $role->id }}" @if($user->hasRole($role->name)) selected @endif> {{ $role->name }}</option>
+  							@endforeach
+  						</select>
+            </div>
           </div>
+              
           <br>
           <p class="pull-right">
             <input type="hidden" name="user_id" value="{{ $user->id }}">

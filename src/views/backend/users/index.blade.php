@@ -80,7 +80,7 @@
 							    	</td>
 							    	<td class="v-align-middle semi-bold">
 							    		@can('edit users')
-							    		<a href="{{ route('dashboard.page.edit', ['user_id' => $user->id]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    		<a href="{{ route('dashboard.users.edit', ['user' => $user->id]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
 							    			<i data-feather="edit-2"></i> edit
 							    		</a>
 							    		@endcan
