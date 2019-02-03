@@ -259,17 +259,4 @@ class PageBlockRepository
             return 'false';
         }
     }
-
-    public function addBlockTop($contents, $page)
-    {
-        $this->moveOrderDownByPageId($page->id);
-        $pageblock = new PageBlock();
-        $pageblock->page_id = $page->id;
-        $pageblock->name = "Dit is een test";
-        $pageblock->slug = "slug3";
-        $pageblock->body = $contents;
-        $pageblock->order = 1;
-        $pageblock->save();
-        return $pageblock;
-    }
 }
