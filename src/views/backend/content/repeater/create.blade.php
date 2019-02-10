@@ -83,6 +83,8 @@
                             <option value="wysiwyg">WYSIWYG</option>
                             <option value="select2">Select2 (single)</option>
                             <option value="multiselect2">Select2 (multiple)</option>
+                            <option value="date">Datepicker</option>
+                            <option value="datetime">Datetime picker</option>
                           </select>
                         </div>
                       </div>

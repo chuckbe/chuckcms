@@ -84,6 +84,8 @@
                             <option value="wysiwyg" @if($fValue['type'] == 'wysiwyg') selected @endif>WYSIWYG</option>
                             <option value="select2" @if($fValue['type'] == 'select2') selected @endif>Select2 (single)</option>
                             <option value="multiselect2" @if($fValue['type'] == 'multiselect2') selected @endif>Select2 (multiple)</option>
+                            <option value="date" @if($fValue['type'] == 'date') selected @endif>Datepicker</option>
+                            <option value="datetime" @if($fValue['type'] == 'datetime') selected @endif>Datetime picker</option>
                           </select>
                       </div>
                     </div>

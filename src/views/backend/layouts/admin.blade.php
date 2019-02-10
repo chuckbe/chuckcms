@@ -23,6 +23,7 @@
     <link href="https://cdn.chuck.be/assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="https://cdn.chuck.be/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="https://cdn.chuck.be/assets/plugins/switchery/css/switchery.min.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="https://cdn.chuck.be/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" type="text/css" media="screen" />
 
     <link href="{{ URL::to('chuckbe/chuckcms/css/pages-icons.css') }}" rel="stylesheet" type="text/css" />
     
@@ -93,6 +94,7 @@
     <script src="https://cdn.chuck.be/assets/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
     <script src="https://cdn.chuck.be/assets/plugins/tether/js/tether.min.js" type="text/javascript"></script>
     <script src="https://cdn.chuck.be/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
     <script src="https://cdn.chuck.be/assets/plugins/jquery/jquery-easy.js" type="text/javascript"></script>
     <script src="https://cdn.chuck.be/assets/plugins/jquery-unveil/jquery.unveil.min.js" type="text/javascript"></script>
     <script src="https://cdn.chuck.be/assets/plugins/jquery-ios-list/jquery.ioslist.min.js" type="text/javascript"></script>

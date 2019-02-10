@@ -76,7 +76,17 @@
                     <div class="col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Type</label>
-                        <input type="text" class="form-control" placeholder="Veld Type" id="fields_type" name="fields_type[]" value="{{ $fValue['type'] }}" required>
+                        <select class="full-width select2" data-init-plugin="select2" id="fields_type" name="fields_type[]" data-minimum-results-for-search="-1" required>
+                          <option value="text" @if($fValue['type'] == 'text') selected @endif>Text</option>
+                          <option value="email" >E-mail</option>
+                          <option value="password" @if($fValue['type'] == 'password') selected @endif>Password</option>
+                          <option value="file" @if($fValue['type'] == 'file') selected @endif>File</option>
+                          <option value="textarea" @if($fValue['type'] == 'textarea') selected @endif>Textarea</option>
+                          <option value="select2" @if($fValue['type'] == 'select2') selected @endif>Select2 (single)</option>
+                          <option value="multiselect2" @if($fValue['type'] == 'multiselect2') selected @endif>Select2 (multiple)</option>
+                          <option value="date" @if($fValue['type'] == 'date') selected @endif>Datepicker</option>
+                          <option value="datetime" @if($fValue['type'] == 'datetime') selected @endif>Datetime picker</option>
+                        </select>
                       </div>
                     </div>
                   </div>

@@ -74,7 +74,17 @@
                       <div class="col-md-4">
                         <div class="form-group form-group-default required ">
                           <label>Veld Type</label>
-                          <input type="text" class="form-control" placeholder="Veld Type" id="fields_type" name="fields_type[]" required>
+                          <select class="full-width select2" data-init-plugin="select2" id="fields_type" name="fields_type[]" data-minimum-results-for-search="-1" required>
+                            <option value="text">Text</option>
+                            <option value="email">E-mail</option>
+                            <option value="password">Password</option>
+                            <option value="file">File</option>
+                            <option value="textarea">Textarea</option>
+                            <option value="select2">Select2 (single)</option>
+                            <option value="multiselect2">Select2 (multiple)</option>
+                            <option value="date">Datepicker</option>
+                            <option value="datetime">Datetime picker</option>
+                          </select>
                         </div>
                       </div>
                     </div>

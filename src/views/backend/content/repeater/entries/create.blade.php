@@ -62,6 +62,14 @@
                         @endforeach
                       </select> 
                     @endif
+                    @if($input['type'] == 'date')
+                      <label for="{{ $keyName }}">{{ $input['label'] }}</label>
+                      <input type="text" class="form-control {{ $input['class'] }}" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-week-start="1" name="{{ $keyName }}" value="{{ old($keyName) ? old($keyName) : $input['value'] }}" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>
+                    @endif
+                    @if($input['type'] == 'datetime')
+                      <label for="{{ $keyName }}">{{ $input['label'] }}</label>
+                      <input type="text" class="form-control {{ $input['class'] }}" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-week-start="1" name="{{ $keyName }}" value="{{ old($keyName) ? old($keyName) : $input['value'] }}" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif> 
+                    @endif
                   </div>
                 @endforeach
 
