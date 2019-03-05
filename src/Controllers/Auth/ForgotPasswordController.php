@@ -2,10 +2,13 @@
 
 namespace Chuckbe\Chuckcms\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class ForgotPasswordController extends Controller
+class ForgotPasswordController extends BaseController
 {
     /*
     |--------------------------------------------------------------------------
@@ -18,7 +21,7 @@ class ForgotPasswordController extends Controller
     |
     */
 
-    use SendsPasswordResetEmails;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, SendsPasswordResetEmails;
 
     /**
      * Create a new controller instance.

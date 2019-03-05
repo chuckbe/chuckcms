@@ -1,7 +1,6 @@
 <?php
 
 return [
-	/* you can add your own middleware here */
 	
 	'auth' => [
 		'get_login' => [

@@ -4,11 +4,15 @@ namespace Chuckbe\Chuckcms\Controllers\Auth;
 
 use Chuckbe\Chuckcms\Models\User;
 use Chuckbe\Chuckcms\Chuck\UserRepository;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
-class RegisterController extends Controller
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+class RegisterController extends BaseController
 {
     /*
     |--------------------------------------------------------------------------
@@ -21,7 +25,7 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, RegistersUsers;
 
     /**
      * Where to redirect users after registration.
