@@ -34,7 +34,7 @@ class SiteController extends BaseController
     public function save(Request $request)
     {
         //validate the request
-        $this->validate(request(), [ //@todo create custom Request class for site validation
+        $this->validate(request(), [//@todo create custom Request class for site validation
             'site_name' => 'max:185|required',
             'site_slug' => 'max:70',
             'site_domain' => 'required',
@@ -67,7 +67,7 @@ class SiteController extends BaseController
 
     public function activate(Request $request)
     {
-        $this->validate(request(), [ //@todo create custom Request class for user password validation
+        $this->validate(request(), [//@todo create custom Request class for user password validation
             'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
             'password_again' => 'required|same:password',
             '_user_token' => 'required',

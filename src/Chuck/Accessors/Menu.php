@@ -35,13 +35,13 @@ class Menu
         $menus = $menuitems->getall(1);
 
         $data = ['menus' => $menus, 'indmenu' => $menu];
-        if($tslug == null) {
+        if ($tslug == null) {
             return view('chuckcms::vendor.chuck-menu.menu-front-end', $data);
         }
-        if($fileslug == null){
-            return view($tslug.'::vendor.chuck-menu.menu-front-end', $data);
+        if ($fileslug == null) {
+            return view($tslug . '::vendor.chuck-menu.menu-front-end', $data);
         }
-        return view($tslug.'::vendor.chuck-menu.' . $fileslug, $data);
+        return view($tslug . '::vendor.chuck-menu.' . $fileslug, $data);
     }
 
     public function scripts()
@@ -75,7 +75,7 @@ class Menu
         $menuItem = new MenuItems;
         $menu_list = $menuItem->getall($menu_id);
 
-        $roots = $menu_list->where('menu', (integer) $menu_id)->where('parent', 0);
+        $roots = $menu_list->where('menu', (integer)$menu_id)->where('parent', 0);
 
         $items = self::tree($roots, $menu_list);
         return $items;

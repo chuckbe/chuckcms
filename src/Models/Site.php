@@ -9,7 +9,7 @@ use Eloquent;
  */
 class Site extends Eloquent
 {
-	/**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

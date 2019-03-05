@@ -30,7 +30,7 @@ class PageBlock extends Eloquent
 
     public function getById($id)
     {
-    	return $this->find($id);
+        return $this->find($id);
     }
 
     public function getCountByPageId($page_id)

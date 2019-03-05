@@ -61,7 +61,7 @@ class ContentController extends BaseController
     public function resourceSave(Request $request)
     {
         //validate the request
-        $this->validate(request(), [ //@todo create custom Request class for site validation
+        $this->validate(request(), [//@todo create custom Request class for site validation
             'slug' => 'required',
             'resource_key.*' => 'required',
             'resource_value.*' => 'required'
@@ -126,7 +126,7 @@ class ContentController extends BaseController
         }
 
         $content['actions']['store'] = $request->get('action_store');
-        if($request->get('action_detail') == 'true') {
+        if ($request->get('action_detail') == 'true') {
             $content['actions']['detail']['url'] = $request->get('action_detail_url');
             $content['actions']['detail']['page'] = $request->get('action_detail_page');
         } else {
@@ -149,7 +149,7 @@ class ContentController extends BaseController
     {
         $content = Content::where('slug', $slug)->first();
         $repeaters = $this->repeater->where('slug', $slug)->get();
-        return view('chuckcms::backend.content.repeater.entries.index', compact('content','repeaters'));
+        return view('chuckcms::backend.content.repeater.entries.index', compact('content', 'repeaters'));
     }
 
     public function repeaterEntriesCreate($slug)
@@ -165,9 +165,9 @@ class ContentController extends BaseController
         $rules = $content->getRules();
         $this->validate(request(), $rules);
         $store = $content->storeEntry($request);
-        if($store == 'success'){
+        if ($store == 'success') {
             return redirect()->route('dashboard.content.repeaters.entries', ['slug' => $slug]);
-        }else {
+        } else {
             // error catching ... ?
         }
     }

@@ -80,7 +80,7 @@ class GenerateSuperAdmin extends Command
 
         if ($validator->fails()) {
             $messages = $validator->errors();
-            foreach($messages->all() as $message) {
+            foreach ($messages->all() as $message) {
                 $this->error($message);
             }
         } else {
@@ -109,7 +109,7 @@ class GenerateSuperAdmin extends Command
             $this->info('..         ..');
             $this->info('.         .');
             $this->info(' ');
-            $this->info('New super admin: '.$name.' ('.$email.') generated successfully');
+            $this->info('New super admin: ' . $name . ' (' . $email . ') generated successfully');
             $this->info(' ');
         }
 

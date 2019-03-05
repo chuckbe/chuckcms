@@ -13,7 +13,7 @@ class AddPageFieldToPagesTable extends Migration
      */
     public function up()
     {
-        Schema::table('pages', function (Blueprint $table) {
+        Schema::table('pages', function(Blueprint $table) {
             $table->string('page')->nullable()->default(null)->after('template_id');
         });
     }
@@ -25,7 +25,7 @@ class AddPageFieldToPagesTable extends Migration
      */
     public function down()
     {
-        Schema::table('pages', function (Blueprint $table) {
+        Schema::table('pages', function(Blueprint $table) {
             $table->dropColumn('page');
         });
     }

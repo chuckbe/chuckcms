@@ -13,7 +13,7 @@ class CreatePageBlocksTable extends Migration
      */
     public function up()
     {
-        Schema::create('page_blocks', function (Blueprint $table) {
+        Schema::create('page_blocks', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('page_id');
             $table->string('name');

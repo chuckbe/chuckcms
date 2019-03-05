@@ -34,9 +34,9 @@ class FormActionMail extends Mailable
                     ->to($this->mailData['to'], $this->mailData['to_name'])
                     ->subject($this->mailData['subject'])
                     ->view($this->mailData['template']);
-        if(is_array($this->mailData['files'])) {
-            foreach($this->mailData['files'] as $file) {
-                if($file !== null) {
+        if (is_array($this->mailData['files'])) {
+            foreach ($this->mailData['files'] as $file) {
+                if ($file !== null) {
                     $mail->attach(public_path($file));    
                 }
             }

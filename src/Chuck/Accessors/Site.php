@@ -43,8 +43,8 @@ class Site
         $settings = $site->settings;
         $locales = [];
         if ($settings !== null) { 
-            foreach(config('lang.allLocales') as $langKey => $langValue){
-                if( in_array($langKey, explode(',',$settings['lang']) ) ){
+            foreach (config('lang.allLocales') as $langKey => $langValue) {
+                if (in_array($langKey, explode(',', $settings['lang']))) {
                     $locales[$langKey] = $langValue;
                 }
             }
@@ -90,7 +90,7 @@ class Site
     {
         $split = explode('.', $var);
         foreach ($split as $value) {
-            if(array_key_exists($value, $settings)) {
+            if (array_key_exists($value, $settings)) {
                 $settings = $settings[$value];
             } else {
                 return null;
@@ -102,13 +102,13 @@ class Site
 
     private function resolveSiteAttribute($var, $currentSite)
     {
-        if($var == 'domain') {
+        if ($var == 'domain') {
             return $currentSite->domain;
         }
-        if($var == 'name') {
+        if ($var == 'name') {
             return $currentSite->name;
         }
-        if($var == 'slug') {
+        if ($var == 'slug') {
             return $currentSite->slug;
         }
     }

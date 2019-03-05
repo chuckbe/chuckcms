@@ -116,14 +116,14 @@ class FormController extends BaseController
         $rules = $form->getRules();
         $this->validate(request(), $rules);
         $store = $form->storeEntry($request);
-        if($store !== 'error'){
+        if ($store !== 'error') {
             //send emails 
-            foreach($form->form['actions']['send'] as $sendKey => $sendValue){
+            foreach ($form->form['actions']['send'] as $sendKey => $sendValue) {
                 $mailData = $form->getMailData($sendValue, $request, $store);
                 Mail::send(new FormActionMail($mailData));
             }
             return redirect()->to($form->form['actions']['redirect']);
-        }else {
+        } else {
             // error catching ... ?
         }
         
