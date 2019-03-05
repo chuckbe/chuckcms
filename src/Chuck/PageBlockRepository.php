@@ -11,13 +11,13 @@ use Chuckbe\Chuckcms\Models\Repeater;
 
 use ChuckSite;
 
-use App\Http\Requests;
-
 use View;
 use Session;
 
 class PageBlockRepository
 {
+    protected $pageblock;
+
     public function __construct(PageBlock $pageblock)
     {
         $this->pageblock = $pageblock;
@@ -137,7 +137,9 @@ class PageBlockRepository
         $contents = array();
         $startDelimiterLength = strlen($startDelimiter);
         $endDelimiterLength = strlen($endDelimiter);
-        $startFrom = $contentStart = $contentEnd = 0;
+        $startFrom = 0;
+        $contentStart = 0;
+        $contentEnd = 0;
         while (false !== ($contentStart = strpos($str, $startDelimiter, $startFrom))) {
         $contentStart += $startDelimiterLength;
         $contentEnd = strpos($str, $endDelimiter, $contentStart);
