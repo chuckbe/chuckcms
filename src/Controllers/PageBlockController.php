@@ -12,11 +12,22 @@ use Chuckbe\Chuckcms\Models\Template;
 use File;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class PageBlockController extends Controller
+class PageBlockController extends BaseController
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    protected $template;
+    protected $page;
+    protected $pageblock;
+    protected $pageBlockRepository;
+    protected $resource;
+    protected $repeater;
+
     /**
      * Create a new controller instance.
      *
@@ -33,9 +44,10 @@ class PageBlockController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Get rendered pageblock html as a string.
      *
-     * @return \Illuminate\Http\Response
+     * @param  Request $request
+     * @return array $pageblock
      */
     public function show(Request $request)
     {
@@ -48,7 +60,7 @@ class PageBlockController extends Controller
      * Show the application dashboard.
      *
      * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @return array $pageblock
      */
     public function update(Request $request)
     {
@@ -62,7 +74,7 @@ class PageBlockController extends Controller
      * Move the resource one place up.
      *
      * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @return array $pageblock
      */
     public function moveUp(Request $request)
     {
@@ -75,7 +87,7 @@ class PageBlockController extends Controller
      * Move the resource one place down.
      *
      * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @return array $pageblock
      */
     public function moveDown(Request $request)
     {
@@ -88,7 +100,7 @@ class PageBlockController extends Controller
      * Delete the resource from the page.
      *
      * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @return string $tatus
      */
     public function delete(Request $request)
     {
@@ -101,14 +113,14 @@ class PageBlockController extends Controller
      * Add Block From Location To Top of Page and Store to Database
      *
      * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @return string
      */
     public function addBlockTop(Request $request)
     {
         // AUTHORIZE ... COMES HERE
         $contents = File::get($request['location']);
         $page = $this->page->getById($request['page_id']);
-        $pageblock = $this->pageblock->addBlockTop($contents, $page, $request['name']);
+        $this->pageblock->addBlockTop($contents, $page, $request['name']);
         //return $pageblock;
         return 'success';
     }
@@ -117,14 +129,14 @@ class PageBlockController extends Controller
      * Add Block From Location To Bottom of Page and Store to Database
      *
      * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @return string
      */
     public function addBlockBottom(Request $request)
     {
         // AUTHORIZE ... COMES HERE
         $contents = File::get($request['location']);
         $page = $this->page->getById($request['page_id']);
-        $pageblock = $this->pageblock->addBlockBottom($contents, $page, $request['name']);
+        $this->pageblock->addBlockBottom($contents, $page, $request['name']);
         //return $pageblock;
         return 'success';
     }
