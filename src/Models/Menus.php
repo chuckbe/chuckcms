@@ -4,6 +4,10 @@ namespace Chuckbe\Chuckcms\Models;
 
 use Eloquent;
 
+/**
+ * @property int $id
+ * @property string $name
+ */
 class Menus extends Eloquent
 {
     protected $table = 'menus';

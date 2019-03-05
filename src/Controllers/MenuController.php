@@ -2,17 +2,21 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
 use Chuckbe\Chuckcms\Models\Page;
-
 use Chuckbe\Chuckcms\Models\Menus;
 use Chuckbe\Chuckcms\Models\MenuItems;
 
-class MenuController extends Controller
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+class MenuController extends BaseController
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    protected $page;
 
     /**
      * Create a new controller instance.
@@ -27,7 +31,7 @@ class MenuController extends Controller
     /**
      * Show the dashboard -> menus index.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {

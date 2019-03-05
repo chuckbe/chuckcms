@@ -4,6 +4,16 @@ namespace Chuckbe\Chuckcms\Models;
 
 use Eloquent;
 
+/**
+ * @property int $id
+ * @property string $label
+ * @property string $link
+ * @property string $class
+ * @property int $menu
+ * @property int $sort
+ * @property int $parent
+ * @property int $depth
+ */
 class MenuItems extends Eloquent
 {
 
