@@ -13,7 +13,7 @@ class CreateRedirectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('redirects', function (Blueprint $table) {
+        Schema::create('redirects', function(Blueprint $table) {
             $table->increments('id');
             $table->string('slug')->unique();
             $table->longText('to');

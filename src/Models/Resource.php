@@ -10,5 +10,5 @@ class Resource extends Eloquent
         'json' => 'array',
     ];
 
-    protected $fillable = ['slug','json'];
+    protected $fillable = ['slug', 'json'];
 }

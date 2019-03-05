@@ -17,12 +17,12 @@ class ChuckcmsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadRoutesFrom(__DIR__.'/routes/routes.php');
+        $this->loadRoutesFrom(__DIR__ . '/routes/routes.php');
         
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         
         $this->publishes([
-            __DIR__.'/resources' => public_path('chuckbe/chuckcms'),
+            __DIR__ . '/resources' => public_path('chuckbe/chuckcms'),
         ], 'chuckcms-public');
 
         $this->publishes([
@@ -57,7 +57,7 @@ class ChuckcmsServiceProvider extends ServiceProvider
         $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\RegisterController');
         $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\ResetPasswordController');
         
-        $this->loadViewsFrom(__DIR__.'/views', 'chuckcms');
+        $this->loadViewsFrom(__DIR__ . '/views', 'chuckcms');
         // publish error views + publish updated lfm views
 
         $this->app->register(

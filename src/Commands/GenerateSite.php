@@ -70,7 +70,7 @@ class GenerateSite extends Command
 
         if ($validator->fails()) {
             $messages = $validator->errors();
-            foreach($messages->all() as $message) {
+            foreach ($messages->all() as $message) {
                 $this->error($message);
             }
         } else {
@@ -112,7 +112,7 @@ class GenerateSite extends Command
             $this->info('..         ..');
             $this->info('.         .');
             $this->info(' ');
-            $this->info('New site: '.$name.' ('.$domain.') generated successfully');
+            $this->info('New site: ' . $name . ' (' . $domain . ') generated successfully');
             $this->info(' ');
         }
 

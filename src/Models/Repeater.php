@@ -6,7 +6,7 @@ use Eloquent;
 
 class Repeater extends Eloquent
 {
-	/**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -30,7 +30,7 @@ class Repeater extends Eloquent
         $json = $this->json;
         $split = explode('.', $var);
         foreach ($split as $value) {
-            if(array_key_exists($value, $json)) {
+            if (array_key_exists($value, $json)) {
                 $json = $json[$value];
             } else {
                 return null;

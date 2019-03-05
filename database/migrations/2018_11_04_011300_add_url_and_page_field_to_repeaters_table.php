@@ -13,7 +13,7 @@ class AddUrlAndPageFieldToRepeatersTable extends Migration
      */
     public function up()
     {
-        Schema::table('repeaters', function (Blueprint $table) {
+        Schema::table('repeaters', function(Blueprint $table) {
             $table->string('url')->nullable()->default(null)->after('slug');
             $table->string('page')->nullable()->default('default')->after('url');
         });
@@ -27,7 +27,7 @@ class AddUrlAndPageFieldToRepeatersTable extends Migration
      */
     public function down()
     {
-        Schema::table('repeaters', function (Blueprint $table) {
+        Schema::table('repeaters', function(Blueprint $table) {
             $table->dropColumn('url');
             $table->dropColumn('page');
         });

@@ -1,12 +1,12 @@
 <?php
 
 return [
-	/* you can add your own middleware here */
+    /* you can add your own middleware here */
 	
-	'middleware' => [],
+    'middleware' => [],
 
-	/* you can set your own table prefix here */
-	'table_prefix' => 'chck_',
+    /* you can set your own table prefix here */
+    'table_prefix' => 'chck_',
 
     /* you can set your own table names */
     'table_name_menus' => 'menus',

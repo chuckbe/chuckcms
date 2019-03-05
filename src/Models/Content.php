@@ -8,7 +8,7 @@ use Eloquent;
 
 class Content extends Eloquent
 {
-	/**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -29,7 +29,7 @@ class Content extends Eloquent
     public function getRules()
     {
         $rules = [];
-        foreach($this->content['fields'] as $fieldKey => $fieldValue){
+        foreach ($this->content['fields'] as $fieldKey => $fieldValue) {
             $rules[$fieldKey] = $fieldValue['validation'];
         }
         return $rules;
@@ -38,8 +38,8 @@ class Content extends Eloquent
     public function storeEntry($input)
     {
         $slug = $input->get('content_slug');
-        if(is_array($this->content['actions']['detail'])){
-            if(array_key_exists('url', $this->content['actions']['detail'])) {
+        if (is_array($this->content['actions']['detail'])) {
+            if (array_key_exists('url', $this->content['actions']['detail'])) {
                 $url = $this->getUrlFromInput($this->content['actions']['detail']['url'], $input);    
                 $page = $this->content['actions']['detail']['page'];
             } else {
@@ -53,16 +53,16 @@ class Content extends Eloquent
         
         
         $json = [];
-        foreach($this->content['fields'] as $fieldKey => $fieldValue){
-            if($fieldValue['type'] !== 'file'){
-                $cleanKey = str_replace($slug.'_', '', $fieldKey);
+        foreach ($this->content['fields'] as $fieldKey => $fieldValue) {
+            if ($fieldValue['type'] !== 'file') {
+                $cleanKey = str_replace($slug . '_', '', $fieldKey);
                 $json[$cleanKey] = $input->get($fieldKey);
             }
         }
         
-        if($this->content['files'] == 'true'){
-            foreach($this->content['fields'] as $fieldKey => $fieldValue){
-                if($fieldValue['type'] == 'file'){
+        if ($this->content['files'] == 'true') {
+            foreach ($this->content['fields'] as $fieldKey => $fieldValue) {
+                if ($fieldValue['type'] == 'file') {
                     //@todo save input files
                 }
             }
@@ -83,7 +83,7 @@ class Content extends Eloquent
     {
         $repeater = Repeater::where('id', $id)->first();
         
-        if($repeater->delete()){
+        if ($repeater->delete()) {
             return 'success';
         } else {
             return 'error';
@@ -94,8 +94,8 @@ class Content extends Eloquent
     {
         $fields = $this->getContents($url, '[', ']');
         $finalUrl = $url;
-        foreach($fields as $field){
-            $finalUrl = str_replace('['.$field.']', $input->get($field), $finalUrl);
+        foreach ($fields as $field) {
+            $finalUrl = str_replace('[' . $field . ']', $input->get($field), $finalUrl);
         }
         return $finalUrl;
     }
@@ -110,7 +110,7 @@ class Content extends Eloquent
         $contentStart += $startDelimiterLength;
         $contentEnd = strpos($str, $endDelimiter, $contentStart);
         if (false === $contentEnd) {
-          break;
+            break;
         }
         $contents[] = substr($str, $contentStart, $contentEnd - $contentStart);
         $startFrom = $contentEnd + $endDelimiterLength;

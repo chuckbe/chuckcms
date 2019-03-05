@@ -35,7 +35,7 @@ class UserActivationMail extends Mailable
     {
         return $this->from($this->mailData['from'], $this->mailData['from_name'])
                     ->to($this->mailData['to'], $this->mailData['to_name'])
-                    ->subject('Activeer je account op '.$this->settings['domain'])
+                    ->subject('Activeer je account op ' . $this->settings['domain'])
                     ->view('chuckcms::backend.mails.userActivationMail');
     }
 }

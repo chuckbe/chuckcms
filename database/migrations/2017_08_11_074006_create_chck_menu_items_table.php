@@ -13,7 +13,7 @@ class CreateChckMenuItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create( config('menu.table_prefix') . config('menu.table_name_items') , function (Blueprint $table) {
+        Schema::create(config('menu.table_prefix') . config('menu.table_name_items'), function(Blueprint $table) {
             $table->increments('id');
             $table->string('label');
             $table->string('link');
@@ -37,6 +37,6 @@ class CreateChckMenuItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists( config('menu.table_prefix') . config('menu.table_name_items'));
+        Schema::dropIfExists(config('menu.table_prefix') . config('menu.table_name_items'));
     }
 }

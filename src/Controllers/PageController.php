@@ -101,12 +101,12 @@ class PageController extends Controller
      */
     public function save(Request $request)
     {
-        $this->validate(request(), [ //@todo create custom Request class for page validation
+        $this->validate(request(), [//@todo create custom Request class for page validation
             'page_title' => 'max:185',
         ]);
-        if($request['create']){
+        if ($request['create']) {
             $page = $this->page->create($request);
-        } if($request['update']){
+        } if ($request['update']) {
             $page = $this->page->updatePage($request);
         }
         return redirect()->route('dashboard.pages');
@@ -119,7 +119,7 @@ class PageController extends Controller
      */
     public function delete(Request $request)
     {
-        $this->validate(request(), [ //@todo create custom Request class for page validation
+        $this->validate(request(), [//@todo create custom Request class for page validation
             'page_id' => 'required',
         ]);
         
@@ -138,8 +138,8 @@ class PageController extends Controller
         $template = $this->template->where('id', $page->template_id)->where('type', 'default')->first();
         $pageblocks = $this->pageBlockRepository->getRenderedByPageBlocks($this->pageblock->getAllByPageId($page->id));
 
-        $block_dir = array_slice(scandir('chuckbe/'.$template->slug.'/blocks'), 2);        
-        $blocks = $this->dirToArray($template->path.'/blocks');
+        $block_dir = array_slice(scandir('chuckbe/' . $template->slug . '/blocks'), 2);        
+        $blocks = $this->dirToArray($template->path . '/blocks');
         
         return view('chuckcms::backend.pages.pagebuilder.index', compact('template', 'page', 'pageblocks', 'blocks'));
     }
@@ -151,16 +151,16 @@ class PageController extends Controller
         $cdir = scandir($dir); 
         foreach ($cdir as $key => $value) 
         { 
-            if (!in_array($value,array(".",".."))) { 
+            if (!in_array($value, array(".", ".."))) { 
                 if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) { 
                     $result[$value] = $this->dirToArray($dir . DIRECTORY_SEPARATOR . $value); 
                 } 
                 else { 
-                    if ($value !== '.DS_Store' && (strpos($value, '.html') !== false) ) {
+                    if ($value !== '.DS_Store' && (strpos($value, '.html') !== false)) {
                         $blockKey = str_replace('.html', '', $value);
                         $blockName = str_replace('-', ' ', $blockKey);
                         if (file_exists($dir . DIRECTORY_SEPARATOR . $blockKey . '.jpg')) {
-                           $blockImage = $dir . DIRECTORY_SEPARATOR . $blockKey . '.jpg';
+                            $blockImage = $dir . DIRECTORY_SEPARATOR . $blockKey . '.jpg';
                         } elseif (file_exists($dir . DIRECTORY_SEPARATOR . $blockKey . '.jpeg')) {
                             $blockImage = $dir . DIRECTORY_SEPARATOR . $blockKey . '.jpeg';
                         } elseif (file_exists($dir . DIRECTORY_SEPARATOR . $blockKey . '.png')) {
