@@ -4,10 +4,10 @@ namespace Chuckbe\Chuckcms\Chuck;
 
 use Chuckbe\Chuckcms\Models\User;
 
-use App\Http\Requests;
-
 class UserRepository
 {
+    protected $user; 
+
 	public function __construct(User $user)
     {
         $this->user = $user;
