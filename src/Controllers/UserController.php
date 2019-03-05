@@ -10,13 +10,17 @@ use ChuckSite;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 use Mail;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
     private $user;
     private $userRepository;
     /**
@@ -33,7 +37,7 @@ class UserController extends Controller
     /**
      * Show the dashboard -> users.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -82,7 +86,9 @@ class UserController extends Controller
     public function activateIndex($token)
     {
         // Look up the user
-        if (!$user = $this->user->where('token', $token)->where('active', 0)->first()) {
+        $user = $this->user->where('token', $token)->where('active', 0)->first();
+
+        if (!$user) {
             //if the invite doesn't exist do something more graceful than this
             return redirect()->route('page');
         }
@@ -119,7 +125,7 @@ class UserController extends Controller
     /**
      * Show the edit user page.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(User $user)
     {
