@@ -7,11 +7,15 @@ use Chuckbe\Chuckcms\Chuck\SiteRepository;
 use Chuckbe\Chuckcms\Models\User;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class SiteController extends Controller
+class SiteController extends BaseController
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
     private $site;
     private $siteRepository;
     private $user;
@@ -42,7 +46,7 @@ class SiteController extends Controller
         ]);
 
         //update or create settings
-        $site = $this->siteRepository->updateOrCreateFromRequest($request);
+        $this->siteRepository->updateOrCreateFromRequest($request);
 
         //redirect back
         return redirect()->route('dashboard.settings')->with('notification', 'Instellingen opgeslagen!');
@@ -51,7 +55,9 @@ class SiteController extends Controller
     public function activateIndex($token)
     {
         // Look up the user
-        if (!$user = $this->user->where('token', $token)->where('active', 0)->first()) {
+        $user = $this->user->where('token', $token)->where('active', 0)->first();
+        
+        if (!$user) {
             //if the invite doesn't exist do something more graceful than this
             return redirect()->route('page');
         }
