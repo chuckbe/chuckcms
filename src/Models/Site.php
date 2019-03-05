@@ -4,6 +4,9 @@ namespace Chuckbe\Chuckcms\Models;
 
 use Eloquent;
 
+/**
+  * @property array $settings
+  */
 class Site extends Eloquent
 {
 	/**

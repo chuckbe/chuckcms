@@ -7,8 +7,6 @@ use Chuckbe\Chuckcms\Models\Site as SiteModel;
 use Exception;
 use Illuminate\Support\Facades\Schema;
 
-use App\Http\Requests;
-
 class Site
 {
     private $siteRepository;
