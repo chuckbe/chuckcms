@@ -24,7 +24,7 @@ class GenerateSite extends Command
     /**
      * The site repository implementation.
      *
-     * @var UserRepository
+     * @var SiteRepository
      */
     protected $siteRepository;
 
@@ -90,7 +90,7 @@ class GenerateSite extends Command
             $settings['lang'] = 'nl,en';
             $settings['domain'] = $domain;
             // create the site
-            $site = $this->siteRepository->createFromArray([
+            $this->siteRepository->createFromArray([
                 'name' => $name,
                 'slug' => $slug,
                 'domain' => $domain,
