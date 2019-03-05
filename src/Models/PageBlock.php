@@ -10,7 +10,6 @@ use Eloquent;
 
 class PageBlock extends Eloquent
 {
-
     public function page()
     {
         return $this->belongsTo('Chuckbe\Chuckcms\Models\Page');
@@ -22,10 +21,10 @@ class PageBlock extends Eloquent
         return $pageblocks;
     }
 
-    public function getRenderedById($pageblock_id)
+    public function getRenderedById($pageblock_id, PageBlockRepository $pageBlockRepository)
     {
     	$pageblock = $this->where('id', $pageblock_id)->first();
-    	$new_pageblock = PageBlockRepository::getRenderedByPageBlock($pageblock);
+    	$new_pageblock = $pageBlockRepository->getRenderedByPageBlock($pageblock);
     	return $new_pageblock;
     }
 
