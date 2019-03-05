@@ -61,7 +61,8 @@ class Page extends Eloquent
 
             $meta[$langKey]['robots'] = $index . $follow;
             $meta[$langKey]['googlebots'] = $index . $follow;
-            for ($i=0; $i < count($values->get('meta_key')[$langKey]); $i++) { 
+            $count = count($values->get('meta_key')[$langKey]);
+            for ($i=0; $i < $count; $i++) { 
                 $meta[$langKey][$values->get('meta_key')[$langKey][$i]] = $values->get('meta_value')[$langKey][$i];
             }
         }
@@ -83,7 +84,8 @@ class Page extends Eloquent
         foreach(ChuckSite::getSupportedLocales() as $langKey => $langValue){
             $page->setTranslation('title', $langKey, $values->get('page_title')[$langKey]);
             $page->setTranslation('slug', $langKey, $values->get('page_slug')[$langKey]);
-            for ($i=0; $i < count($values->get('meta_key')[$langKey]); $i++) { 
+            $count = count($values->get('meta_key')[$langKey]);
+            for ($i=0; $i < $count; $i++) { 
                 $meta[$langKey][$values->get('meta_key')[$langKey][$i]] = $values->get('meta_value')[$langKey][$i];
             }
         }
