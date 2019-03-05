@@ -13,7 +13,7 @@ class CreateSitesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sites', function (Blueprint $table) {
+        Schema::create('sites', function(Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('slug');

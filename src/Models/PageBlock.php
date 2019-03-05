@@ -24,14 +24,14 @@ class PageBlock extends Eloquent
 
     public function getRenderedById($pageblock_id)
     {
-    	$pageblock = $this->where('id', $pageblock_id)->first();
-    	$new_pageblock = PageBlockRepository::getRenderedByPageBlock($pageblock);
-    	return $new_pageblock;
+        $pageblock = $this->where('id', $pageblock_id)->first();
+        $new_pageblock = PageBlockRepository::getRenderedByPageBlock($pageblock);
+        return $new_pageblock;
     }
 
     public function getById($id)
     {
-    	return $this->find($id);
+        return $this->find($id);
     }
 
     public function getCountByPageId($page_id)

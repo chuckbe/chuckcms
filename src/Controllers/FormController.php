@@ -55,7 +55,7 @@ class FormController extends Controller
         $form_slug = $request->get('form_slug');
         $fields_slug = $request->get('fields_slug');
 
-        for ($i=0; $i < count($fields_slug); $i++) { 
+        for ($i = 0; $i < count($fields_slug); $i++) { 
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['label'] = $request->get('fields_label')[$i];
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['type'] = $request->get('fields_type')[$i];
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['class'] = $request->get('fields_class')[$i];
@@ -64,15 +64,15 @@ class FormController extends Controller
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['validation'] = $request->get('fields_validation')[$i];
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['value'] = $request->get('fields_value')[$i];
 
-            for ($k=0; $k < count(explode(';',$request->get('fields_attributes_name')[$i])); $k++) { 
-                $form['fields'][$form_slug . '_' . $fields_slug[$i]]['attributes'][explode(';',$request->get('fields_attributes_name')[$i])[$k]] = explode(';',$request->get('fields_attributes_value')[$i])[$k];
+            for ($k = 0; $k < count(explode(';', $request->get('fields_attributes_name')[$i])); $k++) { 
+                $form['fields'][$form_slug . '_' . $fields_slug[$i]]['attributes'][explode(';', $request->get('fields_attributes_name')[$i])[$k]] = explode(';', $request->get('fields_attributes_value')[$i])[$k];
             }
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['required'] = $request->get('fields_required')[$i];
         }
 
         $form['actions']['store'] = $request->get('action_store');
-        if($request->get('action_send') == true) {
-            for ($g=0; $g < count($request->get('action_send_slug')); $g++) { 
+        if ($request->get('action_send') == true) {
+            for ($g = 0; $g < count($request->get('action_send_slug')); $g++) { 
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['to'] = $request->get('action_send_to')[$g];
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['to_name'] = $request->get('action_send_to_name')[$g];
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['from'] = $request->get('action_send_from')[$g];
@@ -110,14 +110,14 @@ class FormController extends Controller
         $rules = $form->getRules();
         $this->validate(request(), $rules);
         $store = $form->storeEntry($request);
-        if($store !== 'error'){
+        if ($store !== 'error') {
             //send emails 
-            foreach($form->form['actions']['send'] as $sendKey => $sendValue){
+            foreach ($form->form['actions']['send'] as $sendKey => $sendValue) {
                 $mailData = $form->getMailData($sendValue, $request, $store);
                 Mail::send(new FormActionMail($mailData));
             }
             return redirect()->to($form->form['actions']['redirect']);
-        }else {
+        } else {
             // error catching ... ?
         }
         

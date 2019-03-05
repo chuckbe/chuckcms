@@ -13,7 +13,7 @@ class CreateRepeatersTable extends Migration
      */
     public function up()
     {
-        Schema::create('repeaters', function (Blueprint $table) {
+        Schema::create('repeaters', function(Blueprint $table) {
             $table->increments('id');
             $table->string('slug');
             $table->longText('json');

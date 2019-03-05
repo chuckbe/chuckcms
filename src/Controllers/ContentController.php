@@ -56,7 +56,7 @@ class ContentController extends Controller
     public function resourceSave(Request $request)
     {
         //validate the request
-        $this->validate(request(), [ //@todo create custom Request class for site validation
+        $this->validate(request(), [//@todo create custom Request class for site validation
             'slug' => 'required',
             'resource_key.*' => 'required',
             'resource_value.*' => 'required'
@@ -65,9 +65,9 @@ class ContentController extends Controller
         $resource = Resource::firstOrNew(['slug' => $request->get('slug')[0]]);
         $resource->slug = $request->get('slug')[0];
         $json = [];
-        foreach(ChuckSite::getSupportedLocales() as $langKey => $langValue){
+        foreach (ChuckSite::getSupportedLocales() as $langKey => $langValue) {
 
-            for ($i=0; $i < count($request->get('resource_key')[$langKey]); $i++) { 
+            for ($i = 0; $i < count($request->get('resource_key')[$langKey]); $i++) { 
                 $json[$langKey][$request->get('resource_key')[$langKey][$i]] = $request->get('resource_value')[$langKey][$i];
 
             }
@@ -105,23 +105,23 @@ class ContentController extends Controller
         $content_slug = $request->get('content_slug');
         $fields_slug = $request->get('fields_slug');
 
-        for ($i=0; $i < count($fields_slug); $i++) { 
-            $content['fields'][$content_slug.'_'.$fields_slug[$i]]['label'] = $request->get('fields_label')[$i];
-            $content['fields'][$content_slug.'_'.$fields_slug[$i]]['type'] = $request->get('fields_type')[$i];
-            $content['fields'][$content_slug.'_'.$fields_slug[$i]]['class'] = $request->get('fields_class')[$i];
-            $content['fields'][$content_slug.'_'.$fields_slug[$i]]['placeholder'] = $request->get('fields_placeholder')[$i];
-            $content['fields'][$content_slug.'_'.$fields_slug[$i]]['validation'] = $request->get('fields_validation')[$i];
-            $content['fields'][$content_slug.'_'.$fields_slug[$i]]['value'] = $request->get('fields_value')[$i];
+        for ($i = 0; $i < count($fields_slug); $i++) { 
+            $content['fields'][$content_slug . '_' . $fields_slug[$i]]['label'] = $request->get('fields_label')[$i];
+            $content['fields'][$content_slug . '_' . $fields_slug[$i]]['type'] = $request->get('fields_type')[$i];
+            $content['fields'][$content_slug . '_' . $fields_slug[$i]]['class'] = $request->get('fields_class')[$i];
+            $content['fields'][$content_slug . '_' . $fields_slug[$i]]['placeholder'] = $request->get('fields_placeholder')[$i];
+            $content['fields'][$content_slug . '_' . $fields_slug[$i]]['validation'] = $request->get('fields_validation')[$i];
+            $content['fields'][$content_slug . '_' . $fields_slug[$i]]['value'] = $request->get('fields_value')[$i];
 
-            for ($k=0; $k < count(explode(';',$request->get('fields_attributes_name')[$i])); $k++) { 
-                $content['fields'][$content_slug . '_' . $fields_slug[$i]]['attributes'][explode(';',$request->get('fields_attributes_name')[$i])[$k]] = explode(';',$request->get('fields_attributes_value')[$i])[$k];
+            for ($k = 0; $k < count(explode(';', $request->get('fields_attributes_name')[$i])); $k++) { 
+                $content['fields'][$content_slug . '_' . $fields_slug[$i]]['attributes'][explode(';', $request->get('fields_attributes_name')[$i])[$k]] = explode(';', $request->get('fields_attributes_value')[$i])[$k];
             }
             $content['fields'][$content_slug . '_' . $fields_slug[$i]]['required'] = $request->get('fields_required')[$i];
             $content['fields'][$content_slug . '_' . $fields_slug[$i]]['table'] = $request->get('fields_table')[$i];
         }
 
         $content['actions']['store'] = $request->get('action_store');
-        if($request->get('action_detail') == 'true') {
+        if ($request->get('action_detail') == 'true') {
             $content['actions']['detail']['url'] = $request->get('action_detail_url');
             $content['actions']['detail']['page'] = $request->get('action_detail_page');
         } else {
@@ -145,7 +145,7 @@ class ContentController extends Controller
     {
         $content = Content::where('slug', $slug)->first();
         $repeaters = $this->repeater->where('slug', $slug)->get();
-        return view('chuckcms::backend.content.repeater.entries.index', compact('content','repeaters'));
+        return view('chuckcms::backend.content.repeater.entries.index', compact('content', 'repeaters'));
     }
 
     public function repeaterEntriesCreate($slug)
@@ -161,9 +161,9 @@ class ContentController extends Controller
         $rules = $content->getRules();
         $this->validate(request(), $rules);
         $store = $content->storeEntry($request);
-        if($store == 'success'){
+        if ($store == 'success') {
             return redirect()->route('dashboard.content.repeaters.entries', ['slug' => $slug]);
-        }else {
+        } else {
             // error catching ... ?
         }
     }

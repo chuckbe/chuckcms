@@ -13,7 +13,7 @@ class CreateFormsTable extends Migration
      */
     public function up()
     {
-        Schema::create('forms', function (Blueprint $table) {
+        Schema::create('forms', function(Blueprint $table) {
             $table->increments('id');
             $table->string('title');
             $table->string('slug');

@@ -8,7 +8,7 @@ use Eloquent;
 
 class Form extends Eloquent
 {
-	/**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -29,7 +29,7 @@ class Form extends Eloquent
     public function getRules()
     {
         $rules = [];
-        foreach($this->form['fields'] as $fieldKey => $fieldValue){
+        foreach ($this->form['fields'] as $fieldKey => $fieldValue) {
             $rules[$fieldKey] = $fieldValue['validation'];
         }
         $rules['chuckpot'] = 'honeypot';
@@ -39,25 +39,25 @@ class Form extends Eloquent
 
     public function storeEntry($input)
     {
-        if($this->form['actions']['store'] == 'true'){
+        if ($this->form['actions']['store'] == 'true') {
             $entry = new FormEntry();
             $entry->slug = $input->get('_form_slug');
             $json = [];
-            foreach($this->form['fields'] as $fieldKey => $fieldValue){
-                if($fieldValue['type'] !== 'file'){
+            foreach ($this->form['fields'] as $fieldKey => $fieldValue) {
+                if ($fieldValue['type'] !== 'file') {
                     $json[$fieldKey] = $input->get($fieldKey);
                 }
             }
-            if($this->form['files'] == 'true'){
-                foreach($this->form['fields'] as $fieldKey => $fieldValue){
-                    if($fieldValue['type'] == 'file'){
-                        if($input->hasFile($fieldKey)){
+            if ($this->form['files'] == 'true') {
+                foreach ($this->form['fields'] as $fieldKey => $fieldValue) {
+                    if ($fieldValue['type'] == 'file') {
+                        if ($input->hasFile($fieldKey)) {
                             $avatar = $input->file($fieldKey);
                             $filename = time() . '.' . $avatar->getClientOriginalExtension();
                             if (!file_exists(public_path('/files/uploads/'))) {
                                 mkdir(public_path('/files/uploads/'), 0777, true);
                             }
-                            $avatar->move( public_path('/files/uploads/'), $filename );
+                            $avatar->move(public_path('/files/uploads/'), $filename);
                             $filepath = '/files/uploads/' . $filename;
                         } else {
                             $filepath = null;
@@ -67,12 +67,12 @@ class Form extends Eloquent
                 }
             }
             $entry->entry = $json;
-            if($entry->save()){
+            if ($entry->save()) {
                 return $entry;
             } else {
                 return 'error';
             }
-        }else {
+        } else {
             return 'pass';
         }
     }
@@ -80,9 +80,9 @@ class Form extends Eloquent
     public function deleteById($id)
     {
         $form = $this->where('id', $id)->first();
-        if($form){
+        if ($form) {
             FormEntry::where('slug', $form->slug)->delete();
-            if($form->delete()){
+            if ($form->delete()) {
                 return 'success';
             } else {
                 return 'error';
@@ -95,9 +95,9 @@ class Form extends Eloquent
     public function deleteBySlug($slug)
     {
         $form = $this->where('slug', $slug)->first();
-        if($form){
+        if ($form) {
             FormEntry::where('slug', $slug)->delete();
-            if($form->delete()){
+            if ($form->delete()) {
                 return 'success';
             } else {
                 return 'error';
@@ -110,12 +110,12 @@ class Form extends Eloquent
     public function getMailData($sendData, $input, $entry)
     {
         $mailData = [];
-        foreach($sendData as $sendKey => $sendValue){
+        foreach ($sendData as $sendKey => $sendValue) {
             $findThis = $this->getResources($sendValue, '[', ']');
-            if(count($findThis) > 0){
+            if (count($findThis) > 0) {
             
-                foreach($findThis as $founded){
-                    if(strpos($founded, $input->get('_form_slug')) !== false) {
+                foreach ($findThis as $founded) {
+                    if (strpos($founded, $input->get('_form_slug')) !== false) {
                         $sendValue = str_replace('[' . $founded . ']', $input->get($founded), $sendValue);
                     }
                 }
@@ -126,10 +126,10 @@ class Form extends Eloquent
             }
 
             $mailData[$sendKey] = $inputData;
-            if($sendKey == 'files' && $sendValue == 'true') {
+            if ($sendKey == 'files' && $sendValue == 'true') {
                 $mailData[$sendKey] = [];
-                foreach($this->form['fields'] as $fKey => $fValue) {
-                    if($fValue['type'] == 'file') {
+                foreach ($this->form['fields'] as $fKey => $fValue) {
+                    if ($fValue['type'] == 'file') {
                         $mailData[$sendKey][] = $entry->entry[$fKey];
                     }
                 }
@@ -148,7 +148,7 @@ class Form extends Eloquent
         $contentStart += $startDelimiterLength;
         $contentEnd = strpos($str, $endDelimiter, $contentStart);
         if (false === $contentEnd) {
-          break;
+            break;
         }
         $contents[] = substr($str, $contentStart, $contentEnd - $contentStart);
         $startFrom = $contentEnd + $endDelimiterLength;

@@ -63,9 +63,11 @@ class FrontEndController extends Controller
 
             $page = $this->page->where('slug->'.app()->getLocale(), $slug)->first();
             if($page == null){
-               foreach(\LaravelLocalization::getSupportedLocales() as $localeCode => $properties){
+                foreach(\LaravelLocalization::getSupportedLocales() as $localeCode => $properties){
                     $page = $this->page->where('slug->'.$localeCode, $slug)->first();
-                    if($page !== null && $localeCode == app()->getLocale()) break;
+                    if($page !== null && $localeCode == app()->getLocale()) {
+                        break;
+                    }
 
                     if($page !== null && $localeCode !== app()->getLocale()){
                         //dd(app()->getLocale());
@@ -77,7 +79,9 @@ class FrontEndController extends Controller
                 } 
             }
 
-            if($page == null) abort(404);
+            if($page == null) {
+                abort(404);
+            }
         }
         
         $ogpageblocks = $this->pageblock->getAllByPageId($page->id);
@@ -91,6 +95,6 @@ class FrontEndController extends Controller
 
         $template = $this->template->where('active', 1)->where('id', $page->template_id)->first();
         
-        return view($template->hintpath.'::templates.'.$template->slug.'.page', compact('template', 'page', 'pageblocks'));
+        return view($template->hintpath . '::templates.' . $template->slug . '.page', compact('template', 'page', 'pageblocks'));
     }
 }

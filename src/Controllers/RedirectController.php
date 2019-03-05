@@ -37,7 +37,7 @@ class RedirectController extends Controller
     {
         //$request['slug'] = str_slug($request->slug, '-');
 
-        $this->validate($request, [ //@todo create custom Request class for redirect validation
+        $this->validate($request, [//@todo create custom Request class for redirect validation
             'slug' => 'max:185|required|unique:redirects',
             'to' => 'required|max:185',
             'type' => 'required|numeric|in:301,302'
@@ -48,7 +48,7 @@ class RedirectController extends Controller
             ['to' => $request['to'], 
             'type' => $request['type']]);
 
-        if($redirect->save()){
+        if ($redirect->save()) {
             return redirect()->route('dashboard.redirects');
         }
     }
@@ -57,7 +57,7 @@ class RedirectController extends Controller
     {
         //$request['slug'] = str_slug($request->slug, '-');
 
-        $this->validate($request, [ //@todo create custom Request class for redirect validation
+        $this->validate($request, [//@todo create custom Request class for redirect validation
             'id' => 'required',
             'slug' => 'required|max:185',
             'to' => 'required|max:185',
@@ -79,7 +79,7 @@ class RedirectController extends Controller
 
         $redirect = Redirect::where('id', $request['id'])->first();
 
-        if($redirect->delete()){
+        if ($redirect->delete()) {
             return redirect()->route('dashboard.redirects');
         }
     }

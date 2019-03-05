@@ -10,24 +10,24 @@ use Spatie\Translatable\HasTranslations;
 
 class Page extends Eloquent
 {
-	use HasTranslations;
+    use HasTranslations;
 
     public function template(){
-    	return $this->belongsTo('Chuckbe\Chuckcms\Models\Template');
+        return $this->belongsTo('Chuckbe\Chuckcms\Models\Template');
     }
 
     public function page_blocks(){
-    	return $this->hasMany('Chuckbe\Chuckcms\Models\PageBlock')->orderBy('order');
+        return $this->hasMany('Chuckbe\Chuckcms\Models\PageBlock')->orderBy('order');
     }
 
     public function getById($id)
     {
-    	return $this->where('id', $id)->first();
+        return $this->where('id', $id)->first();
     }
 
     public function getByIdWithBlocks($id)
     {
-    	return $this->where('id', $id)->with('page_blocks')->first();
+        return $this->where('id', $id)->with('page_blocks')->first();
     }
 
     public function create($values)
@@ -35,7 +35,7 @@ class Page extends Eloquent
         $page = new Page();
 
         $meta = [];
-        foreach(ChuckSite::getSupportedLocales() as $langKey => $langValue){
+        foreach (ChuckSite::getSupportedLocales() as $langKey => $langValue) {
             $page->setTranslation('title', $langKey, $values->get('page_title')[$langKey]);
             $page->setTranslation('slug', $langKey, $values->get('page_slug')[$langKey]);
             
@@ -47,13 +47,13 @@ class Page extends Eloquent
             $meta[$langKey]['og-title'] = $values->get('meta_title')[$langKey];
             $meta[$langKey]['og-description'] = $values->get('meta_description')[$langKey];
             $meta[$langKey]['og-site_name'] = $values->get('meta_title')[$langKey];
-            if($values->get('meta_robots_index')[$langKey] == '1') {
+            if ($values->get('meta_robots_index')[$langKey] == '1') {
                 $index = 'index, ';
             } else {
                 $index = 'noindex, ';
             }
 
-            if($values->get('meta_robots_follow')[$langKey] == '1') {
+            if ($values->get('meta_robots_follow')[$langKey] == '1') {
                 $follow = 'follow';
             } else {
                 $follow = 'nofollow';
@@ -61,7 +61,7 @@ class Page extends Eloquent
 
             $meta[$langKey]['robots'] = $index . $follow;
             $meta[$langKey]['googlebots'] = $index . $follow;
-            for ($i=0; $i < count($values->get('meta_key')[$langKey]); $i++) { 
+            for ($i = 0; $i < count($values->get('meta_key')[$langKey]); $i++) { 
                 $meta[$langKey][$values->get('meta_key')[$langKey][$i]] = $values->get('meta_value')[$langKey][$i];
             }
         }
@@ -80,10 +80,10 @@ class Page extends Eloquent
         $page = $this->getById($values['page_id']);
         
         $meta = [];
-        foreach(ChuckSite::getSupportedLocales() as $langKey => $langValue){
+        foreach (ChuckSite::getSupportedLocales() as $langKey => $langValue) {
             $page->setTranslation('title', $langKey, $values->get('page_title')[$langKey]);
             $page->setTranslation('slug', $langKey, $values->get('page_slug')[$langKey]);
-            for ($i=0; $i < count($values->get('meta_key')[$langKey]); $i++) { 
+            for ($i = 0; $i < count($values->get('meta_key')[$langKey]); $i++) { 
                 $meta[$langKey][$values->get('meta_key')[$langKey][$i]] = $values->get('meta_value')[$langKey][$i];
             }
         }
@@ -100,9 +100,9 @@ class Page extends Eloquent
     public function deleteById($id)
     {
         $page = $this->where('id', $id)->first();
-        if($page){
+        if ($page) {
             PageBlock::where('page_id', $page->id)->delete();
-            if($page->delete()){
+            if ($page->delete()) {
                 return 'success';
             } else {
                 return 'error';

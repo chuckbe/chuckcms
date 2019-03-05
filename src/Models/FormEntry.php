@@ -6,7 +6,7 @@ use Eloquent;
 
 class FormEntry extends Eloquent
 {
-	/**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
