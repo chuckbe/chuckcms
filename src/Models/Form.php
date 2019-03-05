@@ -6,6 +6,9 @@ use Chuckbe\Chuckcms\Models\FormEntry;
 
 use Eloquent;
 
+/**
+ * @property array $form
+ */
 class Form extends Eloquent
 {
 	/**
@@ -143,7 +146,9 @@ class Form extends Eloquent
         $contents = array();
         $startDelimiterLength = strlen($startDelimiter);
         $endDelimiterLength = strlen($endDelimiter);
-        $startFrom = $contentStart = $contentEnd = 0;
+        $startFrom = 0;
+        $contentStart =  0;
+        $contentEnd = 0;
         while (false !== ($contentStart = strpos($str, $startDelimiter, $startFrom))) {
         $contentStart += $startDelimiterLength;
         $contentEnd = strpos($str, $endDelimiter, $contentStart);

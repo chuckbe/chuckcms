@@ -4,6 +4,10 @@ namespace Chuckbe\Chuckcms\Models;
 
 use Eloquent;
 
+/**
+ * @property string $slug
+ * @property array $entry
+ */
 class FormEntry extends Eloquent
 {
 	/**
