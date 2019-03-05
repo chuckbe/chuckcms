@@ -4,16 +4,22 @@ namespace Chuckbe\Chuckcms\Controllers;
 
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\Template;
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
-class TemplateController extends Controller
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+class TemplateController extends BaseController
 {
-    private $page;
-    private $template;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    protected $page;
+    protected $template;
+    
     /**
-     * Create a new controller instance.
+     * Create a TemplateController instance.
      *
      * @return void
      */
@@ -26,7 +32,7 @@ class TemplateController extends Controller
     /**
      * Show the dashboard -> templates > index
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
