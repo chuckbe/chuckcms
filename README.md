@@ -1,6 +1,6 @@
-# chuckcms
+# ChuckCMS
 
-[![Latest Stable Version](https://poser.pugx.org/chuckbe/chuckcms/version.png)](https://packagist.org/packages/chuckbe/chuckcms) [![Total Downloads](https://poser.pugx.org/chuckbe/chuckcms/d/total.png)](https://packagist.org/packages/chuckbe/chuckcms)
+[![Latest Stable Version](https://poser.pugx.org/chuckbe/chuckcms/version.png)](https://packagist.org/packages/chuckbe/chuckcms) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/chuckbe/chuckcms/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/chuckbe/chuckcms/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/chuckbe/chuckcms/badges/build.png?b=master)](https://scrutinizer-ci.com/g/chuckbe/chuckcms/build-status/master) [![Total Downloads](https://poser.pugx.org/chuckbe/chuckcms/d/total.png)](https://packagist.org/packages/chuckbe/chuckcms)
 
 ## Instructions
 
@@ -38,22 +38,22 @@ protected $routeMiddleware = [
 ];
 ```
 
-### migrate
+### Migrate the database
 ```
 php artisan migrate
 ```
 
-### generate a new site with following command
+### Generate a new site with following command
 ```
 php artisan chuckcms:generate-site
 ```
 
-### generate all default roles and permission
+### Generate all default roles and permission
 ```
 php artisan chuckcms:generate-roles-permissions
 ```
 
-### make a new super admin with following command
+### Make a new super admin with following command
 ```
 php artisan chuckcms:generate-super-admin
 ```
