@@ -14,8 +14,7 @@
         "spatie/laravel-sitemap": "^5.2",
         "unisharp/laravel-filemanager": "^1.8",
         "mcamara/laravel-localization": "^1.3",
-        "msurguy/honeypot": "^1.0",
-        "chuckbe/chuckcms-template-starter": "^0.1"
+        "msurguy/honeypot": "^1.0"
     },
     "authors": [
         {
