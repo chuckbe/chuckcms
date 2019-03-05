@@ -7,13 +7,18 @@ use Chuckbe\Chuckcms\Models\Form;
 use Chuckbe\Chuckcms\Models\FormEntry;
 use Chuckbe\Chuckcms\Models\Template;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-
 use Mail;
 
-class FormController extends Controller
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+class FormController extends BaseController
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
     private $form;
     private $formEntry;
     private $template;
@@ -54,8 +59,8 @@ class FormController extends Controller
         $form = [];
         $form_slug = $request->get('form_slug');
         $fields_slug = $request->get('fields_slug');
-
-        for ($i=0; $i < count($fields_slug); $i++) { 
+        $countFS = count($fields_slug);
+        for ($i=0; $i < $countFS; $i++) { 
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['label'] = $request->get('fields_label')[$i];
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['type'] = $request->get('fields_type')[$i];
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['class'] = $request->get('fields_class')[$i];
@@ -63,8 +68,8 @@ class FormController extends Controller
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['placeholder'] = $request->get('fields_placeholder')[$i];
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['validation'] = $request->get('fields_validation')[$i];
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['value'] = $request->get('fields_value')[$i];
-
-            for ($k=0; $k < count(explode(';',$request->get('fields_attributes_name')[$i])); $k++) { 
+            $countFAN = count(explode(';',$request->get('fields_attributes_name')[$i]));
+            for ($k=0; $k < $countFAN; $k++) { 
                 $form['fields'][$form_slug . '_' . $fields_slug[$i]]['attributes'][explode(';',$request->get('fields_attributes_name')[$i])[$k]] = explode(';',$request->get('fields_attributes_value')[$i])[$k];
             }
             $form['fields'][$form_slug . '_' . $fields_slug[$i]]['required'] = $request->get('fields_required')[$i];
@@ -72,7 +77,8 @@ class FormController extends Controller
 
         $form['actions']['store'] = $request->get('action_store');
         if($request->get('action_send') == true) {
-            for ($g=0; $g < count($request->get('action_send_slug')); $g++) { 
+            $countActions = count($request->get('action_send_slug'));
+            for ($g=0; $g < $countActions; $g++) { 
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['to'] = $request->get('action_send_to')[$g];
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['to_name'] = $request->get('action_send_to_name')[$g];
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['from'] = $request->get('action_send_from')[$g];
@@ -93,7 +99,7 @@ class FormController extends Controller
         $form['button']['id'] = $request->get('button_id');
 
         // updateOrCreate the site
-        $result = Form::updateOrCreate(
+        Form::updateOrCreate(
             ['id' => $request->get('form_id')],
             ['title' => $request->get('form_title'),
             'slug' => $request->get('form_slug'),
@@ -128,7 +134,7 @@ class FormController extends Controller
      * Delete the form.
      *
      * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return string $status
      */
     public function delete(Request $request)
     {
@@ -141,7 +147,7 @@ class FormController extends Controller
      * Show the form entries.
      *
      * @param  $slug
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function entries($slug)
     {
@@ -156,7 +162,7 @@ class FormController extends Controller
      *
      * @param  $slug
      * @param  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function entry($slug, $id)
     {
