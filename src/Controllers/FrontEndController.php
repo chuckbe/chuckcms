@@ -11,11 +11,15 @@ use Chuckbe\Chuckcms\Models\Repeater;
 use Chuckbe\Chuckcms\Models\Template;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class FrontEndController extends Controller
+class FrontEndController extends BaseController
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
     private $page;
     private $pageblock;
     private $pageBlockRepository;
@@ -56,9 +60,9 @@ class FrontEndController extends Controller
 
             $repeater = $this->repeater->where('url', $slug)->first();
             if($repeater !== null){
-                $templateHintpath = explode('::', $repeater->page)[0];
+                $templateHintpath = explode('::', (string)$repeater->page)[0];
                 $template = $this->template->where('active', 1)->where('hintpath', $templateHintpath)->first();
-                return view($repeater->page, compact('template', 'repeater'));
+                return view((string)$repeater->page, compact('template', 'repeater'));
             }
 
             $page = $this->page->where('slug->'.app()->getLocale(), $slug)->first();
@@ -77,7 +81,9 @@ class FrontEndController extends Controller
                 } 
             }
 
-            if($page == null) abort(404);
+            if($page == null) {
+              abort(404);  
+            } 
         }
         
         $ogpageblocks = $this->pageblock->getAllByPageId($page->id);

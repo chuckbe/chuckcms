@@ -12,11 +12,24 @@ use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\User;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class DashboardController extends Controller
+class DashboardController extends BaseController
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    protected $template;
+    protected $site;
+    protected $page;
+    protected $pageblock;
+    protected $pageBlockRepository;
+    protected $resource;
+    protected $repeater;
+    protected $user;
+
     /**
      * Create a new controller instance.
      *
@@ -38,7 +51,7 @@ class DashboardController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     { 
@@ -48,7 +61,7 @@ class DashboardController extends Controller
     /**
      * Show the dashboard -> pages.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function settings()
     {

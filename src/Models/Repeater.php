@@ -4,6 +4,12 @@ namespace Chuckbe\Chuckcms\Models;
 
 use Eloquent;
 
+/**
+ * @property string $slug
+ * @property string $url
+ * @property string $page
+ * @property array $json
+ */
 class Repeater extends Eloquent
 {
 	/**
