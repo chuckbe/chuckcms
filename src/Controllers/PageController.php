@@ -14,11 +14,15 @@ use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\User;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class PageController extends Controller
+class PageController extends BaseController
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
     private $page;
     private $pageblock;
     private $pageBlockRepository;
@@ -59,7 +63,7 @@ class PageController extends Controller
     /**
      * Show the dashboard -> pages.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -71,7 +75,7 @@ class PageController extends Controller
     /**
      * Show the dashboard -> page edit.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit($page_id)
     {
@@ -84,7 +88,7 @@ class PageController extends Controller
     /**
      * Show the dashboard -> page create.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -97,7 +101,7 @@ class PageController extends Controller
     /**
      * Show the dashboard -> page edit.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function save(Request $request)
     {
@@ -105,9 +109,9 @@ class PageController extends Controller
             'page_title' => 'max:185',
         ]);
         if($request['create']){
-            $page = $this->page->create($request);
+            $this->page->create($request);
         } if($request['update']){
-            $page = $this->page->updatePage($request);
+            $this->page->updatePage($request);
         }
         return redirect()->route('dashboard.pages');
     }
@@ -115,7 +119,7 @@ class PageController extends Controller
     /**
      * Delete the page and pageblocks.
      *
-     * @return string
+     * @return string $status
      */
     public function delete(Request $request)
     {
@@ -130,7 +134,7 @@ class PageController extends Controller
     /**
      * Show the dashboard -> page edit page builder.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function builderIndex($page_id)
     {
@@ -184,7 +188,7 @@ class PageController extends Controller
     /**
      * Return the raw page - ready for the builder
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function builderRaw($page_id)
     {
