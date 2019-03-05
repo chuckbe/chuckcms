@@ -13,10 +13,15 @@ use ChuckSite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class ContentController extends Controller
+class ContentController extends BaseController
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
     private $content;
     private $resource;
     private $repeater;
@@ -66,8 +71,8 @@ class ContentController extends Controller
         $resource->slug = $request->get('slug')[0];
         $json = [];
         foreach(ChuckSite::getSupportedLocales() as $langKey => $langValue){
-
-            for ($i=0; $i < count($request->get('resource_key')[$langKey]); $i++) { 
+            $count = count($request->get('resource_key')[$langKey]);
+            for ($i=0; $i < $count; $i++) { 
                 $json[$langKey][$request->get('resource_key')[$langKey][$i]] = $request->get('resource_value')[$langKey][$i];
 
             }
@@ -104,16 +109,16 @@ class ContentController extends Controller
         $content = [];
         $content_slug = $request->get('content_slug');
         $fields_slug = $request->get('fields_slug');
-
-        for ($i=0; $i < count($fields_slug); $i++) { 
+        $count = count($fields_slug);
+        for ($i=0; $i < $count; $i++) { 
             $content['fields'][$content_slug.'_'.$fields_slug[$i]]['label'] = $request->get('fields_label')[$i];
             $content['fields'][$content_slug.'_'.$fields_slug[$i]]['type'] = $request->get('fields_type')[$i];
             $content['fields'][$content_slug.'_'.$fields_slug[$i]]['class'] = $request->get('fields_class')[$i];
             $content['fields'][$content_slug.'_'.$fields_slug[$i]]['placeholder'] = $request->get('fields_placeholder')[$i];
             $content['fields'][$content_slug.'_'.$fields_slug[$i]]['validation'] = $request->get('fields_validation')[$i];
             $content['fields'][$content_slug.'_'.$fields_slug[$i]]['value'] = $request->get('fields_value')[$i];
-
-            for ($k=0; $k < count(explode(';',$request->get('fields_attributes_name')[$i])); $k++) { 
+            $fieldsCount = count(explode(';',$request->get('fields_attributes_name')[$i]));
+            for ($k=0; $k < $fieldsCount; $k++) { 
                 $content['fields'][$content_slug . '_' . $fields_slug[$i]]['attributes'][explode(';',$request->get('fields_attributes_name')[$i])[$k]] = explode(';',$request->get('fields_attributes_value')[$i])[$k];
             }
             $content['fields'][$content_slug . '_' . $fields_slug[$i]]['required'] = $request->get('fields_required')[$i];
@@ -130,8 +135,7 @@ class ContentController extends Controller
 
         $content['files'] = $request->get('files_allowed');
 
-        // updateOrCreate the site
-        $result = Content::updateOrCreate(
+        Content::updateOrCreate(
             ['id' => $request->get('content_id')],
             ['slug' => $request->get('content_slug'),
             'type' => $request->get('content_type'),
@@ -179,7 +183,7 @@ class ContentController extends Controller
      * Delete the resource from the page.
      *
      * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @return string $status
      */
     public function repeaterEntriesDelete(Request $request)
     {
