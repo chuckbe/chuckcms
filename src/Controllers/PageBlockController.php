@@ -52,7 +52,8 @@ class PageBlockController extends BaseController
     public function show(Request $request)
     {
         // AUTHORIZE ... COMES HERE
-        $pageblock = $this->pageblock->getRenderedById($request->get('pageblock_id'));
+        $pb = $this->pageblock->where('id', $request->get('pageblock_id'))->first();
+        $pageblock = $this->pageBlockRepository->getRenderedByPageBlock($pageblock)
         return $pageblock;
     }
 

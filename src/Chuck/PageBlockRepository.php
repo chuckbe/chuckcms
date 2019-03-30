@@ -138,8 +138,6 @@ class PageBlockRepository
         $startDelimiterLength = strlen($startDelimiter);
         $endDelimiterLength = strlen($endDelimiter);
         $startFrom = 0;
-        $contentStart = 0;
-        $contentEnd = 0;
         while (false !== ($contentStart = strpos($str, $startDelimiter, $startFrom))) {
         $contentStart += $startDelimiterLength;
         $contentEnd = strpos($str, $endDelimiter, $contentStart);

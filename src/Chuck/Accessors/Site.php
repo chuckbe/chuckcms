@@ -42,7 +42,7 @@ class Site
     {
         $settings = $site->settings;
         $locales = [];
-        if ($settings !== null) { 
+        if (is_array($settings)) { 
             foreach (config('lang.allLocales') as $langKey => $langValue) {
                 if (in_array($langKey, explode(',', $settings['lang']))) {
                     $locales[$langKey] = $langValue;
