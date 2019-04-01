@@ -53,7 +53,7 @@ class PageBlockController extends BaseController
     {
         // AUTHORIZE ... COMES HERE
         $pb = $this->pageblock->where('id', $request->get('pageblock_id'))->first();
-        $pageblock = $this->pageBlockRepository->getRenderedByPageBlock($pageblock)
+        $pageblock = $this->pageBlockRepository->getRenderedByPageBlock($pageblock);
         return $pageblock;
     }
 
