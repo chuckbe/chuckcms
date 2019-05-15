@@ -202,7 +202,7 @@
                         @foreach($pageViews as $template => $page)
                         <optgroup label="Template: '{{ $template }}'">
                           @foreach($page['files'] as $file)
-                            <option value="{{ $page['hintpath'] . '::templates.' . $template . '.' . $file }}" @if($repeater->content['actions']['detail'] == 'true') @if($repeater->content['actions']['detail']['page'] == $page['hintpath'] . '::templates.' . $template . '.' . $file) selected @endif @endif>{{ $file }} - {{ $template }}</option>
+                            <option value="{{ $page['hintpath'] . '::templates.' . $template . '.' . $file }}" @if($repeater->content['actions']['detail'] !== 'false') @if($repeater->content['actions']['detail']['page'] == $page['hintpath'] . '::templates.' . $template . '.' . $file) selected @endif @endif>{{ $file }} - {{ $template }}</option>
                           @endforeach
                         </optgroup>
                         @endforeach
