@@ -13,16 +13,21 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
     <meta content="" name="description" />
     <meta content="" name="author" />
-    <link href="chuckbe/chuckcms/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" />
-    <link href="chuckbe/chuckcms/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="chuckbe/chuckcms/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
-    <link href="chuckbe/chuckcms/assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet" type="text/css" media="screen" />
-    <link href="chuckbe/chuckcms/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" media="screen" />
-    <link href="chuckbe/chuckcms/assets/plugins/switchery/css/switchery.min.css" rel="stylesheet" type="text/css" media="screen" />
-    <link href="chuckbe/chuckcms/pages/css/pages-icons.css" rel="stylesheet" type="text/css">
-    <link class="main-stylesheet" href="chuckbe/chuckcms/pages/css/themes/light.css" rel="stylesheet" type="text/css" />
+    
+    <link href="https://cdn.chuck.be/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.chuck.be/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::to('chuckbe/chuckcms/css/font-awesome/css/font-awesome.css') }}" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.chuck.be/assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="https://cdn.chuck.be/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="https://cdn.chuck.be/assets/plugins/switchery/css/switchery.min.css" rel="stylesheet" type="text/css" media="screen" />
+
+    <link href="{{ URL::to('chuckbe/chuckcms/css/pages-icons.css') }}" rel="stylesheet" type="text/css" />
+    
+    <link class="main-stylesheet" href="https://cdn.chuck.be/assets/pages/css/themes/light.css" rel="stylesheet" type="text/css" />
+
     <script type="text/javascript">
     window.onload = function()
     {
@@ -102,7 +107,7 @@
           <div class="pull-bottom sm-pull-bottom">
             <div class="m-b-30 p-r-80 sm-m-t-20 sm-p-r-15 sm-p-b-20 clearfix">
               <div class="col-sm-3 col-md-2 no-padding">
-                <img alt="" class="m-t-5" data-src="chuckbe/chuckcms/assets/img/demo/pages_icon.png" data-src-retina="chuckbe/chuckcms/assets/img/demo/pages_icon_2x.png" height="60" src="chuckbe/chuckcms/assets/img/demo/pages_icon.png" width="60">
+                <img alt="" class="m-t-5" data-src="https://cdn.chuck.be/assets/img/demo/pages_icon.png" data-src-retina="https://cdn.chuck.be/assets/img/demo/pages_icon_2x.png" height="60" src="https://cdn.chuck.be/assets/img/demo/pages_icon.png" width="60">
               </div>
               <div class="col-sm-9 no-padding m-t-10">
                 <p>
@@ -118,23 +123,23 @@
       <!-- END Login Right Container-->
     </div>
     <!-- BEGIN VENDOR JS -->
-    <script src="chuckbe/chuckcms/assets/plugins/pace/pace.min.js" type="text/javascript"></script>
-    <script src="chuckbe/chuckcms/assets/plugins/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
-    <script src="chuckbe/chuckcms/assets/plugins/modernizr.custom.js" type="text/javascript"></script>
-    <script src="chuckbe/chuckcms/assets/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-    <script src="chuckbe/chuckcms/assets/plugins/tether/js/tether.min.js" type="text/javascript"></script>
-    <script src="chuckbe/chuckcms/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="chuckbe/chuckcms/assets/plugins/jquery/jquery-easy.js" type="text/javascript"></script>
-    <script src="chuckbe/chuckcms/assets/plugins/jquery-unveil/jquery.unveil.min.js" type="text/javascript"></script>
-    <script src="chuckbe/chuckcms/assets/plugins/jquery-ios-list/jquery.ioslist.min.js" type="text/javascript"></script>
-    <script src="chuckbe/chuckcms/assets/plugins/jquery-actual/jquery.actual.min.js"></script>
-    <script src="chuckbe/chuckcms/assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-    <script type="text/javascript" src="chuckbe/chuckcms/assets/plugins/select2/js/select2.full.min.js"></script>
-    <script type="text/javascript" src="chuckbe/chuckcms/assets/plugins/classie/classie.js"></script>
-    <script src="chuckbe/chuckcms/assets/plugins/switchery/js/switchery.min.js" type="text/javascript"></script>
-    <script src="chuckbe/chuckcms/assets/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/pace/pace.min.js" type="text/javascript"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/modernizr.custom.js" type="text/javascript"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/tether/js/tether.min.js" type="text/javascript"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/jquery/jquery-easy.js" type="text/javascript"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/jquery-unveil/jquery.unveil.min.js" type="text/javascript"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/jquery-ios-list/jquery.ioslist.min.js" type="text/javascript"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/jquery-actual/jquery.actual.min.js"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/select2/js/select2.full.min.js"></script>
+    <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/classie/classie.js"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/switchery/js/switchery.min.js" type="text/javascript"></script>
+    <script src="https://cdn.chuck.be/assets/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
     <!-- END VENDOR JS -->
-    <script src="chuckbe/chuckcms/pages/js/pages.min.js"></script>
+    <script src="https://cdn.chuck.be/assets/pages/js/pages.min.js"></script>
     <script>
     $(function()
     {
