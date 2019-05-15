@@ -1,3 +1,7 @@
 remote_theme: pmarsceill/just-the-docs
 url: https://docs.chuckcms.com
 enforce_ssl: docs.chuckcms.com
+# Aux links for the upper right navigation
+aux_links:
+    "Looking for the guys who built this?":
+      - "//chuck.be"
