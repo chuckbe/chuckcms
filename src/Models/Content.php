@@ -57,18 +57,8 @@ class Content extends Eloquent
         
         $json = [];
         foreach ($this->content['fields'] as $fieldKey => $fieldValue) {
-            if ($fieldValue['type'] !== 'file') {
-                $cleanKey = str_replace($slug . '_', '', $fieldKey);
-                $json[$cleanKey] = $input->get($fieldKey);
-            }
-        }
-        
-        if ($this->content['files'] == 'true') {
-            foreach ($this->content['fields'] as $fieldKey => $fieldValue) {
-                if ($fieldValue['type'] == 'file') {
-                    //@todo save input files
-                }
-            }
+            $cleanKey = str_replace($slug . '_', '', $fieldKey);
+            $json[$cleanKey] = $input->get($fieldKey);
         }
         
         Repeater::updateOrCreate(

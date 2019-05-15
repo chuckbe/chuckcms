@@ -39,6 +39,17 @@
                         </div>
                         <img id="{{$keyName.'_'.$loop->iteration}}_logoholder" @if(array_key_exists($cleanKey, $repeater->json)) src="{{ URL::to('/')}}{{ $repeater->json[$cleanKey] }}" @else src="" @endif style="margin-top:15px;max-height:100px;">
                     @endif
+                    @if($input['type'] == 'file')
+                        <label for="{{$keyName}}">{{ $input['label'] }}</label>
+                        <div class="input-group">
+                          <span class="input-group-btn">
+                            <a id="lfm" data-input="{{$keyName.'_'.$loop->iteration}}_input" class="btn btn-primary file_lfm_link" style="color:#FFF">
+                              <i class="fa fa-picture-o"></i> {{ $input['placeholder'] }}
+                            </a>
+                          </span>
+                          <input id="{{$keyName.'_'.$loop->iteration}}_input" name="{{$keyName}}" class="file_lfm_input {{ $input['class'] }}" type="text" @if(array_key_exists($cleanKey, $repeater->json)) value="{{ $repeater->json[$cleanKey] }}" @endif  @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>
+                        </div>
+                    @endif
                     @if($input['type'] == 'textarea')
                       <label for="{{ $keyName }}">{{ $input['label'] }}</label>
                       <textarea name="{{ $keyName }}" class="{{ $input['class'] }}" placeholder="{{ $input['placeholder'] }}" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif>@if(array_key_exists($cleanKey, $repeater->json)){{ $repeater->json[$cleanKey] }}@endif</textarea>
@@ -125,6 +136,8 @@
         //init media manager inputs 
         var domain = "{{ URL::to('dashboard/media')}}";
         $('.img_lfm_link').filemanager('image', {prefix: domain});
+
+        $('.file_lfm_link').filemanager('file', {prefix: domain});
       }
 
       $('.summernote-text-editor').summernote({

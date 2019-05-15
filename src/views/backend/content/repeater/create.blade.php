@@ -79,6 +79,7 @@
                             <option value="email">E-mail</option>
                             <option value="password">Password</option>
                             <option value="image_link">Image</option>
+                            <option value="file">File</option>
                             <option value="textarea">Textarea</option>
                             <option value="wysiwyg">WYSIWYG</option>
                             <option value="select2">Select2 (single)</option>

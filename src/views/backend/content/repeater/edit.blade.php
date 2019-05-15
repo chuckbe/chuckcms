@@ -80,6 +80,7 @@
                             <option value="email" @if($fValue['type'] == 'email') selected @endif>E-mail</option>
                             <option value="password" @if($fValue['type'] == 'password') selected @endif>Password</option>
                             <option value="image_link" @if($fValue['type'] == 'image_link') selected @endif>Image</option>
+                            <option value="file" @if($fValue['type'] == 'file') selected @endif>File</option>
                             <option value="textarea" @if($fValue['type'] == 'textarea') selected @endif>Textarea</option>
                             <option value="wysiwyg" @if($fValue['type'] == 'wysiwyg') selected @endif>WYSIWYG</option>
                             <option value="select2" @if($fValue['type'] == 'select2') selected @endif>Select2 (single)</option>
