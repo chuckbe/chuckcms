@@ -3,6 +3,7 @@
 namespace Chuckbe\Chuckcms\Models;
 
 use Eloquent;
+use Illuminate\Http\Request;
 
 class Template extends Eloquent
 {
@@ -86,5 +87,36 @@ class Template extends Eloquent
             }
         }
         return $pageViews;
+    }
+
+    public function updateFromRequest(Request $request)
+    {
+        $template = $this->where('id', $request->template_id)->first();
+
+        $template->name = $request->template_name;
+
+        $fonts = [];
+        $fonts['raw'] = $request->template_fonts;
+        $template->fonts = $fonts;
+
+        $css = [];
+
+        for ($i=0; $i < count($request->css_slug); $i++) { 
+            $css[$request->css_slug[$i]]['href'] = $request->css_href[$i];
+            $css[$request->css_slug[$i]]['asset'] = $request->css_asset[$i];
+        }
+
+        $template->css = $css;
+
+        $js = [];
+
+        for ($k=0; $k < count($request->js_slug); $k++) { 
+            $js[$request->js_slug[$k]]['href'] = $request->js_href[$k];
+            $js[$request->js_slug[$k]]['asset'] = $request->js_asset[$k];
+        }
+
+        $template->js = $js;
+
+        $template->update();
     }
 }

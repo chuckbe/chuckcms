@@ -103,6 +103,10 @@ Route::group(['middleware' => ['web']], function() {
         Route::group(['middleware' => ['permission:show templates']], function () {
             Route::get('/dashboard/templates', 'Chuckbe\Chuckcms\Controllers\TemplateController@index')->name('dashboard.templates');
         });
+        Route::group(['middleware' => ['permission:edit templates']], function () {
+            Route::get('/dashboard/templates/{slug}/edit', 'Chuckbe\Chuckcms\Controllers\TemplateController@edit')->name('dashboard.templates.edit');
+            Route::post('/dashboard/templates/save', 'Chuckbe\Chuckcms\Controllers\TemplateController@save')->name('dashboard.templates.save');
+        });
 		
     // Dashboard Forms Routes...
         Route::group(['middleware' => ['permission:show forms']], function () {

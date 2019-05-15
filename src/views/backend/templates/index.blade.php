@@ -12,7 +12,7 @@
 
 @section('breadcrumbs')
 	<ol class="breadcrumb">
-		<li class="breadcrumb-item active"><a href="{{ route('dashboard.settings') }}">Instellingen</a></li>
+		<li class="breadcrumb-item active"><a href="{{ route('dashboard.templates') }}">Templates</a></li>
 	</ol>
 @endsection
 
@@ -39,7 +39,7 @@
 		<!-- START card -->
 			<div class="card card-transparent">
 				<div class="card-header ">
-					<div class="card-title">Resources</div>
+					<div class="card-title">Templates</div>
 					<div class="tools">
 						<a class="collapse" href="javascript:;"></a>
 						<a class="config" data-toggle="modal" href="#grid-config"></a>
@@ -53,18 +53,17 @@
 						<thead>
 							<tr>
 								<th style="width:5%">ID</th>
-								<th style="width:15%">Slug</th>
-								<th style="width:20%">Naam</th>
+								<th style="width:30%">Naam</th>
 								<th style="width:20%">Auteur</th>
 								<th style="width:10%">Versie</th>
-								<th style="width:30%">Actions</th>
+								<th style="width:10%">Type</th>
+								<th style="width:25%">Actions</th>
 							</tr>
 						</thead>
 							<tbody>
 								@foreach($templates as $tmp)
 								<tr>
 									<td class="v-align-middle">{{ $tmp->id }}</td>
-							    	<td class="v-align-middle">{{$tmp->slug}}</td>
 							    	<td class="v-align-middle">
 							    		@if($tmp->active == 1)
 					                		<i class="fa fa-circle" style="color:chartreuse;"></i>
@@ -75,11 +74,12 @@
 							    	</td>
 							    	<td class="v-align-middle">{{ $tmp->author }}</td>
 							    	<td class="v-align-middle">(v{{ $tmp->version }})</td>
+							    	<td class="v-align-middle">{{ $tmp->type }}</td>
 							    	<td class="v-align-middle semi-bold">
 							    		@can('edit templates')
-							    		{{-- <a href="{{ route('dashboard.content.resources.edit', ['slug' => $tmp->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    		<a href="{{ route('dashboard.templates.edit', ['slug' => $tmp->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
 							    			<i data-feather="edit-2"></i> edit
-							    		</a> --}}
+							    		</a>
 							    		@endcan
 							    		@can('delete templates')
 							    		{{-- <a href="{{ route('dashboard.forms.delete', ['slug' => $tmp->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
