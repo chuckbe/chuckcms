@@ -62,7 +62,7 @@ class TemplateController extends BaseController
      *
      * @param  Request $request
      * 
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function save(Request $request)
     {

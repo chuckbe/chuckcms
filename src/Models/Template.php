@@ -100,8 +100,8 @@ class Template extends Eloquent
         $template->fonts = $fonts;
 
         $css = [];
-
-        for ($i=0; $i < count($request->css_slug); $i++) { 
+        $countCss = count($request->css_slug);
+        for ($i=0; $i < $countCss; $i++) { 
             $css[$request->css_slug[$i]]['href'] = $request->css_href[$i];
             $css[$request->css_slug[$i]]['asset'] = $request->css_asset[$i];
         }
@@ -109,8 +109,8 @@ class Template extends Eloquent
         $template->css = $css;
 
         $js = [];
-
-        for ($k=0; $k < count($request->js_slug); $k++) { 
+        $countJs = count($request->js_slug);
+        for ($k=0; $k < $countJs; $k++) { 
             $js[$request->js_slug[$k]]['href'] = $request->js_href[$k];
             $js[$request->js_slug[$k]]['asset'] = $request->js_asset[$k];
         }
