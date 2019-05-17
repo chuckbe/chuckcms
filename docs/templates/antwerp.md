@@ -5,6 +5,7 @@ parent: Templates
 nav_order: 1
 ---
 # The Antwerp Template
+{: .no_toc }
 
 The Antwerp template is a feature densed template with lots of customisation. 
 
