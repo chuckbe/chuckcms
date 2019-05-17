@@ -1,9 +1,9 @@
 ---
 layout: default
-title: London
+title: London (ecommerce)
 parent: Templates
 nav_order: 6
 ---
-## The London Template
+## The London (ecommerce) Template
 
-The London template is a feature densed template with lots of customisation. 
+The London (ecommerce) template is a feature densed template with lots of customisation. 

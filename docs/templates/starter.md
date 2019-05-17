@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Starter
+title: Starter (default)
 parent: Templates
 nav_order: 9
 ---
-## The Starter Template
+## The Starter (default) Template
 
-The Starter template is a feature densed template with lots of customisation. 
+The Starter (default) template is a feature densed template with lots of customisation. 
