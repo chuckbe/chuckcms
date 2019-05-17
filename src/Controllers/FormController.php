@@ -121,9 +121,11 @@ class FormController extends BaseController
         $store = $form->storeEntry($request);
         if ($store !== 'error') {
             //send emails 
-            foreach ($form->form['actions']['send'] as $sendKey => $sendValue) {
-                $mailData = $form->getMailData($sendValue, $request, $store);
-                Mail::send(new FormActionMail($mailData));
+            if($form->form['actions']['send'] !== false){
+                foreach ($form->form['actions']['send'] as $sendKey => $sendValue) {
+                    $mailData = $form->getMailData($sendValue, $request, $store);
+                    Mail::send(new FormActionMail($mailData));
+                }
             }
             return redirect()->to($form->form['actions']['redirect']);
         } else {
