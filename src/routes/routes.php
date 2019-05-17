@@ -214,7 +214,11 @@ Route::group(['middleware' => ['web']], function() {
         Route::group(['middleware' => ['permission:edit users']], function () {
             Route::get('/dashboard/users/edit/{user}', 'Chuckbe\Chuckcms\Controllers\UserController@edit')->name('dashboard.users.edit');
         });
-		
+        
+		Route::group(['middleware' => ['permission:delete users']], function () {
+            Route::post('/dashboard/user/delete', 'Chuckbe\Chuckcms\Controllers\UserController@delete')->name('dashboard.user.delete');
+        });
+
     // Dashboard Settings / Sites Routes...
         Route::group(['middleware' => ['permission:show settings']], function () {
             Route::get('/dashboard/settings', 'Chuckbe\Chuckcms\Controllers\DashboardController@settings')->name('dashboard.settings');

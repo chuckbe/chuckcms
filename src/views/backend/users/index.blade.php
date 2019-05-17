@@ -27,6 +27,51 @@
     @if (session('notification'))
     	@include('chuckcms::backend.includes.notification')
 	@endif
+	<script src="https://cdn.chuck.be/assets/plugins/sweetalert2.all.js"></script>
+	<script type="text/javascript">
+	function deleteUser(user_id) {
+		var token = '{{ Session::token() }}';
+			swal({
+			title: 'Are you sure?',
+			text: "You won't be able to revert this!",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete it!'
+		}).then((result) => {
+		  	if (result.value) { 
+		  		$.ajax({
+	                method: 'POST',
+	                url: "{{ route('dashboard.user.delete') }}",
+	                data: { 
+	                	user_id: user_id, 
+	                	_token: token
+	                }
+	            })
+	            .done(function (data) {
+	            	if(data == 'success'){
+	            		$("#condensedTable").DataTable().row(".user_line[data-id='"+user_id+"']").remove().draw();
+	            		swal(
+				      		'Deleted!',
+				      		'The user has been deleted.',
+				      		'success'
+				    	)
+	            	} else {
+	            		swal(
+				      		'Oops!',
+				      		'Something went wrong...',
+				      		'danger'
+				    	)
+	            	}
+
+	                
+	            });
+		    	
+		  	}
+		})
+	}
+	</script>
 @endsection
 
 @section('content')
@@ -64,7 +109,7 @@
 						</thead>
 							<tbody>
 								@foreach($users as $user)
-								<tr>
+								<tr class="user_line" data-id="{{ $user->id }}">
 									<td class="v-align-middle">{{ $user->id }}</td>
 							    	<td class="v-align-middle semi-bold">{{ $user->name }}</td>
 							    	<td class="v-align-middle">{{ $user->email }}</td>
@@ -85,8 +130,8 @@
 							    		</a>
 							    		@endcan
 							    		@can('delete users')
-							    		<a href="{{ route('dashboard.page.edit', ['user_id' => $user->id]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
-							    			<i data-feather="trash-2"></i> delete
+							    		<a href="#" onclick="deleteUser({{ $user->id }})" class="btn btn-danger btn-sm btn-rounded m-r-20 user_delete" data-id="{{ $user->id }}">
+							    			<i data-feather="trash-2"></i> 
 							    		</a>
 							    		@endcan
 							    	</td>

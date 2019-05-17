@@ -33,4 +33,28 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function deleteById($id)
+    {
+        $user = $this->where('id', $id)->first();
+        if ($user) {
+            $roles = $user->getRoleNames();
+            $permissions = $user->getDirectPermissions();
+
+            foreach($roles as $role) {
+                $user->removeRole($role);
+            }
+            foreach($permissions as $permission) {
+                $user->removePermissionTo($permission);
+            }
+
+            if ($user->delete()) {
+                return 'success';
+            } else {
+                return 'error';
+            }
+        } else {
+            return 'false';
+        }
+    }
 }

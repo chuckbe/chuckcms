@@ -170,4 +170,19 @@ class UserController extends BaseController
         //redirect back
         return redirect()->back()->with('notification', 'Gebruiker uitgenodigd!');
     }
+
+    /**
+     * Delete the user.
+     *
+     * @return string $status
+     */
+    public function delete(Request $request)
+    {
+        $this->validate(request(), [
+            'user_id' => 'required',
+        ]);
+        
+        $status = $this->user->deleteById($request->get('user_id'));
+        return $status;
+    }
 }
