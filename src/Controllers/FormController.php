@@ -76,7 +76,8 @@ class FormController extends BaseController
         }
 
         $form['actions']['store'] = $request->get('action_store');
-        if($request->get('action_send') == true) {
+        
+        if($request->get('action_send') !== 'false') {
             $countActions = count($request->get('action_send_slug'));
             for ($g=0; $g < $countActions; $g++) { 
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['to'] = $request->get('action_send_to')[$g];
@@ -89,6 +90,8 @@ class FormController extends BaseController
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['template'] = $request->get('action_send_template')[$g];
             }
 
+        } else {
+            $form['actions']['send'] = false;
         }
         $form['actions']['redirect'] = $request->get('action_redirect');
 
