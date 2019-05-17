@@ -17,16 +17,16 @@ The Antwerp template is a feature densed template with lots of customisation.
 
 ## Installation
 
-	1. Install through Composer
+1. Install through Composer
 
 ``` composer require chuckbe/chuckcms-template-antwerp ```
 
-	2. Publish the theme to your database
+2. Publish the theme to your database
 
 ``` php artisan chuckcms-template-antwerp:publish ```
 
-	3. Publish the assets of the theme to your ```/public``` folder
+3. Publish the assets of the theme to your `/public` folder
 
 ``` php artisan vendor:publish --tag=chuckcms-template-antwerp-public --force ```
 
-If you add your own blocks to the theme don't use the --force tag when republishing.
+...If you add your own blocks to the theme don't use the --force tag when republishing.
