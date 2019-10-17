@@ -16,7 +16,7 @@
                 <div class="panel-heading">Navigatie</div>
                 
                 <div class="panel-body">
-                    {!! ChuckMenu::render() !!}
+                    {!! ChuckMenu::render($pages) !!}
                 </div>
             </div>
         </div>

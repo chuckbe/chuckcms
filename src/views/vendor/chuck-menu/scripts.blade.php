@@ -13,6 +13,7 @@
 	};
 	var arraydata = [];     
 	var addcustommenur= '{{ route("haddcustommenu") }}';
+	var addpagemenur= '{{ route("haddpagemenu") }}';
 	var updateitemr= '{{ route("hupdateitem")}}';
 	var generatemenucontrolr= '{{ route("hgeneratemenucontrol") }}';
 	var deleteitemmenur= '{{ route("hdeleteitemmenu") }}';

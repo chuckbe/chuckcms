@@ -39,6 +39,11 @@ class Page extends Eloquent implements Sortable
         return $this->where('id', $id)->with('page_blocks')->first();
     }
 
+    public static function getUrl($id)
+    {
+        return ChuckSite::getSetting('domain') . '/' . self::where('id', $id)->first()->slug;
+    }
+
     public function create($values)
     {
         $page = new Page();

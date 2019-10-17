@@ -70,6 +70,7 @@ Route::group(['middleware' => ['web']], function() {
         Route::group(['middleware' => ['permission:create menus']], function () {
             $path = rtrim(config('menu.route_path'));
             Route::post($path . '/addcustommenu', array('as' => 'haddcustommenu', 'uses' => 'Chuckbe\Chuckcms\Controllers\MenuController@addcustommenu'));
+            Route::post($path . '/addpagemenu', array('as' => 'haddpagemenu', 'uses' => 'Chuckbe\Chuckcms\Controllers\MenuController@addpagemenu'));
             Route::post($path . '/createnewmenu', array('as' => 'hcreatenewmenu', 'uses' => 'Chuckbe\Chuckcms\Controllers\MenuController@createnewmenu'));
         });
 

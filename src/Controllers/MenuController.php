@@ -103,6 +103,18 @@ class MenuController extends BaseController
 
     }
 
+    public function addpagemenu()
+    {
+
+        $menuitem = new MenuItems();
+        $menuitem->label = request()->input("labelmenu");
+        $menuitem->link = 'page:'.request()->input("linkmenu");
+        $menuitem->menu = request()->input("idmenu");
+        $menuitem->sort = MenuItems::getNextSortRoot(request()->input("idmenu"));
+        $menuitem->save();
+
+    }
+
     public function generatemenucontrol()
     {
         $menu = Menus::find(request()->input("idmenu"));

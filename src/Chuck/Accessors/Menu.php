@@ -8,7 +8,7 @@ use Chuckbe\Chuckcms\Models\MenuItems;
 
 class Menu
 {
-    public function render()
+    public function render($pages)
     {
         $menu = new Menus();
         $menuitems = new MenuItems();
@@ -22,7 +22,7 @@ class Menu
             $menu = Menus::find(request()->input("menu"));
             $menus = $menuitems->getall(request()->input("menu"));
 
-            $data = ['menus' => $menus, 'indmenu' => $menu, 'menulist' => $menulist];
+            $data = ['menus' => $menus, 'indmenu' => $menu, 'menulist' => $menulist, 'pages' => $pages];
             return view('chuckcms::vendor.chuck-menu.menu-dashboard', $data);
         }
 

@@ -56,6 +56,30 @@ function addcustommenu() {
 	});
 }
 
+function addpagemenu() {
+	$("#spincustomu").show();
+
+	$.ajax({
+		data : {
+			labelmenu : $("#page-menu-item-name").val(),
+			linkmenu : $("#page-menu-item-url").val(),
+			idmenu : $("#idmenu").val()
+		},
+
+		url : addpagemenur,
+		type : 'POST',
+		success : function(response) {
+			
+			window.location = "";
+
+		},
+		complete: function(){
+			$("#spincustomu").hide();
+		}
+
+	});
+}
+
 function updateitem(id = 0) {
 	
 	if(id){

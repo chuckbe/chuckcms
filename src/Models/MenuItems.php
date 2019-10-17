@@ -2,6 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
+use Chuckbe\Chuckcms\Models\Page;
 use Eloquent;
 
 /**
@@ -33,6 +34,30 @@ class MenuItems extends Eloquent
 
     public static function getNextSortRoot($menu){
         return self::where('menu',$menu)->max('sort') + 1;
+    }
+
+    public function getLinkAttribute()
+    {
+        if(strpos($this->attributes['link'], 'page:') !== false ) {
+            $page_id = explode(':', $this->attributes['link'])[1];
+            return Page::getUrl($page_id);
+        } else {
+            return $this->attributes['link'];
+        }
+    }
+
+    public function getRawLinkAttribute()
+    {
+        return $this->attributes['link'];
+    }
+
+    public function getTypeAttribute()
+    {
+        if(strpos($this->attributes['link'], 'page:') !== false ) {
+            return 'Page';
+        } else {
+            return 'Link';
+        }
     }
 
 }

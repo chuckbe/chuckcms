@@ -37,6 +37,48 @@ $currentUrl = url()->current();
 										<div id="side-sortables" class="accordion-container">
 											<ul class="outer-border">
 												<li class="control-section accordion-section  open add-page" id="add-page">
+													<h3 class="accordion-section-title hndle" tabindex="0"> Pagina <span class="screen-reader-text">Press return or enter to expand</span></h3>
+													<div class="accordion-section-content ">
+														<div class="inside">
+															<div class="customlinkdiv" id="customlinkdiv">
+																<p id="menu-item-url-wrap">
+																	<label class="howto" for="page-menu-item-url"> <span>Pagina</span>&nbsp;&nbsp;&nbsp;
+																		
+																		{{-- <input id="custom-menu-item-url" name="url" type="text" class="code menu-item-textbox" value="http://"> --}}
+
+																		<select name="page_id" id="page-menu-item-url">
+																			@foreach($pages as $page)
+																			<option value="{{ $page->id }}">{{ $page->title }}</option>
+																			@endforeach
+																		</select>
+																	</label>
+																</p>
+
+																<p id="menu-item-name-wrap">
+																	<label class="howto" for="page-menu-item-name"> <span>Label</span>&nbsp;
+																		<input id="page-menu-item-name" name="label" type="text" class="regular-text menu-item-textbox input-with-default-title" title="Label menu">
+																	</label>
+																</p>
+
+																<p class="button-controls">
+
+																	<a  href="#" onclick="addpagemenu()"  class="button-secondary submit-add-to-menu right"  >Voeg menu item toe</a>
+																	<span class="spinner" id="spincustomu"></span>
+																</p>
+
+															</div>
+														</div>
+													</div>
+												</li>
+
+											</ul>
+										</div>
+									</form>
+
+									<form id="nav-menu-meta" action="" class="nav-menu-meta" method="post" enctype="multipart/form-data">
+										<div id="side-sortables" class="accordion-container">
+											<ul class="outer-border">
+												<li class="control-section accordion-section  add-page" id="add-page">
 													<h3 class="accordion-section-title hndle" tabindex="0"> Custom Link <span class="screen-reader-text">Press return or enter to expand</span></h3>
 													<div class="accordion-section-content ">
 														<div class="inside">
@@ -125,7 +167,7 @@ $currentUrl = url()->current();
 																<dl class="menu-item-bar">
 																	<dt class="menu-item-handle">
 																		<span class="item-title"> <span class="menu-item-title"> <span id="menutitletemp_{{$m->id}}">{{$m->label}}</span> <span style="color: transparent;">|{{$m->id}}|</span> </span> <span class="is-submenu" style="@if($m->depth==0)display: none;@endif">Subelement</span> </span>
-																		<span class="item-controls"> <span class="item-type">Link</span> <span class="item-order hide-if-js"> <a href="{{ $currentUrl }}?action=move-up-menu-item&menu-item={{$m->id}}&_wpnonce=8b3eb7ac44" class="item-move-up"><abbr title="Move Up">↑</abbr></a> | <a href="{{ $currentUrl }}?action=move-down-menu-item&menu-item={{$m->id}}&_wpnonce=8b3eb7ac44" class="item-move-down"><abbr title="Move Down">↓</abbr></a> </span> <a class="item-edit" id="edit-{{$m->id}}" title=" " href="{{ $currentUrl }}?edit-menu-item={{$m->id}}#menu-item-settings-{{$m->id}}"> </a> </span>
+																		<span class="item-controls"> <span class="item-type">{{$m->type}}</span> <span class="item-order hide-if-js"> <a href="{{ $currentUrl }}?action=move-up-menu-item&menu-item={{$m->id}}&_wpnonce=8b3eb7ac44" class="item-move-up"><abbr title="Move Up">↑</abbr></a> | <a href="{{ $currentUrl }}?action=move-down-menu-item&menu-item={{$m->id}}&_wpnonce=8b3eb7ac44" class="item-move-down"><abbr title="Move Down">↓</abbr></a> </span> <a class="item-edit" id="edit-{{$m->id}}" title=" " href="{{ $currentUrl }}?edit-menu-item={{$m->id}}#menu-item-settings-{{$m->id}}"> </a> </span>
 																	</dt>
 																</dl>
 
@@ -146,10 +188,20 @@ $currentUrl = url()->current();
 																	</p>
 
 																	<p class="field-css-url description description-wide">
-																		<label for="edit-menu-item-url-{{$m->id}}"> Url
+																		<label for="edit-menu-item-url-{{$m->id}}"> {{ $m->type == 'Link' ? 'Url' : 'Page' }}
 																			<br>
+																			@if($m->type == 'Link')
 																			<input type="text" id="url_menu_{{$m->id}}" class="widefat code edit-menu-item-url" id="url_menu_{{$m->id}}" value="{{$m->link}}">
+																			@else
+																			<select name="page_id" id="url_menu_{{$m->id}}">
+																				@foreach($pages as $page)
+																				<option value="page:{{ $page->id }}" @if($m->rawLink == 'page:'.$page->id) selected @endif>{{ $page->title }}</option>
+																				@endforeach
+																			</select>
+																			@endif
 																		</label>
+
+
 																	</p>
 
 																	<p class="field-move hide-if-no-js description description-wide">
