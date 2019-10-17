@@ -27,10 +27,10 @@
     <script type="text/javascript">
     $(document).ready(function() {
 
-    	$("#create_redirect_slug").keyup(function(){
+    	$(".no-special-but-hyphens").keyup(function(){
 		    var text = $(this).val();
-		    slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
-		    $("#create_redirect_slug").val(slug_text);  
+		    slug_text = text.toLowerCase().replace(/[^A-Za-z-]/g, "").replace(/ +/g,'-');
+		    $(this).val(slug_text);  
 		});
 
     });

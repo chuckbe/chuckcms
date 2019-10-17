@@ -21,7 +21,7 @@
               <div class="col-md-12">
                 <div class="form-group form-group-default required">
                   <label>Van</label>
-                  <input type="text" id="create_redirect_slug" name="slug" class="form-control" required>
+                  <input type="text" id="create_redirect_slug" name="slug" class="form-control no-special-but-hyphens" required>
                 </div>
               </div>
             </div>
@@ -29,7 +29,7 @@
               <div class="col-md-12">
                 <div class="form-group form-group-default required">
                   <label>Naar</label>
-                  <input type="text" name="to" class="form-control" required>
+                  <input type="text" id="create_redirect_to" name="to" class="form-control no-special-but-hyphens" required>
                 </div>
               </div>
             </div>
