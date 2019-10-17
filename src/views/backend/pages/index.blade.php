@@ -98,7 +98,7 @@ function deletePage(page_id) {
 							<tbody>
 								@foreach($pages as $page)
 								<tr class="page_line" data-id="{{ $page->id }}">
-									<td class="v-align-middle">{{ $page->order_column }}</td>
+									<td class="v-align-middle">{{ $page->order }}</td>
 							    	<td class="v-align-middle semi-bold">{{ $page->title }}</td>
 							    	<td class="v-align-middle">
 							    		@if($page->active == 1)
