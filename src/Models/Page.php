@@ -17,7 +17,7 @@ class Page extends Eloquent implements Sortable
     use HasTranslations;
 
     public $sortable = [
-        'order_column_name' => 'order_column',
+        'order_column_name' => 'order',
         'sort_when_creating' => true,
     ];
 
@@ -104,7 +104,7 @@ class Page extends Eloquent implements Sortable
         $page->page = $values['page'];
         $page->active = $values['active'];
         $page->isHp = $values['isHp'];
-        
+
         $page->save();
     }
 
