@@ -5,12 +5,21 @@ namespace Chuckbe\Chuckcms\Models;
 use Chuckbe\Chuckcms\Models\PageBlock;
 use ChuckSite;
 
-use Eloquent;
+use \Illuminate\Database\Eloquent\Model as Eloquent;
+
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 use Spatie\Translatable\HasTranslations;
 
-class Page extends Eloquent
+class Page extends Eloquent implements Sortable
 {
+    use SortableTrait;
     use HasTranslations;
+
+    public $sortable = [
+        'order_column_name' => 'order_column',
+        'sort_when_creating' => true,
+    ];
 
     public function template(){
         return $this->belongsTo('Chuckbe\Chuckcms\Models\Template');
@@ -72,7 +81,7 @@ class Page extends Eloquent
         $page->page = $values['page'];
         $page->active = $values['active'];
         $page->isHp = $values['isHp'];
-
+        $page->order_column = ($this->max('order_column') ?? 0) + 1;
         $page->save();
     }
 
@@ -95,7 +104,7 @@ class Page extends Eloquent
         $page->page = $values['page'];
         $page->active = $values['active'];
         $page->isHp = $values['isHp'];
-
+        
         $page->save();
     }
 
@@ -118,5 +127,14 @@ class Page extends Eloquent
 
     protected $casts = [
         'meta' => 'array',
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'order_column',
     ];
 }

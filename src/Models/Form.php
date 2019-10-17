@@ -56,7 +56,8 @@ class Form extends Eloquent
                     if ($fieldValue['type'] == 'file') {
                         if ($input->hasFile($fieldKey)) {
                             $avatar = $input->file($fieldKey);
-                            $filename = time() . '.' . $avatar->getClientOriginalExtension();
+                            $random = str_random(8);
+                            $filename = time() . '_' . $random . '.' . $avatar->getClientOriginalExtension();
                             if (!file_exists(public_path('/files/uploads/'))) {
                                 mkdir(public_path('/files/uploads/'), 0777, true);
                             }

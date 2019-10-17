@@ -67,7 +67,7 @@ class PageController extends BaseController
      */
     public function index()
     {
-        $pages = $this->page->get();
+        $pages = $this->page->ordered()->get();
         
         return view('chuckcms::backend.pages.index', compact('pages'));
     }
@@ -129,6 +129,58 @@ class PageController extends BaseController
         
         $status = $this->page->deleteById($request->get('page_id'));
         return $status;
+    }
+
+    /**
+     * Move up.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function moveUp($page_id)
+    {
+        $page = $this->page->getById($page_id);
+        $page->moveOrderUp();
+        $page->save();
+        return redirect()->route('dashboard.pages');
+    }
+
+    /**
+     * Move first.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function moveFirst($page_id)
+    {
+        $page = $this->page->getById($page_id);
+        $page->moveToStart();
+        $page->save();
+        return redirect()->route('dashboard.pages');
+    }
+
+    /**
+     * Move down.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function moveDown($page_id)
+    {
+        $page = $this->page->getById($page_id);
+        $page->moveOrderDown();
+        $page->save();
+        return redirect()->route('dashboard.pages');
+    }
+
+    /**
+     * Move last.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function moveLast($page_id)
+    {
+        $page = $this->page->getById($page_id);
+        $page->moveToEnd();
+        $page->save();
+        return redirect()->route('dashboard.pages');
     }
 
     /**

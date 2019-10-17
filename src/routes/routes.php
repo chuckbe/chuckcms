@@ -32,6 +32,10 @@ Route::group(['middleware' => ['web']], function() {
 		
         Route::group(['middleware' => ['permission:edit pages']], function () {
             Route::get('/dashboard/page/{page_id}-edit', 'Chuckbe\Chuckcms\Controllers\PageController@edit')->name('dashboard.page.edit');
+            Route::get('/dashboard/page/{page_id}-move-up', 'Chuckbe\Chuckcms\Controllers\PageController@moveUp')->name('dashboard.page.move.up');
+            Route::get('/dashboard/page/{page_id}-move-first', 'Chuckbe\Chuckcms\Controllers\PageController@moveFirst')->name('dashboard.page.move.first');
+            Route::get('/dashboard/page/{page_id}-move-down', 'Chuckbe\Chuckcms\Controllers\PageController@moveDown')->name('dashboard.page.move.down');
+            Route::get('/dashboard/page/{page_id}-move-last', 'Chuckbe\Chuckcms\Controllers\PageController@moveLast')->name('dashboard.page.move.last');
         });
 
         Route::group(['middleware' => ['permission:delete pages']], function () {

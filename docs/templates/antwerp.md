@@ -15,6 +15,10 @@ The Antwerp template is a feature densed template with lots of customisation.
 1. TOC
 {:toc}
 
+## Image
+
+![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+
 ## Installation
 
 - Install through Composer

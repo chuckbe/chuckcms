@@ -86,22 +86,20 @@ function deletePage(page_id) {
 				</div>
 				<div class="card-block">
 					<div class="table-responsive">
-						<table class="table table-hover table-condensed" id="condensedTable" data-table-count="6">
+						<table class="table table-hover table-condensed" id="condensedTable" data-table-count="12">
 						<thead>
 							<tr>
-								<th style="width:5%">ID</th>
-								<th style="width:25%">Page</th>
-								<th style="width:20%">Slug</th>
-								<th style="width:13%">Status</th>
-								<th style="width:37%">Actions</th>
+								<th style="width:7%">ID</th>
+								<th style="width:42%">Page</th>
+								<th style="width:11%">Status</th>
+								<th style="width:40%">Actions</th>
 							</tr>
 						</thead>
 							<tbody>
 								@foreach($pages as $page)
 								<tr class="page_line" data-id="{{ $page->id }}">
-									<td class="v-align-middle">{{ $page->id }}</td>
+									<td class="v-align-middle">{{ $page->order_column }}</td>
 							    	<td class="v-align-middle semi-bold">{{ $page->title }}</td>
-							    	<td class="v-align-middle">{{$page->slug}}</td>
 							    	<td class="v-align-middle">
 							    		@if($page->active == 1)
 											<span class="label label-inverse">Actief</span>
@@ -111,19 +109,51 @@ function deletePage(page_id) {
 							    	</td>
 							    	<td class="v-align-middle semi-bold">
 							    		@can('edit pages')
-							    		<a href="{{ route('dashboard.page.edit', ['page_id' => $page->id]) }}" class="btn btn-primary btn-sm btn-rounded m-r-20">
+							    		<a href="{{ route('dashboard.page.edit', ['page_id' => $page->id]) }}" class="btn btn-primary btn-sm btn-rounded m-r-10">
 							    			<i data-feather="edit-2"></i> 
 							    		</a>
 							    		@endcan
 							    		@can('show pagebuilder')
-							    		<a href="{{ route('dashboard.page.edit.pagebuilder', ['page_id' => $page->id]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    		<a href="{{ route('dashboard.page.edit.pagebuilder', ['page_id' => $page->id]) }}" class="btn btn-default btn-sm btn-rounded m-r-10">
 							    			<i data-feather="edit"></i> builder
 							    		</a>
 							    		@endcan
 							    		@can('delete pages')
-							    		<a href="#" onclick="deletePage({{ $page->id }})" class="btn btn-danger btn-sm btn-rounded m-r-20 page_delete" data-id="{{ $page->id }}">
+							    		<a href="#" onclick="deletePage({{ $page->id }})" class="btn btn-danger btn-sm btn-rounded m-r-10 page_delete" data-id="{{ $page->id }}">
 							    			<i data-feather="trash"></i> 
 							    		</a>
+							    		@endcan
+							    		@can('edit pages')
+							    		<div class="btn-group">
+							    			@if(!$loop->last)
+					                          	@if(($loop->first && count($pages) > 2))
+				                          		<a href="{{ route('dashboard.page.move.last', ['page_id' => $page->id]) }}">
+					                          		<button type="button" class="btn btn-xs btn-default">
+					                          			<i data-feather="chevrons-down"></i> 
+					                          		</button>
+					                          	</a>
+					                          	@endif
+							    			<a href="{{ route('dashboard.page.move.down', ['page_id' => $page->id]) }}">
+					                          	<button type="button" class="btn btn-xs btn-default">
+					                          		<i data-feather="chevron-down"></i> 
+					                          	</button>
+				                          	</a>
+				                          	@endif
+				                          	@if(!$loop->first)
+				                          	<a href="{{ route('dashboard.page.move.up', ['page_id' => $page->id]) }}">
+				                          		<button type="button" class="btn btn-xs btn-default">
+				                          			<i data-feather="chevron-up"></i> 
+				                          		</button>
+				                          	</a>
+					                          	@if(($loop->last && count($pages) > 2))
+					                          	<a href="{{ route('dashboard.page.move.first', ['page_id' => $page->id]) }}">
+				                          			<button type="button" class="btn btn-xs btn-default">
+					                          			<i data-feather="chevrons-up"></i> 
+					                          		</button>
+					                      		</a>
+					                      		@endif
+				                      		@endif
+				                        </div>
 							    		@endcan
 							    	</td>
 							  	</tr>
