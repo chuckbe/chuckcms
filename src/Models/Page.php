@@ -86,7 +86,7 @@ class Page extends Eloquent implements Sortable
         $page->page = $values['page'];
         $page->active = $values['active'];
         $page->isHp = $values['isHp'];
-        $page->order_column = ($this->max('order_column') ?? 0) + 1;
+        $page->order = ($this->max('order') ?? 0) + 1;
         $page->save();
     }
 
