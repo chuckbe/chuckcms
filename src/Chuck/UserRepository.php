@@ -3,6 +3,7 @@
 namespace Chuckbe\Chuckcms\Chuck;
 
 use Chuckbe\Chuckcms\Models\User;
+use Str;
 
 class UserRepository
 {
@@ -17,7 +18,7 @@ class UserRepository
     {
         do {
             //generate a random string using Laravel's str_random helper
-            $token = str_random(24);
+            $token = Str::random(24);
         } //check if the token already exists and if it does, try again
         while ($this->user->where('token', $token)->first());
         return $token;
