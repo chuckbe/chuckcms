@@ -17,8 +17,16 @@ use Eloquent;
  */
 class MenuItems extends Eloquent
 {
-
     protected $table = null;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'label', 'link', 'parent', 'sort', 'class', 'menu', 'depth'
+    ];
 
     public function __construct( array $attributes = [] ){
         //parent::construct( $attributes );

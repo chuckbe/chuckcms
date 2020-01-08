@@ -30,14 +30,13 @@ class Menu
 
     public function renderFrontEnd($tslug = null, $fileslug = null, $menuname = null)
     {
-        if ($menuslug == null) {
+        if ($menuname == null) {
             $menu = Menus::find(1);
         } else {
-            $menu = Menus::where('name', $menuslug)->first();
+            $menu = Menus::where('name', $menuname)->first();
         }
-        
         $menuitems = new MenuItems();
-        $menus = $menuitems->getall(1);
+        $menus = $menuitems->getall($menu->id);
 
         $data = ['menus' => $menus, 'indmenu' => $menu];
         if ($tslug == null) {
