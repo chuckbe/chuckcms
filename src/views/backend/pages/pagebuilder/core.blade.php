@@ -155,7 +155,7 @@ i{
 	            	</div> --}}
 	            	<div class="pageblock_body" id="pageblock_body_{{ $pageblock['id'] }}" data-pbid="{{ $pageblock['id'] }}">{!! $pageblock['body'] !!}</div>
 	            	<div class="pageblock_body_raw" id="pageblock_body_raw_{{ $pageblock['id'] }}" data-pbid="{{ $pageblock['id'] }}">{!! $pageblock['raw'] !!}</div>
-	            	<div class="pageblock_body_code" id="pageblock_body_code_{{ $pageblock['id'] }}" data-pbid="{{ $pageblock['id'] }}">{{ $pageblock['raw'] }}</div>
+	            	<div class="pageblock_body_code" id="pageblock_body_code_{{ $pageblock['id'] }}" data-pbid="{{ $pageblock['id'] }}">{{ htmlspecialchars_decode($pageblock['raw']) }}</div>
 	            </div>
 			@endforeach
 	    @endif

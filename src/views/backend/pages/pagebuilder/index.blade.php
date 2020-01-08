@@ -911,9 +911,9 @@
 			  		event.preventDefault();
 			  		//iframe.find('.pb_control_save_code').removeClass('not_shown');
 			  		//iframe.find('.pb_control_save').addClass('not_shown');
-			  		var pb_html_old = iframe.find('#pageblock_body_code_'+pb_id).html();
+			  		var pb_html_old = iframe.find('#pageblock_body_code_'+pb_id).text();
 			  		var pb_html = pb_html_old.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-			  		//console.log('the pb html : ', pb_html);
+			  		console.log('the pb html : ', pb_html);
 			  		//iframe.find('#pageblock_body_'+pb_id).addClass('not_shown');
 			  		//iframe.find('#ace_editor_'+pb_id).removeClass('ace_editor_height_null');
 			  		//iframe.find('#ace_editor_'+pb_id).addClass('ace_editor_height_full');
