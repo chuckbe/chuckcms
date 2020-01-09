@@ -47,6 +47,24 @@
                       </div>
                 </div>
               </div>
+              @if(count($template->json) > 0)
+              <hr>
+              <div class="row column-seperation">
+                <div class="col-lg-12">
+                    @foreach($template->json as $key => $setting)
+                      <div class="form-group form-group-default required ">
+                        <label>{{ $setting['label'] }}</label>
+                        @if($setting['type'] == 'text')
+                        <input type="text" class="form-control" placeholder="{{ $setting['label'] }}" id="form_title" name="json_slug[{{ $key }}]" value="{{ $setting['value'] }}">
+                        @elseif($setting['type'] == 'textarea')
+                        <input type="text" class="form-control" placeholder="{{ $setting['label'] }}" id="form_title" name="json_slug[{{ $key }}]" value="{{ $setting['value'] }}">
+                        @endif
+                      </div>
+                    @endforeach
+
+                </div>
+              </div>
+              @endif
             </div>
 
             <div class="tab-pane fade" id="ffields">

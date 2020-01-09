@@ -33,6 +33,7 @@
                 "Msurguy\\Honeypot\\HoneypotServiceProvider"
             ],
             "aliases": {
+                "ChuckTemplate": "Chuckbe\\Chuckcms\\Facades\\Template",
                 "Honeypot": "Msurguy\\Honeypot\\HoneypotFacade"
             }
         }

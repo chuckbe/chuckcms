@@ -65,6 +65,10 @@ class ChuckcmsServiceProvider extends ServiceProvider
         );
 
         $this->app->register(
+            'Chuckbe\Chuckcms\Providers\ChuckTemplateServiceProvider'
+        );
+
+        $this->app->register(
             'Chuckbe\Chuckcms\Providers\ChuckConfigServiceProvider'
         );
 
@@ -82,6 +86,7 @@ class ChuckcmsServiceProvider extends ServiceProvider
 
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
         $loader->alias('ChuckSite', 'Chuckbe\Chuckcms\Facades\Site');
+        $loader->alias('ChuckTemplate', 'Chuckbe\Chuckcms\Facades\Template');
         $loader->alias('ChuckMenu', 'Chuckbe\Chuckcms\Facades\Menu');
         $loader->alias('Honeypot', 'Msurguy\Honeypot\HoneypotFacade');
 
