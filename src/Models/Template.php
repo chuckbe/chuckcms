@@ -118,11 +118,13 @@ class Template extends Eloquent
         $template->js = $js;
 
         $json = $template->json;
-        foreach ($request->json_slug as $jsonKey => $jsonValue) { 
-            $json[$jsonKey]['value'] = $jsonValue;
-        }
+        if (count($json) > 0) {
+            foreach ($request->json_slug as $jsonKey => $jsonValue) { 
+                $json[$jsonKey]['value'] = $jsonValue;
+            }
 
-        $template->json = $json;
+            $template->json = $json;
+        }
 
         $template->update();
     }
