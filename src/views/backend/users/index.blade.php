@@ -71,6 +71,45 @@
 		  	}
 		})
 	}
+
+	function resendInvitationUser(user_id) {
+		var token = '{{ Session::token() }}';
+			swal({
+			title: 'Resend invitation e-mail?',
+			text: "The user will be able to reset their password!",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, send it!'
+		}).then((result) => {
+		  	if (result.value) { 
+		  		$.ajax({
+	                method: 'POST',
+	                url: "{{ route('dashboard.user.resend.invitation') }}",
+	                data: { 
+	                	user_id: user_id, 
+	                	_token: token
+	                }
+	            })
+	            .done(function (data) {
+	            	if(data == 'success'){
+	            		swal(
+				      		'Sent!',
+				      		'A new invitation e-mail has been sent.',
+				      		'success'
+				    	)
+	            	} else {
+	            		swal(
+				      		'Oops!',
+				      		'Something went wrong sending the e-mail... Try again later!',
+				      		'danger'
+				    	)
+	            	}	                
+	            });
+		  	}
+		})
+	}
 	</script>
 @endsection
 
@@ -132,6 +171,11 @@
 							    		@can('delete users')
 							    		<a href="#" onclick="deleteUser({{ $user->id }})" class="btn btn-danger btn-sm btn-rounded m-r-20 user_delete" data-id="{{ $user->id }}">
 							    			<i data-feather="trash-2"></i> 
+							    		</a>
+							    		@endcan
+							    		@can('edit users')
+							    		<a href="#" onclick="resendInvitationUser({{ $user->id }})" class="btn btn-secondary btn-sm btn-rounded m-r-20 user_resend" data-id="{{ $user->id }}">
+							    			<i data-feather="refresh-ccw"></i> 
 							    		</a>
 							    		@endcan
 							    	</td>

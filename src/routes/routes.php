@@ -217,6 +217,7 @@ Route::group(['middleware' => ['web']], function() {
         });
 
         Route::group(['middleware' => ['permission:edit users']], function () {
+            Route::post('/dashboard/user/resend-invation', 'Chuckbe\Chuckcms\Controllers\UserController@resendInvitation')->name('dashboard.user.resend.invitation');
             Route::get('/dashboard/users/edit/{user}', 'Chuckbe\Chuckcms\Controllers\UserController@edit')->name('dashboard.users.edit');
         });
         

@@ -134,6 +134,39 @@ class UserController extends BaseController
         return view('chuckcms::backend.users.edit', compact('user', 'roles', 'permissions'));
     }
 
+    public function resendInvitation(Request $request)
+    {
+        $this->validate(request(), [
+            'user_id' => 'required',
+        ]);
+
+        // get the user
+        $user = $this->user->find($request->user_id);
+
+        $user->update([
+            'active' => 0,
+            'token' => $this->userRepository->createToken()
+        ]);
+
+        //send the email
+        $mailData = [];
+        $mailData['from'] = 'no-reply@chuckcms.com';
+        $mailData['from_name'] = 'No Reply | ChuckCMS';
+        $mailData['to'] = $user->email;
+        $mailData['to_name'] = $user->name;
+        $mailData['token'] = $user->token;
+        $mailData['user'] = \Auth::user();
+
+        $settings = ChuckSite::getSettings();
+
+        //dd($mailData);
+
+        Mail::send(new UserActivationMail($mailData, $settings));
+
+        //redirect back
+        return 'success';
+    }
+
     public function save(Request $request)
     {
         $this->validate(request(), [//@todo create custom Request class for page validation
