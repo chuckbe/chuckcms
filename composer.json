@@ -5,7 +5,7 @@
     "homepage": "https://github.com/chuckbe/chuckcms",
     "require": {
         "php": ">=7.2.0",
-        "laravel/framework": "~5.8||^6.0||^7.0",
+        "laravel/framework": "~5.8||^6.0||^7.0.*",
         "barryvdh/laravel-dompdf": "^0.8.1",
         "spatie/eloquent-sortable": "^3.7",
         "spatie/laravel-permission": "^3.4",
