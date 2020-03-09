@@ -94,6 +94,7 @@
 	            })
 	            .done(function (data) {
 	            	if(data == 'success'){
+	            		//@TODO:deactivate user > change icon
 	            		swal(
 				      		'Sent!',
 				      		'A new invitation e-mail has been sent.',

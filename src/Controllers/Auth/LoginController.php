@@ -42,7 +42,7 @@ class LoginController extends BaseController
 
     public function showLoginForm()
     {
-        return view('chuckcms::auth.login', compact('errors'));
+        return view('chuckcms::auth.login');
     }
 
     protected function validateLogin(\Illuminate\Http\Request $request)

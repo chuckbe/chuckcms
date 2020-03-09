@@ -95,7 +95,7 @@ class PageController extends BaseController
         $template = $this->template->where('active', 1)->where('type', 'admin')->first();
         $templates = $this->template->where('active', 1)->where('type', 'default')->get();
         $pageViews = $this->template->getPageViews();
-        return view('chuckcms::backend.pages.create', compact('template', 'templates', 'page', 'pageViews'));
+        return view('chuckcms::backend.pages.create', compact('template', 'templates', 'pageViews'));
     }
 
     /**

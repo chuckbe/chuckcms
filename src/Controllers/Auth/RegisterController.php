@@ -54,7 +54,7 @@ class RegisterController extends BaseController
 
     public function showRegistrationForm()
     {
-        return view('chuckcms::auth.register', compact('errors'));
+        return view('chuckcms::auth.register');
     }
 
     /**
