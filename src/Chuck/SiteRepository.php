@@ -10,8 +10,14 @@ class SiteRepository
     public static function updateOrCreateFromRequest($req)
     {
         $settings = [];
+        foreach ($req->get('company') as $cmpKey => $cmpValue) {
+            $settings['company'][$cmpKey] = $cmpValue;
+        }
         foreach ($req->get('socialmedia') as $smKey => $smValue) {
             $settings['socialmedia'][$smKey] = $smValue;
+        }
+        foreach ($req->get('favicon') as $faviKey => $faviValue) {
+            $settings['favicon'][$faviKey] = $faviValue;
         }
         foreach ($req->get('logo') as $logoKey => $logoValue) {
             $settings['logo'][$logoKey] = $logoValue;
@@ -20,7 +26,7 @@ class SiteRepository
             $settings['integrations'][$igsKey] = $igsValue;
         }
         $settings['lang'] = implode(",", $req->get('lang'));
-        $settings['domain'] = $req->get('site_domain'); //@todo remove domain from table only keep json
+        $settings['domain'] = $req->get('site_domain'); 
         
         // updateOrCreate the site
         $result = Site::updateOrCreate(

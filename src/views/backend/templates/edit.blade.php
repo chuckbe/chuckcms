@@ -82,7 +82,7 @@
                     <div class="col-sm-6">
                       <div class="form-group form-group-default required ">
                         <label>CSS File</label>
-                        <input type="text" class="form-control" placeholder="Veld Label" name="css_href[]" value="{{ $cssValue['href'] }}" required>
+                        <input type="text" class="form-control" placeholder="File" name="css_href[]" value="{{ $cssValue['href'] }}" required>
                       </div>
                     </div>
                     <div class="col-sm-2">
@@ -92,7 +92,7 @@
                         </div>
                         <div class="input-group-addon bg-transparent h-c-50">
                           <input type="hidden" name="css_asset[{{ $loop->index }}]" value="0">
-                          <input type="checkbox" data-init-plugin="switchery" data-size="small" data-color="primary" value="1" name="css_asset[{{ $loop->index }}]" @if($cssValue['asset'] == true) checked @endif />
+                          <input type="checkbox" data-init-plugin="switchery" data-size="small" data-color="primary" value="1" name="css_asset[{{ $loop->index }}]" @if($cssValue['asset'] == 'true') checked @endif />
                         </div>
                       </div>
                     </div>
@@ -119,14 +119,14 @@
                   <div class="row">
                     <div class="col-md-4">
                       <div class="form-group form-group-default required ">
-                        <label>CSS Slug</label>
-                        <input type="text" class="form-control" placeholder="CSS Slug" name="js_slug[]" value="{{ $jsKey }}" required>
+                        <label>JS Slug</label>
+                        <input type="text" class="form-control" placeholder="JS Slug" name="js_slug[]" value="{{ $jsKey }}" required>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group form-group-default required ">
-                        <label>CSS File</label>
-                        <input type="text" class="form-control" placeholder="Veld Label" name="js_href[]" value="{{ $jsValue['href'] }}" required>
+                        <label>JS File</label>
+                        <input type="text" class="form-control" placeholder="File" name="js_href[]" value="{{ $jsValue['href'] }}" required>
                       </div>
                     </div>
                     <div class="col-sm-2">
@@ -136,7 +136,7 @@
                         </div>
                         <div class="input-group-addon bg-transparent h-c-50">
                           <input type="hidden" name="js_asset[{{ $loop->index }}]" value="0">
-                          <input type="checkbox" data-init-plugin="switchery" data-size="small" data-color="primary" value="1" name="js_asset[{{ $loop->index }}]" @if($jsValue['asset'] == true) checked @endif />
+                          <input type="checkbox" data-init-plugin="switchery" data-size="small" data-color="primary" value="1" name="js_asset[{{ $loop->index }}]" @if($jsValue['asset'] == 'true') checked @endif />
                         </div>
                       </div>
                     </div>

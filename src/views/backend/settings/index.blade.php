@@ -35,7 +35,10 @@
           <!-- Nav tabs -->
           <ul class="nav nav-tabs nav-tabs-linetriangle" data-init-reponsive-tabs="dropdownfx">
             <li class="nav-item">
-              <a href="#" class="active" data-toggle="tab" data-target="#site_setup"><span>Site</span></a>
+              <a href="#" class="active" data-toggle="tab" data-target="#company_setup"><span>Bedrijf</span></a>
+            </li>
+            <li class="nav-item">
+              <a href="#" data-toggle="tab" data-target="#site_setup"><span>Site</span></a>
             </li>
             <li class="nav-item">
               <a href="#" data-toggle="tab" data-target="#social_setup"><span>Social Media</span></a>
@@ -44,7 +47,7 @@
               <a href="#" data-toggle="tab" data-target="#integrations_setup"><span>Integraties</span></a>
             </li>
             <li class="nav-item">
-              <a href="#" data-toggle="tab" data-target="#logo_setup"><span>Logo</span></a>
+              <a href="#" data-toggle="tab" data-target="#logo_setup"><span>Logo & Favicon</span></a>
             </li>
             <li class="nav-item">
               <a href="#" data-toggle="tab" data-target="#lang_setup"><span>Talen</span></a>
@@ -52,7 +55,66 @@
           </ul>
           <!-- Tab panes -->
           <div class="tab-content">
-            <div class="tab-pane fade show active" id="site_setup">
+            <div class="tab-pane fade show active" id="company_setup">
+              <div class="row column-seperation">
+                <div class="col-md-6">
+                      <div class="form-group form-group-default required ">
+                        <label>Bedrijfsnaam *</label>
+                        <input type="text" class="form-control" placeholder="Bedrijfsnaam" name="company[name]" value="{{ array_key_exists('company', $site->settings) ? $site->settings['company']['name'] : '' }}" required>
+                      </div>
+                </div>
+                <div class="col-md-6">
+                      <div class="form-group form-group-default required ">
+                        <label>BTW-nummer *</label>
+                        <input type="text" class="form-control" placeholder="BTW-nummer" name="company[vat]" value="{{ array_key_exists('company', $site->settings) ? $site->settings['company']['vat'] : '' }}" required>
+                      </div>
+                </div>
+              </div>
+              <div class="row column-seperation">
+                <div class="col-md-8">
+                      <div class="form-group form-group-default required ">
+                        <label>Straat *</label>
+                        <input type="text" class="form-control" placeholder="Straat" name="company[street]" value="{{ array_key_exists('company', $site->settings) ? $site->settings['company']['street'] : '' }}" required>
+                      </div>
+                </div>
+                <div class="col-md-4">
+                      <div class="form-group form-group-default required ">
+                        <label>Huisn° *</label>
+                        <input type="text" class="form-control" placeholder="Huisn°" name="company[housenumber]" value="{{ array_key_exists('company', $site->settings) ? $site->settings['company']['housenumber'] : '' }}" required>
+                      </div>
+                </div>
+              </div>
+              <div class="row column-seperation">
+                <div class="col-md-5">
+                      <div class="form-group form-group-default required ">
+                        <label>Postcode *</label>
+                        <input type="text" class="form-control" placeholder="Postcode" name="company[postalcode]" value="{{ array_key_exists('company', $site->settings) ? $site->settings['company']['postalcode'] : '' }}" required>
+                      </div>
+                </div>
+                <div class="col-md-7">
+                      <div class="form-group form-group-default required ">
+                        <label>Gemeente *</label>
+                        <input type="text" class="form-control" placeholder="Gemeente" name="company[city]" value="{{ array_key_exists('company', $site->settings) ? $site->settings['company']['city'] : '' }}" required>
+                      </div>
+                </div>
+              </div>
+              <div class="row column-seperation">
+                <div class="col-md-6">
+                      <div class="form-group form-group-default required ">
+                        <label>E-mailadres *</label>
+                        <input type="email" class="form-control" placeholder="E-mailadres" name="company[email]" value="{{ array_key_exists('company', $site->settings) ? $site->settings['company']['email'] : '' }}" required>
+                      </div>
+                </div>
+                <div class="col-md-6">
+                      <div class="form-group form-group-default required ">
+                        <label>Telefoonnummer *</label>
+                        <input type="text" class="form-control" placeholder="Telefoonnummer" name="company[tel]" value="{{ array_key_exists('company', $site->settings) ? $site->settings['company']['tel'] : '' }}" required>
+                      </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="site_setup">
               <div class="row column-seperation">
                 <div class="col-lg-12">
                       <div class="form-group form-group-default required ">
@@ -115,6 +177,22 @@
             </div>
 
             <div class="tab-pane fade" id="logo_setup">
+              <div class="row">
+                <div class="col-lg-12">
+                      <div class="form-group form-group-default ">
+                        <label>Favicon</label>
+                        <div class="input-group">
+                          <span class="input-group-btn">
+                            <a id="lfm" data-input="thumbnail" data-preview="faviholder" class="btn btn-primary" style="color:#FFF">
+                              <i class="fa fa-picture-o"></i> Kies
+                            </a>
+                          </span>
+                          <input id="thumbnail" class="form-control" accept="image/x-png" type="text" name="favicon[href]" value="{{ array_key_exists('favicon', $site->settings) ? $site->settings['favicon']['href'] : '/chuckbe/chuckcms/favicon.ico' }}">
+                        </div>
+                        <img id="faviholder" src="{{ URL::to('/') }}{{ array_key_exists('favicon', $site->settings) ? $site->settings['favicon']['href'] : '/chuckbe/chuckcms/favicon.ico' }}" style="margin-top:15px;max-height:100px;">
+                      </div>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-lg-12">
                       <div class="form-group form-group-default ">

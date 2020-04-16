@@ -75,6 +75,14 @@ class GenerateSite extends Command
             }
         } else {
             $settings = [];
+            $settings['company']['name'] = 'ChuckCMS';
+            $settings['company']['vat'] = 'BE0000.000.000';
+            $settings['company']['street'] = 'Berlaarsestraat';
+            $settings['company']['housenumber'] = '10';
+            $settings['company']['postalcode'] = '2500';
+            $settings['company']['city'] = 'Lier';
+            $settings['company']['email'] = 'hello@chuck.be';
+            $settings['company']['tel'] = '0470 12 34 56';
             $settings['socialmedia']['facebook'] = 'https://facebook.com/chuckcmsmedia';
             $settings['socialmedia']['twitter'] = 'https://twitter.com/chuckcms';
             $settings['socialmedia']['pinterest'] = 'https://pinterest.com/chuckcms';
@@ -86,6 +94,7 @@ class GenerateSite extends Command
             $settings['socialmedia']['vimeo'] = 'https://vimeo.com/chuckcms';
             $settings['integrations']['ga-id'] = null;
             $settings['integrations']['g-site-verification'] = null;
+            $settings['favicon']['href'] = '/chuckbe/chuckcms/favicon.ico';
             $settings['logo']['href'] = '/chuckbe/chuckcms/chuckcms-logo.png';
             $settings['lang'] = 'nl,en';
             $settings['domain'] = $domain;
