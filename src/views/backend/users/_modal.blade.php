@@ -34,12 +34,15 @@
                 <div class="form-group form-group-default form-group-default-select2 required">
                   <label class="">Rechten</label>
                   <select class="full-width" name="role" data-placeholder="Selecteer Rechten" data-minimum-results-for-search="-1" data-init-plugin="select2" required>
-                      <option value="user">Gebruiker</option>
-                      <option value="moderator">Moderator</option>
-                      <option value="administrator">Administrator</option>
+                    @foreach($roles as $role)
+                      @if($role->name == 'super-admin')
                       @hasrole('super-admin')
-                        <option value="super-admin">Super Admin</option>
+                        <option value="{{ $role->name }}">{{ $role->name }}</option>
                       @endhasrole
+                      @else
+                      <option value="{{ $role->name }}">{{ $role->name }}</option>
+                      @endif
+                    @endforeach
                   </select>
                 </div>
               </div>

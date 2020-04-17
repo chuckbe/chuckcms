@@ -224,6 +224,23 @@ Route::group(['middleware' => ['web']], function() {
 		Route::group(['middleware' => ['permission:delete users']], function () {
             Route::post('/dashboard/user/delete', 'Chuckbe\Chuckcms\Controllers\UserController@delete')->name('dashboard.user.delete');
         });
+    // Dashboard Roles Routes...
+        Route::group(['middleware' => ['permission:show roles']], function () {
+            Route::get('/dashboard/users/roles', 'Chuckbe\Chuckcms\Controllers\UserRoleController@index')->name('dashboard.users.roles');
+        });
+
+        Route::group(['middleware' => ['permission:create roles']], function () {
+            Route::post('/dashboard/users/role/create', 'Chuckbe\Chuckcms\Controllers\UserRoleController@create')->name('dashboard.users.roles.create');
+        });
+
+        Route::group(['middleware' => ['permission:edit roles']], function () {
+            Route::get('/dashboard/users/role/edit/{role}', 'Chuckbe\Chuckcms\Controllers\UserRoleController@edit')->name('dashboard.users.roles.edit');
+            Route::post('/dashboard/users/role/save', 'Chuckbe\Chuckcms\Controllers\UserRoleController@save')->name('dashboard.users.roles.save');
+        });
+        
+        Route::group(['middleware' => ['permission:delete roles']], function () {
+            Route::post('/dashboard/users/role/delete', 'Chuckbe\Chuckcms\Controllers\UserRoleController@delete')->name('dashboard.users.roles.delete');
+        });
 
     // Dashboard Settings / Sites Routes...
         Route::group(['middleware' => ['permission:show settings']], function () {

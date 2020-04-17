@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends BaseController
 {
@@ -29,6 +30,10 @@ class LoginController extends BaseController
      * @var string
      */
     protected $redirectTo = '/dashboard';
+
+    protected function redirectTo() { 
+        return '/' . Auth::user()->roles()->first()->redirect;
+    }
 
     /**
      * Create a new controller instance.

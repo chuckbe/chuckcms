@@ -13,6 +13,8 @@ use Chuckbe\Chuckcms\Models\Site;
 use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\User;
 
+use Spatie\Permission\Models\Role;
+
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -82,7 +84,8 @@ class PageController extends BaseController
         $templates = $this->template->where('active', 1)->where('type', 'default')->get();
         $page = $this->page->getByIdWithBlocks($page_id);
         $pageViews = $this->template->getPageViews();
-        return view('chuckcms::backend.pages.edit', compact('templates', 'page', 'pageViews'));
+        $roles = Role::all();
+        return view('chuckcms::backend.pages.edit', compact('templates', 'page', 'pageViews', 'roles'));
     }
 
     /**

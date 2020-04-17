@@ -40,14 +40,30 @@
           </li>
 
           <li class="">
-            <a href="{{ route('dashboard.users') }}"><span class="title">Gebruikers</span></a>
+            <a href="javascript:;"><span class="title">Gebruikers</span>
+            <span class=" arrow"></span></a>
             <span class="icon-thumbnail"><i data-feather="users"></i></span>
+            <ul class="sub-menu">
+              @can('show users')
+              <li class="">
+                <a href="{{ route('dashboard.users') }}">Overzicht</a>
+                <span class="icon-thumbnail"><i data-feather="users"></i></span>
+              </li>
+              @endcan
+              @can('show roles')
+              <li class="">
+                <a href="{{ route('dashboard.users.roles') }}">Rollen & Rechten</a>
+                <span class="icon-thumbnail"><i data-feather="shield"></i></span>
+              </li>
+              @endcan
+            </ul>
           </li>
-
+          @can('show templates')
           <li class="">
             <a href="{{ route('dashboard.templates') }}"><span class="title">Templates</span></a>
             <span class="icon-thumbnail"><i data-feather="grid"></i></span>
           </li>
+          @endcan
 
           <li class="">
             <a href="{{ route('dashboard.forms') }}"><span class="title">Formulieren</span></a>

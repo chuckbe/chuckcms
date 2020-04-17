@@ -42,8 +42,9 @@ class UserController extends BaseController
     public function index()
     {
         $users = $this->user->get();
+        $roles = Role::all();
         
-        return view('chuckcms::backend.users.index', compact('users'));
+        return view('chuckcms::backend.users.index', compact('users', 'roles'));
     }
 
     public function invite(Request $request)

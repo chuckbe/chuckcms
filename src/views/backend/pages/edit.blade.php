@@ -134,6 +134,18 @@
                       </div>
                     </div>
                   </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="form-group form-group-default required ">
+                        <label>Pagina beperkt tot volgende gebruikersrollen</label>
+                        <select class="full-width" data-init-plugin="select2" multiple name="roles[]">
+                          @foreach($roles as $role)
+                            <option value="{{ $role->id }}" @if( in_array($role->id, explode('|', $page->roles)) ) selected @endif> {{ $role->name }}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+                  </div>
                   
                 </div>
               </div>

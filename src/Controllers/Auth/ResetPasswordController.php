@@ -30,6 +30,10 @@ class ResetPasswordController extends BaseController
      */
     protected $redirectTo = '/dashboard';
 
+    protected function redirectTo() { 
+        return '/' . Auth::user()->roles()->first()->redirect;
+    }
+
     /**
      * Create a new controller instance.
      *

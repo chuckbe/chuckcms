@@ -10,11 +10,15 @@ use Chuckbe\Chuckcms\Models\Redirect;
 use Chuckbe\Chuckcms\Models\Repeater;
 use Chuckbe\Chuckcms\Models\Template;
 
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Exceptions\UnauthorizedException;
+
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 
 class FrontEndController extends BaseController
 {
@@ -25,6 +29,7 @@ class FrontEndController extends BaseController
     private $pageBlockRepository;
     private $redirect;
     private $repeater;
+    private $role;
     private $template;
     /**
      * Create a new controller instance.
@@ -37,6 +42,7 @@ class FrontEndController extends BaseController
         PageBlockRepository $pageBlockRepository, 
         Redirect $redirect, 
         Repeater $repeater, 
+        Role $role, 
         Template $template)
     {
         $this->page = $page;
@@ -87,7 +93,29 @@ class FrontEndController extends BaseController
               abort(404);  
             } 
         }
-        
+
+        if($page->roles !== null) {
+            return $this->authorizedIndex($page);
+        }
+
+        return $this->getView($page);
+    }
+
+    public function authorizedIndex(Page $page)
+    {
+        if(!Auth::check()) {
+            return redirect()->guest('login');
+        }
+        $roles = Role::whereIn('id', explode('|', $page->roles))->select('name')->get()->toArray();
+        if(!Auth::user()->hasAnyRole($roles)) {
+            throw UnauthorizedException::forRoles($roles);
+        }
+
+        return $this->getView($page);
+    }
+
+    public function getView(Page $page)
+    {
         $ogpageblocks = $this->pageblock->getAllByPageId($page->id);
         $pageblocks = $this->pageBlockRepository->getRenderedByPageBlocks($ogpageblocks);
         

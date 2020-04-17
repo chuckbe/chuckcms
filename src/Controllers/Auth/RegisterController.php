@@ -34,6 +34,10 @@ class RegisterController extends BaseController
      */
     protected $redirectTo = '/dashboard';
 
+    protected function redirectTo() { 
+        return '/' . Auth::user()->roles()->first()->redirect;
+    }
+
     /**
      * User Repository.
      *
