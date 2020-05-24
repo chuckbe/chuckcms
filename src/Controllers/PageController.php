@@ -81,7 +81,7 @@ class PageController extends BaseController
      */
     public function edit($page_id)
     {
-        $templates = $this->template->where('active', 1)->where('type', 'default')->get();
+        $templates = $this->template->where('active', 1)->get();
         $page = $this->page->getByIdWithBlocks($page_id);
         $pageViews = $this->template->getPageViews();
         $roles = Role::all();
@@ -95,10 +95,9 @@ class PageController extends BaseController
      */
     public function create()
     {
-        $template = $this->template->where('active', 1)->where('type', 'admin')->first();
-        $templates = $this->template->where('active', 1)->where('type', 'default')->get();
+        $templates = $this->template->where('active', 1)->get();
         $pageViews = $this->template->getPageViews();
-        return view('chuckcms::backend.pages.create', compact('template', 'templates', 'pageViews'));
+        return view('chuckcms::backend.pages.create', compact('templates', 'pageViews'));
     }
 
     /**

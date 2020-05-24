@@ -60,9 +60,20 @@ class Template extends Eloquent
 
     public function getPageViews()
     {
-        $templates = $this->where('active', 1)->where('type', 'default')->get();
+        $templates = $this->where('active', 1)->get();
         $pageViews = [];
         foreach ($templates as $template) {
+            if (file_exists(base_path('packages/' . $template->path . '/src/views/templates/' . $template->slug))) {
+                $pageDir = array_slice(scandir(base_path('packages/' . $template->path . '/src/views/templates/' . $template->slug)), 2);
+                if (count($pageDir) > 0) {
+                    $pageViews[$template->slug]['hintpath'] = $template->hintpath;
+                    foreach ($pageDir as $pdKey => $pdValue) {
+                        if (strpos($pdValue, '.blade.php')) {
+                            $pageViews[$template->slug]['files'][] = str_replace('.blade.php', '', $pdValue);
+                        }    
+                    }
+                }
+            }
             if (file_exists(base_path('vendor/' . $template->path . '/src/views/templates/' . $template->slug))) {
                 $pageDir = array_slice(scandir(base_path('vendor/' . $template->path . '/src/views/templates/' . $template->slug)), 2);
                 if (count($pageDir) > 0) {

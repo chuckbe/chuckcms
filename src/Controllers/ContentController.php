@@ -27,6 +27,7 @@ class ContentController extends BaseController
     private $repeater;
     private $template;
     private $user;
+    
     /**
      * Create a new controller instance.
      *
