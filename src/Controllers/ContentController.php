@@ -104,6 +104,20 @@ class ContentController extends BaseController
         return view('chuckcms::backend.content.repeater.edit', compact('pageViews', 'repeater'));
     }
 
+    public function repeaterJson($slug)
+    {
+        $repeater = Content::where('slug', $slug)->first();
+
+        $filename = $repeater->slug.".json";
+        $handle = fopen($filename, 'w+');
+        fputs($handle, $repeater->toJson(JSON_PRETTY_PRINT));
+        fclose($handle);
+        $headers = array('Content-type'=> 'application/json');
+        return response()->download($filename,$filename,$headers)->deleteFileAfterSend();
+
+        //return view('chuckcms::backend.content.repeater.edit', compact('pageViews', 'repeater'));
+    }
+
     public function repeaterSave(Request $request)
     {
         //add validation / move to repository...
@@ -144,6 +158,57 @@ class ContentController extends BaseController
         );
         
         return redirect()->route('dashboard.content.repeaters');
+    }
+
+    public function repeaterImport(Request $request)
+    {
+        $this->validate(request(), [//@todo create custom Request class for page validation
+            'slug' => 'required',
+            'file' => 'required|file|mimetypes:application/json,application/octet-stream,text/plain'
+        ]);
+
+        $file_contents = file_get_contents($request->file('file'));
+
+        $new_slug = $request->get('slug');
+        $old_slug = json_decode($file_contents,true)['slug'];
+
+        $json_string = str_replace($old_slug, $new_slug, $file_contents);
+        $json_file_array = json_decode($json_string,true);
+
+        if ( !array_key_exists('type', $json_file_array) ) {
+            $notification = array('type' => 'error', 'message' => 'The "type" key was not present in the JSON file.');
+            return redirect()->route('dashboard.content.repeaters')->with('notification', $notification);
+        }
+
+        if ( !array_key_exists('content', $json_file_array) ) {
+            $notification = array('type' => 'error', 'message' => 'The "content" key was not present in the JSON file.');
+            return redirect()->route('dashboard.content.repeaters')->with('notification', $notification);
+        }
+
+        if ( !array_key_exists('fields', $json_file_array['content']) ) {
+            $notification = array('type' => 'error', 'message' => 'The "fields" key was not present in the JSON file.');
+            return redirect()->route('dashboard.content.repeaters')->with('notification', $notification);
+        }
+
+        if ( !array_key_exists('actions', $json_file_array['content']) ) {
+            $notification = array('type' => 'error', 'message' => 'The "actions" key was not present in the JSON file.');
+            return redirect()->route('dashboard.content.repeaters')->with('notification', $notification);
+        }
+
+        if ( !array_key_exists('files', $json_file_array['content']) ) {
+            $notification = array('type' => 'error', 'message' => 'The "files" key was not present in the JSON file.');
+            return redirect()->route('dashboard.content.repeaters')->with('notification', $notification);
+        }
+
+        Content::updateOrCreate(
+            ['id' => null],
+            ['slug' => $new_slug,
+            'type' => $json_file_array['type'],
+            'content' => $json_file_array['content']]
+        );
+
+        $notification = array('type' => 'success', 'message' => 'The JSON file was successfully imported.');
+        return redirect()->route('dashboard.content.repeaters')->with('notification', $notification);
     }
 
     public function repeaterEntriesIndex($slug)

@@ -173,11 +173,13 @@ Route::group(['middleware' => ['web']], function() {
     // Dashboard Content Repeaters Routes...		
         Route::group(['middleware' => ['permission:show repeaters']], function () {
             Route::get('/dashboard/content/repeaters', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterIndex')->name('dashboard.content.repeaters');
+            Route::get('/dashboard/content/repeaters/{slug}/json', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterJson')->name('dashboard.content.repeaters.json');
         });
 
         Route::group(['middleware' => ['permission:create repeaters']], function () {
             Route::get('/dashboard/content/repeaters/create', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterCreate')->name('dashboard.content.repeaters.create');
             Route::post('/dashboard/content/repeaters/save', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterSave')->name('dashboard.content.repeaters.save');
+            Route::post('/dashboard/content/repeaters/import', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterImport')->name('dashboard.content.repeaters.import');
         });
 
         Route::group(['middleware' => ['permission:edit repeaters']], function () {

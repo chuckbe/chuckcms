@@ -81,7 +81,7 @@
       <!-- END PAGE CONTENT WRAPPER -->
     </div>
     <!-- END PAGE CONTAINER -->
-    @include('chuckcms::backend.includes.quickview')
+    {{-- @include('chuckcms::backend.includes.quickview') --}}
     <!-- include('chuckcms::backend.includes.search') -->
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         {{ csrf_field() }}

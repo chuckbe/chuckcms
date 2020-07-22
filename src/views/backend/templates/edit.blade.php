@@ -43,7 +43,7 @@
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Fonts</label>
-                        <input type="text" class="form-control" placeholder="Fonts" name="template_fonts" value="{{ $template->fonts['raw'] }}" required>
+                        <input type="text" class="form-control" placeholder="Fonts" name="template_fonts" value="{{ array_key_exists('raw', $template) ? $template->fonts['raw'] : null }}" required>
                       </div>
                 </div>
               </div>

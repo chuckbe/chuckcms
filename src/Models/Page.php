@@ -109,7 +109,7 @@ class Page extends Eloquent implements Sortable
         $page->page = $values['page'];
         $page->active = $values['active'];
         $page->isHp = $values['isHp'];
-        $page->roles = count($values['roles']) > 0 ? implode('|', $values['roles']) : NULL;
+        $page->roles = count(is_array($values['roles']) ? $values['roles'] : array()) > 0 ? implode('|', $values['roles']) : NULL;
 
         $page->save();
     }

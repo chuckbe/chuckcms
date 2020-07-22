@@ -29,6 +29,11 @@
 @section('content')
 <div class=" container-fluid   container-fixed-lg">
     <div class="row">
+    	<div class="col-lg-12">
+    		<div class="text-right">
+    			<button data-target="#importRepeaterModal" data-toggle="modal" class="btn btn-success">Importeren</button>
+    		</div>
+    	</div>
 		<div class="col-lg-12">
 		<!-- START card -->
 			<div class="card card-transparent">
@@ -43,12 +48,13 @@
 				</div>
 				<div class="card-block">
 					<div class="table-responsive">
-						<table class="table table-hover table-condensed" id="condensedTable">
+						<table class="table table-hover table-condensed" id="condensedTable" data-table-count="12">
 						<thead>
 							<tr>
-								<th style="width:5%">ID</th>
-								<th style="width:35%">Slug</th>
-								<th style="width:60%">Actions</th>
+								<th style="width:10%">ID</th>
+								<th style="width:30%">Slug</th>
+								<th style="width:15%">Subpages?</th>
+								<th style="width:45%">Actions</th>
 							</tr>
 						</thead>
 							<tbody>
@@ -56,20 +62,32 @@
 								<tr>
 									<td class="v-align-middle">{{ $repeater->id }}</td>
 							    	<td class="v-align-middle">{{$repeater->slug}}</td>
+							    	<td class="v-align-middle">
+							    		@if($repeater->content['actions']['detail'] !== "false")
+											<span class="label label-inverse">Yes</span>
+							        	@else
+							        		<span class="label">No</span>
+							        	@endif 
+							    	</td>
 							    	<td class="v-align-middle semi-bold">
-							    		@can('edit repeaters')
-							    		<a href="{{ route('dashboard.content.repeaters.edit', ['slug' => $repeater->slug]) }}" class="btn btn-primary btn-sm btn-rounded m-r-20">
-							    			<i data-feather="edit-2"></i> edit
-							    		</a>
-							    		@endcan
 							    		@can('show repeaters entries')
 							    		<a href="{{ route('dashboard.content.repeaters.entries', ['slug' => $repeater->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
 							    			<i data-feather="clipboard"></i> entries
 							    		</a>
 							    		@endcan
+							    		@can('edit repeaters')
+							    		<a href="{{ route('dashboard.content.repeaters.edit', ['slug' => $repeater->slug]) }}" class="btn btn-primary btn-sm btn-rounded m-r-20">
+							    			<i data-feather="edit-2"></i> 
+							    		</a>
+							    		@endcan
 							    		@can('delete repeaters')
 							    		<a href="{{ route('dashboard.forms.delete', ['slug' => $repeater->slug]) }}" class="btn btn-danger btn-sm btn-rounded m-r-20">
-							    			<i data-feather="trash"></i> delete
+							    			<i data-feather="trash"></i> 
+							    		</a>
+							    		@endcan
+							    		@can('show repeaters')
+							    		<a href="{{ route('dashboard.content.repeaters.json', ['slug' => $repeater->slug]) }}" class="btn btn-warning btn-sm btn-rounded m-r-20">
+							    			<i data-feather="download"></i> 
 							    		</a>
 							    		@endcan
 							    	</td>
@@ -84,4 +102,5 @@
 		</div>
     </div>
 </div>
+@include('chuckcms::backend.content.repeater._import_modal')
 @endsection

@@ -144,8 +144,7 @@
             </button>
             <div class="dropdown-menu dropdown-menu-right profile-dropdown" role="menu">
               <a href="{{ route('dashboard.settings') }}" class="dropdown-item"><i class="pg-settings_small"></i> Instellingen</a>
-              <a href="https://cms.chuck.be/feedback" class="dropdown-item"><i class="pg-outdent"></i> Feedback</a>
-              <a href="https://cms.chuck.be/support" class="dropdown-item"><i class="pg-signals"></i> Help</a>
+              <a href="https://support.chuck.be" class="dropdown-item" target="_blank"><i class="pg-signals"></i> Help</a>
               <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="clearfix bg-master-lighter dropdown-item">
                 <span class="pull-left">Logout</span>
                 <span class="pull-right"><i class="pg-power"></i></span>
@@ -153,7 +152,7 @@
             </div>
           </div>
           <!-- END User Info-->
-          <a href="#" class="header-icon pg pg-alt_menu btn-link m-l-10 sm-no-margin d-inline-block" data-toggle="quickview" data-toggle-element="#quickview"></a>
+          {{-- <a href="#" class="header-icon pg pg-alt_menu btn-link m-l-10 sm-no-margin d-inline-block" data-toggle="quickview" data-toggle-element="#quickview"></a> --}}
         </div>
       </div>
       <!-- END TOP -->

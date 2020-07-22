@@ -24,6 +24,13 @@ class Content extends Eloquent
         'content' => 'array',
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = ['id', 'created_at', 'updated_at'];
+
     public function getBySlug($slug)
     {
         return $this->where('slug', $slug)->first();
