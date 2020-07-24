@@ -43,7 +43,7 @@
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Fonts</label>
-                        <input type="text" class="form-control" placeholder="Fonts" name="template_fonts" value="{{ array_key_exists('raw', $template) ? $template->fonts['raw'] : null }}" required>
+                        <input type="text" class="form-control" placeholder="Fonts" name="template_fonts" value="{{ array_key_exists('raw', $template->fonts) ? $template->fonts['raw'] : null }}" required>
                       </div>
                 </div>
               </div>
@@ -189,10 +189,17 @@
         $select.each(function(i,item){
           $(item).select2("destroy");
         });
+
+
       };
 
       function initSelect2(){
         $('.select2').select2();
+
+        var $switchery = $('[type=checkbox]');
+        $switchery.each(function(i,item){
+          new Switchery($(item));
+        });
       };
 
 
@@ -221,7 +228,7 @@
         }
       });
 
-      $('#add_extra_jsfield_btn').click(function(){
+      $('body').on('click', '#add_extra_jsfield_btn', function(){
         destroySelect2();
         $('.js_field_row_container:first').clone().appendTo('.js_field_container_wrapper');
         if($('.js_field_row_container').length > 1){

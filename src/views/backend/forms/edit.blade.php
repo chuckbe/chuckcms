@@ -41,8 +41,7 @@
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Slug</label>
-                        <input type="text" class="form-control" placeholder="Slug" id="form_slug" name="form_slug" value="{{ $form->slug }}" required disabled>
-                        <input type="hidden" class="form-control" placeholder="Slug" id="form_slug" name="form_slug" value="{{ $form->slug }}" required>
+                        <input type="text" class="form-control" placeholder="Slug" id="form_slug" name="form_slug" value="{{ $form->slug }}" required readonly>
                       </div>
                       <div class="form-group form-group-default required ">
                         <label>Bestanden toegestaan</label>
@@ -55,28 +54,40 @@
               </div>
             </div>
 
+            
+
             <div class="tab-pane fade" id="ffields">
-              <div class="field_container_wrapper">
+              <div class="field_container_wrapper ui-state-default" id="field_container_wrapper">
               @foreach($form->form['fields'] as $fKey => $fValue)
               <div class="row field-input-group field_row_container">
-                <div class="col-lg-12">
-                  <div class="row">
-                    <div class="col-md-4">
+                <div class="col-lg-12 well" type="button" data-toggle="collapse" data-target="#{{ $fKey }}" aria-expanded="false" aria-controls="{{ $fKey }}">
+                  <h4 class="card-title form_well_title" style="margin-left:1.5rem;"><span class="form_well_title_label">{{ $fValue['label'] }}</span> (<span class="form_slug_text_label">{{ $form->slug }}_</span><span class="form_well_title_slug">{{ str_replace($form->slug . '_', '', $fKey) }}</span>) <span class="form_well_title_type label label-inverse">{{ $fValue['type'] }}</span> <span class="label label-danger pull-right form_well_remove_btn" style="margin:10px 10px auto auto"><i class="fa fa-trash"></i></span></h4>
+                </div>
+
+                <div class="col-lg-12 collapse" id="{{ $fKey }}">
+                  <div class="row" style="margin-top:1.5rem;">
+                    {{-- <div class="col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Slug</label>
-                        <input type="text" class="form-control" placeholder="Veld Slug" id="fields_slug" name="fields_slug[]" value="{{ str_replace($form->slug . '_', '', $fKey) }}" required>
+                        <input type="text" class="form-control fields_slug" placeholder="Veld Slug" name="fields_slug[]" value="{{ str_replace($form->slug . '_', '', $fKey) }}" readonly required>
                       </div>
-                    </div>
+                    </div> --}}
+
+
                     <div class="col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Label</label>
-                        <input type="text" class="form-control" placeholder="Veld Label" id="fields_label" name="fields_label[]" value="{{ $fValue['label'] }}" required>
+                        <input type="text" class="form-control fields_label" placeholder="Veld Label" name="fields_label[]" value="{{ $fValue['label'] }}" required>
                       </div>
                     </div>
-                    <div class="col-md-4">
+
+                    <input type="hidden" class="fields_slug" placeholder="Veld Slug" name="fields_slug[]" value="{{ str_replace($form->slug . '_', '', $fKey) }}" readonly required>
+                    <input type="hidden" class="fields_type" name="fields_type[]" value="{{ $fValue['type'] }}" readonly required>
+
+                    {{-- <div class="col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Type</label>
-                        <select class="full-width select2" data-init-plugin="select2" id="fields_type" name="fields_type[]" data-minimum-results-for-search="-1" required>
+                        <select class="full-width select2 fields_type" data-init-plugin="select2" name="fields_type[]" data-minimum-results-for-search="-1" required>
                           <option value="text" @if($fValue['type'] == 'text') selected @endif>Text</option>
                           <option value="email" >E-mail</option>
                           <option value="password" @if($fValue['type'] == 'password') selected @endif>Password</option>
@@ -88,9 +99,8 @@
                           <option value="datetime" @if($fValue['type'] == 'datetime') selected @endif>Datetime picker</option>
                         </select>
                       </div>
-                    </div>
-                  </div>
-                  <div class="row">
+                    </div> --}}
+
                     <div class="col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Class</label>
@@ -103,27 +113,31 @@
                         <input type="text" class="form-control" placeholder="Ouder Veld Class" id="fields_parentclass" name="fields_parentclass[]" value="{{ array_key_exists('parentclass', $fValue) ? $fValue['parentclass'] : '' }}" >
                       </div>
                     </div>
+
+                  </div>
+                  <div class="row">
+                    
                     <div class="col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Placeholder</label>
                         <input type="text" class="form-control" placeholder="Veld Placeholder" id="fields_placeholder" name="fields_placeholder[]" value="{{ $fValue['placeholder'] }}" required>
                       </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group form-group-default required ">
-                        <label>Veld Validatie</label>
-                        <input type="text" class="form-control" placeholder="Veld validatie" id="fields_validation" name="fields_validation[]" value="{{ $fValue['validation'] }}" required>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                       <div class="form-group form-group-default">
                         <label>Veld Waarde</label>
                         <input type="text" class="form-control" placeholder="waarde van veld" id="fields_value" name="fields_value[]" value="{{ $fValue['value'] ? $fValue['value'] : '' }}">
                       </div>
                     </div>
+                    <div class="col-md-4">
+                      <div class="form-group form-group-default required ">
+                        <label>Veld Validatie</label>
+                        <input type="text" class="form-control" placeholder="Veld validatie" id="fields_validation" name="fields_validation[]" value="{{ $fValue['validation'] }}" required>
+                      </div>
+                    </div>
                   </div>
+                  {{-- <div class="row">
+                  </div> --}}
                   <div class="row">
                     <div class="col-sm-6">
                       <div class="form-group form-group-default required">
@@ -136,12 +150,7 @@
                         <label>Veld Attribute Waarde</label>
                         <input type="text" class="form-control" placeholder="Veld Attribute Waarde" id="fields_attributes_value" name="fields_attributes_value[]" value="@foreach($fValue['attributes'] as $attrKey => $attrValue){{$attrValue}}@if($loop->iteration > 1);@endif @endforeach" required>
                       </div>
-                    </div>{{-- 
-                    <div class="col-md-2">
-                      <div class="form-group form-group-default">
-                        <button class="btn btn-primary" id="add_field_attribute_btn"><i class="fa fa-plus"></i></button>
-                      </div>
-                    </div> --}}
+                    </div>
                   </div>
                   <div class="form-group form-group-default">
                     <label>Verplicht veld</label>
@@ -151,17 +160,48 @@
                     </select>
                   </div>
                 </div>
+                <div class="col-lg-12">
+                  <hr>
+                </div>
               </div>
-              <hr>
               @endforeach
               </div>
+
+
+
+
               <div class="row">
-                <div class="col-lg-6">
-                  <button class="btn btn-primary btn-lg" type="button" id="add_extra_field_btn"><i class="fa fa-plus"></i> Extra veld toevoegen</button>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <select class="full-width select2" data-init-plugin="select2" id="new_form_element_type" placeholder="Select a type for a new field" data-minimum-results-for-search="-1" required>
+                      <option value="text" @if($fValue['type'] == 'text') selected @endif>Text</option>
+                      <option value="email" >E-mail</option>
+                      <option value="password" @if($fValue['type'] == 'password') selected @endif>Password</option>
+                      <option value="file" @if($fValue['type'] == 'file') selected @endif>File</option>
+                      <option value="textarea" @if($fValue['type'] == 'textarea') selected @endif>Textarea</option>
+                      <option value="select2" @if($fValue['type'] == 'select2') selected @endif>Select2 (single)</option>
+                      <option value="multiselect2" @if($fValue['type'] == 'multiselect2') selected @endif>Select2 (multiple)</option>
+                      <option value="date" @if($fValue['type'] == 'date') selected @endif>Datepicker</option>
+                      <option value="datetime" @if($fValue['type'] == 'datetime') selected @endif>Datetime picker</option>
+                    </select>
+                  </div>
                 </div>
-                <div class="col-lg-6">
-                  <button class="btn btn-warning btn-lg" type="button" id="remove_last_field_btn" @if(count($form->form['fields']) == 1) style="display:none;" @endif><i class="fa fa-minus"></i> Laatste veld verwijderen</button>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Label for new field" id="new_form_element_label">
+                  </div>
                 </div>
+                <div class="col-md-6">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Slug for new field" id="new_form_element_slug">
+                    
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="button" id="add_extra_field_btn"><i class="fa fa-plus"></i> Veld toevoegen</button>
+                    </div>
+                  </div>
+                  <small class="text-danger add_extra_field_warning" style="display:none;">Enter a slug to add a field!</small>
+                </div>
+
               </div>
             </div>
 
@@ -330,7 +370,7 @@
                   <button class="btn btn-primary btn-lg" id="add_extra_action_btn" @if($form->form['actions']['send'] == 'false') style="display:none;" @endif><i class="fa fa-plus"></i> Extra actie toevoegen</button>
                 </div>
                 <div class="col-lg-6">
-                  <button class="btn btn-warning btn-lg" id="remove_last_action_btn" @if(count($form->form['actions']['send']) == 1) style="display:none;" @endif><i class="fa fa-minus"></i> Laatste actie verwijderen</button>
+                  <button class="btn btn-warning btn-lg" id="remove_last_action_btn" @if(is_array($form->form['actions']['send']) && count($form->form['actions']['send']) == 1) style="display:none;" @endif><i class="fa fa-minus"></i> Laatste actie verwijderen</button>
                 </div>
               </div>
 
@@ -392,78 +432,106 @@
 
 @section('scripts')
 	
-	<script>
-		$( document ).ready(function() { 
-      function destroySelect2(){
-        var $select = $('.select2').select2();
-        $select.each(function(i,item){
-          $(item).select2("destroy");
-        });
-      };
+<script>
+$( document ).ready(function() { 
+  function destroySelect2(){
+    var $select = $('.select2').select2();
+    $select.each(function(i,item){
+      $(item).select2("destroy");
+    });
+  };
 
-      function initSelect2(){
-        $('.select2').select2();
-      };
+  function initSelect2(){
+    $('.select2').select2();
+  };
 
+  $( "#field_container_wrapper" ).sortable({
+    revert: true
+  });
+  
+  $('body').on('click', '.form_well_remove_btn', function() {
+    if($('.field_row_container').length > 1) {
+      $(this).closest('.field_row_container').remove();
+    }
+  }); 
 
-			$("#page_title").keyup(function(){
-			    var text = $(this).val();
-			    slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
-			    $("#page_slug").val(slug_text);
-          $("#page_slug_hidden").val(slug_text);    
-			});
+  $("#new_form_element_slug").keyup(function(){
+      var text = $(this).val();
+      slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
+      $("#new_form_element_slug").val(slug_text);
+  });
 
-      $('#add_extra_field_btn').click(function(){
-        destroySelect2();
-        $('.field_row_container:first').clone().appendTo('.field_container_wrapper');
-        if($('.field_row_container').length > 1){
-          $('#remove_last_field_btn').show();
-        }
-        initSelect2();
-      });
+  $('body').on('keyup', ".fields_label", function(){
+      var text = $(this).val();
+      $(this).closest('.field_row_container').find('.form_well_title_label').text(text);
+  });
 
-      $('#remove_last_field_btn').click(function(){
-        if($('.field_row_container').length > 1){
-          $('.field_row_container:last').remove();
-          if($('.field_row_container').length == 1){
-            $('#remove_last_field_btn').hide();
-          }
-        }
-      });
+  $('body').on('click', '#add_extra_field_btn', function(){
+    $('.add_extra_field_warning').hide();
+    if($('#new_form_element_slug').val().length == 0 && $('#new_form_element_label').val().length == 0) {
+      $('.add_extra_field_warning').show();
+      return;
+    }
 
-      $('select[name=action_send]').change(function(){
-        if($('select[name=action_send]').val() == 'true'){
-          $('.submissions_container_wrapper').show();
-          $('#add_extra_action_btn').show();
-          if($('.submissions_container_row').length > 1){
-            $('#remove_last_action_btn').show();
-          }
-        }
+    
+    //duplicate the field row
+    destroySelect2();
+    $('.field_row_container:first').clone().appendTo('.field_container_wrapper');
+    
+    new_key_id = 'field_'+($('.field_row_container').length);
+    $('.field_row_container:last').find('.well').attr('data-target', '#'+new_key_id);
+    $('.field_row_container:last').find('.collapse').attr('id', new_key_id);
 
-        if($('select[name=action_send]').val() == 'false'){
-          $('.submissions_container_wrapper').hide();
-          $('#add_extra_action_btn').hide();
-          $('#remove_last_action_btn').hide();
-        }
-      });
-      
+    new_slug = $('#new_form_element_slug').val();
+    $('.field_row_container:last .collapse').find('.fields_slug').val(new_slug);
+    $('.field_row_container:last .well').find('.form_well_title_slug').text(new_slug);
 
-      $('#add_extra_action_btn').click(function(){
-        $('.submissions_container_row:first').clone().appendTo('.submissions_container_wrapper');
-        if($('.submissions_container_row').length > 1){
-          $('#remove_last_action_btn').show();
-        }
-      });
+    new_label = $('#new_form_element_label').val();
+    $('.field_row_container:last .collapse').find('.fields_label').val(new_label);
+    $('.field_row_container:last .well').find('.form_well_title_label').text(new_label);
 
-      $('#remove_last_action_btn').click(function(){
-        if($('.submissions_container_row').length > 1){
-          $('.submissions_container_row:last').remove();
-          if($('.submissions_container_row').length == 1){
-            $('#remove_last_action_btn').hide();
-          }
-        }
-      });
+    new_type = $('#new_form_element_type').val();    
+    $('.field_row_container:last .collapse').find('.fields_type').val(new_type);
+    $('.field_row_container:last .well').find('.form_well_title_type').text(new_type);
 
-		});
-	</script>
+    initSelect2();
+    $('#new_form_element_slug').val('');//reset new field slug input
+    $('#new_form_element_label').val('');//reset new field slug input
+  });
+
+  $('select[name=action_send]').change(function(){
+    if($('select[name=action_send]').val() == 'true'){
+      $('.submissions_container_wrapper').show();
+      $('#add_extra_action_btn').show();
+      if($('.submissions_container_row').length > 1){
+        $('#remove_last_action_btn').show();
+      }
+    }
+
+    if($('select[name=action_send]').val() == 'false'){
+      $('.submissions_container_wrapper').hide();
+      $('#add_extra_action_btn').hide();
+      $('#remove_last_action_btn').hide();
+    }
+  });
+  
+
+  $('#add_extra_action_btn').click(function(){
+    $('.submissions_container_row:first').clone().appendTo('.submissions_container_wrapper');
+    if($('.submissions_container_row').length > 1){
+      $('#remove_last_action_btn').show();
+    }
+  });
+
+  $('#remove_last_action_btn').click(function(){
+    if($('.submissions_container_row').length > 1){
+      $('.submissions_container_row:last').remove();
+      if($('.submissions_container_row').length == 1){
+        $('#remove_last_action_btn').hide();
+      }
+    }
+  });
+
+});
+</script>
 @endsection
