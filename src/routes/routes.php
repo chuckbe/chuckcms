@@ -119,7 +119,7 @@ Route::group(['middleware' => ['web']], function() {
         });
 
         Route::group(['middleware' => ['permission:create forms']], function () {
-            Route::get('/dashboard/forms/create', 'Chuckbe\Chuckcms\Controllers\FormController@create')->name('dashboard.forms.create');
+            Route::post('/dashboard/forms/create', 'Chuckbe\Chuckcms\Controllers\FormController@create')->name('dashboard.forms.create');
             Route::post('/dashboard/forms/save', 'Chuckbe\Chuckcms\Controllers\FormController@save')->name('dashboard.forms.save');
         });
 		

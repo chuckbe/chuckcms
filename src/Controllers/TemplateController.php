@@ -54,7 +54,7 @@ class TemplateController extends BaseController
     {
         $template = $this->template->where('active', 1)->where('slug', $slug)->first();
         
-        return view('chuckcms::backend.templates.edit', compact('template'));
+        return view('chuckcms::backend.templates.edit.index', compact('template'));
     }
 
     /**

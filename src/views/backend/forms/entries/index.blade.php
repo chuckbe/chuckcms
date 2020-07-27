@@ -37,7 +37,7 @@
 				</div>
 				<div class="card-block">
 					<div class="table-responsive">
-						<table class="table table-hover table-condensed" id="condensedTable">
+						<table class="table table-hover table-condensed" id="condensedTable" data-table-count="{{ count($entry->entry) }}">
 						<thead>
 							<tr>
 								<th style="width:5%">ID</th>
@@ -50,7 +50,12 @@
 								<tr>
 									<td class="v-align-middle">{{ $loop->iteration }}</td>
 									<td class="v-align-middle">{{ $entryKey }}</td>
-							    	<td class="v-align-middle semi-bold">{{ $entryValue }}</td>
+							    	<td class="v-align-middle semi-bold">
+							    		@if(is_array($entryValue))
+                  						{!! implode('<br>', $entryValue) !!}
+                  						@else
+                  						{{ $entryValue }}@endif
+							    	</td>
 							  	</tr>
 							  	@endforeach
 							</tbody>

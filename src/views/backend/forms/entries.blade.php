@@ -108,7 +108,12 @@ $.fn.dataTable.ext.errMode = 'none';
 			                          				@foreach($entry->entry as $entryKey => $entryValue)
 			                          				<tr>
 			                          					<td>{{ $entryKey }}</td>
-			                          					<td>{{ $entryValue }}</td>
+			                          					<td>
+			                          						@if(is_array($entryValue))
+			                          						{!! implode('<br>', $entryValue) !!}
+			                          						@else
+			                          						{{ $entryValue }}@endif
+			                          					</td>
 			                          				</tr>
 			                          				@endforeach
 			                          			</tbody>

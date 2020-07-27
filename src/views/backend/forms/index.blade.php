@@ -5,9 +5,10 @@
 @endsection
 
 @section('add_record')
-	@can('create forms')
-	<a href="{{ route('dashboard.forms.create') }}" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuw Formulier Toe</a>
-	@endcan
+@can('create forms')
+{{-- <a href="{{ route('dashboard.forms.create') }}" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuw Formulier Toe</a> --}}
+<a href="#" data-target="#createFormModal" data-toggle="modal" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuw Formulier Toe</a>
+@endcan
 @endsection
 
 @section('css')
@@ -26,6 +27,16 @@
     <script src="https://cdn.chuck.be/assets/js/tables.js" type="text/javascript"></script>
     <script src="https://cdn.chuck.be/assets/plugins/sweetalert2.all.js"></script>
     <script>
+    $(document).ready(function() {
+
+    	$(".no-special-but-hyphens").keyup(function(){
+		    var text = $(this).val();
+		    slug_text = text.toLowerCase().replace(/[^A-Za-z-]/g, "").replace(/ +/g,'-');
+		    $(this).val(slug_text);  
+		});
+
+    });
+
     $( document ).ready(function (){
     	$('.form_delete').each(function(){
 			var form_id = $(this).attr("data-id");
@@ -138,4 +149,8 @@
 		</div>
     </div>
 </div>
+
+@can('create forms')
+@include('chuckcms::backend.forms._create_modal')
+@endcan
 @endsection

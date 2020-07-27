@@ -42,7 +42,7 @@ class Form extends Eloquent
 
     public function storeEntry($input)
     {
-        if ($this->form['actions']['store'] == 'true') {
+        if ($this->form['actions']['store'] == 'true' || $this->form['actions']['store'] == true) {
             $entry = new FormEntry();
             $entry->slug = $input->get('_form_slug');
             $json = [];

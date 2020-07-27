@@ -46,8 +46,8 @@
                       <div class="form-group form-group-default required ">
                         <label>Bestanden toegestaan</label>
                         <select class="full-width select2" data-init-plugin="select2" name="files_allowed" data-minimum-results-for-search="-1">
-            							<option value="true" @if($form->form['files'] == 'true') selected @endif>Ja</option>
-            							<option value="false" @if($form->form['files'] !== 'true') selected @endif>Nee</option>
+            							<option value="true" @if($form->form['files'] == 'true' || $form->form['files'] == true) selected @endif>Ja</option>
+            							<option value="false" @if($form->form['files'] !== 'true' || $form->form['files'] !== true) selected @endif>Nee</option>
             						</select>
                       </div>
                 </div>
@@ -174,15 +174,16 @@
                 <div class="col-md-3">
                   <div class="form-group">
                     <select class="full-width select2" data-init-plugin="select2" id="new_form_element_type" placeholder="Select a type for a new field" data-minimum-results-for-search="-1" required>
-                      <option value="text" @if($fValue['type'] == 'text') selected @endif>Text</option>
+                      <option value="text">Text</option>
                       <option value="email" >E-mail</option>
-                      <option value="password" @if($fValue['type'] == 'password') selected @endif>Password</option>
-                      <option value="file" @if($fValue['type'] == 'file') selected @endif>File</option>
-                      <option value="textarea" @if($fValue['type'] == 'textarea') selected @endif>Textarea</option>
-                      <option value="select2" @if($fValue['type'] == 'select2') selected @endif>Select2 (single)</option>
-                      <option value="multiselect2" @if($fValue['type'] == 'multiselect2') selected @endif>Select2 (multiple)</option>
-                      <option value="date" @if($fValue['type'] == 'date') selected @endif>Datepicker</option>
-                      <option value="datetime" @if($fValue['type'] == 'datetime') selected @endif>Datetime picker</option>
+                      <option value="checkbox" >Checkbox (single)</option>
+                      <option value="password">Password</option>
+                      <option value="file">File</option>
+                      <option value="textarea">Textarea</option>
+                      <option value="select2">Select2 (single)</option>
+                      <option value="multiselect2">Select2 (multiple)</option>
+                      <option value="date">Datepicker</option>
+                      <option value="datetime">Datetime picker</option>
                     </select>
                   </div>
                 </div>
@@ -228,7 +229,7 @@
               </div>
 
               <div class="submissions_container_wrapper" @if($form->form['actions']['send'] == false) style="display:none;" @endif>
-                @if($form->form['actions']['send'] !== false)
+                @if($form->form['actions']['send'] !== false && (is_array($form->form['actions']['send']) && count($form->form['actions']['send']) > 0 ))
                 @foreach($form->form['actions']['send'] as $sendKey => $sendValue)
                 <div class="row submissions_container_row">
                   <div class="col-lg-12">
@@ -298,19 +299,19 @@
                 @else
                 <div class="row submissions_container_row">
                   <div class="col-lg-12">
-                        <div class="form-group form-group-default required ">
+                        <div class="form-group form-group-default required">
                           <label>Slug</label>
                           <input type="text" class="form-control" placeholder="slug" id="action_send_slug" name="action_send_slug[]">
                         </div>
                         <div class="row">
                           <div class="col-md-6">
-                            <div class="form-group form-group-default required ">
+                            <div class="form-group form-group-default required">
                               <label>E-mailadres geaddresseerde</label>
                               <input type="text" class="form-control" placeholder="E-mailadres Geaddresseerde" id="action_send_to" name="action_send_to[]">
                             </div>
                           </div>
                           <div class="col-md-6">
-                            <div class="form-group form-group-default required ">
+                            <div class="form-group form-group-default required">
                               <label>Naam geaddresseerde</label>
                               <input type="text" class="form-control" placeholder="Naam Geaddresseerde" id="action_send_to_name" name="action_send_to_name[]">
                             </div>
@@ -319,24 +320,24 @@
                         
                         <div class="row">
                           <div class="col-md-6">
-                            <div class="form-group form-group-default required ">
+                            <div class="form-group form-group-default required">
                               <label>E-mailadres afzender</label>
                               <input type="text" class="form-control" placeholder="E-mailadres Afzender" id="action_send_from" name="action_send_from[]">
                             </div>
                           </div>
                           <div class="col-md-6">
-                            <div class="form-group form-group-default required ">
+                            <div class="form-group form-group-default required">
                               <label>Naam afzender</label>
                               <input type="text" class="form-control" placeholder="Naam Afzender" id="action_send_from_name" name="action_send_from_name[]">
                             </div>
                           </div>
                         </div>
                         
-                        <div class="form-group form-group-default required ">
+                        <div class="form-group form-group-default required">
                           <label>Onderwerp</label>
                           <input type="text" class="form-control" placeholder="Onderwerp" id="action_send_subject" name="action_send_subject[]">
                         </div>
-                        <div class="form-group form-group-default required ">
+                        <div class="form-group form-group-default required">
                           <label>Body</label>
                           <textarea id="meta_keywords" name="action_send_body[]" placeholder="Hier gaat je bericht in" style="min-height:210px!important;" class="form-control"></textarea>
                         </div>
@@ -347,7 +348,7 @@
                             <option value="false" selected>Nee</option>
                           </select>
                         </div>
-                        <div class="form-group form-group-default required">
+                        <div class="form-group form-group-default">
                           <label>E-mail template</label>
                           <select class="full-width select2" data-init-plugin="select2" name="action_send_template[]" data-minimum-results-for-search="-1">
                             @foreach($emailTemplates as $template => $emails)
@@ -367,10 +368,10 @@
 
               <div class="row">
                 <div class="col-lg-6">
-                  <button class="btn btn-primary btn-lg" id="add_extra_action_btn" @if($form->form['actions']['send'] == 'false') style="display:none;" @endif><i class="fa fa-plus"></i> Extra actie toevoegen</button>
+                  <button type="button" class="btn btn-primary btn-lg" id="add_extra_action_btn" @if($form->form['actions']['send'] == 'false') style="display:none;" @endif><i class="fa fa-plus"></i> Extra actie toevoegen</button>
                 </div>
                 <div class="col-lg-6">
-                  <button class="btn btn-warning btn-lg" id="remove_last_action_btn" @if(is_array($form->form['actions']['send']) && count($form->form['actions']['send']) == 1) style="display:none;" @endif><i class="fa fa-minus"></i> Laatste actie verwijderen</button>
+                  <button type="button" class="btn btn-warning btn-lg" id="remove_last_action_btn" @if(!is_array($form->form['actions']['send']) || (is_array($form->form['actions']['send']) && count($form->form['actions']['send']) == 1) ) style="display:none;" @endif><i class="fa fa-minus"></i> Laatste actie verwijderen</button>
                 </div>
               </div>
 

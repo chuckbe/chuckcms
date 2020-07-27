@@ -1,4 +1,4 @@
-<form id="ccms_form_{{ $form->slug }}" action="{{ route('forms.validate') }}" method="post" @if($form->form['files'] == 'true') enctype="multipart/form-data" @endif>
+<form id="ccms_form_{{ $form->slug }}" action="{{ route('forms.validate') }}" method="post" @if($form->form['files'] == 'true' || $form->form['files'] == true) enctype="multipart/form-data" @endif>
 	
 @foreach($form->form['fields'] as $keyName => $input)
 	<div class="form-group {{ array_key_exists('parentclass', $input) ? $input['parentclass'] : '' }}">
@@ -42,6 +42,14 @@
 		@if($input['type'] == 'datetime')
 			<label for="{{ $keyName }}">{{ $input['label'] }}</label>
 			<input type="text" class="form-control {{ $input['class'] }}" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-week-start="1" name="{{ $keyName }}" value="{{ old($keyName) ? old($keyName) : $input['value'] }}" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif> 
+		@endif
+
+		@if($input['type'] == 'checkbox')
+			<div class="checkbox">
+				<label for="{{ $keyName }}">
+					<input type="checkbox" class="{{ $input['class'] }}" name="{{ $keyName }}" value="{{ old($keyName) ? old($keyName) : $input['value'] }}" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif> {{ $input['label'] }}
+				</label>
+			</div>
 		@endif
 	</div>
 @endforeach
