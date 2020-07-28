@@ -28,18 +28,18 @@
                     <a href="{{ route('dashboard') }}" class="nav-link">Paginas</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Navigatie <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ route('dashboard.menus') }}">Menu's</a></li>
-                        <li><a href="{{ route('dashboard.redirects') }}">Redirects</a></li>
-                    </ul>
+                    <a href="#" class="nav-link dropdown-toggle" id="topMenuBContentLink" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Navigatie <span class="caret"></span></a>
+                    <div class="dropdown-menu" aria-labelledby="topMenuBContentLink">
+                        <a class="dropdown-item" href="{{ route('dashboard.menus') }}">Menu's</a>
+                        <a class="dropdown-item" href="{{ route('dashboard.redirects') }}">Redirects</a>
+                    </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gebruikers <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ route('dashboard.users') }}">Overzicht</a></li>
-                        <li><a href="{{ route('dashboard.users.roles') }}">Rollen & Rechten</a></li>
-                    </ul>
+                    <a href="#" class="nav-link dropdown-toggle" id="topMenuAContentLink" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Gebruikers <span class="caret"></span></a>
+                    <div class="dropdown-menu" aria-labelledby="topMenuAContentLink">
+                        <a class="dropdown-item" href="{{ route('dashboard.users') }}">Overzicht</a>
+                        <a class="dropdown-item" href="{{ route('dashboard.users.roles') }}">Rollen & Rechten</a>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('dashboard.templates') }}" class="nav-link">Templates</a>
