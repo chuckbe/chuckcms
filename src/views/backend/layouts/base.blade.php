@@ -19,6 +19,7 @@
 <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900" rel="stylesheet" type="text/css">
 <link href="https://cdn.chuck.be/chuckcms/bootstrap-4.5.0-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.chuck.be/chuckcms/css/dashboard.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.chuck.be/chuckcms/css/table.css" rel="stylesheet" type="text/css" />
 <link href="{{ URL::to('chuckbe/chuckcms/css/font-awesome/css/font-awesome.css') }}" rel="stylesheet" type="text/css" />
 
 @yield('css')
@@ -37,7 +38,12 @@
 <script src="https://cdn.chuck.be/chuckcms/jquery-ui-1.12.1/jquery-ui.min.js" type="text/javascript"></script>
 <script src="https://cdn.chuck.be/chuckcms/popper.js@1.16.0/popper.min.js" type="text/javascript"></script>
 <script src="https://cdn.chuck.be/chuckcms/bootstrap-4.5.0-dist/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
 <script src="https://cdn.chuck.be/chuckcms/js/dashboard.js" type="text/javascript"></script>
+<script src="https://cdn.chuck.be/chuckcms/js/table.js" type="text/javascript"></script>
+
 @yield('scripts')
 </body>
 </html>
