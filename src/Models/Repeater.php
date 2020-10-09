@@ -45,4 +45,15 @@ class Repeater extends Eloquent
 
         return $json;
     }
+
+    /**
+     * Dynamically retrieve attributes on the model.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        return $this->getAttribute($key) ?? $this->getJson($key);
+    }
 }

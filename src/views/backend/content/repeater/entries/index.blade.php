@@ -108,7 +108,14 @@
 										@if($rValue['table'] == 'true')
 										<td class="v-align-middle">
 											@if(array_key_exists(str_replace($content->slug . '_', '', $rKey), $repeater->json))
+											@if($rValue['type'] == 'select2' && strpos($rValue['value'], 'repeater:') !== false)
+											@php
+											$repeater_display = explode(':', $rValue['value'])[3];
+											@endphp
+											{{ ChuckRepeater::find($repeater->json[str_replace($content->slug . '_', '', $rKey)])->$repeater_display }}
+											@else
 											{{ $repeater->json[str_replace($content->slug . '_', '', $rKey)] }}
+											@endif
 											@endif
 										</td>
 										@endif
