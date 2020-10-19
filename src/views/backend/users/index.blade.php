@@ -11,7 +11,7 @@
 @endsection
 
 @section('css')
-	<link href="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+	{{-- <link href="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" /> --}}
     <link href="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.chuck.be/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
 @endsection
@@ -130,6 +130,11 @@
 						<a class="remove" href="javascript:;"></a>
 					</div>
 				    <div class="pull-right">
+						<div class="col-xs-12">
+							@can('create users')
+							<a href="#" data-target="#newUserModal" data-toggle="modal" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Gebruiker Toe</a>
+							@endcan
+						</div>
 				    	<div class="col-xs-12">
 				    		<input type="text" id="search-table" class="form-control pull-right" placeholder="Search">
 				    	</div>

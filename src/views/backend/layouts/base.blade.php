@@ -21,7 +21,87 @@
 <link href="https://cdn.chuck.be/chuckcms/css/dashboard.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.chuck.be/chuckcms/css/table.css" rel="stylesheet" type="text/css" />
 <link href="{{ URL::to('chuckbe/chuckcms/css/font-awesome/css/font-awesome.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ URL::to('chuckbe/chuckcms/css/pages-icons.css') }}" rel="stylesheet" type="text/css" />
+<style>
+.dataTables_wrapper .row {
+    width: 100%;
+}
+.dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_paginate {
+    margin-top: 25px !important;
+}
+.dataTables_wrapper .row > div {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-direction: row-reverse;
+}
+.dataTables_wrapper .dataTables_paginate {
+  float: right;
+}
+.dataTables_wrapper .dataTables_paginate ul > li.disabled a {
+  opacity: .5;
+}
+.dataTables_wrapper .dataTables_paginate ul > li > a {
+  padding: 5px 10px;
+  color: #7a8994;
+  opacity: .35;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+.dataTables_wrapper .dataTables_paginate ul > li > a:hover {
+  opacity: .65;
+}
+.dataTables_wrapper .dataTables_paginate ul > li.next > a,
+.dataTables_wrapper .dataTables_paginate ul > li.prev > a {
+  opacity: 1;
+}
+.dataTables_wrapper .dataTables_paginate ul > li.disabled a {
+  opacity: .35;
+}
+.dataTables_wrapper .dataTables_paginate ul > li.disabled a:hover {
+  opacity: .35;
+}
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+  margin-top: 25px !important;
+}
+.dataTables_paginate.paging_bootstrap.pagination {
+  padding-top: 0;
+  padding-right: 20px;
+}
+.dataTables_wrapper .dataTables_info {
+  clear: none;
+  font-size: 12px;
+  padding: 0 33px;
+  color: #7a8994;
+}
+.dataTables_wrapper .dataTables_paginate ul > li {
+  display: inline-block;
+  padding-left: 0;
+  font-size: 11px;
+}
+.dataTables_wrapper .dataTables_paginate ul > li.active > a {
+  font-weight: bold;
+  color: #7a8994;
+  opacity: 1;
+}
+/* Responsive Handlers : Tables */
+@media (max-width: 991px) {
+  .dataTables_paginate.paging_bootstrap.pagination {
+    float: right;
+  }
+}
+@media (max-width: 480px) {
+  .dataTables_wrapper .dataTables_info,
+  .dataTables_wrapper .dataTables_paginate {
+    float: none;
+    text-align: left;
+    clear: both;
+    display: block;
+  }
+}
 
+</style>  
 @yield('css')
 </head>
 <body class="light-version">

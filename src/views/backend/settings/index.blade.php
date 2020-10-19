@@ -31,25 +31,25 @@
               </ul>
           </div>
         @endif
-        <div class="card card-transparent">
+        <div class="card card-transparent p-3">
           <!-- Nav tabs -->
-          <ul class="nav nav-tabs nav-tabs-linetriangle" data-init-reponsive-tabs="dropdownfx">
-            <li class="nav-item">
+          <ul class="nav nav-tabs nav-tabs-linetriangle mb-3" data-init-reponsive-tabs="dropdownfx">
+            <li class="nav-item pr-3">
               <a href="#" class="active" data-toggle="tab" data-target="#company_setup"><span>Bedrijf</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item pr-3">
               <a href="#" data-toggle="tab" data-target="#site_setup"><span>Site</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item pr-3">
               <a href="#" data-toggle="tab" data-target="#social_setup"><span>Social Media</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item pr-3">
               <a href="#" data-toggle="tab" data-target="#integrations_setup"><span>Integraties</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item pr-3">
               <a href="#" data-toggle="tab" data-target="#logo_setup"><span>Logo & Favicon</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item pr-3">
               <a href="#" data-toggle="tab" data-target="#lang_setup"><span>Talen</span></a>
             </li>
           </ul>

@@ -12,7 +12,7 @@
 @endsection
 
 @section('css')
-	<link href="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+	{{-- <link href="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" /> --}}
     <link href="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.chuck.be/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
 @endsection
@@ -98,6 +98,11 @@
 			<div class="card card-transparent">
 				<div class="card-header ">
 					<div class="card-title">Formulieren</div>
+					@can('create forms')
+					<div class="pull-right hidden-lg-up">
+					<a href="#" data-target="#createFormModal" data-toggle="modal" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuw Formulier Toe</a>
+					</div>
+					@endcan
 					<div class="tools">
 						<a class="collapse" href="javascript:;"></a>
 						<a class="config" data-toggle="modal" href="#grid-config"></a>
