@@ -1,9 +1,9 @@
-@extends('chuckcms::backend.layouts.admin')
+@extends('chuckcms::backend.layouts.base')
 
 @section('content')
 <!-- START CONTAINER FLUID -->
 <div class=" container-fluid   container-fixed-lg">
-
+<div class="container p-3">
 <!-- START card -->
 <form action="{{ route('dashboard.content.resources.save') }}" method="POST">
 <div class="card card-transparent">
@@ -82,6 +82,7 @@
 </div>
 <!-- END card -->
 </form>
+</div>
 </div>
 <!-- END CONTAINER FLUID -->
 @endsection

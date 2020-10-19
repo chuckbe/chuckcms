@@ -1,4 +1,4 @@
-@extends('chuckcms::backend.layouts.admin')
+@extends('chuckcms::backend.layouts.base')
 
 @section('title')
 	Repeater | ChuckCMS
@@ -28,6 +28,7 @@
 
 @section('content')
 <div class=" container-fluid   container-fixed-lg">
+<div class="container p-3">
     <div class="row">
     	<div class="col-lg-12">
     		<div class="text-right">
@@ -101,6 +102,7 @@
 		<!-- END card -->
 		</div>
     </div>
+</div>
 </div>
 @include('chuckcms::backend.content.repeater._import_modal')
 @endsection

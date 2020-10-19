@@ -1,4 +1,4 @@
-@extends('chuckcms::backend.layouts.admin')
+@extends('chuckcms::backend.layouts.base')
 
 @section('title')
 	Redirects
@@ -54,12 +54,19 @@
 
 @section('content')
 <div class=" container-fluid   container-fixed-lg">
+<div class="container p-3">
     <div class="row">
 		<div class="col-lg-12">
 		<!-- START card -->
 			<div class="card card-transparent">
 				<div class="card-header ">
 					<div class="card-title">Redirects</div>
+					@can('create redirects')
+					<div class="pull-right hidden-lg-up">
+						<a href="#" data-target="#createRedirectModal" data-toggle="modal" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuwe Redirect Toe</a>
+						{{-- <a href="{{ route('dashboard.page.create') }}" class="btn btn-default btn-sm btn-rounded"> Nieuwe Pagina </a> --}}
+					</div>
+					@endcan
 					<div class="tools">
 						<a class="collapse" href="javascript:;"></a>
 						<a class="config" data-toggle="modal" href="#grid-config"></a>
@@ -111,6 +118,7 @@
 		<!-- END card -->
 		</div>
     </div>
+</div>
 </div>
 @can('create redirects')
 	@include('chuckcms::backend.redirects._create_modal')

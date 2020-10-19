@@ -1,4 +1,4 @@
-@extends('chuckcms::backend.layouts.admin')
+@extends('chuckcms::backend.layouts.base')
 
 @section('title')
 	Dashboard
@@ -11,7 +11,8 @@
 @endsection
 
 @section('content')
-<div class="card-block">
+<div class="container">
+<div class="card-block p-3">
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="card card-default">
@@ -31,7 +32,7 @@
 	</div>
 </div>
 
-<div class="card-block">
+<div class="card-block p-3">
 	<div class="row">
 		<div class="col-lg-6">
 			<div class="card card-default">
@@ -62,7 +63,7 @@
 	</div>
 </div>
 
-<div class="card-block">
+<div class="card-block p-3">
 	<div class="row">
 		<div class="col-lg-6">
 			<div class="card card-default">
@@ -91,6 +92,7 @@
 			</div>
 		</div>
 	</div>
+</div>
 </div>
 @endsection
 

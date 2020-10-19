@@ -1,4 +1,4 @@
-@extends('chuckcms::backend.layouts.admin')
+@extends('chuckcms::backend.layouts.base')
 
 @section('title')
 	Gebruikers
@@ -116,6 +116,7 @@
 
 @section('content')
 <div class=" container-fluid   container-fixed-lg">
+<div class="container p-3">
     <div class="row">
 		<div class="col-lg-12">
 		<!-- START card -->
@@ -190,6 +191,7 @@
 		<!-- END card -->
 		</div>
     </div>
+	</div>
 </div>
 
 

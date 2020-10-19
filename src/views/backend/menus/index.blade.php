@@ -1,4 +1,4 @@
-@extends('chuckcms::backend.layouts.admin')
+@extends('chuckcms::backend.layouts.base')
 
 @section('css')
     {{-- <link rel="stylesheet" href="{{ URL::to('css/jqtree.css') }}"> --}}
@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-<div class="container">
+<div class="container p-3">
     <div class="row">
         <div class="col-sm-12">
             <div class="panel panel-default">
