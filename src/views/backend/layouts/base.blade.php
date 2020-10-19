@@ -121,9 +121,13 @@
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 
+<script src="https://cdn.chuck.be/assets/plugins/feather-icons/feather.min.js" type="text/javascript"></script>
+
 <script src="https://cdn.chuck.be/chuckcms/js/dashboard.js" type="text/javascript"></script>
 <script src="https://cdn.chuck.be/chuckcms/js/table.js" type="text/javascript"></script>
-
+<script>
+feather.replace();
+</script>
 @yield('scripts')
 </body>
 </html>
