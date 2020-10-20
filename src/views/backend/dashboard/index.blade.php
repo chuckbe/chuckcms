@@ -16,7 +16,7 @@
     <div class="col-sm-12">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb mt-3">
-          <li class="breadcrumb-item active" aria-current="page">SITE DATA</li>
+          <li class="breadcrumb-item active" aria-current="Overzicht">SITE DATA</li>
         </ol>
       </nav>
       <div class="card-block">

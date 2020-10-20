@@ -12,9 +12,16 @@
 <div class="container p-3">
     <div class="row">
         <div class="col-sm-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mt-3">
+                    <li class="breadcrumb-item active" aria-current="Navigatie">Navigatie</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Navigatie</div>
-                
                 <div class="panel-body">
                     {!! ChuckMenu::render($pages) !!}
                 </div>
