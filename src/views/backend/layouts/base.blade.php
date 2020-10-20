@@ -20,75 +20,9 @@
 <link href="https://cdn.chuck.be/chuckcms/bootstrap-4.5.0-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.chuck.be/chuckcms/css/dashboard.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.chuck.be/chuckcms/css/table.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.chuck.be/chuckcms/css/Datatables.css" rel="stylesheet" type="text/css" />
 <link href="{{ URL::to('chuckbe/chuckcms/css/font-awesome/css/font-awesome.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ URL::to('chuckbe/chuckcms/css/pages-icons.css') }}" rel="stylesheet" type="text/css" />
-<style>
-.dataTables_wrapper .row {
-    width: 100%;
-}
-.dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_paginate {
-    margin-top: 25px !important;
-}
-.dataTables_wrapper .row > div {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    flex-direction: row-reverse;
-}
-.dataTables_wrapper .dataTables_paginate {
-  float: right;
-}
-.dataTables_wrapper .dataTables_paginate ul > li.disabled a {
-  opacity: .5;
-}
-.dataTables_wrapper .dataTables_paginate ul > li > a {
-  padding: 5px 10px;
-  color: #7a8994;
-}
-
-.dataTables_wrapper .dataTables_paginate ul > li.active > a {
-  color: #fff;
-  border-color: #6c757d;
-  background-color: #6c757d;
-  opacity: .35;
-}
-
-.dataTables_wrapper .dataTables_paginate ul > li.active:hover > a {
-  opacity: 1;
-}
-
-.dataTables_wrapper .dataTables_info,
-.dataTables_wrapper .dataTables_paginate {
-  margin-top: 25px !important;
-}
-.dataTables_paginate.paging_bootstrap.pagination {
-  padding-top: 0;
-  padding-right: 20px;
-}
-
-.dataTables_wrapper .dataTables_paginate ul > li {
-  display: inline-block;
-  padding-left: 0;
-  font-size: 11px;
-}
-
-/* Responsive Handlers : Tables */
-@media (max-width: 991px) {
-  .dataTables_paginate.paging_bootstrap.pagination {
-    float: right;
-  }
-}
-@media (max-width: 480px) {
-  .dataTables_wrapper .dataTables_info,
-  .dataTables_wrapper .dataTables_paginate {
-    float: none;
-    text-align: left;
-    clear: both;
-    display: block;
-  }
-}
-
-</style>  
+<link href="{{ URL::to('chuckbe/chuckcms/css/pages-icons.css') }}" rel="stylesheet" type="text/css" /> 
 @yield('css')
 </head>
 <body class="light-version">
