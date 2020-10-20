@@ -53,72 +53,67 @@
 @endsection
 
 @section('content')
-<div class=" container-fluid   container-fixed-lg">
 <div class="container p-3">
-    <div class="row">
-		<div class="col-lg-12">
-		<!-- START card -->
-			<div class="card card-transparent">
-				<div class="card-header ">
-					<div class="card-title">Redirects</div>
-					@can('create redirects')
-					<div class="pull-right hidden-lg-up">
-						<a href="#" data-target="#createRedirectModal" data-toggle="modal" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuwe Redirect Toe</a>
-						{{-- <a href="{{ route('dashboard.page.create') }}" class="btn btn-default btn-sm btn-rounded"> Nieuwe Pagina </a> --}}
-					</div>
-					@endcan
-					<div class="tools">
-						<a class="collapse" href="javascript:;"></a>
-						<a class="config" data-toggle="modal" href="#grid-config"></a>
-						<a class="reload" href="javascript:;"></a>
-						<a class="remove" href="javascript:;"></a>
-					</div>
-				</div>
-				<div class="card-block">
-					<div class="table-responsive">
-						<table class="table table-hover table-condensed" id="condensedTable" data-table-count="6">
-						<thead>
+	<div class="row">
+		<div class="col-sm-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mt-3">
+                    <li class="breadcrumb-item active" aria-current="Redirects">Redirects</li>
+                </ol>
+            </nav>
+        </div>
+	</div>
+	<div class="row bg-light shadow-sm rounded p-3 mb-3 mx-1">
+		@can('create redirects')
+			<div class="col-sm-12 text-right">
+    			<a href="#" data-target="#createRedirectModal" data-toggle="modal" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuwe Redirect Toe</a>
+			</div>
+		@endcan
+		<div class="tools">
+			<a class="collapse" href="javascript:;"></a>
+			<a class="config" data-toggle="modal" href="#grid-config"></a>
+			<a class="reload" href="javascript:;"></a>
+			<a class="remove" href="javascript:;"></a>
+		</div>
+		<div class="col-sm-12 my-3">
+			<div class="table-responsive">
+				<table class="table" data-datatable style="width:100%">
+					<thead>
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">Van</th>
+							<th scope="col">Naar</th>
+							<th scope="col">Type</th>
+							<th scope="col" style="min-width:170px">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach($redirects as $redirect)
 							<tr>
-								<th style="width:5%">ID</th>
-								<th style="width:20%">Van</th>
-								<th style="width:35%">Naar</th>
-								<th style="width:15%">Type</th>
-								<th style="width:25%">Actions</th>
-							</tr>
-						</thead>
-							<tbody>
-								@foreach($redirects as $redirect)
-								<tr>
-									<td class="v-align-middle">{{ $redirect->id }}</td>
-							    	<td class="v-align-middle semi-bold">{{ $redirect->slug }}</td>
-							    	<td class="v-align-middle">{{$redirect->to }}</td>
-							    	<td class="v-align-middle">
-							    		<span class="label label-success">{{$redirect->type}}</span>
-							    	</td>
-							    	<td class="v-align-middle semi-bold">
-							    		@can('edit redirects')
+								<td>{{ $redirect->id }}</td>
+								<td>{{ $redirect->slug}}</td>
+								<td>{{ $redirect->to}}</td>
+								<td><span class="label label-success">{{ $redirect->type}}</span></td>
+								<td>
+									@can('edit redirects')
 							    		<a href="#" onclick="editModal({{ $redirect->id }}, '{{ $redirect->slug }}', '{{ $redirect->to }}', {{ $redirect->type }} )" class="btn btn-default btn-sm btn-rounded m-r-20">
 							    			<i data-feather="edit-2"></i> edit
 							    		</a>
-							    		@endcan
+							    	@endcan
 
-							    		@can('delete redirects')
+							    	@can('delete redirects')
 							    		<a href="#" onclick="deleteModal({{ $redirect->id }}, '{{ $redirect->slug }}', '{{ $redirect->to }}')" class="btn btn-danger btn-sm btn-rounded m-r-20">
 							    			<i data-feather="trash"></i> delete
 							    		</a>
-							    		@endcan
-							    	</td>
-							  	</tr>
-							  	@endforeach
-							</tbody>
-						</table>
-					</div>
-				</div>
+							    	@endcan
+								</td>
+							</tr>
+						@endforeach
+					</tbody>
+				</table>
 			</div>
-		<!-- END card -->
 		</div>
-    </div>
-</div>
+	</div>
 </div>
 @can('create redirects')
 	@include('chuckcms::backend.redirects._create_modal')
