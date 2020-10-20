@@ -66,7 +66,7 @@
 	<div class="row bg-light shadow-sm rounded p-3 mb-3 mx-1">
 		@can('create redirects')
 			<div class="col-sm-12 text-right">
-    			<a href="#" data-target="#createRedirectModal" data-toggle="modal" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuwe Redirect Toe</a>
+    			<a href="#" data-target="#createRedirectModal" data-toggle="modal" class="btn btn-sm btn-outline-success">Voeg Nieuwe Redirect Toe</a>
 			</div>
 		@endcan
 		<div class="tools">
@@ -91,7 +91,7 @@
 						@foreach($redirects as $redirect)
 							<tr>
 								<td>{{ $redirect->id }}</td>
-								<td>{{ $redirect->slug}}</td>
+								<td class="semi-bold">{{ $redirect->slug}}</td>
 								<td>{{ $redirect->to}}</td>
 								<td><span class="label label-success">{{ $redirect->type}}</span></td>
 								<td>
