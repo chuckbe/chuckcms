@@ -1,175 +1,172 @@
 @extends('chuckcms::backend.layouts.base')
 
 @section('content')
-<!-- START CONTAINER FLUID -->
-<div class=" container-fluid   container-fixed-lg">
+<!-- START CONTAINER -->
 <div class="container p-3">
-<!-- START card -->
-<form action="{{ route('dashboard.page.save') }}" method="POST">
-<div class="card card-transparent">
-  <div class="card-header ">
-    <div class="card-title">Bewerk pagina "{{ $page->title }}"
+ <div class="row">
+        <div class="col-sm-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mt-3">
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard.pages') }}">Pagina's</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Bewerk Pagina</li>
+                </ol>
+            </nav>
+        </div>
     </div>
-  </div>
-  <div class="card-block">
-    <div class="row">
-      <div class="col-md-12">
-		{{-- <h5>Fade effect</h5> Add the class
-        <code>fade</code> to the tab panes
-        <br>
-        <br> --}}
-        <div class="card card-transparent">
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs nav-tabs-linetriangle" data-init-reponsive-tabs="dropdownfx">
-            @foreach(ChuckSite::getSupportedLocales() as $langKey => $langValue)
-              <li class="nav-item">
+  <form action="{{ route('dashboard.page.save') }}" method="POST">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="my-3">
+        <ul class="nav nav-tabs justify-content-start" id="pageTab" role="tablist">
+          @foreach(ChuckSite::getSupportedLocales() as $langKey => $langValue)
+              <li class="nav-item" role="presentation">
                 <a href="#" @if($loop->iteration == 1) class="active" @endif data-toggle="tab" data-target="#tab_resource_{{ $langKey }}"><span>{{ $langValue['name'] }} ({{ $langValue['native'] }})</span></a>
               </li>
             @endforeach
-          </ul>
-          <!-- Tab panes -->
-          <div class="tab-content">
-
-            @foreach(ChuckSite::getSupportedLocales() as $langKey => $langValue)
-            <div class="tab-pane fade show @if($loop->iteration == 1) active @endif tab_page_wrapper" id="tab_resource_{{ $langKey }}">
-              <h4>{{ $langValue['name'] }}</h4>
-              <div class="row column-seperation">
-                <div class="col-lg-12">
-                  <div class="form-group form-group-default required ">
-                    <label>Titel</label>
-                    <input type="text" class="form-control page_title page_title_{{ $langKey }}" placeholder="Titel" id="page_title" name="page_title[{{ $langKey }}]" value="{{ $page->getTranslation('title', $langKey) }}" data-lang="{{ $langKey }}" required>
-                  </div>
-                  <div class="form-group form-group-default required ">
-                    <label>Slug</label>
-                    <input type="text" class="form-control page_slug page_slug_{{ $langKey }}" placeholder="Slug" id="page_slug" name="slug[{{ $langKey }}]" data-lang="{{ $langKey }}" data-url="{{ ChuckSite::getSetting('domain') }}" value="{{ $page->getTranslation('slug', $langKey) }}" required>
-                    <input type="hidden" class="form-control page_slug_hidden_{{ $langKey }}" id="page_slug_hidden" name="page_slug[{{ $langKey }}]" value="{{ $page->getTranslation('slug', $langKey) }}">
-                  </div>
+        </ul>
+        <div class="tab-content bg-light shadow-sm rounded p-3 mb-3 mx-1" id="pageTabContent">
+          @foreach(ChuckSite::getSupportedLocales() as $langKey => $langValue)
+          <div class="col-sm-12 tab-pane fade show @if($loop->iteration == 1) active @endif tab_page_wrapper" role="tabpanel" id="tab_resource_{{ $langKey }}">
+            <h4>{{ $langValue['name'] }}</h4>
+            <div class="row column-seperation">
+              <div class="col-lg-12">
+                <div class="form-group form-group-default required ">
+                  <label>Titel</label>
+                  <input type="text" class="form-control page_title page_title_{{ $langKey }}" placeholder="Titel" id="page_title" name="page_title[{{ $langKey }}]" value="{{ $page->getTranslation('title', $langKey) }}" data-lang="{{ $langKey }}" required>
+                </div>
+                <div class="form-group form-group-default required ">
+                  <label>Slug</label>
+                  <input type="text" class="form-control page_slug page_slug_{{ $langKey }}" placeholder="Slug" id="page_slug" name="slug[{{ $langKey }}]" data-lang="{{ $langKey }}" data-url="{{ ChuckSite::getSetting('domain') }}" value="{{ $page->getTranslation('slug', $langKey) }}" required>
+                  <input type="hidden" class="form-control page_slug_hidden_{{ $langKey }}" id="page_slug_hidden" name="page_slug[{{ $langKey }}]" value="{{ $page->getTranslation('slug', $langKey) }}">
                   <hr>
                   <div class="serp-preview">
-                      <a class="serp-title serp_title_{{ $langKey }}" href="/">{{ $page->getTranslation('title', $langKey) }}</a><br>
-                      <a class="serp-url serp_url_{{ $langKey }}" href="/">{{ ChuckSite::getSetting('domain') }}/{{ $page->getTranslation('slug', $langKey) }}</a><br>
-                      <p class="serp-desc serp_desc_{{ $langKey }}">{{ $page->meta[$langKey]['description'] }}</p>
+                    <a class="serp-title serp_title_{{ $langKey }}" href="/">{{ $page->getTranslation('title', $langKey) }}</a><br>
+                    <a class="serp-url serp_url_{{ $langKey }}" href="/">{{ ChuckSite::getSetting('domain') }}/{{ $page->getTranslation('slug', $langKey) }}</a><br>
+                    <p class="serp-desc serp_desc_{{ $langKey }}">{{ $page->meta[$langKey]['description'] }}</p>
                   </div>
                   <hr>
                   <div class="meta_field_wrapper" data-lang="{{ $langKey }}">
-                    @foreach($page->meta[$langKey] as $mKey => $mValue)
-                    <div class="row meta_field_row" data-order="{{ $loop->iteration }}">
-                      <div class="col-lg-4">
-                        <div class="form-group form-group-default required ">
-                          <label>Meta Key</label>
-                          <input type="text" class="form-control meta_key" placeholder="key" id="meta_key" name="meta_key[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="{{ $mKey }}" required>
-                        </div>
-                      </div>
-                      <div class="col-lg-8">
-                        <div class="form-group form-group-default required ">
-                          <label>Meta Waarde</label>
-                          <input type="text" class="form-control meta_value @if($mKey == 'title') meta_title @endif  @if($mKey == 'description') meta_description @endif" placeholder="waarde" id="meta_value" name="meta_value[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="{{ $mValue }}" data-lang="{{ $langKey }}" required>
-                        </div>
-                      </div>
-                    </div>
-                    @endforeach
+                     @foreach($page->meta[$langKey] as $mKey => $mValue)
+                      <div class="row meta_field_row" data-order="{{ $loop->iteration }}">
+                         <div class="col-lg-4">
+                           <div class="form-group form-group-default required ">
+                             <label>Meta Key</label>
+                             <input type="text" class="form-control meta_key" placeholder="key" id="meta_key" name="meta_key[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="{{ $mKey }}" required>
+                           </div>
+                         </div>
+                         <div class="col-lg-8">
+                           <div class="form-group form-group-default required ">
+                             <label>Meta Waarde</label>
+                             <input type="text" class="form-control meta_value @if($mKey == 'title') meta_title @endif  @if($mKey == 'description') meta_description @endif" placeholder="waarde" id="meta_value" name="meta_value[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="{{ $mValue }}" data-lang="{{ $langKey }}" required>
+                           </div>
+                         </div>
+                       </div>
+                     @endforeach
                   </div>
-
                   <hr>
                   <div class="row">
                     <div class="col-lg-6">
-                      <button type="button" class="btn btn-primary add_meta_field_btn" id="add_meta_field_btn">+ Toevoegen</button>
+                         <button type="button" class="btn btn-primary add_meta_field_btn" id="add_meta_field_btn">+ Toevoegen</button>
                     </div>
                     <div class="col-lg-6">
-                      <button type="button" class="btn btn-warning remove_meta_field_btn" id="remove_meta_field_btn" style="display:none;">- Verwijderen</button>
+                         <button type="button" class="btn btn-warning remove_meta_field_btn" id="remove_meta_field_btn" style="display:none;">- Verwijderen</button>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            @endforeach
-            <hr>
-            <div class="tab-pane fade show active">
-              <div class="row column-separation">
-                <div class="col-lg-12">
-                  <div class="row">
-                    <div class="col-md-4">
-                      <div class="form-group form-group-default required ">
-                        <label>Template</label>
-                        <select class="full-width" data-init-plugin="select2" name="template_id" data-minimum-results-for-search="-1">
-                          @foreach($templates as $tmpl)
-                            <option value="{{ $tmpl->id }}" @if($tmpl->id == $page->template_id) selected @endif>{{ $tmpl->name }} (v{{ $tmpl->version }})</option>
-                          @endforeach
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group form-group-default required ">
-                        <label>Actief</label>
-                        <select class="full-width" data-init-plugin="select2" name="active" data-minimum-results-for-search="-1">
-                          <option value="1" @if($page->active == 1) selected @endif>Actief</option>
-                          <option value="0" @if($page->active == 0) selected @endif>Concept</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group form-group-default required ">
-                        <label>Pagina</label>
-                        <select class="full-width" data-init-plugin="select2" name="page" data-minimum-results-for-search="-1">
-                          <option value="">Standaard</option>
-                          @foreach($pageViews as $template => $view)
-                          <optgroup label="Template: '{{ $template }}'">
-                            @foreach($view['files'] as $file)
-                              <option value="{{ $view['hintpath'] . '::templates.' . $template . '.' . $file }}" @if($page->page !== null) @if($page->page == $view['hintpath'] . '::templates.' . $template . '.' . $file) selected @endif @endif>{{ $file }} - {{ $template }}</option>
-                            @endforeach
-                          </optgroup>
-                          @endforeach
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-2">
-                      <div class="form-group form-group-default input-group">
-                        <div class="form-input-group">
-                          <label class="inline">Homepage</label>
-                        </div>
-                        <div class="input-group-addon bg-transparent h-c-50">
-                          <input type="hidden" name="isHp" value="0">
-                          <input type="checkbox" data-init-plugin="switchery" data-size="small" data-color="primary" value="1" name="isHp" @if($page->isHp == 1) checked="checked" @endif />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <div class="form-group form-group-default required ">
-                        <label>Pagina beperkt tot volgende gebruikersrollen</label>
-                        <select class="full-width" data-init-plugin="select2" multiple name="roles[]">
-                          @foreach($roles as $role)
-                            <option value="{{ $role->id }}" @if( in_array($role->id, explode('|', $page->roles)) ) selected @endif> {{ $role->name }}</option>
-                          @endforeach
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  
-                </div>
-              </div>
-            </div>
-
             
+            </div>
           </div>
-          <br>
-          <p class="pull-right">
-            <input type="hidden" name="page_id" value="{{ $page->id }}">
-            <input type="hidden" name="_token" value="{{ Session::token() }}">
-            <button type="submit" name="update" class="btn btn-success btn-cons pull-right" value="1">Opslaan</button>
-            <a href="{{ route('dashboard.pages') }}" class="pull-right"><button type="button" class="btn btn-info btn-cons">Annuleren</button></a>
-          </p>
+          @endforeach
+          <hr>
+          <div class="col-sm-12 tab-pane fade show active">
+            <div class="row column-seperation">
+              <div class="col-lg-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group form-group-default required ">
+                      <label>Template</label>
+                       <select class="full-width mt-2" data-init-plugin="select2" name="template_id" data-minimum-results-for-search="-1">
+                             @foreach($templates as $tmpl)
+                               <option value="{{ $tmpl->id }}" @if($tmpl->id == $page->template_id) selected @endif>{{ $tmpl->name }} (v{{ $tmpl->version }})</option>
+                             @endforeach
+                        </select>
+                    </div>
+                  </div>
+                  {{-- col-md-4 ends --}}
+                  <div class="col-md-3">
+                    <div class="form-group form-group-default required ">
+                      <label>Actief</label><br>
+                       <select class="full-width mt-2" data-init-plugin="select2" name="active" data-minimum-results-for-search="-1">
+                             <option value="1" @if($page->active == 1) selected @endif>Actief</option>
+                             <option value="0" @if($page->active == 0) selected @endif>Concept</option>
+                        </select>
+                    </div>
+                  </div>
+                  {{-- col-md-3 ends --}}
+                  <div class="col-md-3">
+                    <div class="form-group form-group-default required ">
+                      <label>Pagina</label>
+                      <select class="full-width mt-2" data-init-plugin="select2" name="page" data-minimum-results-for-search="-1">
+                        <option value="">Standaard</option>
+                          @foreach($pageViews as $template => $view)
+                            <optgroup label="Template: '{{ $template }}'">
+                               @foreach($view['files'] as $file)
+                                 <option value="{{ $view['hintpath'] . '::templates.' . $template . '.' . $file }}" @if($page->page !== null) @if($page->page == $view['hintpath'] . '::templates.' . $template . '.' . $file) selected @endif @endif>{{ $file }} - {{ $template }}</option>
+                               @endforeach
+                            </optgroup>
+                          @endforeach
+                      </select>
+                    </div>
+                  </div>
+                  {{-- col-md-3 ends --}}
+                  <div class="col-md-2">
+                    <div class="form-group form-group-default input-group ">
+                      <div class="form-input-group">
+                        <label class="inline">Homepage</label>
+                      </div>
+                      <div class="input-group-addon bg-transparent h-c-50">
+                        <input type="hidden" name="isHp" value="0">
+                        <input type="checkbox" data-init-plugin="switchery" data-size="small" data-color="primary" value="1" name="isHp" @if($page->isHp == 1) checked="checked" @endif />
+                      </div>
+                    </div>
+                  </div>
+                  {{-- col-md-2 ends --}}
+                </div>
+                <div class="row column-seperation">
+                  <div class="col-lg-12">
+                    <div class="form-group form-group-default required ">
+                      <label>Pagina beperkt tot volgende gebruikersrollen</label><br/>
+                        <select class="full-width mt-2" data-init-plugin="select2" multiple name="roles[]">
+                             @foreach($roles as $role)
+                               <option value="{{ $role->id }}" @if( in_array($role->id, explode('|', $page->roles)) ) selected @endif> {{ $role->name }}</option>
+                             @endforeach
+                        </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+  </div>{{-- row ends here --}}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="my-3">
+        <p class="pull-right">
+          <input type="hidden" name="page_id" value="{{ $page->id }}">
+          <input type="hidden" name="_token" value="{{ Session::token() }}">
+          <button type="submit" name="update" class="btn btn-success btn-cons pull-right m-1" value="1">Opslaan</button>
+          <a href="{{ route('dashboard.pages') }}" class="pull-right m-1"><button type="button" class="btn btn-info btn-cons">Annuleren</button></a>
+        </p>
+      </div>
+    </div>
   </div>
+  </form>
 </div>
-<!-- END card -->
-</form>
-</div>
-</div>
-<!-- END CONTAINER FLUID -->
+<!-- END CONTAINER  -->
 
 
 @endsection

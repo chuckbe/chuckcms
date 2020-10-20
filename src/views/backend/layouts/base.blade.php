@@ -44,23 +44,19 @@
 .dataTables_wrapper .dataTables_paginate ul > li > a {
   padding: 5px 10px;
   color: #7a8994;
+}
+
+.dataTables_wrapper .dataTables_paginate ul > li.active > a {
+  color: #fff;
+  border-color: #6c757d;
+  background-color: #6c757d;
   opacity: .35;
-  -webkit-transition: opacity 0.3s ease;
-  transition: opacity 0.3s ease;
 }
-.dataTables_wrapper .dataTables_paginate ul > li > a:hover {
-  opacity: .65;
-}
-.dataTables_wrapper .dataTables_paginate ul > li.next > a,
-.dataTables_wrapper .dataTables_paginate ul > li.prev > a {
+
+.dataTables_wrapper .dataTables_paginate ul > li.active:hover > a {
   opacity: 1;
 }
-.dataTables_wrapper .dataTables_paginate ul > li.disabled a {
-  opacity: .35;
-}
-.dataTables_wrapper .dataTables_paginate ul > li.disabled a:hover {
-  opacity: .35;
-}
+
 .dataTables_wrapper .dataTables_info,
 .dataTables_wrapper .dataTables_paginate {
   margin-top: 25px !important;
@@ -69,22 +65,13 @@
   padding-top: 0;
   padding-right: 20px;
 }
-.dataTables_wrapper .dataTables_info {
-  clear: none;
-  font-size: 12px;
-  padding: 0 33px;
-  color: #7a8994;
-}
+
 .dataTables_wrapper .dataTables_paginate ul > li {
   display: inline-block;
   padding-left: 0;
   font-size: 11px;
 }
-.dataTables_wrapper .dataTables_paginate ul > li.active > a {
-  font-weight: bold;
-  color: #7a8994;
-  opacity: 1;
-}
+
 /* Responsive Handlers : Tables */
 @media (max-width: 991px) {
   .dataTables_paginate.paging_bootstrap.pagination {
@@ -121,13 +108,8 @@
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 
-<script src="https://cdn.chuck.be/assets/plugins/feather-icons/feather.min.js" type="text/javascript"></script>
-
 <script src="https://cdn.chuck.be/chuckcms/js/dashboard.js" type="text/javascript"></script>
 <script src="https://cdn.chuck.be/chuckcms/js/table.js" type="text/javascript"></script>
-<script>
-feather.replace();
-</script>
 @yield('scripts')
 </body>
 </html>
