@@ -6,8 +6,79 @@
 
 @section('add_record')
 @can('create forms')
-{{-- <a href="{{ route('dashboard.forms.create') }}" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuw Formulier Toe</a> --}}
+
 <a href="#" data-target="#createFormModal" data-toggle="modal" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuw Formulier Toe</a>
+@endcan
+@endsection
+
+@section('content')
+<div class="container p-3">
+	<div class="row">
+		<div class="col-sm-12">
+			<nav aria-label="breadcrumb">
+        		<ol class="breadcrumb mt-3">
+          			<li class="breadcrumb-item active" aria-current="Formulieren">Formulieren</li>
+        		</ol>
+      		</nav>
+		</div>
+	</div>
+	<div class="row bg-light shadow-sm rounded p-3 mb-3 mx-1">
+		<div class="tools">
+			<a class="collapse" href="javascript:;"></a>
+			<a class="config" data-toggle="modal" href="#grid-config"></a>
+			<a class="reload" href="javascript:;"></a>
+			<a class="remove" href="javascript:;"></a>
+		</div>
+		@can('create forms')
+			<div class="col-sm-12 text-right">
+				<a href="#" data-target="#createFormModal" data-toggle="modal" class="btn btn-sm btn-outline-success">Voeg Nieuw Formulier Toe</a>
+			</div>
+		@endcan
+		<div class="col-sm-12 my-3">
+			<div class="table-responsive">
+				<table class="table" data-datatable style="width:100%">
+					<thead>
+						<tr>
+							<th scope="col">ID</th>
+							<th scope="col">Titel</th>
+							<th scope="col">Slug</th>
+							<th scope="col">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach($forms as $form)
+							<tr class="form_line" data-id="{{ $form->id}}">
+								<td>{{ $form->id }}</td>
+								<td class="semi-bold">{{ $form->title }}</td>
+								<td>{{ $form->slug }}</td>
+								<td class="semi-bold">
+									@can('edit forms')
+							    		<a href="{{ route('dashboard.forms.edit', ['slug' => $form->slug]) }}" class="btn btn-sm btn-outline-secondary rounded d-inline-block">
+							    			<i class="fa fa-edit"></i> edit
+							    		</a>
+							    	@endcan
+							    	@can('show formentries')
+							    		<a href="{{ route('dashboard.forms.entries', ['slug' => $form->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    			<i class="fa fa-clipboard"></i> entries
+							    		</a>
+							    	@endcan
+									@can('delete forms')
+							    		<a href="#" class="btn btn-danger btn-sm btn-rounded m-r-20 form_delete" data-id="{{ $form->id }}">
+							    			<i class="fa fa-trash"></i> delete
+							    		</a>
+							    	@endcan
+								</td>
+							</tr>
+						@endforeach
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+@can('create forms')
+@include('chuckcms::backend.forms._create_modal')
 @endcan
 @endsection
 
@@ -89,75 +160,3 @@
     </script>
 @endsection
 
-@section('content')
-<div class=" container-fluid   container-fixed-lg">
-<div class="container p-3">
-    <div class="row">
-		<div class="col-lg-12">
-		<!-- START card -->
-			<div class="card card-transparent">
-				<div class="card-header ">
-					<div class="card-title">Formulieren</div>
-					@can('create forms')
-					<div class="pull-right hidden-lg-up">
-					<a href="#" data-target="#createFormModal" data-toggle="modal" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuw Formulier Toe</a>
-					</div>
-					@endcan
-					<div class="tools">
-						<a class="collapse" href="javascript:;"></a>
-						<a class="config" data-toggle="modal" href="#grid-config"></a>
-						<a class="reload" href="javascript:;"></a>
-						<a class="remove" href="javascript:;"></a>
-					</div>
-				</div>
-				<div class="card-block">
-					<div class="table-responsive">
-						<table class="table table-hover table-condensed" id="condensedTable">
-						<thead>
-							<tr>
-								<th style="width:5%">ID</th>
-								<th style="width:25%">Titel</th>
-								<th style="width:20%">Slug</th>
-								<th style="width:35%">Actions</th>
-							</tr>
-						</thead>
-							<tbody>
-								@foreach($forms as $form)
-								<tr class="form_line" data-id="{{ $form->id }}">
-									<td class="v-align-middle">{{ $form->id }}</td>
-							    	<td class="v-align-middle semi-bold">{{ $form->title }}</td>
-							    	<td class="v-align-middle">{{$form->slug}}</td>
-							    	<td class="v-align-middle semi-bold">
-							    		@can('edit forms')
-							    		<a href="{{ route('dashboard.forms.edit', ['slug' => $form->slug]) }}" class="btn btn-primary btn-sm btn-rounded m-r-20">
-							    			<i data-feather="edit-2"></i> edit
-							    		</a>
-							    		@endcan
-							    		@can('show formentries')
-							    		<a href="{{ route('dashboard.forms.entries', ['slug' => $form->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
-							    			<i data-feather="clipboard"></i> entries
-							    		</a>
-							    		@endcan
-							    		@can('delete forms')
-							    		<a href="#" class="btn btn-danger btn-sm btn-rounded m-r-20 form_delete" data-id="{{ $form->id }}">
-							    			<i data-feather="trash"></i> delete
-							    		</a>
-							    		@endcan
-							    	</td>
-							  	</tr>
-							  	@endforeach
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		<!-- END card -->
-		</div>
-    </div>
-</div>
-</div>
-
-@can('create forms')
-@include('chuckcms::backend.forms._create_modal')
-@endcan
-@endsection
