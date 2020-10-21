@@ -10,6 +10,69 @@
   @endcan
 @endsection
 
+@section('content')
+<div class="container p-3">
+  <div class="row">
+    <div class="col-sm-12">
+			<nav aria-label="breadcrumb">
+        <ol class="breadcrumb mt-3">
+          <li class="breadcrumb-item active" aria-current="Rollen">Rollen</li>
+        </ol>
+      </nav>
+		</div>
+  </div>
+  <div class="row bg-light shadow-sm rounded p-3 mb-3 mx-1">
+    <div class="tools">
+      <a class="collapse" href="javascript:;"></a>
+      <a class="config" data-toggle="modal" href="#grid-config"></a>
+      <a class="reload" href="javascript:;"></a>
+      <a class="remove" href="javascript:;"></a>
+    </div>
+    <div class="col-sm-12 my-3">
+      <div class="table-responsive">
+        <table class="table" data-datatable style="width:100%">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Naam</th>
+              <th scope="col">Redirect</th>
+              <th scope="col" style="min-width:170px">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($roles as $role)
+              <tr>
+                <td>{{ $role->id }}</td>
+                <td class="semi-bold">{{ $role->name }}</td>
+                <td>{{$role->redirect }}</td>
+                <td class="semi-bold">
+                  @can('edit roles')
+                    <a href="{{ route('dashboard.users.roles.edit', ['role' => $role->id]) }}" class="btn btn-sm btn-outline-secondary rounded d-inline-block">
+                      <i class="fa fa-edit"></i> edit
+                    </a>
+                  @endcan
+                  @can('delete roles')
+                    <a href="#" onclick="deleteModal({{ $role->id }}, '{{ $role->name }}', '{{ $role->redirect }}')" class="btn btn-danger btn-sm btn-rounded m-r-20">
+                      <i class="fa fa-trash"></i> delete
+                    </a>
+                  @endcan
+                </td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+@can('create roles')
+  @include('chuckcms::backend.users.roles._create_modal')
+@endcan
+@can('delete roles')
+  @include('chuckcms::backend.users.roles._delete_modal')
+@endcan
+@endsection
+
 @section('css')
     {{-- <link href="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" /> --}}
     <link href="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
@@ -40,68 +103,3 @@
     @endif
 @endsection
 
-@section('content')
-<div class=" container-fluid   container-fixed-lg">
-<div class="container p-3">
-    <div class="row">
-    <div class="col-lg-12">
-    <!-- START card -->
-      <div class="card card-transparent">
-        <div class="card-header ">
-          <div class="card-title">Rollen</div>
-          <div class="tools">
-            <a class="collapse" href="javascript:;"></a>
-            <a class="config" data-toggle="modal" href="#grid-config"></a>
-            <a class="reload" href="javascript:;"></a>
-            <a class="remove" href="javascript:;"></a>
-          </div>
-        </div>
-        <div class="card-block">
-          <div class="table-responsive">
-            <table class="table table-hover table-condensed" id="condensedTable" data-table-count="6">
-            <thead>
-              <tr>
-                <th style="width:5%">ID</th>
-                <th style="width:20%">Naam</th>
-                <th style="width:35%">Redirect</th>
-                <th style="width:25%">Actions</th>
-              </tr>
-            </thead>
-              <tbody>
-                @foreach($roles as $role)
-                <tr>
-                  <td class="v-align-middle">{{ $role->id }}</td>
-                    <td class="v-align-middle semi-bold">{{ $role->name }}</td>
-                    <td class="v-align-middle">{{$role->redirect }}</td>
-                    <td class="v-align-middle semi-bold">
-                      @can('edit roles')
-                      <a href="{{ route('dashboard.users.roles.edit', ['role' => $role->id]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
-                        <i data-feather="edit-2"></i> edit
-                      </a>
-                      @endcan
-
-                      @can('delete roles')
-                      <a href="#" onclick="deleteModal({{ $role->id }}, '{{ $role->name }}', '{{ $role->redirect }}')" class="btn btn-danger btn-sm btn-rounded m-r-20">
-                        <i data-feather="trash"></i> delete
-                      </a>
-                      @endcan
-                    </td>
-                  </tr>
-                  @endforeach
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    <!-- END card -->
-    </div>
-    </div>
-  </div>
-</div>
-@can('create roles')
-  @include('chuckcms::backend.users.roles._create_modal')
-@endcan
-@can('delete roles')
-  @include('chuckcms::backend.users.roles._delete_modal')
-@endcan
-@endsection

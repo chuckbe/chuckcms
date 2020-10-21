@@ -68,12 +68,14 @@
 							    		</a>
 							    		@endcan
 							    		@can('delete users')
-							    		<a href="#" onclick="deleteUser({{ $user->id }})" class="btn btn-danger btn-sm btn-rounded m-r-20 user_delete" data-id="{{ $user->id }}">
+							    		<a href="#" class="btn btn-danger btn-sm btn-rounded m-r-20 user_delete" data-id="{{ $user->id }}">
 							    			<i class="fa fa-trash"></i> 
 							    		</a>
 							    		@endcan
 							    		@can('edit users')
-							    		<a href="#" onclick="resendInvitationUser({{ $user->id }})" class="btn btn-secondary btn-sm btn-rounded m-r-20 user_resend" data-id="{{ $user->id }}">
+							    		<a href="#" 
+										{{-- onclick="resendInvitationUser({{ $user->id }})"  --}}
+										class="btn btn-secondary btn-sm btn-rounded m-r-20 user_resend" data-id="{{ $user->id }}">
 							    			<i class="fa fa-refresh"></i>
 							    		</a>
 							    	@endcan
@@ -98,31 +100,34 @@
 @endsection
 
 @section('scripts')
-	{{-- <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+	<script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
     <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
     <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
     <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
     <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
     <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
-    <script src="https://cdn.chuck.be/assets/js/tables.js" type="text/javascript"></script> --}}
+    <script src="https://cdn.chuck.be/assets/js/tables.js" type="text/javascript"></script>
     @if (session('notification'))
     	@include('chuckcms::backend.includes.notification')
 	@endif
 	<script src="https://cdn.chuck.be/assets/plugins/sweetalert2.all.js"></script>
 	<script type="text/javascript">
-	function deleteUser(user_id) {
-		var token = '{{ Session::token() }}';
-			swal({
-			title: 'Are you sure?',
-			text: "You won't be able to revert this!",
-			type: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, delete it!'
-		}).then((result) => {
-		  	if (result.value) { 
-		  		$.ajax({
+	$(document).ready(function(){
+		$('.user_delete').each(function(){
+			let user_id = $(this).attr('data-id');
+			let token = '{{ Session::token() }}';
+			$(this).click(function(event){
+				event.preventDefault();
+				swal({
+					title: 'Are you sure?',
+					text: "You won't be able to revert this!",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Yes, delete it!'
+				}).then((result)=>{
+					$.ajax({
 	                method: 'POST',
 	                url: "{{ route('dashboard.user.delete') }}",
 	                data: { 
@@ -130,68 +135,71 @@
 	                	_token: token
 	                }
 	            })
-	            .done(function (data) {
-	            	if(data == 'success'){
-	            		$("#condensedTable").DataTable().row(".user_line[data-id='"+user_id+"']").remove().draw();
-	            		swal(
+				.done(function(data){
+					if(data == 'success'){
+						$(".user_line[data-id='"+user_id+"']").first().remove();
+						swal(
 				      		'Deleted!',
 				      		'The user has been deleted.',
 				      		'success'
 				    	)
-	            	} else {
-	            		swal(
+					} else{
+						swal(
 				      		'Oops!',
 				      		'Something went wrong...',
 				      		'danger'
 				    	)
-	            	}
+					}
+				})
+				//done ends here
+				})
+			})
+		}); // user delete function ends here
 
-	                
-	            });
-		    	
-		  	}
-		})
-	}
-
-	function resendInvitationUser(user_id) {
-		var token = '{{ Session::token() }}';
-			swal({
-			title: 'Resend invitation e-mail?',
-			text: "The user will be able to reset their password!",
-			type: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: 'Yes, send it!'
-		}).then((result) => {
-		  	if (result.value) { 
-		  		$.ajax({
-	                method: 'POST',
-	                url: "{{ route('dashboard.user.resend.invitation') }}",
-	                data: { 
-	                	user_id: user_id, 
-	                	_token: token
-	                }
-	            })
-	            .done(function (data) {
-	            	if(data == 'success'){
-	            		//@TODO:deactivate user > change icon
-	            		swal(
-				      		'Sent!',
-				      		'A new invitation e-mail has been sent.',
-				      		'success'
-				    	)
-	            	} else {
-	            		swal(
-				      		'Oops!',
-				      		'Something went wrong sending the e-mail... Try again later!',
-				      		'danger'
-				    	)
-	            	}	                
-	            });
-		  	}
-		})
-	}
+		$('.user_resend').each(function(){
+			let user_id = $(this).attr('data-id');
+			let token = '{{ Session::token() }}';
+			$(this).click(function(event){
+				event.preventDefault();
+				swal({
+				title: 'Resend invitation e-mail?',
+				text: "The user will be able to reset their password!",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, send it!'
+				}).then((result)=>{
+					if (result.value) {
+						$.ajax({
+	                	method: 'POST',
+	                	url: "{{ route('dashboard.user.resend.invitation') }}",
+	                	data: { 
+	                		user_id: user_id, 
+	                		_token: token
+	                		}
+	            		})
+						.done(function (data) {
+							if(data == 'success') {
+								//@TODO:deactivate user > change icon
+	            				swal(
+				      				'Sent!',
+				      				'A new invitation e-mail has been sent.',
+				      				'success'
+				    			)
+							} else {
+								swal(
+				      				'Oops!',
+				      				'Something went wrong sending the e-mail... Try again later!',
+				      				'danger'
+				    			)
+							}
+						})
+					}
+				})
+			});
+		});// user resend invitation ends here
+	});
 	</script>
 @endsection
 
