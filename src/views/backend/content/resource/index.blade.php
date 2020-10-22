@@ -50,12 +50,12 @@
 								<td>{{ $resource->slug }}</td>
 								<td class="semi-bold">
 									@can('edit forms')
-										<a href="{{ route('dashboard.content.resources.edit', ['slug' => $resource->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
-							    			<i class="fa fa-edit-"></i> edit
+										<a href="{{ route('dashboard.content.resources.edit', ['slug' => $resource->slug]) }}" class="btn btn-sm btn-outline-secondary rounded d-inline-block">
+							    			<i class="fa fa-pencil"></i> edit
 							    		</a>
 									@endcan
 									@can('delete forms')
-							    		<a href="{{ route('dashboard.forms.delete', ['slug' => $resource->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    		<a href="{{ route('dashboard.forms.delete', ['slug' => $resource->slug]) }}" class="btn btn-danger btn-sm btn-rounded m-r-20">
 							    			<i class="fa fa-trash"></i> delete
 							    		</a>
 							    	@endcan

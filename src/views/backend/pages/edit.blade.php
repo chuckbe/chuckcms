@@ -4,26 +4,19 @@
 <!-- START CONTAINER -->
 <div class="container p-3">
  <div class="row">
-        <div class="col-sm-12">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mt-3">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard.pages') }}">Pagina's</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Bewerk Pagina</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
+      <div class="col-sm-12">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mt-3">
+              <li class="breadcrumb-item"><a href="{{ route('dashboard.pages') }}">Pagina's</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Bewerk Pagina</li>
+            </ol>
+          </nav>
+      </div>
+  </div>
   <form action="{{ route('dashboard.page.save') }}" method="POST">
   <div class="row">
     <div class="col-sm-12">
       <div class="my-3">
-        <ul class="nav nav-tabs justify-content-start" id="pageTab" role="tablist">
-          @foreach(ChuckSite::getSupportedLocales() as $langKey => $langValue)
-              <li class="nav-item" role="presentation">
-                <a href="#" @if($loop->iteration == 1) class="active" @endif data-toggle="tab" data-target="#tab_resource_{{ $langKey }}"><span>{{ $langValue['name'] }} ({{ $langValue['native'] }})</span></a>
-              </li>
-            @endforeach
-        </ul>
         <div class="tab-content bg-light shadow-sm rounded p-3 mb-3 mx-1" id="pageTabContent">
           @foreach(ChuckSite::getSupportedLocales() as $langKey => $langValue)
           <div class="col-sm-12 tab-pane fade show @if($loop->iteration == 1) active @endif tab_page_wrapper" role="tabpanel" id="tab_resource_{{ $langKey }}">
