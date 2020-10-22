@@ -69,7 +69,7 @@
 							    		</a>
 							    	@endcan
 									@can('delete repeaters')
-							    		<a href="{{ route('dashboard.forms.delete', ['slug' => $repeater->slug]) }}" class="btn btn-danger btn-sm btn-rounded m-r-20">
+							    		<a href="{{ route('dashboard.forms.delete', ['slug' => $repeater->slug]) }}" class="btn btn-danger btn-sm btn-rounded m-r-20 disabled">
 							    			<i class="fa fa-trash"></i> 
 							    		</a>
 							    	@endcan
