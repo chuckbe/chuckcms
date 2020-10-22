@@ -15,7 +15,7 @@
   <div class="row">
     <div class="col-sm-12">
       <div class="my-3">
-        <ul class="nav nav-tabs justify-content-start" id="formTab" role="tablist">
+        <ul class="nav nav-tabs justify-content-start" id="repeaterTab" role="tablist">
           <li class="nav-item" role="presentation">
             <a class="nav-link active" id="fsettings-tab" data-target="#tab_resource_fsettings" data-toggle="tab" href="#" role="tab" aria-controls="fsettings" aria-selected="true">Instellingen</a>
           </li>
