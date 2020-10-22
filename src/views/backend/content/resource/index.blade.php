@@ -55,7 +55,7 @@
 							    		</a>
 									@endcan
 									@can('delete forms')
-							    		<a href="{{ route('dashboard.forms.delete', ['slug' => $resource->slug]) }}" class="btn btn-danger btn-sm btn-rounded m-r-20">
+							    		<a href="{{ route('dashboard.forms.delete', ['slug' => $resource->slug]) }}" class="btn btn-danger btn-sm btn-rounded m-r-20 disabled">
 							    			<i class="fa fa-trash"></i> delete
 							    		</a>
 							    	@endcan

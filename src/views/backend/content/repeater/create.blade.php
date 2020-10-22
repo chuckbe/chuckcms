@@ -1,8 +1,6 @@
 @extends('chuckcms::backend.layouts.base')
 
 @section('content')
-<!-- START CONTAINER FLUID -->
-<div class=" container-fluid   container-fixed-lg">
 <div class="container p-3">
 <!-- START card -->
 <form action="{{ route('dashboard.content.repeaters.save') }}" method="POST">
@@ -227,10 +225,6 @@
 <!-- END card -->
 </form>
 </div>
-</div>
-<!-- END CONTAINER FLUID -->
-
-
 @endsection
 
 @section('css')
