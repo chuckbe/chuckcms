@@ -60,7 +60,7 @@
       {{-- ffields-tab-starts --}}
       <div class="col-sm-12 tab-pane fade" id="tab_resource_ffields" role="tabpanel" aria-labelledby="ffields-tab">
         <div class="row column-seperation">         
-          <div class="field_container_wrapper ui-state-default" id="field_container_wrapper">
+          <div class="field_container_wrapper ui-state-default w-100" id="field_container_wrapper">
             @foreach($form->form['fields'] as $fKey => $fValue)
               <div class="row field-input-group field_row_container">
                 <div class="col-lg-12 well" type="button" data-toggle="collapse" data-target="#{{ $fKey }}" aria-expanded="false" aria-controls="{{ $fKey }}">
@@ -345,7 +345,7 @@
         </div>
         <div class="row">
           <div class="col-lg-6">
-            <button type="button" class="btn btn-primary btn-lg" id="add_extra_action_btn" @if($form->form['actions']['send'] == 'false') style="display:none;" @endif><i class="fa fa-plus"></i> Extra actie toevoegen</button>
+            <button type="button" class="btn btn-primary btn-lg d-none" id="add_extra_action_btn" @if($form->form['actions']['send'] == 'true') style="display:block;" @endif><i class="fa fa-plus"></i> Extra actie toevoegen</button>
           </div>
           <div class="col-lg-6">
             <button type="button" class="btn btn-warning btn-lg" id="remove_last_action_btn" @if(!is_array($form->form['actions']['send']) || (is_array($form->form['actions']['send']) && count($form->form['actions']['send']) == 1) ) style="display:none;" @endif><i class="fa fa-minus"></i> Laatste actie verwijderen</button>

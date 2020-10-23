@@ -14,7 +14,7 @@
     </div>
   </div>
   <form action="{{ route('dashboard.page.save') }}" method="POST">
-    <div class="row">
+    <div class="row bg-light shadow-sm rounded p-3 mb-3 mx-1">
       <div class="col-sm-12">
         <div class="my-3">
            <div class="form-group form-group-default required ">
