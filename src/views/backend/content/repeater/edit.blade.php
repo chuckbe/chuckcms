@@ -6,7 +6,7 @@
     <div class="col-sm-12">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb mt-3">
-          <li class="breadcrumb-item"><a href="{{ route('dashboard.content.repeaters') }}">Resources</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('dashboard.content.repeaters') }}">Repeaters</a></li>
           <li class="breadcrumb-item active" aria-current="repeater">Bewerk repeater: {{ $repeater->slug }}</li>
         </ol>
       </nav>
