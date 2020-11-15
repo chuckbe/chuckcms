@@ -278,7 +278,6 @@
       }
 
       $(".select2").select2();
-
 		});
 	</script>
   @if (session('notification'))
