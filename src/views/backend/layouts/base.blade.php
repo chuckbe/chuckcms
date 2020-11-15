@@ -18,6 +18,7 @@
 
 <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900" rel="stylesheet" type="text/css">
 <link href="https://cdn.chuck.be/chuckcms/bootstrap-4.5.0-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.chuck.be/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="https://cdn.chuck.be/chuckcms/css/dashboard.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.chuck.be/chuckcms/css/table.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.chuck.be/chuckcms/css/Datatables.css" rel="stylesheet" type="text/css" />
