@@ -236,7 +236,7 @@
             <div class="form-group form-group-default form-group-default-select2">
               <label>Website is beschikbaar in</label>
               <br>
-              <select class="full-width mt-1 select2" data-init-plugin="select2" multiple name="lang[]">
+              <select style="width: 100%" class="full-width mt-1 select2" data-init-plugin="select2" multiple name="lang[]">
                 @foreach(config('lang.allLocales') as $langKey => $langValue)
                   <option value="{{$langKey}}" @if( array_key_exists($langKey, config('laravellocalization.supportedLocales')) ) selected @endif>{{ $langValue['native'] }}</option>
                 @endforeach

@@ -41,14 +41,14 @@
             </div>
             <div class="form-group form-group-default required ">
               <label>Type Content</label>
-              <select class="full-width select2" data-init-plugin="select2" name="content_type" data-minimum-results-for-search="-1">
+              <select class="full-width select2 form-control" data-init-plugin="select2" name="content_type" data-minimum-results-for-search="-1">
                 <option value="repeater" selected>Repeater</option>
                 <option value="module">Module</option>
               </select>
             </div>
             <div class="form-group form-group-default required ">
               <label>Bestanden toegestaan</label>
-              <select class="full-width select2" data-init-plugin="select2" name="files_allowed" data-minimum-results-for-search="-1">
+              <select class="full-width select2 form-control" data-init-plugin="select2" name="files_allowed" data-minimum-results-for-search="-1">
             		<option value="true">Ja</option>
             		<option value="false" selected>Nee</option>
             	</select>
@@ -77,7 +77,7 @@
                 <div class="col-sm-4">
                   <div class="form-group form-group-default required ">
                     <label>Veld Type</label><br>
-                    <select class="full-width select2" data-init-plugin="select2" id="fields_type" name="fields_type[]" data-minimum-results-for-search="-1" required>
+                    <select class="full-width select2 form-control" data-init-plugin="select2" id="fields_type" name="fields_type[]" data-minimum-results-for-search="-1" required>
                       <option value="text">Text</option>
                       <option value="email">E-mail</option>
                       <option value="password">Password</option>
@@ -137,14 +137,14 @@
               </div>
               <div class="form-group form-group-default">
                 <label>Verplicht veld</label>
-                <select class="full-width select2" data-init-plugin="select2" name="fields_required[]" data-minimum-results-for-search="-1">
+                <select class="full-width select2 form-control" data-init-plugin="select2" name="fields_required[]" data-minimum-results-for-search="-1">
                   <option value="true">Ja</option>
                   <option value="false" selected>Nee</option>
                 </select>
               </div>
               <div class="form-group form-group-default">
                 <label>Toon in tabel</label>
-                <select class="full-width select2" data-init-plugin="select2" name="fields_table[]" data-minimum-results-for-search="-1">
+                <select class="full-width select2 form-control" data-init-plugin="select2" name="fields_table[]" data-minimum-results-for-search="-1">
                   <option value="true">Ja</option>
                   <option value="false" selected>Nee</option>
                 </select>
@@ -168,7 +168,7 @@
           <div class="col-lg-12">
             <div class="form-group form-group-default required ">
               <label>Submissies opslaan in databank</label>
-              <select class="full-width select2" data-init-plugin="select2" name="action_store" data-minimum-results-for-search="-1" required>
+              <select class="full-width select2 form-control" data-init-plugin="select2" name="action_store" data-minimum-results-for-search="-1" required>
                 <option value="true" selected>Ja</option>
                 <option value="false">Nee</option>
               </select>
@@ -176,7 +176,7 @@
             <hr>
             <div class="form-group form-group-default required ">
               <label>Detailpagina voor entries</label>
-              <select class="full-width select2" data-init-plugin="select2" name="action_detail" data-minimum-results-for-search="-1" required>
+              <select class="full-width select2 form-control" data-init-plugin="select2" name="action_detail" data-minimum-results-for-search="-1" required>
                 <option value="true">Ja</option>
                 <option value="false" selected>Nee</option>
               </select>
@@ -193,7 +193,7 @@
               </div>
               <div class="form-group form-group-default">
                 <label>Pagina-type</label>
-                <select class="full-width select2" data-init-plugin="select2" name="action_detail_page" data-minimum-results-for-search="-1">
+                <select class="full-width select2 form-control" data-init-plugin="select2" name="action_detail_page" data-minimum-results-for-search="-1">
                   @foreach($pageViews as $template => $page)
                     <optgroup label="Template: '{{ $template }}'">
                       @foreach($page['files'] as $file)

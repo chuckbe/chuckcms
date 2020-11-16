@@ -76,10 +76,10 @@
             <div class="row column-seperation">
               <div class="col-lg-12">
                 <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-8">
                     <div class="form-group form-group-default required ">
                       <label>Template</label>
-                       <select class="full-width mt-2" data-init-plugin="select2" name="template_id" data-minimum-results-for-search="-1">
+                       <select class="full-width mt-2 select2" data-init-plugin="select2" name="template_id" data-minimum-results-for-search="-1">
                              @foreach($templates as $tmpl)
                                <option value="{{ $tmpl->id }}" @if($tmpl->id == $page->template_id) selected @endif>{{ $tmpl->name }} (v{{ $tmpl->version }})</option>
                              @endforeach
@@ -87,20 +87,20 @@
                     </div>
                   </div>
                   {{-- col-md-4 ends --}}
-                  <div class="col-md-3">
+                  <div class="col-md-4">
                     <div class="form-group form-group-default required ">
-                      <label>Actief</label><br>
-                       <select class="full-width mt-2" data-init-plugin="select2" name="active" data-minimum-results-for-search="-1">
+                      <label>Actief</label>
+                       <select class="full-width mt-2 select2" data-init-plugin="select2" name="active" data-minimum-results-for-search="-1">
                              <option value="1" @if($page->active == 1) selected @endif>Actief</option>
                              <option value="0" @if($page->active == 0) selected @endif>Concept</option>
                         </select>
                     </div>
                   </div>
                   {{-- col-md-3 ends --}}
-                  <div class="col-md-3">
-                    <div class="form-group form-group-default required ">
+                  <div class="col-md-8">
+                    <div class="form-group form-group-default required w-100">
                       <label>Pagina</label>
-                      <select class="full-width mt-2" data-init-plugin="select2" name="page" data-minimum-results-for-search="-1">
+                      <select class="full-width mt-2 select2" data-init-plugin="select2" name="page" data-minimum-results-for-search="-1">
                         <option value="">Standaard</option>
                           @foreach($pageViews as $template => $view)
                             <optgroup label="Template: '{{ $template }}'">
@@ -112,8 +112,8 @@
                       </select>
                     </div>
                   </div>
-                  {{-- col-md-3 ends --}}
-                  <div class="col-md-2">
+                  {{-- col-md-8 ends --}}
+                  <div class="col-md-4">
                     <div class="form-group form-group-default input-group ">
                       <div class="form-input-group">
                         <label class="inline">Homepage</label>
@@ -124,13 +124,13 @@
                       </div>
                     </div>
                   </div>
-                  {{-- col-md-2 ends --}}
+                  {{-- col-md-4 ends --}}           
                 </div>
                 <div class="row column-seperation">
                   <div class="col-lg-12">
                     <div class="form-group form-group-default required ">
                       <label>Pagina beperkt tot volgende gebruikersrollen</label><br/>
-                        <select class="full-width mt-2" data-init-plugin="select2" multiple name="roles[]">
+                        <select class="full-width mt-2 select2 w-100" data-init-plugin="select2" multiple name="roles[]">
                              @foreach($roles as $role)
                                <option value="{{ $role->id }}" @if( in_array($role->id, explode('|', $page->roles)) ) selected @endif> {{ $role->name }}</option>
                              @endforeach
@@ -206,6 +206,7 @@
 	<script>
     $( document ).ready(function() { 
     init(); 
+     $(".select2").select2();
 
     if( $('.meta_field_row').length > 1){
       $('.remove_meta_field_btn').show();
@@ -226,8 +227,6 @@
           $(".meta_key[data-order="+iOrder+"]").val(slug_text);   
           
       });
-
-      
     }
       $('.add_meta_field_btn').click(function(){
         $('.meta_field_row:first').clone().appendTo('.meta_field_wrapper');

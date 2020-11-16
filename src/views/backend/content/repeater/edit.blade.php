@@ -41,14 +41,14 @@
             </div>
             <div class="form-group form-group-default required ">
               <label>Type Content</label>
-              <select class="full-width select2" data-init-plugin="select2" name="content_type" data-minimum-results-for-search="-1">
+              <select class="full-width select2 form-control" data-init-plugin="select2" name="content_type" data-minimum-results-for-search="-1">
                 <option value="repeater" @if($repeater->type == 'repeater') selected @endif>Repeater</option>
                 <option value="module" @if($repeater->type == 'module') selected @endif>Module</option>
               </select>
             </div>
             <div class="form-group form-group-default required ">
               <label>Bestanden toegestaan</label>
-              <select class="full-width select2" data-init-plugin="select2" name="files_allowed" data-minimum-results-for-search="-1">
+              <select class="full-width select2 form-control" data-init-plugin="select2" name="files_allowed" data-minimum-results-for-search="-1">
             		<option value="true" @if($repeater->content['files'] == 'true') selected @endif>Ja</option>
             		<option value="false" @if($repeater->content['files'] == 'false') selected @endif>Nee</option>
             	</select>
@@ -138,14 +138,14 @@
                 </div>
                 <div class="form-group form-group-default">
                   <label>Verplicht veld</label>
-                  <select class="full-width select2" data-init-plugin="select2" name="fields_required[]" data-minimum-results-for-search="-1">
+                  <select class="full-width select2 form-control" data-init-plugin="select2" name="fields_required[]" data-minimum-results-for-search="-1">
                     <option value="true" @if($fValue['required'] == 'true') selected @endif>Ja</option>
                     <option value="false" @if($fValue['required'] !== 'true') selected @endif>Nee</option>
                   </select>
                 </div>
                 <div class="form-group form-group-default">
                   <label>Toon in tabel</label>
-                  <select class="full-width select2" data-init-plugin="select2" name="fields_table[]" data-minimum-results-for-search="-1">
+                  <select class="full-width select2 form-control" data-init-plugin="select2" name="fields_table[]" data-minimum-results-for-search="-1">
                     <option value="true" @if($fValue['table'] == 'true') selected @endif>Ja</option>
                     <option value="false" @if($fValue['table'] !== 'true') selected @endif>Nee</option>
                   </select>
@@ -170,7 +170,7 @@
           <div class="col-lg-12">
             <div class="form-group form-group-default required ">
               <label>Submissies opslaan in databank</label>
-              <select class="full-width select2" data-init-plugin="select2" name="action_store" data-minimum-results-for-search="-1" required>
+              <select class="full-width select2 form-control" data-init-plugin="select2" name="action_store" data-minimum-results-for-search="-1" required>
                 <option value="true" @if($repeater->content['actions']['store'] == 'true') selected @endif>Ja</option>
                 <option value="false" @if($repeater->content['actions']['store'] == 'false') selected @endif>Nee</option>
               </select>
@@ -178,7 +178,7 @@
             <hr>
             <div class="form-group form-group-default required ">
               <label>Detailpagina voor entries</label>
-              <select class="full-width select2" data-init-plugin="select2" name="action_detail" data-minimum-results-for-search="-1" required>
+              <select class="full-width select2 form-control" data-init-plugin="select2" name="action_detail" data-minimum-results-for-search="-1" required>
                 <option value="true" @if($repeater->content['actions']['detail'] !== 'false') selected @endif>Ja</option>
                 <option value="false" @if($repeater->content['actions']['detail'] == 'false') selected @endif>Nee</option>
               </select>
@@ -195,7 +195,7 @@
               </div>
               <div class="form-group form-group-default">
                 <label>Pagina-type</label>
-                <select class="full-width select2" data-init-plugin="select2" name="action_detail_page" data-minimum-results-for-search="-1">
+                <select class="full-width select2 form-control" data-init-plugin="select2" name="action_detail_page" data-minimum-results-for-search="-1">
                   @foreach($pageViews as $template => $page)
                     <optgroup label="Template: '{{ $template }}'">
                       @foreach($page['files'] as $file)

@@ -27,7 +27,7 @@
             </div>
             <div class="form-group form-group-default required ">
               <label>Gebruikersrollen</label><br>
-              <select class="full-width mt-2" data-init-plugin="select2" multiple name="roles">
+              <select class="full-width mt-2 selectable w-100" data-init-plugin="select2" multiple name="roles">
   							@foreach($roles as $role)
   								<option value="{{ $role->id }}" @if($user->hasRole($role->name)) selected @endif> {{ $role->name }}</option>
   							@endforeach

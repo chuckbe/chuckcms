@@ -228,7 +228,7 @@
   <script>
     $( document ).ready(function() { 
     init(); 
-
+    $(".select2").select2();
     function init() {
       $(".resource_slug_input").keyup(function(){
           var text = $(this).val();
