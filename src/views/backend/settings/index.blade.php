@@ -202,11 +202,11 @@
               <label>Favicon</label>
               <div class="input-group">
                 <span class="input-group-btn">
-                  <a id="lfm" data-input="thumbnail" data-preview="faviholder" class="btn btn-primary" style="color:#FFF">
+                  <a id="lfmFavi" data-input="thumbnailFavicon" data-preview="faviholder" class="btn btn-primary" style="color:#FFF">
                     <i class="fa fa-picture-o"></i> Kies
                   </a>
                 </span>
-                <input id="thumbnail" class="form-control" accept="image/x-png" type="text" name="favicon[href]" value="{{ array_key_exists('favicon', $site->settings) ? $site->settings['favicon']['href'] : '/chuckbe/chuckcms/favicon.ico' }}">
+                <input id="thumbnailFavicon" class="form-control" accept="image/x-png" type="text" name="favicon[href]" value="{{ array_key_exists('favicon', $site->settings) ? $site->settings['favicon']['href'] : '/chuckbe/chuckcms/favicon.ico' }}">
               </div>
               <img id="faviholder" src="{{ URL::to('/') }}{{ array_key_exists('favicon', $site->settings) ? $site->settings['favicon']['href'] : '/chuckbe/chuckcms/favicon.ico' }}" style="margin-top:15px;max-height:100px;">
             </div>
@@ -218,13 +218,13 @@
               <label>Logo</label>
               <div class="input-group">
                 <span class="input-group-btn">
-                  <a id="lfm" data-input="thumbnail" data-preview="logoholder" class="btn btn-primary" style="color:#FFF">
+                  <a id="lfmLogo" data-input="thumbnailLogo" data-preview="logoholder" class="btn btn-primary" style="color:#FFF">
                     <i class="fa fa-picture-o"></i> Kies
                   </a>
                 </span>
-                <input id="thumbnail" class="form-control" accept="image/x-png" type="text" name="logo[href]" value="{{ $site->settings['logo']['href'] }}">
+                <input id="thumbnailLogo" class="form-control" accept="image/x-png" type="text" name="logo[href]" value="{{ array_key_exists('logo', $site->settings) ? $site->settings['logo']['href'] : '/chuckbe/chuckcms/chuckcms-logo.png' }}">
               </div>
-              <img id="logoholder" src="{{ URL::to('/') }}{{ $site->settings['logo']['href'] }}" style="margin-top:15px;max-height:100px;">
+              <img id="logoholder" src="{{ URL::to('/') }}{{ array_key_exists('logo', $site->settings) ? $site->settings['logo']['href'] : '/chuckbe/chuckcms/chuckcms-logo.png' }}" style="margin-top:15px;max-height:100px;">
             </div>
           </div>
         </div>
@@ -236,7 +236,7 @@
             <div class="form-group form-group-default form-group-default-select2">
               <label>Website is beschikbaar in</label>
               <br>
-              <select style="width: 100%" class="full-width mt-1 select2" data-init-plugin="select2" multiple name="lang[]">
+              <select style="width: 100%" class="full-width mt-1 selectjs" data-init-plugin="select2" multiple name="lang[]">
                 @foreach(config('lang.allLocales') as $langKey => $langValue)
                   <option value="{{$langKey}}" @if( array_key_exists($langKey, config('laravellocalization.supportedLocales')) ) selected @endif>{{ $langValue['native'] }}</option>
                 @endforeach
@@ -265,7 +265,7 @@
 @endsection
 
 @section('scripts')
-  <script src="{{ URL::to('vendor/laravel-filemanager/js/lfm.js') }}"></script>
+  <script src="{{ URL::to('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
 	<script>
 		$( document ).ready(function() { 
 			
@@ -274,10 +274,11 @@
       function init () {
         //init media manager inputs 
         var domain = "{{ URL::to('dashboard/media')}}";
-        $('#lfm').filemanager('image', {prefix: domain});
+        $('#lfmFavi').filemanager('image', {prefix: domain});
+        $('#lfmLogo').filemanager('image', {prefix: domain});
       }
 
-      $(".select2").select2();
+      $(".selectjs").select2();
 		});
 	</script>
   @if (session('notification'))
