@@ -105,6 +105,19 @@
         @endif
       </div>
     </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="my-3">
+          <p class="pull-right">
+            <input type="hidden" name="_token" value="{{ Session::token() }}">
+            <input type="hidden" name="content_slug" value="{{ $content->slug }}">
+            <input type="hidden" name="repeater_id" value="{{ $repeater->id }}">
+            <button type="submit" name="edit" class="btn btn-success btn-cons pull-right m-1" value="1">Opslaan</button>
+            <a href="{{ route('dashboard.content.repeaters.entries', ['slug' => $content->slug]) }}" class="pull-right m-1"><button type="button" class="btn btn-info btn-cons">Annuleren</button></a>
+          </p>
+        </div>
+      </div>
+    </div>
   </form>
 </div>
 

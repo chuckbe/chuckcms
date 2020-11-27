@@ -3,18 +3,19 @@
 <div class="modal-dialog ">
   <div class="modal-content-wrapper">
     <div class="modal-content">
-      <div class="modal-header clearfix text-left">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
+      <div class="modal-header">
+        <h5 class="modal-title">Maak een nieuwe <b>rol</b> aan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
         </button>
-        <h5>Maak een nieuwe <span class="semi-bold">rol</span> aan</h5>
-        <p class="p-b-10">Vul de volgende velden aan om de rol aan te maken.</p>
-        @if($errors->any())
-          @foreach ($errors->all() as $error)
-            <p>{{ $error }}</p>
-          @endforeach
-        @endif
       </div>
       <div class="modal-body">
+        <p class="p-b-10">Vul de volgende velden aan om de rol aan te maken.</p>
+        @if($errors->any())
+        @foreach ($errors->all() as $error)
+          <p>{{ $error }}</p>
+        @endforeach
+        @endif
         <form role="form" method="POST" action="{{ route('dashboard.users.roles.create') }}">
           <div class="form-group-attached">
             <div class="row">
@@ -35,9 +36,9 @@
             </div>
           </div>
         <div class="row">
-          <div class="col-md-4 m-t-10 sm-m-t-10 pull-right">
+          <div class="col-12 text-right">
             <input type="hidden" name="_token" value="{{ Session::token() }}">
-            <button type="submit" class="btn btn-primary btn-block m-t-5">Aanmaken</button>
+            <button type="submit" class="btn btn-primary m-t-5">Aanmaken</button>
           </div>
         </div>
         </form>

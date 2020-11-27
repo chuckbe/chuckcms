@@ -28,12 +28,6 @@
 				<button data-target="#importRepeaterModal" data-toggle="modal" class="btn btn-sm btn-outline-success">Importeren</button>
 			</div>
 		@endcan
-		<div class="tools">
-			<a class="collapse" href="javascript:;"></a>
-			<a class="config" data-toggle="modal" href="#grid-config"></a>
-			<a class="reload" href="javascript:;"></a>
-			<a class="remove" href="javascript:;"></a>
-		</div>
 		<div class="col-sm-12 my-3">
 			<div class="table-responsive">
 				<table class="table table-condensed" data-datatable style="width:100%">
@@ -47,7 +41,7 @@
 					</thead>
 					<tbody>
 						@foreach($repeaters as $repeater)
-							<tr>
+							<tr class="content_line" data-id="{{ $repeater->id }}">
 								<td>{{ $repeater->id }}</td>
 								<td>{{$repeater->slug}}</td>
 								<td>
@@ -59,22 +53,22 @@
 								</td>
 								<td class="semi-bold">
 									@can('show repeaters entries')
-							    		<a href="{{ route('dashboard.content.repeaters.entries', ['slug' => $repeater->slug]) }}" class="btn btn-default btn-sm btn-rounded m-r-20">
+							    		<a href="{{ route('dashboard.content.repeaters.entries', ['slug' => $repeater->slug]) }}" class="btn btn-default btn-sm btn-rounded">
 							    			<i class="fa fa-clipboard"></i> entries
 							    		</a>
 							    	@endcan
 									@can('edit repeaters')
-							    		<a href="{{ route('dashboard.content.repeaters.edit', ['slug' => $repeater->slug]) }}" class="btn btn-primary btn-sm btn-rounded m-r-20">
+							    		<a href="{{ route('dashboard.content.repeaters.edit', ['slug' => $repeater->slug]) }}" class="btn btn-primary btn-sm btn-rounded">
 							    			<i class="fa fa-edit"></i> 
 							    		</a>
 							    	@endcan
 									@can('delete repeaters')
-							    		<a href="{{ route('dashboard.forms.delete', ['slug' => $repeater->slug]) }}" class="btn btn-danger btn-sm btn-rounded m-r-20 disabled">
+							    		<a href="#" class="btn btn-danger btn-sm btn-rounded content_delete" data-id="{{ $repeater->id }}">
 							    			<i class="fa fa-trash"></i> 
 							    		</a>
 							    	@endcan
 									@can('show repeaters')
-							    		<a href="{{ route('dashboard.content.repeaters.json', ['slug' => $repeater->slug]) }}" class="btn btn-warning btn-sm btn-rounded m-r-20">
+							    		<a href="{{ route('dashboard.content.repeaters.json', ['slug' => $repeater->slug]) }}" class="btn btn-warning btn-sm btn-rounded">
 							    			<i class="fa fa-download"></i> 
 							    		</a>
 							    	@endcan
@@ -91,18 +85,56 @@
 @endsection
 
 @section('css')
-	{{-- <link href="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" /> --}}
-    <link href="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.chuck.be/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+
 @endsection
 
 @section('scripts')
-	<script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
-    <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
-    <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
-    <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
-    <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
-    <script src="https://cdn.chuck.be/assets/js/tables.js" type="text/javascript"></script>
+<script src="https://cdn.chuck.be/assets/plugins/sweetalert2.all.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.content_delete').each(function(){
+		let content_id = $(this).attr('data-id');
+		let token = '{{ Session::token() }}';
+		$(this).click(function(event){
+			event.preventDefault();
+			swal({
+				title: 'Are you sure?',
+				text: "This will delete the repeater and all including entries. You won't be able to revert this!",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete it!'
+			}).then((result)=>{
+				if(result.value) {
+	  				$.ajax({
+               		method: 'POST',
+                	url: "{{ route('dashboard.content.repeaters.delete') }}",
+                	data: { 
+                		content_id: content_id, 
+                		_token: token
+                    }
+                }).done(function(data){
+				if(data == 'success'){
+					$(".content_line[data-id='"+content_id+"']").first().remove();
+					swal(
+			      		'Deleted!',
+			      		'The repeater and all including entries has been deleted.',
+			      		'success'
+			    	)
+				} else{
+					swal(
+			      		'Oops!',
+			      		'Something went wrong...',
+			      		'danger'
+			    	)
+				}
+			})
+            }
+			})
+		})
+	})
+})
+</script>
 @endsection
 

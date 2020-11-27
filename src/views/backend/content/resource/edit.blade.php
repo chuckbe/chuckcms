@@ -18,9 +18,11 @@
         <div class="my-3">
           <ul class="nav nav-tabs justify-content-start" id="resourceTab" role="tablist">
             @foreach(ChuckSite::getSupportedLocales() as $langKey => $langValue)
-              <li class="nav-item" role="presentation">
-                <a href="#" @if($loop->iteration == 1) class="active" @endif data-toggle="tab" data-target="#tab_resource_{{ $langKey }}"><span>{{ $langValue['name'] }} ({{ $langValue['native'] }})</span></a>
-              </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link{{ $loop->iteration == 1 ? ' active' : '' }}" id="{{ $langKey.'_page-tab' }}" data-target="#tab_resource_{{ $langKey }}" data-toggle="tab" href="#" role="tab" aria-controls="#{{ $langKey.'_page' }}" aria-selected="{{ $loop->iteration == 1 ? 'true' : 'false' }}">
+                    <span>{{ $langValue['name'] }} ({{ strtoupper($langKey) }})</span>
+                </a>
+            </li>
             @endforeach
           </ul>
           <div class="tab-content bg-light shadow-sm rounded p-3 mb-3 mx-1" id="resourceTabContent">

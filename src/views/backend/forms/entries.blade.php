@@ -16,12 +16,6 @@
 		</div>
 	</div>
 	<div class="row bg-light shadow-sm rounded p-3 mb-3 mx-1">
-		<div class="tools">
-			<a class="collapse" href="javascript:;"></a>
-			<a class="config" data-toggle="modal" href="#grid-config"></a>
-			<a class="reload" href="javascript:;"></a>
-			<a class="remove" href="javascript:;"></a>
-		</div>
 		<div class="col-sm-12 my-3">
 			<div class="table-responsive">
 				<table class="table table-condensed table-detailed" data-datatable id="detailTable" style="width:100%">

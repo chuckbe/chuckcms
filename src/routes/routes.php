@@ -167,7 +167,7 @@ Route::group(['middleware' => ['web']], function() {
         });
 
         Route::group(['middleware' => ['permission:delete resource']], function () {
-			
+			Route::post('/dashboard/content/resources/delete', 'Chuckbe\Chuckcms\Controllers\ContentController@resourceDelete')->name('dashboard.content.resources.delete');
         });
 		
     // Dashboard Content Repeaters Routes...		
@@ -187,7 +187,7 @@ Route::group(['middleware' => ['web']], function() {
         });
 
         Route::group(['middleware' => ['permission:delete repeaters']], function () {
-			
+			Route::post('/dashboard/content/repeaters/delete', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterDelete')->name('dashboard.content.repeaters.delete');
         });
     // Dashboard Content Repeaters Entries Routes...
         Route::group(['middleware' => ['permission:show repeaters entries']], function () {

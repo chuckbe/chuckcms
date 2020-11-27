@@ -11,45 +11,36 @@
 @endsection
 
 @section('css')
-	{{-- <link href="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" /> --}}
-    <link href="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.chuck.be/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+	
 @endsection
 
 @section('scripts')
-	<script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
-    <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
-    <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
-    <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
-    <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
-    <script src="https://cdn.chuck.be/assets/js/tables.js" type="text/javascript"></script>
-    <script type="text/javascript">
-    $(document).ready(function() {
+<script type="text/javascript">
+$(document).ready(function() {
 
-    	$(".no-special-but-hyphens").keyup(function(){
-		    var text = $(this).val();
-		    slug_text = text.toLowerCase().replace(/[^A-Za-z-]/g, "").replace(/ +/g,'-');
-		    $(this).val(slug_text);  
-		});
+	$(".no-special-but-hyphens").keyup(function(){
+	    var text = $(this).val();
+	    slug_text = text.toLowerCase().replace(/[^A-Za-z-]/g, "").replace(/ +/g,'-');
+	    $(this).val(slug_text);  
+	});
 
-    });
+});
 
-    function editModal(id, slug, to, type){
-    	$('#edit_redirect_id').val(id);
-    	$('#edit_redirect_slug').val(slug);
-    	$('#edit_redirect_to').val(to);
-    	$('#edit_redirect_type').val(type).trigger('change');
-    	$('#editRedirectModal').modal('show');
-    }
+function editModal(id, slug, to, type){
+	$('#edit_redirect_id').val(id);
+	$('#edit_redirect_slug').val(slug);
+	$('#edit_redirect_to').val(to);
+	$('#edit_redirect_type').val(type).trigger('change');
+	$('#editRedirectModal').modal('show');
+}
 
-    function deleteModal(id, slug, to){
-    	$('#delete_redirect_id').val(id);
-    	$('#delete_redirect_slug').text(slug);
-    	$('#delete_redirect_to').text(to);
-    	$('#deleteRedirectModal').modal('show');
-    }
-    </script>
+function deleteModal(id, slug, to){
+	$('#delete_redirect_id').val(id);
+	$('#delete_redirect_slug').text(slug);
+	$('#delete_redirect_to').text(to);
+	$('#deleteRedirectModal').modal('show');
+}
+</script>
 @endsection
 
 @section('content')
@@ -96,14 +87,14 @@
 								<td><span class="label label-success">{{ $redirect->type}}</span></td>
 								<td>
 									@can('edit redirects')
-							    		<a href="#" onclick="editModal({{ $redirect->id }}, '{{ $redirect->slug }}', '{{ $redirect->to }}', {{ $redirect->type }} )" class="btn btn-default btn-sm btn-rounded m-r-20">
-							    			<i data-feather="edit-2"></i> edit
+							    		<a href="#" onclick="editModal({{ $redirect->id }}, '{{ $redirect->slug }}', '{{ $redirect->to }}', {{ $redirect->type }} )" class="btn btn-secondary btn-sm btn-rounded">
+							    			edit
 							    		</a>
 							    	@endcan
 
 							    	@can('delete redirects')
-							    		<a href="#" onclick="deleteModal({{ $redirect->id }}, '{{ $redirect->slug }}', '{{ $redirect->to }}')" class="btn btn-danger btn-sm btn-rounded m-r-20">
-							    			<i data-feather="trash"></i> delete
+							    		<a href="#" onclick="deleteModal({{ $redirect->id }}, '{{ $redirect->slug }}', '{{ $redirect->to }}')" class="btn btn-danger btn-sm btn-rounded">
+							    			<i class="fa fa-trash"></i> delete
 							    		</a>
 							    	@endcan
 								</td>

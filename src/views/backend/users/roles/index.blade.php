@@ -22,12 +22,13 @@
 		</div>
   </div>
   <div class="row bg-light shadow-sm rounded p-3 mb-3 mx-1">
-    <div class="tools">
-      <a class="collapse" href="javascript:;"></a>
-      <a class="config" data-toggle="modal" href="#grid-config"></a>
-      <a class="reload" href="javascript:;"></a>
-      <a class="remove" href="javascript:;"></a>
-    </div>
+    
+    @can('create roles')
+    <div class="col-sm-12 text-right">
+        <a href="#" data-target="#createRoleModal" data-toggle="modal" class="btn btn-sm btn-outline-success">Voeg Rol Toe</a>
+      </div>
+    @endcan
+
     <div class="col-sm-12 my-3">
       <div class="table-responsive">
         <table class="table" data-datatable style="width:100%">
@@ -80,26 +81,19 @@
 @endsection
 
 @section('scripts')
-  <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
-    <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
-    <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
-    <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
-    <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
-    <script src="https://cdn.chuck.be/assets/js/tables.js" type="text/javascript"></script>
-    <script type="text/javascript">
-    function deleteModal(id, name, redirect){
-      $('#delete_role_id').val(id);
-      $('#delete_role_name').text(name);
-      $('#delete_role_redirect').text(redirect);
-      $('#deleteRoleModal').modal('show');
-    }
-    </script>
-    @if (session('notification'))
-      @include('chuckcms::backend.includes.notification')
-    @endif
-    @if (session('whoops'))
-      @include('chuckcms::backend.includes.whoops')
-    @endif
+<script type="text/javascript">
+function deleteModal(id, name, redirect){
+  $('#delete_role_id').val(id);
+  $('#delete_role_name').text(name);
+  $('#delete_role_redirect').text(redirect);
+  $('#deleteRoleModal').modal('show');
+}
+</script>
+@if (session('notification'))
+  @include('chuckcms::backend.includes.notification')
+@endif
+@if (session('whoops'))
+  @include('chuckcms::backend.includes.whoops')
+@endif
 @endsection
 

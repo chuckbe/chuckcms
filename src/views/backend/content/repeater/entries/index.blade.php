@@ -30,7 +30,7 @@
 		</div>
 		@can('create repeaters entry')
 		<div class="col-sm-12 text-right">
-			<a href="{{ route('dashboard.content.repeaters.entries.create', ['slug' => $content->slug]) }}" class="btn btn-sm btn-outline-success">Voeg Nieuwe {{ $content->slug }} Toe</a>
+			<a href="{{ route('dashboard.content.repeaters.entries.create', ['slug' => $content->slug]) }}" class="btn btn-sm btn-outline-success">Voeg {{ ucfirst($content->slug) }} Toe</a>
 		</div>
 		@endcan
 		<div class="col-sm-12 my-3">
@@ -92,60 +92,51 @@
 @endsection
 
 @section('css')
-	{{-- <link href="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" /> --}}
-    <link href="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.chuck.be/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+
 @endsection
 
 @section('scripts')
-	<script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
-    <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
-    <script src="https://cdn.chuck.be/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
-    <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
-    <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
-    <script src="https://cdn.chuck.be/assets/js/tables.js" type="text/javascript"></script>
-    <script src="https://cdn.chuck.be/assets/plugins/sweetalert2.all.js"></script>
-    <script>
-    $( document ).ready(function (){
-    	$('.repeater_delete').each(function(){
-			var repeater_id = $(this).attr("data-id");
-			var token = '{{ Session::token() }}';
-		  	$(this).click(function (event) {
-		  		event.preventDefault();
-		  		swal({
-					title: 'Are you sure?',
-					text: "You won't be able to revert this!",
-					type: 'warning',
-					showCancelButton: true,
-					confirmButtonColor: '#3085d6',
-					cancelButtonColor: '#d33',
-					confirmButtonText: 'Yes, delete it!'
-				}).then((result) => {
-				  	if (result.value) { 
-				  		$.ajax({
-	                        method: 'POST',
-	                        url: "{{ route('dashboard.content.repeaters.entries.delete') }}",
-	                        data: { 
-	                        	repeater_id: repeater_id, 
-	                        	_token: token
-	                        }
-	                    })
-	                    .done(function (data) {
-	                    	console.log('data :: ', data);
+<script src="https://cdn.chuck.be/assets/plugins/sweetalert2.all.js"></script>
+<script>
+$( document ).ready(function (){
+	$('.repeater_delete').each(function(){
+		var repeater_id = $(this).attr("data-id");
+		var token = '{{ Session::token() }}';
+	  	$(this).click(function (event) {
+	  		event.preventDefault();
+	  		swal({
+				title: 'Are you sure?',
+				text: "You won't be able to revert this!",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+			  	if (result.value) { 
+			  		$.ajax({
+                        method: 'POST',
+                        url: "{{ route('dashboard.content.repeaters.entries.delete') }}",
+                        data: { 
+                        	repeater_id: repeater_id, 
+                        	_token: token
+                        }
+                    })
+                    .done(function (data) {
+                    	console.log('data :: ', data);
 
-	                        $(".repeater_line[data-id='"+repeater_id+"']").first().remove();
-	                    });
-				    	swal(
-				      		'Deleted!',
-				      		'The repeater has been deleted.',
-				      		'success'
-				    	)
-				  	}
-				})
-		    });
-		});
-    });
+                        $(".repeater_line[data-id='"+repeater_id+"']").first().remove();
+                    });
+			    	swal(
+			      		'Deleted!',
+			      		'The repeater has been deleted.',
+			      		'success'
+			    	)
+			  	}
+			})
+	    });
+	});
+});
 
-    </script>
+</script>
 @endsection

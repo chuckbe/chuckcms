@@ -3,18 +3,21 @@
 <div class="modal-dialog ">
   <div class="modal-content-wrapper">
     <div class="modal-content">
-      <div class="modal-header clearfix text-left">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
+      <div class="modal-header">
+        <h5 class="modal-title">Maak een nieuwe <span class="semi-bold">redirect</span> aan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
         </button>
-        <h5>Maak een nieuwe <span class="semi-bold">redirect</span> aan</h5>
+      </div>
+
+      <div class="modal-body">
         <p class="p-b-10">Vul de volgende velden aan om de redirect aan te maken.</p>
         @if($errors->any())
           @foreach ($errors->all() as $error)
             <p>{{ $error }}</p>
           @endforeach
         @endif
-      </div>
-      <div class="modal-body">
+        <hr>
         <form role="form" method="POST" action="{{ route('dashboard.redirects.create') }}">
           <div class="form-group-attached">
             <div class="row">
@@ -37,7 +40,7 @@
               <div class="col-md-12">
                 <div class="form-group form-group-default form-group-default-select2 required">
                   <label class="">Type</label>
-                  <select class="full-width" name="type" data-placeholder="Selecteer type" data-minimum-results-for-search="-1" data-init-plugin="select2" required>
+                  <select class="form-control" name="type" required>
                       <option value="301">301 - Permanent</option>
                       <option value="302">302 - Tijdelijk</option>
                   </select>
