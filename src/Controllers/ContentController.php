@@ -84,6 +84,21 @@ class ContentController extends BaseController
         return redirect()->route('dashboard.content.resources');
     }
 
+    public function resourceDelete(Request $request)
+    {
+        $this->validate(request(), [//@todo create custom Request class for site validation
+            'resource_id' => 'required'
+        ]);
+
+        $resource = Resource::where('id', $request->get('resource_id'))->first();
+
+        if ($resource->delete()) {
+            return 'success';
+        } else {
+            return 'error';
+        }
+    }
+
     public function repeaterIndex()
     {
         $repeaters = $this->content->where('type', 'repeater')->get();
@@ -209,6 +224,22 @@ class ContentController extends BaseController
 
         $notification = array('type' => 'success', 'message' => 'The JSON file was successfully imported.');
         return redirect()->route('dashboard.content.repeaters')->with('notification', $notification);
+    }
+
+    public function repeaterDelete(Request $request)
+    {
+        $this->validate(request(), [//@todo create custom Request class for site validation
+            'content_id' => 'required'
+        ]);
+
+        $content = Content::where('id', $request->get('content_id'))->first();
+        $repeaters = Repeater::where('slug', $content->slug)->delete();
+
+        if ($content->delete()) {
+            return 'success';
+        } else {
+            return 'error';
+        }
     }
 
     public function repeaterEntriesIndex($slug)

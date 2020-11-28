@@ -1,4 +1,4 @@
-@extends('chuckcms::backend.layouts.admin')
+@extends('chuckcms::backend.layouts.base')
 
 @section('title')
 	Dashboard
@@ -6,91 +6,90 @@
 
 @section('breadcrumbs')
 	<ol class="breadcrumb">
-		<li class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+		<li class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Overzicht</a></li>
 	</ol>
 @endsection
 
 @section('content')
-<div class="card-block">
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="card card-default">
-				<div class="card-header  separator">
-					<div class="card-title">SITE DATA</div>
-				</div>
-				<div class="card-block">
-					<header>
-					  <div id="embed-api-auth-container"></div>
-					  <div id="view-selector-container"></div>
-					  <div id="view-name"></div>
-					  <div id="active-users-container"></div>
-					</header>
-				</div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mt-3">
+          <li class="breadcrumb-item active" aria-current="Overzicht">SITE DATA</li>
+        </ol>
+      </nav>
+      <div class="card-block">
+				<header>
+					<div id="embed-api-auth-container"></div>
+					<div id="view-selector-container"></div>
+					<div id="view-name"></div>
+					<div id="active-users-container"></div>
+				</header>
 			</div>
-		</div>
-	</div>
-</div>
-
-<div class="card-block">
-	<div class="row">
-		<div class="col-lg-6">
+    </div>
+  </div>{{-- site header row ends --}}
+  <div class="row mb-3">
+    <div class="col-lg-6">
 			<div class="card card-default">
-				<div class="card-header  separator">
-					<div class="card-title">This Week vs Last Week (by sessions)</div>
+				<div class="breadcrumb separator">
+					<div class="breadcrumb-item">This Week vs Last Week (by sessions)</div>
 				</div>
 				<div class="card-block">
 					<div class="Chartjs">
 					  <figure class="Chartjs-figure" id="chart-1-container"></figure>
 					  <ol class="Chartjs-legend" id="legend-1-container"></ol>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-6">
+				  </div>
+			  </div>
+		  </div>
+    </div>
+
+    <div class="col-lg-6">
 			<div class="card card-default">
-				<div class="card-header  separator">
-					<div class="card-title">This Year vs Last Year (by users)</div>
+				<div class="breadcrumb separator">
+					<div class="breadcrumb-item">This Year vs Last Year (by users)</div>
 				</div>
 				<div class="card-block">
 					<div class="Chartjs">
 					  <figure class="Chartjs-figure" id="chart-2-container"></figure>
 					  <ol class="Chartjs-legend" id="legend-2-container"></ol>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+				  </div>
+			  </div>
+		  </div>
+    </div>
+    
+  </div>
 
-<div class="card-block">
-	<div class="row">
-		<div class="col-lg-6">
+    <div class="row mb-3">
+    <div class="col-lg-6">
 			<div class="card card-default">
-				<div class="card-header  separator">
-					<div class="card-title">Top Browsers (by pageview)</div>
+				<div class="breadcrumb separator">
+					<div class="breadcrumb-item">Top Browsers (by pageview)</div>
 				</div>
 				<div class="card-block">
 					<div class="Chartjs">
 					  <figure class="Chartjs-figure" id="chart-3-container"></figure>
 					  <ol class="Chartjs-legend" id="legend-3-container"></ol>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-6">
+				  </div>
+			  </div>
+		  </div>
+    </div>
+
+    <div class="col-lg-6">
 			<div class="card card-default">
-				<div class="card-header  separator">
-					<div class="card-title">Top Countries (by sessions)</div>
+				<div class="breadcrumb separator">
+					<div class="breadcrumb-item">Top Countries (by sessions)</div>
 				</div>
 				<div class="card-block">
 					<div class="Chartjs">
 					  <figure class="Chartjs-figure" id="chart-4-container"></figure>
 					  <ol class="Chartjs-legend" id="legend-4-container"></ol>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+				  </div>
+			  </div>
+		  </div>
+    </div>
+    
+  </div>
 </div>
 @endsection
 

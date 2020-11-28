@@ -25,7 +25,7 @@
                     <a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link">Paginas</a>
+                    <a href="{{ route('dashboard.pages') }}" class="nav-link">Paginas</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" id="topMenuBContentLink" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Navigatie <span class="caret"></span></a>

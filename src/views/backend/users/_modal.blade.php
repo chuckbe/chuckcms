@@ -3,13 +3,15 @@
 <div class="modal-dialog ">
   <div class="modal-content-wrapper">
     <div class="modal-content">
-      <div class="modal-header clearfix text-left">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
+      <div class="modal-header">
+        <h5 class="modal-title">Nodig een nieuwe <span class="semi-bold">gebruiker</span> uit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
         </button>
-        <h5>Nodig een nieuwe <span class="semi-bold">gebruiker</span> uit</h5>
-        <p class="p-b-10">Volgende informatie hebben we nodig om de gebruiker uit te nodigen.</p>
       </div>
+
       <div class="modal-body">
+        <p class="p-b-10">Volgende informatie hebben we nodig om de gebruiker uit te nodigen.</p>
         <form role="form" method="POST" action="{{ route('dashboard.users.invite') }}">
           <div class="form-group-attached">
 
@@ -33,7 +35,7 @@
               <div class="col-md-12">
                 <div class="form-group form-group-default form-group-default-select2 required">
                   <label class="">Rechten</label>
-                  <select class="full-width" name="role" data-placeholder="Selecteer Rechten" data-minimum-results-for-search="-1" data-init-plugin="select2" required>
+                  <select class="form-control" name="role" required>
                     @foreach($roles as $role)
                       @if($role->name == 'super-admin')
                       @hasrole('super-admin')
@@ -49,9 +51,9 @@
             </div>
           </div>
         <div class="row">
-          <div class="col-md-4 m-t-10 sm-m-t-10 pull-right">
+          <div class="col text-right">
             <input type="hidden" name="_token" value="{{ Session::token() }}">
-            <button type="submit" class="btn btn-primary btn-block m-t-5">Uitnodigen</button>
+            <button type="submit" class="btn btn-primary">Uitnodigen</button>
           </div>
         </div>
         </form>

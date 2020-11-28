@@ -3,31 +3,35 @@
 <div class="modal-dialog ">
   <div class="modal-content-wrapper">
     <div class="modal-content">
-      <div class="modal-header clearfix text-left">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
+      
+      <div class="modal-header">
+        <h5 class="modal-title">Importeer een nieuwe <b>repeater</b> via JSON</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
         </button>
-        <h5>Importeer een nieuwe <span class="semi-bold">repeater</span> via JSON</h5>
-        <p class="p-b-10">Upload de JSON file om de repeater aan te maken.</p>
+      </div>
+      <div class="modal-body">
+        <p>Upload de JSON file om de repeater aan te maken.</p>
         @if($errors->any())
           @foreach ($errors->all() as $error)
             <p>{{ $error }}</p>
           @endforeach
         @endif
-      </div>
-      <div class="modal-body">
         <form role="form" method="POST" action="{{ route('dashboard.content.repeaters.import') }}" enctype="multipart/form-data">
           <div class="form-group-attached">
             <div class="row">
-              <div class="col-md-12">
-                <div class="form-group form-group-default required">
-                  <label>Upload JSON bestand</label>
-                  <input type="file" name="file" class="form-control no-special-but-hyphens" required>
+              <div class="col-md-12 px-3">
+                <div class="form-group">
+                  <div class="custom-file">
+                    <input type="file" name="file" class="custom-file-input" id="repeaterJsonImportFile" required>
+                    <label class="custom-file-label" for="repeaterJsonImportFile">Upload JSON bestand *</label>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-md-12">
-                <div class="form-group form-group-default required">
+                <div class="form-group">
                   <label>Slug</label>
                   <input type="text" name="slug" class="form-control no-special-but-hyphens" required>
                 </div>
