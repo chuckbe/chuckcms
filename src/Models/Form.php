@@ -35,8 +35,8 @@ class Form extends Eloquent
         foreach ($this->form['fields'] as $fieldKey => $fieldValue) {
             $rules[$fieldKey] = $fieldValue['validation'];
         }
-        $rules['chuckpot'] = 'honeypot';
-        $rules['chucktime'] = 'required|honeytime:10';
+        $rules['chuck_telephone'] = 'honeypot';
+        $rules['chuck_email'] = 'required|honeytime:12';
         return $rules;
     }
 
