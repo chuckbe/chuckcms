@@ -17,7 +17,6 @@ use Spatie\Permission\Models\Role;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -192,10 +191,10 @@ class PageController extends BaseController
      *
      * @return \Illuminate\View\View
      */
-    public function builderIndex($page_id)
+    public function builderIndex(Request $request, $page_id)
     {
-        if(Input::has('lang')) {
-            app()->setLocale(Input::get('lang'));
+        if($request->has('lang')) {
+            app()->setLocale($request->get('lang'));
         } else {
             return redirect()->to(URL::current().'?lang='.app()->getLocale());
         }
@@ -251,10 +250,10 @@ class PageController extends BaseController
      *
      * @return \Illuminate\View\View
      */
-    public function builderRaw($page_id)
+    public function builderRaw(Request $request, $page_id)
     {
-        if(Input::has('lang')) {
-            app()->setLocale(Input::get('lang'));
+        if($request->has('lang')) {
+            app()->setLocale($request->get('lang'));
         } else {
             return redirect()->to(URL::current().'?lang='.app()->getLocale());
         }

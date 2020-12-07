@@ -119,8 +119,8 @@ class PageBlockController extends BaseController
      */
     public function addBlockTop(Request $request)
     {
-        if(Input::has('lang')) {
-            app()->setLocale(Input::get('lang'));
+        if($request->has('lang')) {
+            app()->setLocale($request->get('lang'));
         } 
 
         // AUTHORIZE ... COMES HERE
@@ -139,10 +139,10 @@ class PageBlockController extends BaseController
      */
     public function addBlockBottom(Request $request)
     {
-        if(Input::has('lang')) {
-            app()->setLocale(Input::get('lang'));
+        if($request->has('lang')) {
+            app()->setLocale($request->get('lang'));
         } 
-        
+
         // AUTHORIZE ... COMES HERE
         $contents = File::get($request['location']);
         $page = $this->page->getById($request['page_id']);

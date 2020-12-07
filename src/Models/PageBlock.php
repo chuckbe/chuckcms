@@ -75,8 +75,6 @@ class PageBlock extends Eloquent
 
     public function addBlockTop($contents, $page, $name)//@todo add to pageblock repository
     {
-
-
         $this->moveOrderDownByPageId($page->id);
         $pageblock = new PageBlock();
         $pageblock->page_id = $page->id;
