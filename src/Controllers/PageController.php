@@ -16,6 +16,8 @@ use Chuckbe\Chuckcms\Models\User;
 use Spatie\Permission\Models\Role;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -192,8 +194,13 @@ class PageController extends BaseController
      */
     public function builderIndex($page_id)
     {
+        if(Input::has('lang')) {
+            app()->setLocale(Input::get('lang'));
+        } else {
+            return redirect()->to(URL::current().'?lang='.app()->getLocale());
+        }
         $page = $this->page->getByIdWithBlocks($page_id);
-        $template = $this->template->where('id', $page->template_id)->where('type', 'default')->first();
+        $template = $this->template->where('id', $page->template_id)->first();
         $pageblocks = $this->pageBlockRepository->getRenderedByPageBlocks($this->pageblock->getAllByPageId($page->id));
 
         $block_dir = array_slice(scandir('chuckbe/' . $template->slug . '/blocks'), 2);        
@@ -246,8 +253,13 @@ class PageController extends BaseController
      */
     public function builderRaw($page_id)
     {
+        if(Input::has('lang')) {
+            app()->setLocale(Input::get('lang'));
+        } else {
+            return redirect()->to(URL::current().'?lang='.app()->getLocale());
+        }
         $page = $this->page->getByIdWithBlocks($page_id);
-        $template = $this->template->where('id', $page->template_id)->where('type', 'default')->first();
+        $template = $this->template->where('id', $page->template_id)->first();
         $pageblocks = $this->pageBlockRepository->getRenderedByPageBlocks($this->pageblock->getAllByPageId($page->id));
 
         return view('chuckcms::backend.pages.pagebuilder.core', compact('template', 'page', 'pageblocks'));

@@ -119,7 +119,8 @@ class PageBlockRepository
             'name' => $pageblock->name,
             'slug' => $pageblock->slug,
             'body' => $newbody,
-            'raw' => $pageblock->body
+            'raw' => $pageblock->body,
+            'lang' => $pageblock->lang
         );
         
         return $new_pageblock;
@@ -208,7 +209,7 @@ class PageBlockRepository
     {
         $pageblock = $this->pageblock->find($id);
         $og_order = $pageblock->order;
-        $target_pb = $this->pageblock->where('page_id', $pageblock->page_id)->where('order', ($og_order - 1))->first();
+        $target_pb = $this->pageblock->where('page_id', $pageblock->page_id)->where('lang', $pageblock->lang)->where('order', ($og_order - 1))->first();
 
         $pageblock->order = $og_order - 1;
         $target_pb->order = $og_order;
@@ -222,7 +223,7 @@ class PageBlockRepository
     {
         $pageblock = $this->pageblock->find($id);
         $og_order = $pageblock->order;
-        $target_pb = $this->pageblock->where('page_id', $pageblock->page_id)->where('order', ($og_order + 1))->first();
+        $target_pb = $this->pageblock->where('page_id', $pageblock->page_id)->where('lang', $pageblock->lang)->where('order', ($og_order + 1))->first();
 
         $pageblock->order = $og_order + 1;
         $target_pb->order = $og_order;
@@ -248,7 +249,7 @@ class PageBlockRepository
         if ($pageblock) {
             $og_order = $pageblock->order;
             //Decrement order of following pageblocks
-            $pageblocks = $this->pageblock->where('page_id', $pageblock->page_id)->where('order', '>', $og_order)->decrement('order');
+            $pageblocks = $this->pageblock->where('page_id', $pageblock->page_id)->where('lang', $pageblock->lang)->where('order', '>', $og_order)->decrement('order');
             //Delete pageblock
             if ($pageblock->delete()) {
                 return 'success';

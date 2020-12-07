@@ -50,7 +50,16 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
-                        
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Actieve taal: {{ strtoupper(app()->getLocale()) }} <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                @foreach(ChuckSite::getSupportedLocales() as $langKey => $langValue)
+                                @if($langKey !== app()->getLocale())
+                                <li><a href="{{ URL::current().'?lang='.$langKey }}">{{ $langValue['name'] }} ({{ strtoupper($langKey) }})</a></li>
+                                @endif
+                                @endforeach
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>

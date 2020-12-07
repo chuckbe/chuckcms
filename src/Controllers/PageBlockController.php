@@ -12,6 +12,7 @@ use Chuckbe\Chuckcms\Models\Template;
 use File;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -118,6 +119,10 @@ class PageBlockController extends BaseController
      */
     public function addBlockTop(Request $request)
     {
+        if(Input::has('lang')) {
+            app()->setLocale(Input::get('lang'));
+        } 
+
         // AUTHORIZE ... COMES HERE
         $contents = File::get($request['location']);
         $page = $this->page->getById($request['page_id']);
@@ -134,6 +139,10 @@ class PageBlockController extends BaseController
      */
     public function addBlockBottom(Request $request)
     {
+        if(Input::has('lang')) {
+            app()->setLocale(Input::get('lang'));
+        } 
+        
         // AUTHORIZE ... COMES HERE
         $contents = File::get($request['location']);
         $page = $this->page->getById($request['page_id']);

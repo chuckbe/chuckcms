@@ -173,6 +173,4 @@ i{
         </a>
     </div>
 </div>
-
-
 @endsection

@@ -17,7 +17,7 @@ class PageBlock extends Eloquent
 
     public function getAllByPageId($page_id)
     {
-        $pageblocks = $this->where('page_id', $page_id)->orderBy('order', 'asc')->get();
+        $pageblocks = $this->where('page_id', $page_id)->where('lang', app()->getLocale())->orderBy('order', 'asc')->get();
         return $pageblocks;
     }
 
@@ -35,7 +35,7 @@ class PageBlock extends Eloquent
 
     public function getCountByPageId($page_id)
     {
-        return $this->where('page_id', $page_id)->count();
+        return $this->where('page_id', $page_id)->where('lang', app()->getLocale())->count();
     }
 
 
@@ -44,7 +44,7 @@ class PageBlock extends Eloquent
     {
         $pageblock = $this->find($id);
         $og_order = $pageblock->order;
-        $target_pb = $this->where('page_id', $pageblock->page_id)->where('order', ($og_order - 1))->first();
+        $target_pb = $this->where('page_id', $pageblock->page_id)->where('lang', $pageblock->lang)->where('order', ($og_order - 1))->first();
 
         $pageblock->order = $og_order - 1;
         $target_pb->order = $og_order;
@@ -58,7 +58,7 @@ class PageBlock extends Eloquent
     {
         $pageblock = $this->find($id);
         $og_order = $pageblock->order;
-        $target_pb = $this->where('page_id', $pageblock->page_id)->where('order', ($og_order + 1))->first();
+        $target_pb = $this->where('page_id', $pageblock->page_id)->where('lang', $pageblock->lang)->where('order', ($og_order + 1))->first();
 
         $pageblock->order = $og_order + 1;
         $target_pb->order = $og_order;
@@ -70,11 +70,13 @@ class PageBlock extends Eloquent
 
     public function moveOrderDownByPageId($id)//@todo add to pageblock repository
     {
-        $pageblocks = $this->where('page_id', $id)->increment('order');
+        $pageblocks = $this->where('page_id', $id)->where('lang', app()->getLocale())->increment('order');
     }
 
     public function addBlockTop($contents, $page, $name)//@todo add to pageblock repository
     {
+
+
         $this->moveOrderDownByPageId($page->id);
         $pageblock = new PageBlock();
         $pageblock->page_id = $page->id;
@@ -82,6 +84,7 @@ class PageBlock extends Eloquent
         $pageblock->slug = $name;
         $pageblock->body = $contents;
         $pageblock->order = 1;
+        $pageblock->lang = app()->getLocale();
         $pageblock->save();
         return $pageblock;
     }
@@ -94,6 +97,7 @@ class PageBlock extends Eloquent
         $pageblock->slug = $name;
         $pageblock->body = $contents;
         $pageblock->order = $this->getCountByPageId($page->id) + 1;
+        $pageblock->lang = app()->getLocale();
         $pageblock->save();
         return $pageblock;
     }
