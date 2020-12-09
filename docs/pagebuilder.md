@@ -26,7 +26,7 @@ data-type="image"
 data-type="link"
 ```
 
-#### Background Image (only ```<a>``` tags)
+#### Background Image (only ```<div>``` tags)
 ```
 data-type="background"
 ```

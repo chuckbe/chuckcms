@@ -12,6 +12,9 @@ nav_order: 2
 ## Table of contents
 {: .no_toc .text-delta }
 
+1. TOC
+{:toc}
+
 ---
 
 ### Install with composer
@@ -42,27 +45,27 @@ protected $routeMiddleware = [
 ];
 ```
 
-### migrate
+### Migrate the database
 ```
 php artisan migrate
 ```
 
-### generate a new site with following command
+### Generate a new site
 ```
 php artisan chuckcms:generate-site
 ```
 
-### generate all default roles and permission
+### Generate default roles and permission
 ```
 php artisan chuckcms:generate-roles-permissions
 ```
 
-### make a new super admin with following command
+### Generate super admin
 ```
 php artisan chuckcms:generate-super-admin
 ```
 
-### Go to http://yourapp.local/dashboard/pages
+### Visit http://yourapp.local/dashboard/pages
 
 ### Create a new page
 
