@@ -25,6 +25,7 @@
 {{-- <link href="https://cdn.chuck.be/chuckcms/css/Datatables.css" rel="stylesheet" type="text/css" /> --}}
 <link href="{{ URL::to('chuckbe/chuckcms/css/font-awesome/css/font-awesome.css') }}" rel="stylesheet" type="text/css" />
 {{-- <link href="{{ URL::to('chuckbe/chuckcms/css/pages-icons.css') }}" rel="stylesheet" type="text/css" />  --}}
+<link href="https://cdn.chuck.be/chuckcms/css/min-height.css" rel="stylesheet" type="text/css" />
 @yield('css')
 </head>
 <body class="light-version">
