@@ -32,6 +32,8 @@
 @include('chuckcms::backend.includes.navigation')
 
 @yield('content')
+
+@include('chuckcms::backend.includes.footer')
     
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
 {{ csrf_field() }}
