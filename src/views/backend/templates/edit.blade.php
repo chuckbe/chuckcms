@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- START CONTAINER FLUID -->
-<div class=" container-fluid   container-fixed-lg">
+<div class="container-fluid container-fixed-lg">
 
 <!-- START card -->
 <form action="{{ route('dashboard.templates.save') }}" method="POST">

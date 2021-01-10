@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- START CONTAINER FLUID -->
-<div class="container p-3">
+<div class="container p-3 min-height">
   <div class="row">
     <div class="col-sm-12">
         <nav aria-label="breadcrumb">
