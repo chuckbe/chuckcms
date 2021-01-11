@@ -12,25 +12,36 @@
 
 @section('content')
 <div class="container p3 min-height">
-  <div class="row">
+  <div class="row mb-3">
     <div class="col-sm-12">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb mt-3">
-          <li class="breadcrumb-item active" aria-current="Overzicht">SITE DATA</li>
+          <li class="breadcrumb-item active" aria-current="Overzicht">DASHBOARD</li>
         </ol>
       </nav>
       <div class="card-block">
 				<header>
-					<div id="embed-api-auth-container"></div>
-					<div id="view-selector-container"></div>
-					<div id="view-name"></div>
-					<div id="active-users-container"></div>
+          <div class="row">
+            <div class="col-12 mb-2">
+					    <div id="embed-api-auth-container"></div>
+              <div id="view-name"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div id="view-selector-container"></div>
+            </div>
+            <div class="col-sm-6">
+              <div id="active-users-container" class="h-100 pt-3 pb-4 text-center"></div>
+            </div>
+          </div>
 				</header>
 			</div>
     </div>
-  </div>{{-- site header row ends --}}
+  </div>
+
   <div class="row mb-3">
-    <div class="col-lg-6">
+    <div class="col-lg-6 mb-3">
 			<div class="card card-default">
 				<div class="breadcrumb separator">
 					<div class="breadcrumb-item">This Week vs Last Week (by sessions)</div>
@@ -57,11 +68,10 @@
 			  </div>
 		  </div>
     </div>
-    
   </div>
 
-    <div class="row mb-3">
-    <div class="col-lg-6">
+  <div class="row mb-3">
+    <div class="col-lg-6 mb-3">
 			<div class="card card-default">
 				<div class="breadcrumb separator">
 					<div class="breadcrumb-item">Top Browsers (by pageview)</div>
@@ -146,6 +156,7 @@ gapi.analytics.ready(function() {
    */
   var activeUsers = new gapi.analytics.ext.ActiveUsers({
     container: 'active-users-container',
+    template:'<div class="ActiveUsers row h-100 mx-0 mb-3"> <span class="d-block w-100 mt-auto">Active Users:</span> <h1 class="d-block w-100 text-center my-0"><b class="ActiveUsers-value d-block text-center"></b></h1></div>',
     pollingInterval: 5
   });
 
@@ -177,8 +188,14 @@ gapi.analytics.ready(function() {
    */
   var viewSelector = new gapi.analytics.ext.ViewSelector2({
     container: 'view-selector-container',
+    template: '<div class="ViewSelector2">  <div class="ViewSelector2-item">    <label>Account</label>    <select class="FormField custom-select"></select>  </div>  <div class="ViewSelector2-item">    <label>Property</label>    <select class="FormField custom-select"></select>  </div>  <div class="ViewSelector2-item">    <label>View</label>    <select class="FormField custom-select"></select>  </div></div>',
   })
   .execute();
+
+  const selectorFields = document.getElementsByClassName('FormField');
+    for (var n = 0; n < selectorFields.length; n++) {
+      selectorFields[n].classList.add('form-control');
+    }
 
 
   /**
