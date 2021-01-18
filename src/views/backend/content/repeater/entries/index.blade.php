@@ -62,8 +62,15 @@
 														$repeater_display = explode(':', $rValue['value'])[3];
 													@endphp
 													{{ ChuckRepeater::find($repeater->json[str_replace($content->slug . '_', '', $rKey)])->$repeater_display }}
-													@else
-														{{ $repeater->json[str_replace($content->slug . '_', '', $rKey)] }}
+												@elseif($rValue['type'] == 'multiselect2' && strpos($rValue['value'], 'repeater:') !== false)
+													@php
+														$repeater_display = explode(':', $rValue['value'])[3];
+													@endphp
+													@foreach ($repeater->json[str_replace($content->slug . '_', '', $rKey)] as $multirelationship)
+														{{ ChuckRepeater::find($multirelationship)->$repeater_display.(!$loop->last ? ', ' : '') }}
+													@endforeach
+												@else
+													{{ is_array($repeater->json[str_replace($content->slug . '_', '', $rKey)]) ? implode(', ', $repeater->json[str_replace($content->slug . '_', '', $rKey)]) : $repeater->json[str_replace($content->slug . '_', '', $rKey)] }}
 												@endif
 											@endif
 										</td>

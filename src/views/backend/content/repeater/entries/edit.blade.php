@@ -77,9 +77,20 @@
               @if($input['type'] == 'multiselect2')
                 <label for="{{ $keyName }}">{{ $input['label'] }}</label>
                 <select class="full-width select2 {{ $input['class'] }}" data-init-plugin="select2" name="{{ $keyName }}[]" data-minimum-results-for-search="-1" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif multiple="multiple">
-                  @foreach(explode('|', $input['value']) as $s2Value)
-                    <option value="{{ $s2Value }}" @if(array_key_exists($cleanKey, $repeater->json)) @foreach($repeater->json[$cleanKey] as $msValue) @if($msValue == $s2Value) selected @endif @endforeach @endif>{{ $s2Value }}</option>
-                  @endforeach
+                  @if(strpos($input['value'], 'repeater:') !== false)
+                    @php
+                      $repeater_slug = explode(':', $input['value'])[1];
+                      $repeater_value = explode(':', $input['value'])[2];
+                      $repeater_display = explode(':', $input['value'])[3];
+                    @endphp
+                    @foreach(ChuckRepeater::for($repeater_slug) as $relationship)
+                      <option value="{{ $relationship->$repeater_value }}" @if(array_key_exists($cleanKey, $repeater->json)) @if( in_array($relationship->$repeater_value, $repeater->json[$cleanKey]) ) selected @endif @endif>{{ $relationship->$repeater_display }}</option>
+                    @endforeach
+                  @else
+                    @foreach(explode('|', $input['value']) as $s2Value)
+                      <option value="{{ $s2Value }}" @if(array_key_exists($cleanKey, $repeater->json)) @foreach($repeater->json[$cleanKey] as $msValue) @if($msValue == $s2Value) selected @endif @endforeach @endif>{{ $s2Value }}</option>
+                    @endforeach
+                  @endif
                 </select> 
               @endif
               @if($input['type'] == 'date')

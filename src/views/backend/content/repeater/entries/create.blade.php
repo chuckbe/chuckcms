@@ -74,9 +74,20 @@
             @if($input['type'] == 'multiselect2')
               <label for="{{ $keyName }}">{{ $input['label'] }}</label>
               <select class="full-width select2 {{ $input['class'] }}" data-init-plugin="select2" name="{{ $keyName }}[]" data-minimum-results-for-search="-1" @if($input['attributes'] !== '') @foreach($input['attributes'] as $attrName => $attrValue) {{ $attrName }}="{{ $attrValue }}" @endforeach @endif @if($input['required'] == 'true') required @endif multiple="multiple">
-                @foreach(explode('|', $input['value']) as $s2Value)
-                  <option value="{{ $s2Value }}">{{ $s2Value }}</option>
-                @endforeach
+                @if(strpos($input['value'], 'repeater:') !== false)
+                  @php
+                    $repeater_slug = explode(':', $input['value'])[1];
+                    $repeater_value = explode(':', $input['value'])[2];
+                    $repeater_display = explode(':', $input['value'])[3];
+                  @endphp
+                  @foreach(ChuckRepeater::for($repeater_slug) as $category)
+                    <option value="{{ $category->$repeater_value }}">{{ $category->$repeater_display }}</option>
+                  @endforeach
+                @else
+                    @foreach(explode('|', $input['value']) as $s2Value)
+                      <option value="{{ $s2Value }}">{{ $s2Value }}</option>
+                    @endforeach
+                @endif
               </select> 
             @endif
             @if($input['type'] == 'date')
