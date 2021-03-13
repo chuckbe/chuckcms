@@ -20,19 +20,23 @@ class ModuleRepository
         return $result;
     }
 
-    public static function get()
+    public static function get($slug = null)
     {
+        if(!is_null($slug)) {
+            return Module::where('slug', $slug)->firstOrFail();
+        }
+
         return Module::get();
     }
 
     /**
-     * Return the settings array of the module
+     * Return the settings array of the module -> method can be phased out
      *
      * @var Module $module
      **/
     public function getSettings(Module $module)
     {
-        return array_key_exists('settings', $module->json) ? $module->json['settings'] : [];
+        return $module->settings;
     }
 
 }

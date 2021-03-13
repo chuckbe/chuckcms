@@ -3,6 +3,7 @@
 namespace Chuckbe\Chuckcms\Chuck\Accessors;
 
 use Chuckbe\Chuckcms\Chuck\SiteRepository;
+use Chuckbe\Chuckcms\Chuck\ModuleRepository;
 use Chuckbe\Chuckcms\Models\Site as SiteModel;
 use Exception;
 use Illuminate\Support\Facades\Schema;
@@ -10,16 +11,18 @@ use Illuminate\Support\Facades\Schema;
 class Site
 {
     private $siteRepository;
+    private $moduleRepository;
     private $currentSite;
     private $siteSettings;
     private $siteSupportedLocales;
 
-    public function __construct(SiteModel $site, SiteRepository $siteRepository) 
+    public function __construct(SiteModel $site, SiteRepository $siteRepository, ModuleRepository $moduleRepository) 
     {
         $this->currentSite = $this->getCurrentSite($site);
         $this->siteSettings = $this->getSiteSettings($site);
         $this->siteSupportedLocales = $this->getSiteSupportedLocales($site);
         $this->siteRepository = $siteRepository;
+        $this->moduleRepository = $moduleRepository;
     }
 
     public static function forSite($site)
@@ -113,4 +116,8 @@ class Site
         }
     }
 
+    public function module(string $slug)
+    {
+        return $this->moduleRepository->get($slug);
+    }
 }

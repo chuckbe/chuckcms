@@ -3,6 +3,7 @@
 namespace Chuckbe\Chuckcms\Providers;
 
 use Chuckbe\Chuckcms\Chuck\SiteRepository;
+use Chuckbe\Chuckcms\Chuck\ModuleRepository;
 use Chuckbe\Chuckcms\Models\Site;
 use Exception;
 use Illuminate\Support\ServiceProvider;
@@ -31,7 +32,7 @@ class ChuckSiteServiceProvider extends ServiceProvider
             if ($site == null) {
                 throw new Exception('Whoops! No Site Defined...');
             }
-            return new \Chuckbe\Chuckcms\Chuck\Accessors\Site($site, \App::make(SiteRepository::class));
+            return new \Chuckbe\Chuckcms\Chuck\Accessors\Site($site, \App::make(SiteRepository::class), \App::make(ModuleRepository::class));
         });
     }
 }
