@@ -17,6 +17,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
+
 class DashboardController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -70,4 +71,9 @@ class DashboardController extends BaseController
         
         return view('chuckcms::backend.settings.index', compact('pages', 'site'));
     }
+    public function matomo()
+    {
+        return view('chuckcms::backend.matomo.index');
+    }
+
 }

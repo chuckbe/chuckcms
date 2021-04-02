@@ -247,6 +247,7 @@ Route::group(['middleware' => ['web']], function() {
     // Dashboard Settings / Sites Routes...
         Route::group(['middleware' => ['permission:show settings']], function () {
             Route::get('/dashboard/settings', 'Chuckbe\Chuckcms\Controllers\DashboardController@settings')->name('dashboard.settings');
+            Route::get('/dashboard/matomo', 'Chuckbe\Chuckcms\Controllers\DashboardController@matomo')->name('dashboard.matomo');
         });
 
         Route::group(['middleware' => ['permission:edit settings']], function () {

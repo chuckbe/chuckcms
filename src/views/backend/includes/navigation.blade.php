@@ -58,6 +58,9 @@
                 <li class="nav-item">
                     <a href="{{ route('dashboard.settings') }}" class="nav-link">Instellingen</a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('dashboard.matomo') }}" class="nav-link">Matomo</a>
+                </li>
 
                 
             </ul>
