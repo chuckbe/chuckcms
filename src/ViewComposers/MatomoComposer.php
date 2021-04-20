@@ -4,7 +4,7 @@ namespace Chuckbe\Chuckcms\ViewComposers;
 
 use Illuminate\View\View;
 use VisualAppeal\Matomo;
-
+use MatomoTracker;
 
 class MatomoComposer
 {
@@ -27,20 +27,26 @@ class MatomoComposer
      */
     public function compose(View $view)
     {
-        // MATOMO_URL="https://analytics.chuck.be"
-        // MATOMO_SITE_ID=6
-        // MATOMO_AUTH_TOKEN="d6fdc36dc7f4c0c88fa58d189a88ae4b"
 
-        //$matomo = new Matomo(env('MATOMO_URL'), env('MATOMO_AUTH_TOKEN'), env('MATOMO_SITE_ID'));
+
+
         $matomo = new Matomo("https://analytics.chuck.be", "d6fdc36dc7f4c0c88fa58d189a88ae4b", 6);
-        $matomoUniqueVisitorsToday = $matomo->setPeriod(Matomo::PERIOD_DAY)->setDate(Matomo::DATE_YESTERDAY)->setFormat(Matomo::FORMAT_JSON)->getUniqueVisitors();
-        $matomoVisitsToday = $matomo->setPeriod(Matomo::PERIOD_DAY)->setDate(Matomo::DATE_YESTERDAY)->setFormat(Matomo::FORMAT_JSON)->getVisits();
-        $matomoData = $matomo->getSumVisitsLengthPretty();
-
+        $matomoUniqueVisitorsWeek = $matomo->setPeriod(Matomo::PERIOD_WEEK)->setDate('last7')->setFormat(Matomo::FORMAT_JSON)->getUniqueVisitors();
+        $matomoContries = $matomo->setPeriod(Matomo::PERIOD_DAY)->setDate(Matomo::DATE_TODAY)->setFormat(Matomo::FORMAT_JSON)->getCountry();
+        $matomoSummaryToday = $matomo->setPeriod(Matomo::PERIOD_DAY)->setDate(Matomo::DATE_TODAY)->setFormat(Matomo::FORMAT_JSON)->getVisitsSummary();
+        $matomoSummaryWeek = $matomo->setPeriod(Matomo::PERIOD_WEEK)->setDate(Matomo::DATE_TODAY)->setFormat(Matomo::FORMAT_JSON)->getVisitsSummary();
+        $matomoSummaryMonth = $matomo->setPeriod(Matomo::PERIOD_MONTH)->setDate(Matomo::DATE_TODAY)->setFormat(Matomo::FORMAT_JSON)->getVisitsSummary();
+        $matomoSummaryYear = $matomo->setPeriod(Matomo::PERIOD_YEAR)->setDate(Matomo::DATE_TODAY)->setFormat(Matomo::FORMAT_JSON)->getVisitsSummary();
+        $matomoApi = $matomo->setFormat(Matomo::FORMAT_JSON)->getApi();
+       
         $view->with([
-            'matomoUniqueVisitorsToday'=> $matomoUniqueVisitorsToday,
-            'matomoVisitsToday' => $matomoVisitsToday,
-            'matomoData' => $matomoData
+            'matomoUniqueVisitorsWeek'=> $matomoUniqueVisitorsWeek,
+            'matomoContries' => $matomoContries,
+            'matomoSummaryToday' => $matomoSummaryToday,
+            'matomoSummaryWeek' => $matomoSummaryWeek,
+            'matomoSummaryMonth' => $matomoSummaryMonth,
+            'matomoSummaryYear' => $matomoSummaryYear,
+            'matomoApi' => $matomoApi
         ]);
     }
 }

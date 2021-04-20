@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Chuckbe\Chuckcms\ViewComposers\MatomoComposer;
 
+
 class ChuckDashboardMatomoViewComposerServiceProvider extends ServiceProvider
 {
     /**
