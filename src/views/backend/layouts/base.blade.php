@@ -16,7 +16,9 @@
 <meta name="apple-touch-fullscreen" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta content="Karel Brijs — Chuck | digital agency" name="author" />
-
+@hasSection('meta')
+@yield('meta')
+@endif
 <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900" rel="stylesheet" type="text/css">
 <link href="https://cdn.chuck.be/chuckcms/bootstrap-4.5.0-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.chuck.be/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" media="screen" />

@@ -71,9 +71,5 @@ class DashboardController extends BaseController
         
         return view('chuckcms::backend.settings.index', compact('pages', 'site'));
     }
-    public function matomo()
-    {
-        return view('chuckcms::backend.matomo.index');
-    }
-
+   
 }
