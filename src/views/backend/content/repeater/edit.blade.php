@@ -58,111 +58,156 @@
       </div>{{-- fsettings-tab-ends --}}
       {{-- ffields-tab-starts --}}
       <div class="col-sm-12 tab-pane fade" id="tab_resource_ffields" role="tabpanel" aria-labelledby="ffields-tab">
-        <div class="field_container_wrapper">
-          @foreach($repeater->content['fields'] as $fKey => $fValue)
-            <div class="row field-input-group field_row_container">
-              <div class="col">
-                <div class="row">
-                  <div class="col">
-                    <div class="form-group form-group-default required ">
-                      <label>Veld Slug</label>
-                      <input type="text" class="form-control" placeholder="Veld Slug" id="fields_slug" name="fields_slug[]" value="{{ str_replace($repeater->slug . '_', '', $fKey) }}" required>
+        <div class="row column-seperation">     
+          <div class="field_container_wrapper ui-state-default w-100">
+            @foreach($repeater->content['fields'] as $fKey => $fValue)
+              <div class="row field-input-group field_row_container">
+                <div class="col">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group form-group-default required ">
+                        <label>Veld Slug</label>
+                        <input type="text" class="form-control" placeholder="Veld Slug" id="fields_slug" name="fields_slug[]" value="{{ str_replace($repeater->slug . '_', '', $fKey) }}" required>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group form-group-default required ">
+                        <label>Veld Label</label>
+                        <input type="text" class="form-control" placeholder="Veld Label" id="fields_label" name="fields_label[]" value="{{ $fValue['label'] }}" required>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group form-group-default required ">
+                        <label>Veld Type</label> 
+                        <select class="full-width select2 form-control" data-init-plugin="select2" id="fields_type" name="fields_type[]" data-minimum-results-for-search="-1" required>
+                          <option value="text" @if($fValue['type'] == 'text') selected @endif>Text</option>
+                          <option value="email" @if($fValue['type'] == 'email') selected @endif>E-mail</option>
+                          <option value="password" @if($fValue['type'] == 'password') selected @endif>Password</option>
+                          <option value="image_link" @if($fValue['type'] == 'image_link') selected @endif>Image</option>
+                          <option value="file" @if($fValue['type'] == 'file') selected @endif>File</option>
+                          <option value="textarea" @if($fValue['type'] == 'textarea') selected @endif>Textarea</option>
+                          <option value="wysiwyg" @if($fValue['type'] == 'wysiwyg') selected @endif>WYSIWYG</option>
+                          <option value="select2" @if($fValue['type'] == 'select2') selected @endif>Select2 (single)</option>
+                          <option value="multiselect2" @if($fValue['type'] == 'multiselect2') selected @endif>Select2 (multiple)</option>
+                          <option value="date" @if($fValue['type'] == 'date') selected @endif>Datepicker</option>
+                          <option value="datetime" @if($fValue['type'] == 'datetime') selected @endif>Datetime picker</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
-                  <div class="col">
-                    <div class="form-group form-group-default required ">
-                      <label>Veld Label</label>
-                      <input type="text" class="form-control" placeholder="Veld Label" id="fields_label" name="fields_label[]" value="{{ $fValue['label'] }}" required>
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group form-group-default required ">
+                        <label>Veld Class</label>
+                        <input type="text" class="form-control" placeholder="Veld Class" id="fields_class" name="fields_class[]" value="{{ $fValue['class'] }}" required>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group form-group-default required ">
+                        <label>Veld Placeholder</label>
+                        <input type="text" class="form-control" placeholder="Veld Placeholder" id="fields_placeholder" name="fields_placeholder[]" value="{{ $fValue['placeholder'] }}" required>
+                      </div>
                     </div>
                   </div>
-                  <div class="col">
-                    <div class="form-group form-group-default required ">
-                      <label>Veld Type</label> 
-                      <select class="full-width select2 form-control" data-init-plugin="select2" id="fields_type" name="fields_type[]" data-minimum-results-for-search="-1" required>
-                        <option value="text" @if($fValue['type'] == 'text') selected @endif>Text</option>
-                        <option value="email" @if($fValue['type'] == 'email') selected @endif>E-mail</option>
-                        <option value="password" @if($fValue['type'] == 'password') selected @endif>Password</option>
-                        <option value="image_link" @if($fValue['type'] == 'image_link') selected @endif>Image</option>
-                        <option value="file" @if($fValue['type'] == 'file') selected @endif>File</option>
-                        <option value="textarea" @if($fValue['type'] == 'textarea') selected @endif>Textarea</option>
-                        <option value="wysiwyg" @if($fValue['type'] == 'wysiwyg') selected @endif>WYSIWYG</option>
-                        <option value="select2" @if($fValue['type'] == 'select2') selected @endif>Select2 (single)</option>
-                        <option value="multiselect2" @if($fValue['type'] == 'multiselect2') selected @endif>Select2 (multiple)</option>
-                        <option value="date" @if($fValue['type'] == 'date') selected @endif>Datepicker</option>
-                        <option value="datetime" @if($fValue['type'] == 'datetime') selected @endif>Datetime picker</option>
-                      </select>
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group form-group-default required ">
+                        <label>Veld Validatie</label>
+                        <input type="text" class="form-control" placeholder="Veld validatie" id="fields_validation" name="fields_validation[]" value="{{ $fValue['validation'] }}" required>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group form-group-default">
+                        <label>Veld Waarde</label>
+                        <input type="text" class="form-control" placeholder="waarde van veld" id="fields_value" name="fields_value[]" value="{{ $fValue['value'] ? $fValue['value'] : ' ' }}">
+                      </div>
                     </div>
                   </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-group form-group-default required">
+                        <label>Veld Attribute Naam</label>
+                        <input type="text" class="form-control" placeholder="Veld Attribute Naam" id="fields_attributes_name" name="fields_attributes_name[]" value="@foreach($fValue['attributes'] as $attrKey => $attrValue){{$loop->iteration > 1 ? ';' : ''}}{{$attrKey}}@endforeach" required>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group form-group-default required">
+                        <label>Veld Attribute Waarde</label>
+                        <input type="text" class="form-control" placeholder="Veld Attribute Waarde" id="fields_attributes_value" name="fields_attributes_value[]" value="@foreach($fValue['attributes'] as $attrKey => $attrValue){{$loop->iteration > 1 ? ';' : ''}}{{$attrValue}}@endforeach" required>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group form-group-default">
+                    <label>Verplicht veld</label>
+                    <select class="full-width select2 form-control" data-init-plugin="select2" name="fields_required[]" data-minimum-results-for-search="-1">
+                      <option value="true" @if($fValue['required'] == 'true') selected @endif>Ja</option>
+                      <option value="false" @if($fValue['required'] !== 'true') selected @endif>Nee</option>
+                    </select>
+                  </div>
+                  <div class="form-group form-group-default">
+                    <label>Toon in tabel</label>
+                    <select class="full-width select2 form-control" data-init-plugin="select2" name="fields_table[]" data-minimum-results-for-search="-1">
+                      <option value="true" @if($fValue['table'] == 'true') selected @endif>Ja</option>
+                      <option value="false" @if($fValue['table'] !== 'true') selected @endif>Nee</option>
+                    </select>
+                  </div>
+                  <hr>
                 </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="form-group form-group-default required ">
-                      <label>Veld Class</label>
-                      <input type="text" class="form-control" placeholder="Veld Class" id="fields_class" name="fields_class[]" value="{{ $fValue['class'] }}" required>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-group form-group-default required ">
-                      <label>Veld Placeholder</label>
-                      <input type="text" class="form-control" placeholder="Veld Placeholder" id="fields_placeholder" name="fields_placeholder[]" value="{{ $fValue['placeholder'] }}" required>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="form-group form-group-default required ">
-                      <label>Veld Validatie</label>
-                      <input type="text" class="form-control" placeholder="Veld validatie" id="fields_validation" name="fields_validation[]" value="{{ $fValue['validation'] }}" required>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-group form-group-default">
-                      <label>Veld Waarde</label>
-                      <input type="text" class="form-control" placeholder="waarde van veld" id="fields_value" name="fields_value[]" value="{{ $fValue['value'] ? $fValue['value'] : ' ' }}">
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <div class="form-group form-group-default required">
-                      <label>Veld Attribute Naam</label>
-                      <input type="text" class="form-control" placeholder="Veld Attribute Naam" id="fields_attributes_name" name="fields_attributes_name[]" value="@foreach($fValue['attributes'] as $attrKey => $attrValue){{$loop->iteration > 1 ? ';' : ''}}{{$attrKey}}@endforeach" required>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-group form-group-default required">
-                      <label>Veld Attribute Waarde</label>
-                      <input type="text" class="form-control" placeholder="Veld Attribute Waarde" id="fields_attributes_value" name="fields_attributes_value[]" value="@foreach($fValue['attributes'] as $attrKey => $attrValue){{$loop->iteration > 1 ? ';' : ''}}{{$attrValue}}@endforeach" required>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group form-group-default">
-                  <label>Verplicht veld</label>
-                  <select class="full-width select2 form-control" data-init-plugin="select2" name="fields_required[]" data-minimum-results-for-search="-1">
-                    <option value="true" @if($fValue['required'] == 'true') selected @endif>Ja</option>
-                    <option value="false" @if($fValue['required'] !== 'true') selected @endif>Nee</option>
-                  </select>
-                </div>
-                <div class="form-group form-group-default">
-                  <label>Toon in tabel</label>
-                  <select class="full-width select2 form-control" data-init-plugin="select2" name="fields_table[]" data-minimum-results-for-search="-1">
-                    <option value="true" @if($fValue['table'] == 'true') selected @endif>Ja</option>
-                    <option value="false" @if($fValue['table'] !== 'true') selected @endif>Nee</option>
-                  </select>
-                </div>
-                <hr>
               </div>
-            </div>
-          @endforeach
+            @endforeach
+          </div>
         </div>
-        <div class="row">
+
+        <div class="row column-seperation">
+          <div class="col-md-3">
+            <div class="form-group">
+            <label>Veld Slug</label>
+              <input type="text" class="form-control" placeholder="Veld Slug" id="new_repeater_fields_slug" >
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>Veld Label</label>
+              <input type="text" class="form-control" placeholder="Veld Label" id="new_repeater_fields_label">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label>Veld Type</label>
+              <select class="full-width select2 form-control" data-init-plugin="select2" id="new_repeater_fields_type">
+                <option value="text" selected>Text</option>
+                <option value="email">E-mail</option>
+                <option value="password">Password</option>
+                <option value="image_link">Image</option>
+                <option value="file">File</option>
+                <option value="textarea">Textarea</option>
+                <option value="wysiwyg">WYSIWYG</option>
+                <option value="select2">Select2 (single)</option>
+                <option value="multiselect2">Select2 (multiple)</option>
+                <option value="date">Datepicker</option>
+                <option value="datetime">Datetime picker</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3 d-flex">
+            <div class="form-group align-self-center mb-0">
+              <button class="btn btn-primary" type="button" id="add_extra_field_btn"><i class="fa fa-plus"></i> Veld toevoegen</button>
+            </div>
+          </div>
+        </div>
+        {{-- extra veld btn --}}
+        
+        {{-- <div class="row">
           <div class="col-lg-6">
             <button class="btn btn-primary btn-lg" type="button" id="add_extra_field_btn"><i class="fa fa-plus"></i> Extra veld toevoegen</button>
           </div>
           <div class="col-lg-6">
             <button class="btn btn-warning btn-lg" type="button" id="remove_last_field_btn" @if(count($repeater->content['fields']) == 1) style="display:none;" @endif><i class="fa fa-minus"></i> Laatste veld verwijderen</button>
           </div>
-        </div>
+        </div> --}}
+
+        {{-- extra veld btn --}}
+
       </div>{{-- ffields-tab-ends --}}
       {{-- factions-tab-starts --}}
       <div class="col-sm-12 tab-pane fade" id="tab_resource_factions" role="tabpanel" aria-labelledby="factions-tab">
