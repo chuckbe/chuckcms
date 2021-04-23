@@ -27,6 +27,7 @@ class MatomoComposer
      */
     public function compose(View $view)
     {
+        
         // $matomo = new Matomo("https://analytics.chuck.be", "d6fdc36dc7f4c0c88fa58d189a88ae4b", 6);
         // $matomoUniqueVisitorsWeek = $matomo->setPeriod(Matomo::PERIOD_WEEK)->setDate('last7')->setFormat(Matomo::FORMAT_JSON)->getUniqueVisitors();
         // $matomoContries = $matomo->setPeriod(Matomo::PERIOD_DAY)->setDate(Matomo::DATE_TODAY)->setFormat(Matomo::FORMAT_JSON)->getCountry();

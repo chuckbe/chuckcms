@@ -33,9 +33,8 @@
 		</div>
     </div>
   </div>
-
-  <div class="row mb-3">
-    <div class="col-lg-6 mb-3">
+	<div class="row mb-3">
+	<div class="col-lg-6 mb-3">
 			<div class="card card-default">
 				<div class="breadcrumb separator">
 					<div class="breadcrumb-item">Visits over Time</div>
@@ -50,6 +49,22 @@
 			  </div>
 		  </div>
     </div>
+    <div class="col-lg-6 mb-3">
+			<div class="card card-default">
+				<div class="breadcrumb separator">
+					<div class="breadcrumb-item">Movers and Shakers(Belgium)</div>
+					<div id="mas">
+					
+					</div>
+				</div>
+				<div class="card-block">
+					
+			  	</div>
+		  </div>
+    </div>
+	</div>
+
+  <div class="row mb-3">
     <div class="col-lg-6">
 			<div class="card card-default">
 				<div class="breadcrumb separator">
@@ -71,14 +86,11 @@
     <div class="col-lg-6 mb-3">
 			<div class="card card-default">
 				<div class="breadcrumb separator">
-					<div class="breadcrumb-item">Top Browsers (by pageview)</div>
+					<div class="breadcrumb-item">Popular OS</div>
 				</div>
 				<div class="card-block">
-					<div class="Chartjs">
-					  <figure class="Chartjs-figure" id="chart-3-container"></figure>
-					  <ol class="Chartjs-legend" id="legend-3-container"></ol>
-				  </div>
-			  </div>
+					<ul id="PopularOs" style="list-style: none;"></ul>
+			  	</div>
 		  </div>
     </div>
 

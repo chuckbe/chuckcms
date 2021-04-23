@@ -104,28 +104,30 @@
 //     //   });
 //   });
 $(function() {
+    
+    // let data = [];
+    // let days = ['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vridag', 'Zaterdag', 'Zondag'];
+    // let goBackDays = 7;
+    // let yesterday = new Date()
+    // yesterday.setDate(yesterday.getDate() - 1);
+    // let daysSorted = [];
+    // for(let i = 0; i < goBackDays; i++) {
+    //   let newDate = new Date(yesterday.setDate(yesterday.getDate() - 1));
+    //   daysSorted.push(days[newDate.getDay()]);
+    // }
     let start = moment().subtract(0, 'days');
     let end = moment();
-    let data = [];
-    let days = ['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vridag', 'Zaterdag', 'Zondag'];
-    let goBackDays = 7;
-    let yesterday = new Date()
-    yesterday.setDate(yesterday.getDate() - 1);
-    let daysSorted = [];
-    for(let i = 0; i < goBackDays; i++) {
-      let newDate = new Date(yesterday.setDate(yesterday.getDate() - 1));
-      daysSorted.push(days[newDate.getDay()]);
-    }
     function cb(start, end) {
-        if(end.diff(start, 'days') > 0){
-            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-        }else{
-            if(Math.round(moment.duration(end.diff(start)).asHours()) > 0){
-                $('#reportrange span').html("Yesterday");
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        let values = $('#reportrange span').html().split(" - ");
+        if(values[0] == values[1]){
+            if(moment().subtract(1, 'days').format('MMMM D, YYYY') == values[0]){
+                $('#reportrange span').html('Yesterday');
             }else{
-                $('#reportrange span').html("Today");
+                $('#reportrange span').html('Today');
             }
         }
+        
         let val = $('#reportrange span').text();
         let _token   = $('meta[name="csrf-token"]').attr('content');
         let convertedRange = {};
@@ -168,51 +170,162 @@ $(function() {
             success:function(response){
                 if(response.success == 'success'){
                     $('#mVersion').text("(Matomo version"+response.matomoVersion + ")");
-                    let avg_time_on_site = response.matomoSummary.avg_time_on_site/60 > 1 ? (response.matomoSummary.avg_time_on_site/60).toFixed(2) + " Minutes": (response.matomoSummary.avg_time_on_site/60).toFixed(2) + " Minute"; 
                     $("#avgBouceRate").text(response.matomoSummary.bounce_rate);
                     $("#totalVisits").text(response.matomoSummary.nb_visits);
-                    let visitors = [];
-                    $("#avgTimeSpend").text(avg_time_on_site);
+                    $("#avgTimeSpend").text(response.matomoSummary.avg_time_on_site/60 > 1 ? (response.matomoSummary.avg_time_on_site/60).toFixed(2) + " Minutes": (response.matomoSummary.avg_time_on_site/60).toFixed(2) + " Minute"); 
                     $("#countriesList").html('');
-                    response.matomoCountries.forEach((country)=>{
-                        if(country.nb_visits > 0){
-                            $("#countriesList").append(`<li>${country.label}: ${(country.nb_visits > 1 ? country.nb_visits+" Visitors" : country.nb_visits+" Visitor")}</li>`);
-                        }
-                    });
-                    $.each(response.matomoUniqueVisitors, function(){
-                        visitors.push(this);
-                    });
                     let uniqueVisitorsCanvas = $('<canvas/>',{
                         'class':'px-3',
                         id: 'chart-1-container-canvas'                   
                     });
+                    $("#chartVisitors").html('')
                     $("#chartVisitors").append(uniqueVisitorsCanvas);
-                    const data = {
-                        labels: daysSorted.reverse(),
-                        datasets: [{
-                            labels: 'visitors',
-                            data: visitors,
-                            fill: true,
-                            borderColor: 'rgb(75, 192, 192)',
-                            tension: 0.1
-                        }]
-                    };
-                    let Chart1 = new Chart(uniqueVisitorsCanvas[0].getContext('2d'), {
-                        type: 'line',
-                        data: data,
-                        options: {
-                            responsive: true,
-                            legend: {
-                                display: false
-                            },
-                            tooltips: {
-                                callbacks: {
-                                title: function() {}
-                                }
+                    let chartData = {}
+                    
+                    if(val !== 'Today'){
+                        response.matomoCountries.forEach((country)=>{
+                            if(country.sum_daily_nb_uniq_visitors > 0){
+                                $("#countriesList").append(`<li>${country.label}: ${(country.sum_daily_nb_uniq_visitors > 1 ? country.sum_daily_nb_uniq_visitors+" Visitors" : country.sum_daily_nb_uniq_visitors+" Visitor")}</li>`);
+                            }
+                        });
+                        let visitors = [];
+                        let dates = [];
+                        $.each(response.matomoUniqueVisitors, function(){
+                                visitors.push(this);
+                        });
+                        if(val == 'Yesterday'){
+                            chartData = {
+                                labels: ['Yesterday', 'today'],
+                                datasets: [{
+                                        labels: ['Yesterday', 'today'],
+                                        data: visitors,
+                                        fill: true,
+                                        borderColor: 'rgb(75, 192, 192)',
+                                        tension: 0.1
+                                }]
+                            }
+                        }else{
+                            for (let key in response.matomoUniqueVisitors){
+                                dates.push(key);
+                            }
+                            chartData = {
+                                labels: dates,
+                                datasets: [{
+                                        labels: dates,
+                                        data: visitors,
+                                        fill: true,
+                                        borderColor: 'rgb(75, 192, 192)',
+                                        tension: 0.1
+                                }]
                             }
                         }
-                    });
-                       
+
+                    }else{
+                        response.matomoCountries.forEach((country)=>{
+                            if(country.nb_uniq_visitors > 0){
+                                $("#countriesList").append(`<li>${country.label}: ${(country.nb_uniq_visitors > 1 ? country.nb_uniq_visitors+" Visitors" : country.nb_uniq_visitors+" Visitor")}</li>`);
+                            }
+                        });
+                        chartData = {
+                            labels: ['Today'],
+                            datasets: [{
+                                labels: 'Today',
+                                data: [response.matomoUniqueVisitors],
+                                fill: true,
+                                borderColor: 'rgb(75, 192, 192)',
+                                tension: 0.1
+                            }]
+                        }
+                    }
+                    let chart1 = new Chart(uniqueVisitorsCanvas[0].getContext('2d'), {
+                                type: 'line',
+                                data: chartData,
+                                options: {
+                                    responsive: true,
+                                    legend: {
+                                        display: false
+                                    },
+                                    tooltips: {
+                                        callbacks: {
+                                        title: function() {}
+                                        }
+                                    }
+                                }
+                            });
+                    
+                    
+                   
+                    // $("#PopularOs").html('');
+                    // let visitors = [];
+                    // response.getOSFamilies.forEach((os)=>{
+                    //     switch(os.label) {
+                    //         case "iOS":
+                    //         case "Mac":
+                    //         $("#PopularOs").append(`
+                    //             <li><i class="fa fa-apple" aria-hidden="true"></i> ${os.label}: ${os.nb_visits}</li>
+                    //         `);
+                    //         break;
+                    //         case "Android":
+                    //         $("#PopularOs").append(`
+                    //             <li><i class="fa fa-android" aria-hidden="true"></i> ${os.label}: ${os.nb_visits}</li>
+                    //         `);
+                    //         break;
+                    //         case "Windows":
+                    //         $("#PopularOs").append(`
+                    //             <li><i class="fa fa-windows" aria-hidden="true"></i> ${os.label}: ${os.nb_visits}</li>
+                    //         `);
+                    //         break;
+                    //         case "GNU/Linux":
+                    //         case "Unix":
+                    //         $("#PopularOs").append(`
+                    //             <li><i class="fa fa-linux" aria-hidden="true"></i> ${os.label}: ${os.nb_visits}</li>
+                    //         `);
+                    //         break;
+                    //         case "Chrome OS":
+                    //         $("#PopularOs").append(`
+                    //             <li><i class="fa fa-chrome" aria-hidden="true"></i> ${os.label}: ${os.nb_visits}</li>
+                    //         `);
+                    //         break;
+                    //         default:
+                    //         $("#PopularOs").append(`
+                    //             <li><i class="fa fa-question" aria-hidden="true"></i> ${os.label}: ${os.nb_visits}</li>
+                    //         `);
+                    //     }
+                    // });
+                    
+                    // $.each(response.matomoUniqueVisitors, function(){
+                    //     visitors.push(this);
+                    // });
+                    // let uniqueVisitorsCanvas = $('<canvas/>',{
+                    //     'class':'px-3',
+                    //     id: 'chart-1-container-canvas'                   
+                    // });
+                    // $("#chartVisitors").append(uniqueVisitorsCanvas);
+                    // const data = {
+                    //     labels: daysSorted.reverse(),
+                    //     datasets: [{
+                    //         labels: 'visitors',
+                    //         data: visitors,
+                    //         fill: true,
+                    //         borderColor: 'rgb(75, 192, 192)',
+                    //         tension: 0.1
+                    //     }]
+                    // };
+                    // let Chart1 = new Chart(uniqueVisitorsCanvas[0].getContext('2d'), {
+                    //     type: 'line',
+                    //     data: data,
+                    //     options: {
+                    //         responsive: true,
+                    //         legend: {
+                    //             display: false
+                    //         },
+                    //         tooltips: {
+                    //             callbacks: {
+                    //             title: function() {}
+                    //             }
+                    //         }
+                    //     }
+                    // });                       
                 }
             }
         });
@@ -230,7 +343,5 @@ $(function() {
         }
     }, cb);
     cb(start, end);
-
-
 });
   </script>

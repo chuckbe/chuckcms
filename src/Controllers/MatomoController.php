@@ -26,22 +26,35 @@ class MatomoController extends BaseController
         if($data["value"]["range"] == "Today"){
             $matomo->setPeriod(Matomo::PERIOD_DAY);
             $matomo->setDate(Matomo::DATE_TODAY);
+            $matomoSummary = $matomo->getVisitsSummary();
+            $matomoCountries = $matomo->getCountry();
+            $matomoUniqueVisitors = $matomo->getUniqueVisitors();
         }else{
-            $matomo->setDate(date('Y-m-d'), date('Y-m-d', mktime(0, 0, 0, $data["value"]["m1"], $data["value"]["d1"], $data["value"]["y1"])));
-            $matomo->setPeriod(Matomo::PERIOD_RANGE);
             $matomo->setRange(date('Y-m-d', mktime(0, 0, 0, $data["value"]["m2"], $data["value"]["d2"], $data["value"]["y2"])), date('Y-m-d', mktime(0, 0, 0, $data["value"]["m1"], $data["value"]["d1"], $data["value"]["y1"])));
+            $matomoSummary = $matomo->setPeriod(Matomo::PERIOD_RANGE)->getVisitsSummary();
+            $matomoCountries = $matomo->getCountry();
+            $matomoUniqueVisitors = $matomo->setPeriod(Matomo::PERIOD_DAY)->getUniqueVisitors();
         }
-        $matomoSummary = $matomo->getVisitsSummary();
-        $matomoCountries = $matomo->getCountry();
-        $matomoUniqueVisitors = $matomo->setPeriod(Matomo::PERIOD_WEEK)->setDate('last7')->setFormat(Matomo::FORMAT_JSON)->getUniqueVisitors();
+        
+        
+        // $matomoUniqueVisitors = $matomo->setPeriod(Matomo::PERIOD_WEEK)->setDate('last7')->setFormat(Matomo::FORMAT_JSON)->getUniqueVisitors();
+        // $matomoApi = $matomo->getApi();
+        // $pageUrls = $matomo->getPageUrls();
+        // $getDeviceType = $matomo->getDeviceType();
+        // $getDeviceBrand = $matomo->getDeviceBrand();
+        // $getDeviceModel = $matomo->getDeviceModel();
+        // $getOSFamilies = $matomo->getOSFamilies();
+        // $getBrowsers = $matomo->getBrowsers();
+        // $getMoversAndShakersOverview = $matomo->getMoversAndShakersOverview('countryCode==be');
         // nb_uniq_visitors not available when using range
         return response()->json([
             'success'=>'success',
             'matomoVersion' => $matomoVersion,
             'matomoSummary' => $matomoSummary,
             'matomoUniqueVisitors' => $matomoUniqueVisitors,
+            // 'getMoversAndShakersOverview' => $getMoversAndShakersOverview,
             'matomoCountries' => $matomoCountries,
-
+            // 'getOSFamilies' => $getOSFamilies
         ]);
     }
 
