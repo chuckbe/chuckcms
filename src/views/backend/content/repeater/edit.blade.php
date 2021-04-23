@@ -59,24 +59,27 @@
       {{-- ffields-tab-starts --}}
       <div class="col-sm-12 tab-pane fade" id="tab_resource_ffields" role="tabpanel" aria-labelledby="ffields-tab">
         <div class="row column-seperation">     
-          <div class="field_container_wrapper ui-state-default w-100">
+          <div class="field_container_wrapper ui-state-default w-100" id="field_container_wrapper">
             @foreach($repeater->content['fields'] as $fKey => $fValue)
               <div class="row field-input-group field_row_container">
-                <div class="col">
+                <div class="col-lg-12 well" type="button" data-toggle="collapse" data-target="#{{ $fKey }}" aria-expanded="false" aria-controls="{{ $fKey }}">
+                  <h4 class="card-title form_well_title" style="margin-left:1.5rem;"><span class="form_well_title_label">{{ $fValue['label'] }}</span> (<span class="form_slug_text_label">{{ $repeater->slug  }}_</span><span class="form_well_title_slug">{{ str_replace($repeater->slug  . '_', '', $fKey) }}</span>) <span class="form_well_title_type label label-inverse">{{ $fValue['type'] }}</span> <span class="label label-danger pull-right form_well_remove_btn" style="margin:10px 10px auto auto"><i class="fa fa-trash"></i></span></h4>
+                </div>
+                <div class="col collapse" id="{{ $fKey }}">
                   <div class="row">
-                    <div class="col">
+                    <div class="col-xs-12 col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Slug</label>
                         <input type="text" class="form-control" placeholder="Veld Slug" id="fields_slug" name="fields_slug[]" value="{{ str_replace($repeater->slug . '_', '', $fKey) }}" required>
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Label</label>
                         <input type="text" class="form-control" placeholder="Veld Label" id="fields_label" name="fields_label[]" value="{{ $fValue['label'] }}" required>
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col-sm-12 col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Type</label> 
                         <select class="full-width select2 form-control" data-init-plugin="select2" id="fields_type" name="fields_type[]" data-minimum-results-for-search="-1" required>
@@ -96,13 +99,13 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col">
+                    <div class="col-xs-12 col-md-6">
                       <div class="form-group form-group-default required ">
                         <label>Veld Class</label>
                         <input type="text" class="form-control" placeholder="Veld Class" id="fields_class" name="fields_class[]" value="{{ $fValue['class'] }}" required>
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-md-6">
                       <div class="form-group form-group-default required ">
                         <label>Veld Placeholder</label>
                         <input type="text" class="form-control" placeholder="Veld Placeholder" id="fields_placeholder" name="fields_placeholder[]" value="{{ $fValue['placeholder'] }}" required>
@@ -110,13 +113,13 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col">
+                    <div class="col-xs-12 col-md-6">
                       <div class="form-group form-group-default required ">
                         <label>Veld Validatie</label>
                         <input type="text" class="form-control" placeholder="Veld validatie" id="fields_validation" name="fields_validation[]" value="{{ $fValue['validation'] }}" required>
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-md-6">
                       <div class="form-group form-group-default">
                         <label>Veld Waarde</label>
                         <input type="text" class="form-control" placeholder="waarde van veld" id="fields_value" name="fields_value[]" value="{{ $fValue['value'] ? $fValue['value'] : ' ' }}">
@@ -124,13 +127,13 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col">
+                    <div class="col-xs-12 col-md-6">
                       <div class="form-group form-group-default required">
                         <label>Veld Attribute Naam</label>
                         <input type="text" class="form-control" placeholder="Veld Attribute Naam" id="fields_attributes_name" name="fields_attributes_name[]" value="@foreach($fValue['attributes'] as $attrKey => $attrValue){{$loop->iteration > 1 ? ';' : ''}}{{$attrKey}}@endforeach" required>
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col-xs-12 col-md-6">
                       <div class="form-group form-group-default required">
                         <label>Veld Attribute Waarde</label>
                         <input type="text" class="form-control" placeholder="Veld Attribute Waarde" id="fields_attributes_value" name="fields_attributes_value[]" value="@foreach($fValue['attributes'] as $attrKey => $attrValue){{$loop->iteration > 1 ? ';' : ''}}{{$attrValue}}@endforeach" required>
@@ -159,19 +162,20 @@
         </div>
 
         <div class="row column-seperation">
-          <div class="col-md-3">
+          <div class="col-xs-12 col-md-3">
             <div class="form-group">
-            <label>Veld Slug</label>
+              <label>Veld Slug</label>
               <input type="text" class="form-control" placeholder="Veld Slug" id="new_repeater_fields_slug" >
+              <small class="text-danger add_extra_field_warning" style="display:none;">Enter a slug to add a field!</small>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-xs-12 col-md-3">
             <div class="form-group">
               <label>Veld Label</label>
               <input type="text" class="form-control" placeholder="Veld Label" id="new_repeater_fields_label">
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-xs-12 col-md-3">
             <div class="form-group">
               <label>Veld Type</label>
               <select class="full-width select2 form-control" data-init-plugin="select2" id="new_repeater_fields_type">
@@ -189,7 +193,7 @@
               </select>
             </div>
           </div>
-          <div class="col-md-3 d-flex">
+          <div class="col-xs-12 col-md-3 d-flex">
             <div class="form-group align-self-center mb-0">
               <button class="btn btn-primary" type="button" id="add_extra_field_btn"><i class="fa fa-plus"></i> Veld toevoegen</button>
             </div>
@@ -276,7 +280,6 @@
 @endsection
 
 @section('scripts')
-	
 	<script>
 		$( document ).ready(function() { 
 			function destroySelect2(){
@@ -289,6 +292,11 @@
       function initSelect2(){
         $('.select2').select2();
       };
+
+      $( "#field_container_wrapper" ).sortable({
+        revert: true
+      });
+
 
       $("#content_slug").keyup(function(){
 			    var text = $(this).val();
@@ -343,6 +351,8 @@
           }
         }
       });
+
+
 
 
 
