@@ -29,15 +29,16 @@ class MatomoController extends BaseController
             $matomoSummary = $matomo->getVisitsSummary();
             $matomoCountries = $matomo->getCountry();
             $matomoUniqueVisitors = $matomo->getUniqueVisitors();
+            $getOSFamilies = $matomo->getOSFamilies();
         }else{
             $matomo->setRange(date('Y-m-d', mktime(0, 0, 0, $data["value"]["m2"], $data["value"]["d2"], $data["value"]["y2"])), date('Y-m-d', mktime(0, 0, 0, $data["value"]["m1"], $data["value"]["d1"], $data["value"]["y1"])));
             $matomoSummary = $matomo->setPeriod(Matomo::PERIOD_RANGE)->getVisitsSummary();
+            $getOSFamilies = $matomo->getOSFamilies();
             $matomoCountries = $matomo->getCountry();
             $matomoUniqueVisitors = $matomo->setPeriod(Matomo::PERIOD_DAY)->getUniqueVisitors();
         }
         
         
-        // $matomoUniqueVisitors = $matomo->setPeriod(Matomo::PERIOD_WEEK)->setDate('last7')->setFormat(Matomo::FORMAT_JSON)->getUniqueVisitors();
         // $matomoApi = $matomo->getApi();
         // $pageUrls = $matomo->getPageUrls();
         // $getDeviceType = $matomo->getDeviceType();
@@ -46,6 +47,7 @@ class MatomoController extends BaseController
         // $getOSFamilies = $matomo->getOSFamilies();
         // $getBrowsers = $matomo->getBrowsers();
         // $getMoversAndShakersOverview = $matomo->getMoversAndShakersOverview('countryCode==be');
+
         // nb_uniq_visitors not available when using range
         return response()->json([
             'success'=>'success',
@@ -54,7 +56,7 @@ class MatomoController extends BaseController
             'matomoUniqueVisitors' => $matomoUniqueVisitors,
             // 'getMoversAndShakersOverview' => $getMoversAndShakersOverview,
             'matomoCountries' => $matomoCountries,
-            // 'getOSFamilies' => $getOSFamilies
+            'getOSFamilies' => $getOSFamilies
         ]);
     }
 

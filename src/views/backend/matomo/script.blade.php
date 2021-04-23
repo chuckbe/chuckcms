@@ -178,7 +178,8 @@ $(function() {
                         'class':'px-3',
                         id: 'chart-1-container-canvas'                   
                     });
-                    $("#chartVisitors").html('')
+                    $("#chartVisitors").html('');
+                    $("#PopularOs").html('');
                     $("#chartVisitors").append(uniqueVisitorsCanvas);
                     let chartData = {}
                     
@@ -219,6 +220,41 @@ $(function() {
                                 }]
                             }
                         }
+                        response.getOSFamilies.forEach((os)=>{
+                            switch(os.label) {
+                                case "iOS":
+                                case "Mac":
+                                $("#PopularOs").append(`
+                                    <li><i class="fa fa-apple" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors}</li>
+                                `);
+                                break;
+                                case "Android":
+                                $("#PopularOs").append(`
+                                    <li><i class="fa fa-android" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors}</li>
+                                `);
+                                break;
+                                case "Windows":
+                                $("#PopularOs").append(`
+                                    <li><i class="fa fa-windows" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors}</li>
+                                `);
+                                break;
+                                case "GNU/Linux":
+                                case "Unix":
+                                $("#PopularOs").append(`
+                                    <li><i class="fa fa-linux" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors}</li>
+                                `);
+                                break;
+                                case "Chrome OS":
+                                $("#PopularOs").append(`
+                                    <li><i class="fa fa-chrome" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors}</li>
+                                `);
+                                break;
+                                default:
+                                $("#PopularOs").append(`
+                                    <li><i class="fa fa-question" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors}</li>
+                                `);
+                            }
+                        });
 
                     }else{
                         response.matomoCountries.forEach((country)=>{
@@ -236,6 +272,41 @@ $(function() {
                                 tension: 0.1
                             }]
                         }
+                        response.getOSFamilies.forEach((os)=>{
+                            switch(os.label) {
+                                case "iOS":
+                                case "Mac":
+                                $("#PopularOs").append(`
+                                    <li><i class="fa fa-apple" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors}</li>
+                                `);
+                                break;
+                                case "Android":
+                                $("#PopularOs").append(`
+                                    <li><i class="fa fa-android" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors}</li>
+                                `);
+                                break;
+                                case "Windows":
+                                $("#PopularOs").append(`
+                                    <li><i class="fa fa-windows" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors}</li>
+                                `);
+                                break;
+                                case "GNU/Linux":
+                                case "Unix":
+                                $("#PopularOs").append(`
+                                    <li><i class="fa fa-linux" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors}</li>
+                                `);
+                                break;
+                                case "Chrome OS":
+                                $("#PopularOs").append(`
+                                    <li><i class="fa fa-chrome" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors}</li>
+                                `);
+                                break;
+                                default:
+                                $("#PopularOs").append(`
+                                    <li><i class="fa fa-question" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors}</li>
+                                `);
+                            }
+                        });
                     }
                     let chart1 = new Chart(uniqueVisitorsCanvas[0].getContext('2d'), {
                                 type: 'line',
@@ -255,77 +326,7 @@ $(function() {
                     
                     
                    
-                    // $("#PopularOs").html('');
-                    // let visitors = [];
-                    // response.getOSFamilies.forEach((os)=>{
-                    //     switch(os.label) {
-                    //         case "iOS":
-                    //         case "Mac":
-                    //         $("#PopularOs").append(`
-                    //             <li><i class="fa fa-apple" aria-hidden="true"></i> ${os.label}: ${os.nb_visits}</li>
-                    //         `);
-                    //         break;
-                    //         case "Android":
-                    //         $("#PopularOs").append(`
-                    //             <li><i class="fa fa-android" aria-hidden="true"></i> ${os.label}: ${os.nb_visits}</li>
-                    //         `);
-                    //         break;
-                    //         case "Windows":
-                    //         $("#PopularOs").append(`
-                    //             <li><i class="fa fa-windows" aria-hidden="true"></i> ${os.label}: ${os.nb_visits}</li>
-                    //         `);
-                    //         break;
-                    //         case "GNU/Linux":
-                    //         case "Unix":
-                    //         $("#PopularOs").append(`
-                    //             <li><i class="fa fa-linux" aria-hidden="true"></i> ${os.label}: ${os.nb_visits}</li>
-                    //         `);
-                    //         break;
-                    //         case "Chrome OS":
-                    //         $("#PopularOs").append(`
-                    //             <li><i class="fa fa-chrome" aria-hidden="true"></i> ${os.label}: ${os.nb_visits}</li>
-                    //         `);
-                    //         break;
-                    //         default:
-                    //         $("#PopularOs").append(`
-                    //             <li><i class="fa fa-question" aria-hidden="true"></i> ${os.label}: ${os.nb_visits}</li>
-                    //         `);
-                    //     }
-                    // });
-                    
-                    // $.each(response.matomoUniqueVisitors, function(){
-                    //     visitors.push(this);
-                    // });
-                    // let uniqueVisitorsCanvas = $('<canvas/>',{
-                    //     'class':'px-3',
-                    //     id: 'chart-1-container-canvas'                   
-                    // });
-                    // $("#chartVisitors").append(uniqueVisitorsCanvas);
-                    // const data = {
-                    //     labels: daysSorted.reverse(),
-                    //     datasets: [{
-                    //         labels: 'visitors',
-                    //         data: visitors,
-                    //         fill: true,
-                    //         borderColor: 'rgb(75, 192, 192)',
-                    //         tension: 0.1
-                    //     }]
-                    // };
-                    // let Chart1 = new Chart(uniqueVisitorsCanvas[0].getContext('2d'), {
-                    //     type: 'line',
-                    //     data: data,
-                    //     options: {
-                    //         responsive: true,
-                    //         legend: {
-                    //             display: false
-                    //         },
-                    //         tooltips: {
-                    //             callbacks: {
-                    //             title: function() {}
-                    //             }
-                    //         }
-                    //     }
-                    // });                       
+                                         
                 }
             }
         });
