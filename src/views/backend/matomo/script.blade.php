@@ -179,11 +179,17 @@ $(function() {
                         id: 'chart-1-container-canvas'                   
                     });
                     $("#chartVisitors").html('');
+                    $('#searchenginereferer').html('');
                     $("#PopularOs").html('');
                     $("#chartVisitors").append(uniqueVisitorsCanvas);
                     let chartData = {}
                     
                     if(val !== 'Today'){
+                        response.getSearchEngines.forEach((search)=>{
+                            if(search.sum_daily_nb_uniq_visitors > 0){
+                                $("#searchenginereferer").append(`<li><strong>${search.label} search:</strong> ${(search.sum_daily_nb_uniq_visitors > 1 ? search.sum_daily_nb_uniq_visitors+" Visitors" : search.sum_daily_nb_uniq_visitors+" Visitor")}</li>`);
+                            }
+                        });
                         response.matomoCountries.forEach((country)=>{
                             if(country.sum_daily_nb_uniq_visitors > 0){
                                 $("#countriesList").append(`<li>${country.label}: ${(country.sum_daily_nb_uniq_visitors > 1 ? country.sum_daily_nb_uniq_visitors+" Visitors" : country.sum_daily_nb_uniq_visitors+" Visitor")}</li>`);
@@ -206,6 +212,7 @@ $(function() {
                                 }]
                             }
                         }else{
+                            
                             for (let key in response.matomoUniqueVisitors){
                                 dates.push(key);
                             }
@@ -257,6 +264,13 @@ $(function() {
                         });
 
                     }else{
+                        response.getSearchEngines.forEach((search)=>{
+                            if(search.nb_uniq_visitors > 0){
+                                $('#searchenginereferer').append(`
+                                    <li><strong>${search.label} search:</strong> ${(search.nb_uniq_visitors > 1 ? search.nb_uniq_visitors+" Visitors" : search.nb_uniq_visitors+" Visitor")}</li>
+                                `)
+                            }
+                        })
                         response.matomoCountries.forEach((country)=>{
                             if(country.nb_uniq_visitors > 0){
                                 $("#countriesList").append(`<li>${country.label}: ${(country.nb_uniq_visitors > 1 ? country.nb_uniq_visitors+" Visitors" : country.nb_uniq_visitors+" Visitor")}</li>`);

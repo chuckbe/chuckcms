@@ -30,13 +30,19 @@ class MatomoController extends BaseController
             $matomoCountries = $matomo->getCountry();
             $matomoUniqueVisitors = $matomo->getUniqueVisitors();
             $getOSFamilies = $matomo->getOSFamilies();
+            $getSearchEngines = $matomo->getSearchEngines();
         }else{
             $matomo->setRange(date('Y-m-d', mktime(0, 0, 0, $data["value"]["m2"], $data["value"]["d2"], $data["value"]["y2"])), date('Y-m-d', mktime(0, 0, 0, $data["value"]["m1"], $data["value"]["d1"], $data["value"]["y1"])));
             $matomoSummary = $matomo->setPeriod(Matomo::PERIOD_RANGE)->getVisitsSummary();
             $getOSFamilies = $matomo->getOSFamilies();
             $matomoCountries = $matomo->getCountry();
+            $getSearchEngines = $matomo->getSearchEngines();
             $matomoUniqueVisitors = $matomo->setPeriod(Matomo::PERIOD_DAY)->getUniqueVisitors();
         }
+        $info = getdate();
+        $hour = $info['hours'];
+        
+
         
         
         // $matomoApi = $matomo->getApi();
@@ -54,7 +60,7 @@ class MatomoController extends BaseController
             'matomoVersion' => $matomoVersion,
             'matomoSummary' => $matomoSummary,
             'matomoUniqueVisitors' => $matomoUniqueVisitors,
-            // 'getMoversAndShakersOverview' => $getMoversAndShakersOverview,
+            'getSearchEngines' => $getSearchEngines,
             'matomoCountries' => $matomoCountries,
             'getOSFamilies' => $getOSFamilies
         ]);
