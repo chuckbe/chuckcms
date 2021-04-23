@@ -39,11 +39,6 @@ class MatomoController extends BaseController
             $getSearchEngines = $matomo->getSearchEngines();
             $matomoUniqueVisitors = $matomo->setPeriod(Matomo::PERIOD_DAY)->getUniqueVisitors();
         }
-        $info = getdate();
-        $hour = $info['hours'];
-        
-
-        
         
         // $matomoApi = $matomo->getApi();
         // $pageUrls = $matomo->getPageUrls();
