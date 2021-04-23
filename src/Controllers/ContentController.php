@@ -112,6 +112,35 @@ class ContentController extends BaseController
         return view('chuckcms::backend.content.repeater.create', compact('pageViews'));
     }
 
+    public function repeaterCreateModal(Request $request)
+    {
+        $content = [];
+        $content_slug = $request->get('content_slug');
+        $content_type =  $request->get('content_type');
+        $fields_slug = 'text';
+        $content['fields'][$content_slug.'_'.$fields_slug]['label'] = 'Text';
+        $content['fields'][$content_slug.'_'.$fields_slug]['type'] = 'text';
+        $content['fields'][$content_slug.'_'.$fields_slug]['class'] = 'form-control';
+        $content['fields'][$content_slug.'_'.$fields_slug]['placeholder'] = 'text';
+        $content['fields'][$content_slug.'_'.$fields_slug]['validation'] = 'required';
+        $content['fields'][$content_slug.'_'.$fields_slug]['value'] = null;
+        $content['fields'][$content_slug . '_' . $fields_slug]['attributes']['id'] = 'repeater';
+        $content['fields'][$content_slug . '_' . $fields_slug]['required'] = "true";
+        $content['fields'][$content_slug . '_' . $fields_slug]['table'] = "true";
+        $content['actions']['store'] = true;
+        $content['actions']['detail'] = 'false';
+        $content['files'] = false;
+
+        Content::updateOrCreate(
+            ['slug' => $content_slug,
+            'type' => $content_type,
+            'content' => $content]
+        );
+        $pageViews = $this->template->getPageViews();
+        $repeater = Content::where('slug', $content_slug)->first();
+        return view('chuckcms::backend.content.repeater.edit', compact('pageViews', 'repeater'));
+    }
+
     public function repeaterEdit($slug)
     {
         $pageViews = $this->template->getPageViews();

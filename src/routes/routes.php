@@ -178,6 +178,7 @@ Route::group(['middleware' => ['web']], function() {
 
         Route::group(['middleware' => ['permission:create repeaters']], function () {
             Route::get('/dashboard/content/repeaters/create', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterCreate')->name('dashboard.content.repeaters.create');
+            Route::post('/dashboard/content/repeaters/createModal', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterCreateModal')->name('dashboard.content.repeaters.createModal');
             Route::post('/dashboard/content/repeaters/save', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterSave')->name('dashboard.content.repeaters.save');
             Route::post('/dashboard/content/repeaters/import', 'Chuckbe\Chuckcms\Controllers\ContentController@repeaterImport')->name('dashboard.content.repeaters.import');
         });
@@ -247,6 +248,10 @@ Route::group(['middleware' => ['web']], function() {
     // Dashboard Settings / Sites Routes...
         Route::group(['middleware' => ['permission:show settings']], function () {
             Route::get('/dashboard/settings', 'Chuckbe\Chuckcms\Controllers\DashboardController@settings')->name('dashboard.settings');
+            // TO-DO add if merged with Matomo
+            // Route::get('/dashboard/matomo', 'Chuckbe\Chuckcms\Controllers\MatomoController@index')->name('dashboard.matomo');
+            // Route::post('/dashboard/matomo/changerange', 'Chuckbe\Chuckcms\Controllers\MatomoController@matomo');
+        
         });
 
         Route::group(['middleware' => ['permission:edit settings']], function () {

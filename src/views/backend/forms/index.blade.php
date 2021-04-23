@@ -6,8 +6,7 @@
 
 @section('add_record')
 @can('create forms')
-
-<a href="#" data-target="#createFormModal" data-toggle="modal" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuw Formulier Toe</a>
+	<a href="#" data-target="#createFormModal" data-toggle="modal" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuw Formulier Toe</a>
 @endcan
 @endsection
 

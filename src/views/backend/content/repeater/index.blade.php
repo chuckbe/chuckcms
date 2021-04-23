@@ -6,7 +6,7 @@
 
 @section('add_record')
 	@can('create repeaters')
-	<a href="{{ route('dashboard.content.repeaters.create') }}" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuwe Repeater Toe</a>
+		<a href="{{ route('dashboard.content.repeaters.create') }}" class="btn btn-link text-primary m-l-20 hidden-md-down">Voeg Nieuwe Repeater Toe</a>
 	@endcan
 @endsection
 
@@ -24,7 +24,7 @@
 	<div class="row bg-light shadow-sm rounded p-3 mb-3 mx-1">
 		@can('create repeaters')
 			<div class="col-sm-12 text-right">
-				<a href="{{ route('dashboard.content.repeaters.create') }}" class="btn btn-sm btn-outline-success">Voeg Nieuwe Repeater Toe</a>
+				<a href="#" data-target="#createRepeaterModal" data-toggle="modal" class="btn btn-sm btn-outline-success">Voeg Nieuwe Repeater Toe</a>
 				<button data-target="#importRepeaterModal" data-toggle="modal" class="btn btn-sm btn-outline-success">Importeren</button>
 			</div>
 		@endcan
@@ -82,6 +82,9 @@
 	</div>
 </div>
 @include('chuckcms::backend.content.repeater._import_modal')
+@can('create repeaters')
+	@include('chuckcms::backend.content.repeater._create_modal')
+@endcan
 @endsection
 
 @section('css')
