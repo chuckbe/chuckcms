@@ -170,6 +170,7 @@ $(function() {
             success:function(response){
                 if(response.success == 'success'){
                     $('#mVersion').text("(Matomo version"+response.matomoVersion + ")");
+                    $('#LiveVisitors').text(response.liveCounter[0].visits);
                     $("#avgBouceRate").text(response.matomoSummary.bounce_rate);
                     $("#totalVisits").text(response.matomoSummary.nb_visits);
                     $("#avgTimeSpend").text(response.matomoSummary.avg_time_on_site/60 > 1 ? (response.matomoSummary.avg_time_on_site/60).toFixed(2) + " Minutes": (response.matomoSummary.avg_time_on_site/60).toFixed(2) + " Minute"); 
@@ -323,27 +324,24 @@ $(function() {
                         });
                     }
                     let chart1 = new Chart(uniqueVisitorsCanvas[0].getContext('2d'), {
-                                type: 'line',
-                                data: chartData,
-                                options: {
-                                    responsive: true,
-                                    legend: {
-                                        display: false
-                                    },
-                                    tooltips: {
-                                        callbacks: {
-                                        title: function() {}
+                                    type: 'line',
+                                    data: chartData,
+                                    options: {
+                                        responsive: true,
+                                        legend: {
+                                            display: false
+                                        },
+                                        tooltips: {
+                                            callbacks: {
+                                            title: function() {}
+                                            }
                                         }
                                     }
-                                }
-                            });
-                    
-                    
-                   
-                                         
+                                });          
                 }
             }
         });
+        
     }
     $('#reportrange').daterangepicker({
         startDate: start,

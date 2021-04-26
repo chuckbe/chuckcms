@@ -1,5 +1,5 @@
 <div class="container p3 min-height">
-  	<div class="row mb-3">
+	<div class="row mb-3">
 		<div class="col-sm-12">
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb mt-3">
@@ -9,30 +9,34 @@
 						<span></span> <i class="fa fa-caret-down"></i>
 					</div>
 				</ol>
-				
 			</nav>
-			<div class="card-block">
-				<header>
-					<div class="row">
-						<div class="col-12">
-							<div class="card card-default matomoIntroData">
-								<div class="breadcrumb separator">
-									<div class="breadcrumb-item">
-										Info
-									</div>
-								</div>
-								<div class="card-block p-3">
-									<p><strong>Average Bounce Rate:</strong> <span id="avgBouceRate"></span></p>
-									<p><strong>Total visits:</strong> <span id="totalVisits"></span></p>
-									<p><strong>Average Time spend by a user on site:</strong> <span id="avgTimeSpend"></span></p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</header>
-			</div>
 		</div>
   	</div>
+	<div class="row mb-3">
+		<div class="col-lg-6 mb-3">
+			<div class="card card-default">
+				<div class="breadcrumb separator">
+					<div class="breadcrumb-item">Live Visitors</div>
+				</div>
+				<div class="card-block p-3">
+					<p><strong>Live Visitor:</strong> <span id="LiveVisitors"></span></p>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6 mb-3">
+			<div class="card card-default">
+				<div class="breadcrumb separator">
+					<div class="breadcrumb-item">Info</div>
+				</div>
+				<div class="card-block p-3">
+					<p><strong>Average Bounce Rate:</strong> <span id="avgBouceRate"></span></p>
+					<p><strong>Total visits:</strong> <span id="totalVisits"></span></p>
+					<p><strong>Average Time spend by a user on site:</strong> <span id="avgTimeSpend"></span></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="row mb-3">
 		<div class="col-lg-6 mb-3">
 				<div class="card card-default">
