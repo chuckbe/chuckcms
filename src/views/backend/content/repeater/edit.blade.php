@@ -75,7 +75,8 @@
                           {{ $fValue['type'] }}
                         </span>
                       </span>
-                      <span class="pull-right">
+                      <span class="pull-right controls">
+                        <span class="handle px-1"><i class="fa fa-arrows-alt"></i></span>
                         <span 
                           class="label label-danger repeater_well_moveUp_btn" 
                           style="margin:10px 10px auto auto">
@@ -298,7 +299,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 75%;
+        max-width: 65%;
     }
     .repeater_well_title{
       margin: 0 !important;
@@ -325,6 +326,7 @@
 
       $( "#field_container_wrapper" ).sortable({
         revert: true,
+        handle: '.controls .handle',
         stop: function( event, ui ) { 
           $('.field_row_container').find('.well .repeater_well_moveUp_btn').show();
           $('.field_row_container').find('.well .repeater_well_moveDown_btn').show(); 
