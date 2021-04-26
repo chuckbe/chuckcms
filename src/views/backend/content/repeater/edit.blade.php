@@ -308,7 +308,7 @@
 @endsection
 
 @section('scripts')
-	<script>
+  <script>
 		$( document ).ready(function() { 
 			function destroySelect2(){
         var $select = $('.select2').select2();

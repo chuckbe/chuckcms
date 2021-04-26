@@ -402,7 +402,6 @@
 @endsection
 
 @section('scripts')
-	
 <script>
 $( document ).ready(function() { 
   function destroySelect2(){

@@ -49,6 +49,7 @@
 <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/select2/js/select2.full.min.js"></script>
 <script src="https://cdn.chuck.be/chuckcms/js/dashboard.js" type="text/javascript"></script>
 <script src="https://cdn.chuck.be/chuckcms/js/table.js" type="text/javascript"></script>
+@include('chuckcms::backend.includes.touchPunch')
 @yield('scripts')
 </body>
 </html>
