@@ -302,6 +302,9 @@
           $(item).select2("destroy");
         });
       };
+      var sortupdate = function (event, ui) {
+          console.log("moved");
+      };
 
       function initSelect2(){
         $('.select2').select2();
@@ -311,6 +314,7 @@
 
       $( "#field_container_wrapper" ).sortable({
         revert: true,
+        update: sortupdate,
         stop: function( event, ui ) { 
           $('.field_row_container').find('.well .repeater_well_moveUp_btn').show();
           $('.field_row_container').find('.well .repeater_well_moveDown_btn').show(); 
@@ -320,6 +324,7 @@
           $('.field_row_container:last').find('.well .repeater_well_moveUp_btn').show();
         } 
       });
+      $( "#field_container_wrapper" ).on("sortupdate", sortupdate)
 
       $('body').on('click', '.repeater_well_remove_btn', function() {
         if($('.field_row_container').length > 1) {
@@ -379,7 +384,42 @@
 			    $("#new_repeater_fields_slug").val(slug_text);  
 			});
 
-      
+      $('body').on('click', '.field_row_container .well .repeater_well_moveUp_btn', function(e){
+        e.stopPropagation();
+        let el = $(this).closest('.field_row_container');
+        let prev = el.prev();
+        prev.css('z-index', 999).css('position','relative').animate({ top: el.height() }, 250);
+        el.css('z-index', 1000).css('position', 'relative').animate({ top: '-' + prev.height() }, 300, function () {
+          prev.css('z-index', '').css('top', '').css('position', '');
+          el.css('z-index', '').css('top', '').css('position', '');
+          el.insertBefore(prev);
+          $('.field_row_container').find('.well .repeater_well_moveUp_btn').show();
+          $('.field_row_container').find('.well .repeater_well_moveDown_btn').show(); 
+          $('.field_row_container:first').find('.well .repeater_well_moveUp_btn').hide();
+          $('.field_row_container:first').find('.well .repeater_well_moveDown_btn').show();
+          $('.field_row_container:last').find('.well .repeater_well_moveDown_btn').hide(); 
+          $('.field_row_container:last').find('.well .repeater_well_moveUp_btn').show();
+        });
+          
+
+      });
+      $('body').on('click', '.field_row_container .well .repeater_well_moveDown_btn', function(e){
+        e.stopPropagation();
+        let el = $(this).closest('.field_row_container');
+        let next = el.next();
+        next.css('z-index', 999).css('position','relative').animate({ top: el.height() }, 250);
+        el.css('z-index', 1000).css('position', 'relative').animate({ top: '-' + next.height() }, 300, function () {
+          next.css('z-index', '').css('top', '').css('position', '');
+          el.css('z-index', '').css('top', '').css('position', '');
+          el.insertAfter(next);
+          $('.field_row_container').find('.well .repeater_well_moveUp_btn').show();
+          $('.field_row_container').find('.well .repeater_well_moveDown_btn').show(); 
+          $('.field_row_container:first').find('.well .repeater_well_moveUp_btn').hide();
+          $('.field_row_container:first').find('.well .repeater_well_moveDown_btn').show();
+          $('.field_row_container:last').find('.well .repeater_well_moveDown_btn').hide(); 
+          $('.field_row_container:last').find('.well .repeater_well_moveUp_btn').show();
+        });
+      });
       
 
       $('select[name=action_detail]').change(function(){
