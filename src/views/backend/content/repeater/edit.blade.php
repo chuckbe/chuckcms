@@ -70,19 +70,19 @@
                     <div class="col-xs-12 col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Slug</label>
-                        <input type="text" class="form-control" placeholder="Veld Slug" id="fields_slug" name="fields_slug[]" value="{{ str_replace($repeater->slug . '_', '', $fKey) }}" required>
+                        <input type="text" class="form-control fields_slug" placeholder="Veld Slug" id="fields_slug" name="fields_slug[]" value="{{ str_replace($repeater->slug . '_', '', $fKey) }}" required>
                       </div>
                     </div>
                     <div class="col-xs-12 col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Label</label>
-                        <input type="text" class="form-control" placeholder="Veld Label" id="fields_label" name="fields_label[]" value="{{ $fValue['label'] }}" required>
+                        <input type="text" class="form-control fields_label" placeholder="Veld Label" id="fields_label" name="fields_label[]" value="{{ $fValue['label'] }}" required>
                       </div>
                     </div>
                     <div class="col-sm-12 col-md-4">
                       <div class="form-group form-group-default required ">
                         <label>Veld Type</label> 
-                        <select class="full-width select2 form-control" data-init-plugin="select2" id="fields_type" name="fields_type[]" data-minimum-results-for-search="-1" required>
+                        <select class="full-width w-100 select2 form-control fields_type" data-init-plugin="select2" id="fields_type" name="fields_type[]" data-minimum-results-for-search="-1" required>
                           <option value="text" @if($fValue['type'] == 'text') selected @endif>Text</option>
                           <option value="email" @if($fValue['type'] == 'email') selected @endif>E-mail</option>
                           <option value="password" @if($fValue['type'] == 'password') selected @endif>Password</option>
@@ -178,7 +178,7 @@
           <div class="col-xs-12 col-md-3">
             <div class="form-group">
               <label>Veld Type</label>
-              <select class="full-width select2 form-control" data-init-plugin="select2" id="new_repeater_fields_type">
+              <select class="full-width select2 form-control w-100" data-init-plugin="select2" id="new_repeater_fields_type">
                 <option value="text" selected>Text</option>
                 <option value="email">E-mail</option>
                 <option value="password">Password</option>
@@ -297,30 +297,76 @@
         revert: true
       });
 
+      $('body').on('click', '.form_well_remove_btn', function() {
+        if($('.field_row_container').length > 1) {
+          $(this).closest('.field_row_container').remove();
+        }
+      }); 
+      $("#new_form_element_slug").keyup(function(){
+          var text = $(this).val();
+          slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
+          $("#new_form_element_slug").val(slug_text);
+      });
 
-      $("#content_slug").keyup(function(){
-			    var text = $(this).val();
-			    slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
-			    $("#content_slug").val(slug_text);  
-			});
+      $('body').on('keyup', ".fields_label", function(){
+          var text = $(this).val();
+          $(this).closest('.field_row_container').find('.form_well_title_label').text(text);
+      });
 
-      $('#add_extra_field_btn').click(function(){
+      $('body').on('click', '#add_extra_field_btn', function(){
+        $('.add_extra_field_warning').hide();
+        if($('#new_repeater_fields_slug').val().length == 0 && $('#new_repeater_fields_label').val().length == 0) {
+          $('.add_extra_field_warning').show();
+          return;
+        }
+        //duplicate the field row
         destroySelect2();
         $('.field_row_container:first').clone().appendTo('.field_container_wrapper');
-        if($('.field_row_container').length > 1){
-          $('#remove_last_field_btn').show();
-        }
+        new_key_id = 'field_'+($('.field_row_container').length);
+        $('.field_row_container:last').find('.well').attr('data-target', '#'+new_key_id);
+        $('.field_row_container:last').find('.collapse').attr('id', new_key_id);
+        new_slug = $('#new_repeater_fields_slug').val();
+        $('.field_row_container:last .collapse').find('.fields_slug').val(new_slug);
+        $('.field_row_container:last .well').find('.form_well_title_slug').text(new_slug);
+
+        new_label = $('#new_repeater_fields_label').val();
+        $('.field_row_container:last .collapse').find('.fields_label').val(new_label);
+        $('.field_row_container:last .well').find('.form_well_title_label').text(new_label);
+
+        new_type = $('#new_repeater_fields_type').val();    
+        $('.field_row_container:last .collapse').find('.fields_type').val(new_type);
+        $('.field_row_container:last .well').find('.form_well_title_type').text(new_type);
+
         initSelect2();
+        $('#new_repeater_fields_slug').val('');//reset new field slug input
+        $('#new_repeater_fields_label').val('');//reset new field slug input
+
       });
 
-      $('#remove_last_field_btn').click(function(){
-        if($('.field_row_container').length > 1){
-          $('.field_row_container:last').remove();
-          if($('.field_row_container').length == 1){
-            $('#remove_last_field_btn').hide();
-          }
-        }
-      });
+
+      $("#new_repeater_fields_slug").keyup(function(){
+			    var text = $(this).val();
+			    slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
+			    $("#new_repeater_fields_slug").val(slug_text);  
+			});
+
+      // $('#add_extra_field_btn').click(function(){
+      //   destroySelect2();
+      //   $('.field_row_container:first').clone().appendTo('.field_container_wrapper');
+      //   if($('.field_row_container').length > 1){
+      //     $('#remove_last_field_btn').show();
+      //   }
+      //   initSelect2();
+      // });
+
+      // $('#remove_last_field_btn').click(function(){
+      //   if($('.field_row_container').length > 1){
+      //     $('.field_row_container:last').remove();
+      //     if($('.field_row_container').length == 1){
+      //       $('#remove_last_field_btn').hide();
+      //     }
+      //   }
+      // });
 
       $('select[name=action_detail]').change(function(){
         if($('select[name=action_detail]').val() == 'true'){
