@@ -53,3 +53,11 @@
 @media (min-width: 1200px) { 
 
 }
+@media (max-width: 991px) { 
+  .limit_char_mobile {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 75%;
+  }
+}

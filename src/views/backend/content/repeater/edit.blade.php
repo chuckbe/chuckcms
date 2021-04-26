@@ -64,13 +64,16 @@
               <div class="row field-input-group field_row_container">
                 <div class="col-lg-12 well" type="button" data-toggle="collapse" data-target="#{{ $fKey }}" aria-expanded="false" aria-controls="{{ $fKey }}">
                   <h4 class="card-title repeater_well_title" style="margin-left:1.5rem;">
-                    <span class="repeater_well_title_label">
-                      {{ $fValue['label'] }}</span> (<span class="form_slug_text_label">{{ $repeater->slug  }}_</span>
-                      <span class="repeater_well_title_slug">
-                        {{ str_replace($repeater->slug  . '_', '', $fKey) }}
-                      </span>) 
-                      <span class="repeater_well_title_type label label-inverse">
-                        {{ $fValue['type'] }}
+                      <span class="pull-left limit_char_mobile">
+                        <span class="repeater_well_title_label">
+                          {{ $fValue['label'] }}
+                        </span> (<span class="form_slug_text_label">{{ $repeater->slug  }}_</span>
+                        <span class="repeater_well_title_slug">
+                          {{ str_replace($repeater->slug  . '_', '', $fKey) }}
+                        </span>) 
+                        <span class="repeater_well_title_type label label-inverse">
+                          {{ $fValue['type'] }}
+                        </span>
                       </span>
                       <span class="pull-right">
                         <span 
@@ -290,7 +293,22 @@
 @endsection
 
 @section('css')
-	
+<style>
+	@media (max-width: 991px) { 
+    .limit_char_mobile {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 75%;
+    }
+    .field_row_container{
+      padding: 1.75rem 0;
+    }
+    .repeater_well_title{
+      margin: 0 !important;
+    }
+  }
+</style>
 @endsection
 
 @section('scripts')
