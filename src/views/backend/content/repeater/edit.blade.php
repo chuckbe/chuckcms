@@ -58,12 +58,38 @@
       </div>{{-- fsettings-tab-ends --}}
       {{-- ffields-tab-starts --}}
       <div class="col-sm-12 tab-pane fade" id="tab_resource_ffields" role="tabpanel" aria-labelledby="ffields-tab">
-        <div class="row column-seperation">     
+        <div class="row column-seperation border-bottom">     
           <div class="field_container_wrapper ui-state-default w-100" id="field_container_wrapper">
             @foreach($repeater->content['fields'] as $fKey => $fValue)
               <div class="row field-input-group field_row_container">
                 <div class="col-lg-12 well" type="button" data-toggle="collapse" data-target="#{{ $fKey }}" aria-expanded="false" aria-controls="{{ $fKey }}">
-                  <h4 class="card-title form_well_title" style="margin-left:1.5rem;"><span class="form_well_title_label">{{ $fValue['label'] }}</span> (<span class="form_slug_text_label">{{ $repeater->slug  }}_</span><span class="form_well_title_slug">{{ str_replace($repeater->slug  . '_', '', $fKey) }}</span>) <span class="form_well_title_type label label-inverse">{{ $fValue['type'] }}</span> <span class="label label-danger pull-right form_well_remove_btn" style="margin:10px 10px auto auto"><i class="fa fa-trash"></i></span></h4>
+                  <h4 class="card-title repeater_well_title" style="margin-left:1.5rem;">
+                    <span class="repeater_well_title_label">
+                      {{ $fValue['label'] }}</span> (<span class="form_slug_text_label">{{ $repeater->slug  }}_</span>
+                      <span class="repeater_well_title_slug">
+                        {{ str_replace($repeater->slug  . '_', '', $fKey) }}
+                      </span>) 
+                      <span class="repeater_well_title_type label label-inverse">
+                        {{ $fValue['type'] }}
+                      </span>
+                      <span class="pull-right">
+                        <span 
+                          class="label label-danger repeater_well_moveUp_btn" 
+                          style="margin:10px 10px auto auto">
+                            <i class="fa fa-arrow-up"></i>
+                        </span>
+                        <span 
+                          class="label label-danger repeater_well_moveDown_btn" 
+                          style="margin:10px 10px auto auto">
+                            <i class="fa fa-arrow-down"></i>
+                        </span> 
+                        <span 
+                          class="label label-danger repeater_well_remove_btn" 
+                          style="margin:10px 10px auto auto">
+                            <i class="fa fa-trash"></i>
+                        </span>
+                      </span>
+                    </h4>
                 </div>
                 <div class="col collapse" id="{{ $fKey }}">
                   <div class="row">
@@ -199,18 +225,6 @@
             </div>
           </div>
         </div>
-        {{-- extra veld btn --}}
-        
-        {{-- <div class="row">
-          <div class="col-lg-6">
-            <button class="btn btn-primary btn-lg" type="button" id="add_extra_field_btn"><i class="fa fa-plus"></i> Extra veld toevoegen</button>
-          </div>
-          <div class="col-lg-6">
-            <button class="btn btn-warning btn-lg" type="button" id="remove_last_field_btn" @if(count($repeater->content['fields']) == 1) style="display:none;" @endif><i class="fa fa-minus"></i> Laatste veld verwijderen</button>
-          </div>
-        </div> --}}
-
-        {{-- extra veld btn --}}
 
       </div>{{-- ffields-tab-ends --}}
       {{-- factions-tab-starts --}}
@@ -292,12 +306,22 @@
       function initSelect2(){
         $('.select2').select2();
       };
+      $('.field_row_container:first').find('.well .repeater_well_moveUp_btn').hide();
+      $('.field_row_container:last').find('.well .repeater_well_moveDown_btn').hide();
 
       $( "#field_container_wrapper" ).sortable({
-        revert: true
+        revert: true,
+        stop: function( event, ui ) { 
+          $('.field_row_container').find('.well .repeater_well_moveUp_btn').show();
+          $('.field_row_container').find('.well .repeater_well_moveDown_btn').show(); 
+          $('.field_row_container:first').find('.well .repeater_well_moveUp_btn').hide();
+          $('.field_row_container:first').find('.well .repeater_well_moveDown_btn').show();
+          $('.field_row_container:last').find('.well .repeater_well_moveDown_btn').hide(); 
+          $('.field_row_container:last').find('.well .repeater_well_moveUp_btn').show();
+        } 
       });
 
-      $('body').on('click', '.form_well_remove_btn', function() {
+      $('body').on('click', '.repeater_well_remove_btn', function() {
         if($('.field_row_container').length > 1) {
           $(this).closest('.field_row_container').remove();
         }
@@ -310,7 +334,7 @@
 
       $('body').on('keyup', ".fields_label", function(){
           var text = $(this).val();
-          $(this).closest('.field_row_container').find('.form_well_title_label').text(text);
+          $(this).closest('.field_row_container').find('.repeater_well_title_label').text(text);
       });
 
       $('body').on('click', '#add_extra_field_btn', function(){
@@ -327,19 +351,24 @@
         $('.field_row_container:last').find('.collapse').attr('id', new_key_id);
         new_slug = $('#new_repeater_fields_slug').val();
         $('.field_row_container:last .collapse').find('.fields_slug').val(new_slug);
-        $('.field_row_container:last .well').find('.form_well_title_slug').text(new_slug);
+        $('.field_row_container:last .well').find('.repeater_well_title_slug').text(new_slug);
 
         new_label = $('#new_repeater_fields_label').val();
         $('.field_row_container:last .collapse').find('.fields_label').val(new_label);
-        $('.field_row_container:last .well').find('.form_well_title_label').text(new_label);
+        $('.field_row_container:last .well').find('.repeater_well_title_label').text(new_label);
 
         new_type = $('#new_repeater_fields_type').val();    
         $('.field_row_container:last .collapse').find('.fields_type').val(new_type);
-        $('.field_row_container:last .well').find('.form_well_title_type').text(new_type);
+        $('.field_row_container:last .well').find('.repeater_well_title_type').text(new_type);
 
         initSelect2();
         $('#new_repeater_fields_slug').val('');//reset new field slug input
         $('#new_repeater_fields_label').val('');//reset new field slug input
+        $('.field_row_container').not(":first").find('.well .repeater_well_moveUp_btn').show();
+        $('.field_row_container').not(":first").find('.well .repeater_well_moveDown_btn').show(); 
+        $('.field_row_container:last').find('.well .repeater_well_moveDown_btn').hide(); 
+        $('.field_row_container:last').find('.well .repeater_well_moveUp_btn').show();
+        
 
       });
 
@@ -350,23 +379,8 @@
 			    $("#new_repeater_fields_slug").val(slug_text);  
 			});
 
-      // $('#add_extra_field_btn').click(function(){
-      //   destroySelect2();
-      //   $('.field_row_container:first').clone().appendTo('.field_container_wrapper');
-      //   if($('.field_row_container').length > 1){
-      //     $('#remove_last_field_btn').show();
-      //   }
-      //   initSelect2();
-      // });
-
-      // $('#remove_last_field_btn').click(function(){
-      //   if($('.field_row_container').length > 1){
-      //     $('.field_row_container:last').remove();
-      //     if($('.field_row_container').length == 1){
-      //       $('#remove_last_field_btn').hide();
-      //     }
-      //   }
-      // });
+      
+      
 
       $('select[name=action_detail]').change(function(){
         if($('select[name=action_detail]').val() == 'true'){
