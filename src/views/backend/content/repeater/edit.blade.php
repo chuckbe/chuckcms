@@ -58,10 +58,10 @@
       </div>{{-- fsettings-tab-ends --}}
       {{-- ffields-tab-starts --}}
       <div class="col-sm-12 tab-pane fade" id="tab_resource_ffields" role="tabpanel" aria-labelledby="ffields-tab">
-        <div class="row column-seperation border-bottom">     
+        <div class="row column-seperation">     
           <div class="field_container_wrapper ui-state-default w-100" id="field_container_wrapper">
             @foreach($repeater->content['fields'] as $fKey => $fValue)
-              <div class="row field-input-group field_row_container">
+              <div class="row py-3 field-input-group field_row_container border-bottom">
                 <div class="col-lg-12 well" type="button" data-toggle="collapse" data-target="#{{ $fKey }}" aria-expanded="false" aria-controls="{{ $fKey }}">
                   <h4 class="card-title repeater_well_title" style="margin-left:1.5rem;">
                       <span class="pull-left limit_char_mobile">
@@ -94,7 +94,7 @@
                       </span>
                     </h4>
                 </div>
-                <div class="col collapse" id="{{ $fKey }}">
+                <div class="col pt-4 collapse" id="{{ $fKey }}">
                   <div class="row">
                     <div class="col-xs-12 col-md-4">
                       <div class="form-group form-group-default required ">
@@ -183,14 +183,13 @@
                       <option value="false" @if($fValue['table'] !== 'true') selected @endif>Nee</option>
                     </select>
                   </div>
-                  <hr>
                 </div>
               </div>
             @endforeach
           </div>
         </div>
 
-        <div class="row column-seperation">
+        <div class="row column-seperation pt-3">
           <div class="col-xs-12 col-md-3">
             <div class="form-group">
               <label>Veld Slug</label>
@@ -301,9 +300,6 @@
         text-overflow: ellipsis;
         max-width: 75%;
     }
-    .field_row_container{
-      padding: 1.75rem 0;
-    }
     .repeater_well_title{
       margin: 0 !important;
     }
@@ -320,9 +316,6 @@
           $(item).select2("destroy");
         });
       };
-      var sortupdate = function (event, ui) {
-          console.log("moved");
-      };
 
       function initSelect2(){
         $('.select2').select2();
@@ -332,7 +325,6 @@
 
       $( "#field_container_wrapper" ).sortable({
         revert: true,
-        update: sortupdate,
         stop: function( event, ui ) { 
           $('.field_row_container').find('.well .repeater_well_moveUp_btn').show();
           $('.field_row_container').find('.well .repeater_well_moveDown_btn').show(); 
@@ -342,7 +334,6 @@
           $('.field_row_container:last').find('.well .repeater_well_moveUp_btn').show();
         } 
       });
-      $( "#field_container_wrapper" ).on("sortupdate", sortupdate)
 
       $('body').on('click', '.repeater_well_remove_btn', function() {
         if($('.field_row_container').length > 1) {
