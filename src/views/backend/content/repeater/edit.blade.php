@@ -408,9 +408,9 @@
         let el = $(this).closest('.field_row_container');
         let next = el.next();
         next.css('z-index', 999).css('position','relative').animate({ top: el.height() }, 250);
-        el.css('z-index', 1000).css('position', 'relative').animate({ top: '-' + next.height() }, 300, function () {
+        el.css('z-index', 1000).css('position', 'relative').animate({ bottom: '-' + next.height() }, 300, function () {
           next.css('z-index', '').css('top', '').css('position', '');
-          el.css('z-index', '').css('top', '').css('position', '');
+          el.css('z-index', '').css('bottom', '').css('position', '');
           el.insertAfter(next);
           $('.field_row_container').find('.well .repeater_well_moveUp_btn').show();
           $('.field_row_container').find('.well .repeater_well_moveDown_btn').show(); 
