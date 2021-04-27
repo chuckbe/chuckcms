@@ -22,7 +22,6 @@ class MatomoController extends BaseController
         $data = $request->all();
         $matomo = new Matomo("https://analytics.chuck.be", "d6fdc36dc7f4c0c88fa58d189a88ae4b", 6, Matomo::FORMAT_JSON);
         $matomoVersion = $matomo->getMatomoVersion();
-        $liveCounter = $matomo->getCounters($lastMinutes = 3);
         if($data["value"]["range"] == "Today"){
             $matomo->setPeriod(Matomo::PERIOD_DAY);
             $matomo->setDate(Matomo::DATE_TODAY);
@@ -53,13 +52,23 @@ class MatomoController extends BaseController
         // nb_uniq_visitors not available when using range
         return response()->json([
             'success'=>'success',
-            'liveCounter' => $liveCounter,
             'matomoVersion' => $matomoVersion,
             'matomoSummary' => $matomoSummary,
             'matomoUniqueVisitors' => $matomoUniqueVisitors,
             'getSearchEngines' => $getSearchEngines,
             'matomoCountries' => $matomoCountries,
             'getOSFamilies' => $getOSFamilies
+        ]);
+    }
+
+    public function counter(Request $request)
+    {
+        $data = $request->all();
+        $matomo = new Matomo("https://analytics.chuck.be", "d6fdc36dc7f4c0c88fa58d189a88ae4b", 6, Matomo::FORMAT_JSON);
+        $liveCounter = $matomo->getCounters($lastMinutes = 3);
+        return response()->json([
+            'success'=>'success',
+            'liveCounter' => $liveCounter
         ]);
     }
 

@@ -103,20 +103,11 @@
 //     //     })
 //     //   });
 //   });
+
 $(function() {
-    
-    // let data = [];
-    // let days = ['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vridag', 'Zaterdag', 'Zondag'];
-    // let goBackDays = 7;
-    // let yesterday = new Date()
-    // yesterday.setDate(yesterday.getDate() - 1);
-    // let daysSorted = [];
-    // for(let i = 0; i < goBackDays; i++) {
-    //   let newDate = new Date(yesterday.setDate(yesterday.getDate() - 1));
-    //   daysSorted.push(days[newDate.getDay()]);
-    // }
     let start = moment().subtract(0, 'days');
     let end = moment();
+    let _token   = $('meta[name="csrf-token"]').attr('content');
     function cb(start, end) {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         let values = $('#reportrange span').html().split(" - ");
@@ -129,7 +120,6 @@ $(function() {
         }
         
         let val = $('#reportrange span').text();
-        let _token   = $('meta[name="csrf-token"]').attr('content');
         let convertedRange = {};
         if(val=="Today"){
             convertedRange = {
@@ -170,7 +160,6 @@ $(function() {
             success:function(response){
                 if(response.success == 'success'){
                     $('#mVersion').text("(Matomo version"+response.matomoVersion + ")");
-                    $('#LiveVisitors').text(response.liveCounter[0].visits);
                     $("#avgBouceRate").text(response.matomoSummary.bounce_rate);
                     $("#totalVisits").text(response.matomoSummary.nb_visits);
                     $("#avgTimeSpend").text(response.matomoSummary.avg_time_on_site/60 > 1 ? (response.matomoSummary.avg_time_on_site/60).toFixed(2) + " Minutes": (response.matomoSummary.avg_time_on_site/60).toFixed(2) + " Minute"); 
@@ -356,5 +345,20 @@ $(function() {
         }
     }, cb);
     cb(start, end);
+    (function liveVisitCounter(){
+        $.ajax({
+            url: "/dashboard/matomo/livevisit",
+            type: "get",
+            data: {
+                _token: _token
+            },
+            success:function(response){
+                if(response.success == 'success'){
+                    $('#LiveVisitors').text(response.liveCounter[0].visits);
+                }
+            }
+        });
+        setTimeout(liveVisitCounter, 20000);
+    })();
 });
   </script>
