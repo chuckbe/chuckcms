@@ -4,9 +4,14 @@
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb mt-3">
 					<li class="breadcrumb-item active" aria-current="Overzicht">Matomo Dashboard <span id="mVersion"></span></li>
-					<div class="btn bg-white px-2 py-1 border ml-auto" id="reportrange">
+					<div class="ml-auto">
+					<div class="btn bg-white px-2 py-1 border" id="reportrange">
 						<i class="fa fa-calendar"></i>&nbsp;
 						<span></span> <i class="fa fa-caret-down"></i>
+					</div>
+					<div class="btn bg-white px-2 py-1 border" id="matomoSettings" data-toggle="modal" data-target="#settingsmodal">
+						<i class="fa fa-cog"></i>
+					</div>
 					</div>
 				</ol>
 			</nav>
@@ -94,4 +99,40 @@
 		  </div>
     	</div>
   	</div>
+</div>
+<div class="modal" id="settingsmodal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Matomo Settings</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="#" method="post">
+			<div class="row">
+				<div class="form-group col-md-12">
+					<label class="sr-only" for="site-id">Site Id</label>
+					<div class="d-flex align-items-center border pl-3">
+						<i class="fa fa-id-card icon"></i>
+						<input class="form-control border-0" type="text" name="site-id" id="siteId" placeholder="Site Id*">
+					</div>
+            	</div>
+				<div class="form-group col-md-12">
+					<label class="sr-only" for="auth-token">AUTH_TOKEN</label>
+					<div class="d-flex align-items-center border pl-3">
+						<i class="fa fa-key icon"></i>
+						<input class="form-control border-0" type="text" name="authtoken" id="authToken" placeholder="AUTH_TOKEN*">
+					</div>
+            	</div>
+			</div>
+		</form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
