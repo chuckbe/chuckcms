@@ -222,33 +222,33 @@ $(function() {
                                 case "iOS":
                                 case "Mac":
                                 $("#PopularOs").append(`
-                                    <li><i class="fa fa-apple" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors}</li>
+                                    <li><i class="fa fa-apple" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors > 1 ?  os.sum_daily_nb_uniq_visitors+" Visitors" : os.sum_daily_nb_uniq_visitors+" Visitor"}</li>
                                 `);
                                 break;
                                 case "Android":
                                 $("#PopularOs").append(`
-                                    <li><i class="fa fa-android" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors}</li>
+                                    <li><i class="fa fa-android" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors > 1 ?  os.sum_daily_nb_uniq_visitors+" Visitors" : os.sum_daily_nb_uniq_visitors+" Visitor"}</li>
                                 `);
                                 break;
                                 case "Windows":
                                 $("#PopularOs").append(`
-                                    <li><i class="fa fa-windows" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors}</li>
+                                    <li><i class="fa fa-windows" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors > 1 ?  os.sum_daily_nb_uniq_visitors+" Visitors" : os.sum_daily_nb_uniq_visitors+" Visitor"}</li>
                                 `);
                                 break;
                                 case "GNU/Linux":
                                 case "Unix":
                                 $("#PopularOs").append(`
-                                    <li><i class="fa fa-linux" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors}</li>
+                                    <li><i class="fa fa-linux" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors > 1 ?  os.sum_daily_nb_uniq_visitors+" Visitors" : os.sum_daily_nb_uniq_visitors+" Visitor"}</li>
                                 `);
                                 break;
                                 case "Chrome OS":
                                 $("#PopularOs").append(`
-                                    <li><i class="fa fa-chrome" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors}</li>
+                                    <li><i class="fa fa-chrome" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors > 1 ?  os.sum_daily_nb_uniq_visitors+" Visitors" : os.sum_daily_nb_uniq_visitors+" Visitor"}</li>
                                 `);
                                 break;
                                 default:
                                 $("#PopularOs").append(`
-                                    <li><i class="fa fa-question" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors}</li>
+                                    <li><i class="fa fa-question" aria-hidden="true"></i> ${os.label}: ${os.sum_daily_nb_uniq_visitors > 1 ?  os.sum_daily_nb_uniq_visitors+" Visitors" : os.sum_daily_nb_uniq_visitors+" Visitor"}</li>
                                 `);
                             }
                         });
@@ -281,33 +281,33 @@ $(function() {
                                 case "iOS":
                                 case "Mac":
                                 $("#PopularOs").append(`
-                                    <li><i class="fa fa-apple" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors}</li>
+                                    <li><i class="fa fa-apple" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors > 1 ?  os.nb_uniq_visitors+" Visitors" : os.nb_uniq_visitors+" Visitor"}</li>
                                 `);
                                 break;
                                 case "Android":
                                 $("#PopularOs").append(`
-                                    <li><i class="fa fa-android" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors}</li>
+                                    <li><i class="fa fa-android" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors > 1 ?  os.nb_uniq_visitors+" Visitors" : os.nb_uniq_visitors+" Visitor"}</li>
                                 `);
                                 break;
                                 case "Windows":
                                 $("#PopularOs").append(`
-                                    <li><i class="fa fa-windows" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors}</li>
+                                    <li><i class="fa fa-windows" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors > 1 ?  os.nb_uniq_visitors+" Visitors" : os.nb_uniq_visitors+" Visitor"}</li>
                                 `);
                                 break;
                                 case "GNU/Linux":
                                 case "Unix":
                                 $("#PopularOs").append(`
-                                    <li><i class="fa fa-linux" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors}</li>
+                                    <li><i class="fa fa-linux" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors > 1 ?  os.nb_uniq_visitors+" Visitors" : os.nb_uniq_visitors+" Visitor"}</li>
                                 `);
                                 break;
                                 case "Chrome OS":
                                 $("#PopularOs").append(`
-                                    <li><i class="fa fa-chrome" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors}</li>
+                                    <li><i class="fa fa-chrome" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors > 1 ?  os.nb_uniq_visitors+" Visitors" : os.nb_uniq_visitors+" Visitor"}</li>
                                 `);
                                 break;
                                 default:
                                 $("#PopularOs").append(`
-                                    <li><i class="fa fa-question" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors}</li>
+                                    <li><i class="fa fa-question" aria-hidden="true"></i> ${os.label}: ${os.nb_uniq_visitors > 1 ?  os.nb_uniq_visitors+" Visitors" : os.nb_uniq_visitors+" Visitor"}</li>
                                 `);
                             }
                         });

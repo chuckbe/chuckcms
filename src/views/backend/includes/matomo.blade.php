@@ -83,7 +83,7 @@
     	<div class="col-lg-6">
 			<div class="card card-default">
 				<div class="breadcrumb separator">
-					<div class="breadcrumb-item">Top Countries Today</div>
+					<div class="breadcrumb-item">Top Countries</div>
 				</div>
 				<div class="card-block">
 					<div class="Chartjs">

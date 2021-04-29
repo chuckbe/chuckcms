@@ -35,6 +35,7 @@ class MatomoController extends BaseController
             $matomoSummary = $matomo->setPeriod(Matomo::PERIOD_RANGE)->getVisitsSummary();
             $getOSFamilies = $matomo->getOSFamilies();
             $matomoCountries = $matomo->getCountry();
+            
             $getSearchEngines = $matomo->getSearchEngines();
             $matomoUniqueVisitors = $matomo->setPeriod(Matomo::PERIOD_DAY)->getUniqueVisitors();
         }
