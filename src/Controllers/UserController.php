@@ -100,7 +100,7 @@ class UserController extends BaseController
     public function activate(Request $request)
     {
         $this->validate(request(), [//@todo create custom Request class for user password validation
-            'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
+            'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\])(?=.*[!$#%]).*$/',
             'password_again' => 'required|same:password',
             '_user_token' => 'required',
             '_user_id' => 'required'
