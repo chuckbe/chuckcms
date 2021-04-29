@@ -16,10 +16,12 @@
 		<div class="col-lg-6 mb-3">
 			<div class="card card-default">
 				<div class="breadcrumb separator">
-					<div class="breadcrumb-item">Live Visitors</div>
+					<div class="breadcrumb-item">Real Time Visitor Count</div>
 				</div>
-				<div class="card-block p-3">
-					<p><strong>Live Visitor:</strong> <span id="LiveVisitors"></span></p>
+				<div class="card-block text-center" style="padding: 0 30%">
+					<div class="m-1 bg-light rounded px-1 py-5">
+						<span class="font-weight-bold" style="font-size:2rem;" id="LiveVisitors"></span>
+					</div>
 				</div>
 			</div>
 		</div>
