@@ -18,10 +18,13 @@
 				<div class="breadcrumb separator">
 					<div class="breadcrumb-item">Real Time Visitor Count</div>
 				</div>
-				<div class="card-block text-center" style="padding: 0 30%">
-					<div class="m-1 bg-light rounded px-1 py-5">
+				<div class="card-block text-center">
+					<div class="bg-light rounded px-1 py-5" style="margin: 0 30%">
 						<span class="font-weight-bold" style="font-size:2rem;" id="LiveVisitors"></span>
 					</div>
+					<p class="pt-3">
+						<span id="counter-visitor" class="font-weight-bold"></span> and <span id="counter-actions" class="font-weight-bold"></span> in Last 20 seconds
+					</p>
 				</div>
 			</div>
 		</div>

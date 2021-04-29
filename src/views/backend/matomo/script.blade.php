@@ -354,11 +354,21 @@ $(function() {
             },
             success:function(response){
                 if(response.success == 'success'){
+                    console.log(response);
                     $('#LiveVisitors').text(response.liveCounter[0].visits);
+                    $("#counter-visitor").text(response.liveCounter[0].visits > 1 ? response.liveCounter[0].visits + " visitors" : response.liveCounter[0].visits + " visitor");
+                    $("#counter-actions").text(response.liveCounter[0].actions > 1 ? response.liveCounter[0].actions + " actions" : response.liveCounter[0].actions + " action");
                 }
             }
         });
         setTimeout(liveVisitCounter, 20000);
+        // setInterval(function(){ 
+        //     let val = parseInt($("#counter").text());
+
+        //     val = val + 1;
+        //     $("#counter").text(val+" seconds");
+              
+        // }, 1000);
     })();
 });
   </script>
