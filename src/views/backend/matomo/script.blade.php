@@ -362,13 +362,6 @@ $(function() {
             }
         });
         setTimeout(liveVisitCounter, 20000);
-        // setInterval(function(){ 
-        //     let val = parseInt($("#counter").text());
-
-        //     val = val + 1;
-        //     $("#counter").text(val+" seconds");
-              
-        // }, 1000);
     })();
 });
   </script>

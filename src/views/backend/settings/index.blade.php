@@ -277,9 +277,7 @@
   <script src="{{ URL::to('/vendor/laravel-filemanager/js/lfm.js') }}"></script>
 	<script>
 		$( document ).ready(function() { 
-			
       init();
-
       function init () {
         //init media manager inputs 
         var domain = "{{ URL::to('dashboard/media')}}";
