@@ -20,8 +20,8 @@ class MatomoController extends BaseController
      */
      public function __construct()
     {
-        // $this->siteId = ChuckSite::getSetting('integrations.matomo-site-id');
-        // $this->authToken = ChuckSite::getSetting('integrations.matomo-auth-key');
+        $this->siteId = ChuckSite::getSetting('integrations.matomo-site-id');
+        $this->authToken = ChuckSite::getSetting('integrations.matomo-auth-key');
     }
 
  
