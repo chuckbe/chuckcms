@@ -4,10 +4,27 @@ namespace Chuckbe\Chuckcms\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use ChuckSite;
 use VisualAppeal\Matomo;
 
 class MatomoController extends BaseController
 {
+
+    private $siteId;
+    private $authToken;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+     public function __construct()
+    {
+        // $this->siteId = ChuckSite::getSetting('integrations.matomo-site-id');
+        // $this->authToken = ChuckSite::getSetting('integrations.matomo-auth-key');
+    }
+
+ 
     /**
      * Show the dashboard -> pages.
      *
@@ -15,12 +32,15 @@ class MatomoController extends BaseController
      */
     public function index()
     {
+        if($this->siteId == null || $this->siteId == null){
+            return view('chuckcms::backend.matomo.index', ['matomo' => 'nokeys']);
+        }
         return view('chuckcms::backend.matomo.index');
     }
     public function matomo(Request $request)
     {
         $data = $request->all();
-        $matomo = new Matomo("https://analytics.chuck.be", "d6fdc36dc7f4c0c88fa58d189a88ae4b", 6, Matomo::FORMAT_JSON);
+        $matomo = new Matomo("https://analytics.chuck.be", $this->authToken, $this->siteId, Matomo::FORMAT_JSON);
         $matomoVersion = $matomo->getMatomoVersion();
         if($data["value"]["range"] == "Today"){
             $matomo->setPeriod(Matomo::PERIOD_DAY);
@@ -40,17 +60,6 @@ class MatomoController extends BaseController
             $matomoUniqueVisitors = $matomo->setPeriod(Matomo::PERIOD_DAY)->getUniqueVisitors();
         }
         
-        
-        // $matomoApi = $matomo->getApi();
-        // $pageUrls = $matomo->getPageUrls();
-        // $getDeviceType = $matomo->getDeviceType();
-        // $getDeviceBrand = $matomo->getDeviceBrand();
-        // $getDeviceModel = $matomo->getDeviceModel();
-        // $getOSFamilies = $matomo->getOSFamilies();
-        // $getBrowsers = $matomo->getBrowsers();
-        // $getMoversAndShakersOverview = $matomo->getMoversAndShakersOverview('countryCode==be');
-
-        // nb_uniq_visitors not available when using range
         return response()->json([
             'success'=>'success',
             'matomoVersion' => $matomoVersion,
@@ -65,7 +74,7 @@ class MatomoController extends BaseController
     public function counter(Request $request)
     {
         $data = $request->all();
-        $matomo = new Matomo("https://analytics.chuck.be", "d6fdc36dc7f4c0c88fa58d189a88ae4b", 6, Matomo::FORMAT_JSON);
+        $matomo = new Matomo("https://analytics.chuck.be", $this->authToken, $this->siteId, Matomo::FORMAT_JSON);
         $liveCounter = $matomo->getCounters($lastMinutes = 3);
         return response()->json([
             'success'=>'success',

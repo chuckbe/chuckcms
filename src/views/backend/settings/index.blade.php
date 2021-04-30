@@ -191,6 +191,15 @@
               <label>Google Site Verification</label>
               <input type="text" class="form-control" placeholder="Google Site Verification" name="integrations[g-site-verification]" value="{{ $site->settings['integrations']['g-site-verification'] }}">
             </div>
+            {{--  to add matomo  --}}
+            <div class="form-group form-group-default ">
+              <label>Matomo Site ID</label>
+              <input type="text" class="form-control" placeholder="Matomo Site Id" name="integrations[matomo-site-id]" value="{{ array_key_exists('matomo-site-id', $site->settings['integrations']) ? $site->settings['integrations']['matomo-site-id'] : null }}">
+            </div>
+            <div class="form-group form-group-default ">
+              <label>Matomo Auth Key</label>
+              <input type="text" class="form-control" placeholder="Matomo Auth Token" name="integrations[matomo-auth-key]" value="{{ array_key_exists('matomo-auth-key', $site->settings['integrations']) ? $site->settings['integrations']['matomo-auth-key'] : null }}">
+            </div>
           </div>
         </div>
       </div>{{-- integrations tab ends --}}
