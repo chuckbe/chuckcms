@@ -247,7 +247,6 @@ Route::group(['middleware' => ['web']], function() {
     // Dashboard Settings / Sites Routes...
         Route::group(['middleware' => ['permission:show settings']], function () {
             Route::get('/dashboard/settings', 'Chuckbe\Chuckcms\Controllers\DashboardController@settings')->name('dashboard.settings');
-            Route::get('/dashboard/settings/integrations', 'Chuckbe\Chuckcms\Controllers\DashboardController@integrations')->name('dashboard.integrations');
             Route::get('/dashboard/matomo', 'Chuckbe\Chuckcms\Controllers\MatomoController@index')->name('dashboard.matomo');
             Route::post('/dashboard/matomo/changerange', 'Chuckbe\Chuckcms\Controllers\MatomoController@matomo');
             Route::get('/dashboard/matomo/livevisit', 'Chuckbe\Chuckcms\Controllers\MatomoController@counter')->name('dashboard.livevisits');
