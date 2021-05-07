@@ -53,7 +53,7 @@ class MatomoController extends BaseController
     public function matomo(Request $request)
     {
         $data = $request->all();
-        $matomo = new Matomo("https://analytics.chuck.be", $this->authToken, $this->siteId, Matomo::FORMAT_JSON);
+        $matomo = new Matomo(config('chuckcms.analytics.matomoURL'), $this->authToken, $this->siteId, Matomo::FORMAT_JSON);
         $matomoVersion = $matomo->getMatomoVersion();
         if($data["value"]["range"] == "Today"){
             $matomo->setPeriod(Matomo::PERIOD_DAY);
@@ -87,7 +87,7 @@ class MatomoController extends BaseController
     public function counter(Request $request)
     {
         $data = $request->all();
-        $matomo = new Matomo("https://analytics.chuck.be", $this->authToken, $this->siteId, Matomo::FORMAT_JSON);
+        $matomo = new Matomo(config('chuckcms.analytics.matomoURL'), $this->authToken, $this->siteId, Matomo::FORMAT_JSON);
         $liveCounter = $matomo->getCounters($lastMinutes = 3);
         return response()->json([
             'success'=>'success',
