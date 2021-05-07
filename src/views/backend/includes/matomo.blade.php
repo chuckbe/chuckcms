@@ -105,33 +105,42 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Matomo Settings</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
-        </button>
+        </button> --}}
       </div>
       <div class="modal-body">
-        <form action="#" method="post">
+        <form id="matomodata" action="{{ route('dashboard.matomosubmit') }}" method="post">
+			@csrf
 			<div class="row">
 				<div class="form-group col-md-12">
 					<label class="sr-only" for="site-id">Site Id</label>
 					<div class="d-flex align-items-center border pl-3">
 						<i class="fa fa-id-card icon"></i>
-						<input class="form-control border-0" type="text" name="site-id" id="siteId" placeholder="Site Id*">
+						<input class="form-control border-0" type="text" name="siteId" id="siteId" placeholder="Site Id*" value="{{empty($matomoSiteId) || $matomoSiteId == null ? '' : $matomoSiteId}}" required>
 					</div>
             	</div>
 				<div class="form-group col-md-12">
 					<label class="sr-only" for="auth-token">AUTH_TOKEN</label>
 					<div class="d-flex align-items-center border pl-3">
 						<i class="fa fa-key icon"></i>
-						<input class="form-control border-0" type="text" name="authtoken" id="authToken" placeholder="AUTH_TOKEN*">
+						<input class="form-control border-0" type="text" name="authtoken" id="authToken" placeholder="AUTH_TOKEN*" value="{{empty($matomoAuthToken) || $matomoAuthToken == null ?  '' : $matomoAuthToken}}" required>
 					</div>
             	</div>
 			</div>
 		</form>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		@if ($errors->any())
+			<div class="alert alert-danger">
+				<ul>
+				@foreach ($errors->all() as $error)
+					<li>{{ $error }}</li>
+				@endforeach
+				</ul>
+			</div>
+		@endif
+		<button type="submit" name="send" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>

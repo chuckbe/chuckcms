@@ -2,14 +2,24 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Chuckbe\Chuckcms\Models\Site;
+use Chuckbe\Chuckcms\Chuck\SiteRepository;
+use Chuckbe\Chuckcms\Models\User;
 use ChuckSite;
 use VisualAppeal\Matomo;
 
 class MatomoController extends BaseController
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    private $site;
+    private $siteRepository;
+    private $user;
     private $siteId;
     private $authToken;
 
@@ -18,10 +28,13 @@ class MatomoController extends BaseController
      *
      * @return void
      */
-     public function __construct()
+     public function __construct(Site $site, SiteRepository $siteRepository, User $user)
     {
+        $this->site = $site;
         $this->siteId = ChuckSite::getSetting('integrations.matomo-site-id');
         $this->authToken = ChuckSite::getSetting('integrations.matomo-auth-key');
+        $this->siteRepository = $siteRepository;
+        $this->user = $user;
     }
 
  
@@ -32,8 +45,8 @@ class MatomoController extends BaseController
      */
     public function index()
     {
-        if($this->siteId == null || $this->siteId == null){
-            return view('chuckcms::backend.matomo.index', ['matomo' => 'nokeys']);
+        if($this->siteId == null || $this->authToken == null){
+            return view('chuckcms::backend.matomo.index', ['matomoSiteId' => $this->siteId, 'matomoAuthToken' => $this->authToken]);
         }
         return view('chuckcms::backend.matomo.index');
     }
@@ -80,6 +93,34 @@ class MatomoController extends BaseController
             'success'=>'success',
             'liveCounter' => $liveCounter
         ]);
+    }
+
+    public function submit(Request $request)
+    {
+        $request->validate([
+            'siteId' => 'required',
+            'authtoken' => 'required'
+        ]);
+        $settings = [];
+        $settings['id'] = ChuckSite::getSite('id');
+        $settings['name'] = ChuckSite::getSite('name');
+        $settings['slug'] = ChuckSite::getSite('slug');
+        $settings['company'] =  ChuckSite::getSetting('company') ;
+        $settings['socialmedia'] =  ChuckSite::getSetting('socialmedia');
+        $settings['favicon'] = ChuckSite::getSetting('favicon');
+        $settings['logo'] =  ChuckSite::getSetting('logo');
+        $settings['lang'] = ChuckSite::getSetting('lang');
+        $settings['domain'] = ChuckSite::getSetting('domain');
+        $settings['integrations'] = [
+            'matomo-site-id' => $request->siteId,
+            'matomo-auth-key' => $request->authtoken
+        ];
+        // //update or create settings
+        $this->siteRepository->updateIntegrations($settings);
+
+        //redirect back
+        return redirect()->route('dashboard.matomo')->with('notification', 'Instellingen opgeslagen!');
+        
     }
 
 }

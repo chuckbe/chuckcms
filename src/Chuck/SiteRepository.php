@@ -40,6 +40,47 @@ class SiteRepository
         return $result;
     }
 
+    public static function updateIntegrations($req)
+    {
+        $settings = [];
+        foreach ($req['company'] as $cmpKey => $cmpValue) {
+            $settings['company'][$cmpKey] = $cmpValue;
+        }
+        foreach ($req['socialmedia'] as $cmpKey => $cmpValue) {
+            $settings['socialmedia'][$cmpKey] = $cmpValue;
+        }
+        foreach ($req['favicon'] as $faviKey => $faviValue) {
+            $settings['favicon'][$faviKey] = $faviValue;
+        }
+        foreach ($req['logo'] as $faviKey => $faviValue) {
+            $settings['logo'][$faviKey] = $faviValue;
+        }
+        foreach($req['integrations'] as $igsKey => $igsValue){
+            $settings['integrations'][$igsKey] = $igsValue;
+        }
+        $settings['lang'] = $req['lang'];
+        $settings['domain'] = $req['domain']; 
+
+        $result = [
+            ['id' => $req['id']],
+            ['name' => $req['name'],
+            'slug' => $req['slug'],
+            'domain' => $req['domain'],
+            'settings' => $settings]
+        ];
+
+         // updateOrCreate the site
+        $result = Site::updateOrCreate(
+            ['id' => $req['id']],
+            ['name' => $req['name'],
+            'slug' => $req['slug'],
+            'domain' => $req['domain'],
+            'settings' => $settings]
+        );
+
+        return $result;
+    }
+
     public static function createFromArray($array)
     {
         // updateOrCreate the site

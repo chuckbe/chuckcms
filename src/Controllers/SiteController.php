@@ -46,6 +46,7 @@ class SiteController extends BaseController
             'lang' => 'array',
             'site_id' => 'required|nullable'
         ]);
+        
 
         //update or create settings
         $this->siteRepository->updateOrCreateFromRequest($request);

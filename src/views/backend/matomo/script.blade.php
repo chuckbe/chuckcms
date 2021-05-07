@@ -363,5 +363,9 @@ $(function() {
         });
         setTimeout(liveVisitCounter, 20000);
     })();
+    $('#settingsmodal .modal-dialog .modal-footer .btn[type="submit"]').on('click', function(){
+        $('#matomodata').submit();
+    });
 });
+
   </script>
