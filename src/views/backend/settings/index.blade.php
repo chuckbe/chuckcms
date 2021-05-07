@@ -286,6 +286,20 @@
       }
 
       $(".selectjs").select2();
+      $.urlParam = function(name){
+          var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+          return results[1] || 0;
+      }
+      $.urlParam = function(name){    
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href); 
+        if (results === null) {           
+          return 0;  
+        } 
+        return results[1]; 
+      }
+      if($.urlParam('integration') !== 0){
+        $('#integrations_setup-tab').click();
+      }
 		});
 	</script>
   @if (session('notification'))

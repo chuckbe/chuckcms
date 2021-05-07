@@ -453,14 +453,14 @@
   @endif
   <script src="https://cdnjs.cloudflare.com/ajax/libs/kartograph-js/0.8.7/kartograph.min.js" integrity="sha512-L4PJPMY6KTM9aMBxyrxBEQZGcfOEctt5XzZ1VaRT/rBI/7uJbThQejdw8r/JaoaPWE5/URD5Je2UESAu/uV5Yw==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.js" integrity="sha512-2h6nRNAf9ejT/sqEs1Pg7mmafcJCla+tVGo1zDQDH1U+abXb0CxzjGIJEFpzHSfG27bGHM4K+UpDXwaF0gzCHw==" crossorigin="anonymous"></script>
- <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
   @include('chuckcms::backend.matomo.script')
   @if(isset($matomoSiteId) || isset($matomoAuthToken))
     @if($matomoSiteId == null || $matomoAuthToken == null)
       <script>
         $(function() {
-          window.location.replace("/dashboard/settings");
+          window.location.replace("/dashboard/settings?integration=active");
           // $('#settingsmodal').modal({
           //   backdrop: 'static',
           //   keyboard: false
