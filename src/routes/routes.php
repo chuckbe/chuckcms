@@ -26,6 +26,7 @@ Route::group(['middleware' => ['web']], function() {
             Route::get('/dashboard/pages', 'Chuckbe\Chuckcms\Controllers\PageController@index')->name('dashboard.pages');
         });
         Route::group(['middleware' => ['permission:create pages']], function () {
+            Route::post('/dashboard/page/createmodal', 'Chuckbe\Chuckcms\Controllers\PageController@createwithmodal')->name('dashboard.page.createmodal');
             Route::get('/dashboard/page/create', 'Chuckbe\Chuckcms\Controllers\PageController@create')->name('dashboard.page.create');
             Route::post('/dashboard/page/save', 'Chuckbe\Chuckcms\Controllers\PageController@save')->name('dashboard.page.save');
         });

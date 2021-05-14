@@ -24,7 +24,8 @@
     <div class="row bg-light shadow-sm rounded p-3 mb-3 mx-1">
 		@can('create pages')
 		<div class="col-sm-12 text-right">
-    		<a href="{{ route('dashboard.page.create') }}" class="btn btn-sm btn-outline-success"> Nieuwe Pagina </a>
+    		{{-- <a href="{{ route('dashboard.page.create') }}" class="btn btn-sm btn-outline-success"> Nieuwe Pagina </a> --}}
+			<a href="#" data-target="#createPagesModal" data-toggle="modal" class="btn btn-sm btn-outline-success"> Nieuwe Pagina </a>
     	</div>
 		@endcan
 		<div class="col-sm-12 my-3">
@@ -107,7 +108,9 @@
 		</div>
 	</div>
 </div>
-
+@can('create pages')
+	@include('chuckcms::backend.pages._create_modal')
+@endcan
 @endsection
 
 @section('css')

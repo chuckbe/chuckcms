@@ -12,6 +12,7 @@ use Chuckbe\Chuckcms\Models\Repeater;
 use Chuckbe\Chuckcms\Models\Site;
 use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\User;
+use ChuckSite;
 
 use Spatie\Permission\Models\Role;
 
@@ -71,8 +72,9 @@ class PageController extends BaseController
     public function index()
     {
         $pages = $this->page->ordered()->get();
+        $pageViews = $this->template->getPageViews();
         
-        return view('chuckcms::backend.pages.index', compact('pages'));
+        return view('chuckcms::backend.pages.index', compact('pageViews', 'pages'));
     }
 
     /**
@@ -99,6 +101,47 @@ class PageController extends BaseController
         $templates = $this->template->where('active', 1)->get();
         $pageViews = $this->template->getPageViews();
         return view('chuckcms::backend.pages.create', compact('templates', 'pageViews'));
+    }
+
+    /**
+     * Show the dashboard -> page create with modal.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function createwithmodal(Request $request)
+    {
+        $templates = $this->template->where('active', 1)->get();
+        $pageViews = $this->template->getPageViews();
+        $roles = Role::all();
+        $this->validate(request(), [//@todo create custom Request class for page validation
+            'title' => 'max:185',
+        ]);
+        $page = new Page();
+        $meta = [];
+
+        foreach (ChuckSite::getSupportedLocales() as $langKey => $langValue) {
+            $page->setTranslation('title', $langKey, $request['title']);
+            $page->setTranslation('slug', $langKey, $request['slug']);
+            $meta[$langKey]['title'] = '';
+            $meta[$langKey]['description'] = '';
+            $meta[$langKey]['keywords'] = '';
+            $meta[$langKey]['og-url'] = '';
+            $meta[$langKey]['og-type'] = 'website';
+            $meta[$langKey]['og-title'] = '';
+            $meta[$langKey]['og-description'] = '';
+            $meta[$langKey]['og-site_name'] = '';
+            $index = 'noindex, ';
+            $follow = 'nofollow';
+            $meta[$langKey]['robots'] = $index . $follow;
+            $meta[$langKey]['googlebots'] = $index . $follow;
+        }
+        $page->meta = $meta;
+        $page->template_id = 0;
+        $page->page = $request['page'];
+        $page->active = 0;
+        $page->isHp = $request['isHp'];
+        $page->save();
+        return view('chuckcms::backend.pages.edit', compact('templates', 'page', 'pageViews', 'roles'));
     }
 
     /**
