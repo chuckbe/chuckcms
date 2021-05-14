@@ -141,7 +141,8 @@ class PageController extends BaseController
         $page->active = 0;
         $page->isHp = $request['isHp'];
         $page->save();
-        return view('chuckcms::backend.pages.edit', compact('templates', 'page', 'pageViews', 'roles'));
+        return redirect()->route('dashboard.page.edit', ['page_id' => $page->id]);
+        // return view('chuckcms::backend.pages.edit', compact('templates', 'page', 'pageViews', 'roles'));
     }
 
     /**
