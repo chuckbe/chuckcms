@@ -110,9 +110,9 @@ class PageController extends BaseController
      */
     public function createwithmodal(Request $request)
     {
-        $templates = $this->template->where('active', 1)->get();
-        $pageViews = $this->template->getPageViews();
-        $roles = Role::all();
+        // $templates = $this->template->where('active', 1)->get();
+        // $pageViews = $this->template->getPageViews();
+        // $roles = Role::all();
         $this->validate(request(), [//@todo create custom Request class for page validation
             'title' => 'max:185',
         ]);

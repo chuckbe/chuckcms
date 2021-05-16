@@ -51,11 +51,9 @@
                         <div class="col-lg-12 well">
                           <div class="row">
                             <div class="col-lg-1 d-flex justify-content-center align-items-center mb-0">
-                              <span class="pull-right controls h5">
+                              <span class="pull-right controls h5 mb-0">
                                 <span class="handle px-1"><i class="fa fa-arrows-alt"></i></span>
-                                <span 
-                                  class="label label-danger meta_well_remove_btn" 
-                                  style="margin:10px 10px auto auto">
+                                <span class="label label-danger meta_well_remove_btn">
                                     <i class="fa fa-trash"></i>
                                 </span>
                               </span>
@@ -219,6 +217,9 @@
     font-size: 15px !important;
     color: #000 !important;
     line-height: 20px !important;
+  }
+  .handle.ui-sortable-handle{
+    cursor: move;
   }
   @media (max-width: 991px) { 
     .limit_char_mobile {
