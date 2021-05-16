@@ -80,8 +80,7 @@ return [
                 'name' => 'googlebots',
                 'type' => 'text'
             ],
-        ],
-
+        ]
     ],
 
 ];
