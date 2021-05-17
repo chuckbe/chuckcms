@@ -46,64 +46,34 @@
                 </div>
                 <hr>
                 <div id="meta_container_wrapper" class="meta_field_wrapper" data-lang="{{ $langKey }}">
-                  @foreach ($seo_fields as $seo_field)
-                      <div class="row py-3 meta_field_row" data-order="{{ $loop->iteration }}">
-                        <div class="col-lg-12 well">
-                          <div class="row">
-                            <div class="col-lg-1 d-flex justify-content-center align-items-center mb-0">
-                              <span class="pull-right controls h5 mb-0">
-                                <span class="handle px-1"><i class="fa fa-arrows-alt"></i></span>
-                                <span class="label label-danger meta_well_remove_btn">
-                                    <i class="fa fa-trash"></i>
-                                </span>
+                  @foreach($page->meta[$langKey] as $mKey => $mValue)
+                    <div class="row py-3 meta_field_row" data-order="{{ $loop->iteration }}">
+                      <div class="col-lg-12 well">
+                        <div class="row">
+                          <div class="col-lg-1 d-flex justify-content-center align-items-center mb-0">
+                            <span class="pull-right controls h5 mb-0">
+                              <span class="handle px-1"><i class="fa fa-arrows-alt"></i></span>
+                              <span class="label label-danger meta_well_remove_btn">
+                                  <i class="fa fa-trash"></i>
                               </span>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group form-group-default required ">
-                                  <label>Meta Key</label>
-                                  <input type="text" class="form-control meta_key" placeholder="key" id="meta_key" name="meta_key[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="{{ $seo_field['name'] }}" required>
-                                  {{-- <input type="text" class="form-control meta_key" placeholder="key" id="meta_key" name="meta_key[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="{{ $mKey }}" required> --}}
-                                </div>
-                            </div>
-                            <div class="col-lg-7">
+                            </span>
+                          </div>
+                          <div class="col-lg-4">
                               <div class="form-group form-group-default required ">
-                                <label>Meta Waarde</label>
-                                <input type="text" class="form-control meta_value @if($seo_field['name'] == 'title') meta_title @endif  @if($seo_field['name'] == 'description') meta_description @endif" placeholder="waarde" id="meta_value" name="meta_value[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="" data-lang="{{ $langKey }}" required>
-                                {{-- <input type="text" class="form-control meta_value @if($mKey == 'title') meta_title @endif  @if($mKey == 'description') meta_description @endif" placeholder="waarde" id="meta_value" name="meta_value[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="{{ $mValue }}" data-lang="{{ $langKey }}" required> --}}
+                                <label>Meta Key</label>
+                                <input type="text" class="form-control meta_key" placeholder="key" id="meta_key" name="meta_key[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="{{ $mKey }}" required>
                               </div>
-                            </div>
+                          </div>
+                          <div class="col-lg-7">
+                              <div class="form-group form-group-default required ">
+                                  <label>Meta Waarde</label>
+                                  <input type="text" class="form-control meta_value @if($mKey == 'title') meta_title @endif  @if($mKey == 'description') meta_description @endif" placeholder="waarde" id="meta_value" name="meta_value[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="{{ $mValue }}" data-lang="{{ $langKey }}" required>
+                              </div>
                           </div>
                         </div>
                       </div>
-                  @endforeach
-                    {{-- @foreach($page->meta[$langKey] as $mKey => $mValue)
-                      <div class="row py-3 meta_field_row" data-order="{{ $loop->iteration }}">
-                        <div class="col-lg-12 well">
-                          <div class="row">
-                            <div class="col-lg-1 d-flex justify-content-center align-items-center mb-0">
-                              <span class="pull-right controls h5 mb-0">
-                                <span class="handle px-1"><i class="fa fa-arrows-alt"></i></span>
-                                <span class="label label-danger meta_well_remove_btn">
-                                    <i class="fa fa-trash"></i>
-                                </span>
-                              </span>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group form-group-default required ">
-                                  <label>Meta Key</label>
-                                  <input type="text" class="form-control meta_key" placeholder="key" id="meta_key" name="meta_key[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="{{ $mKey }}" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-7">
-                                <div class="form-group form-group-default required ">
-                                    <label>Meta Waarde</label>
-                                    <input type="text" class="form-control meta_value @if($mKey == 'title') meta_title @endif  @if($mKey == 'description') meta_description @endif" placeholder="waarde" id="meta_value" name="meta_value[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="{{ $mValue }}" data-lang="{{ $langKey }}" required>
-                                </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    @endforeach --}}
+                    </div>
+                  @endforeach 
                 </div>
                 {{-- <hr> --}}
                 <div class="row">

@@ -88,8 +88,8 @@ class PageController extends BaseController
         $page = $this->page->getByIdWithBlocks($page_id);
         $pageViews = $this->template->getPageViews();
         $roles = Role::all();
-        $seo_fields = config('chuckcms.auth.seo_fields');
-        return view('chuckcms::backend.pages.edit', compact('templates', 'page', 'pageViews', 'roles', 'seo_fields'));
+        // $seo_fields = config('chuckcms.auth.seo_fields');
+        return view('chuckcms::backend.pages.edit', compact('templates', 'page', 'pageViews', 'roles'));
     }
 
     /**
@@ -111,9 +111,9 @@ class PageController extends BaseController
      */
     public function createwithmodal(Request $request)
     {
-        // $templates = $this->template->where('active', 1)->get();
-        // $pageViews = $this->template->getPageViews();
-        // $roles = Role::all();
+        $templates = $this->template->where('active', 1)->get();
+        $pageViews = $this->template->getPageViews();
+        $roles = Role::all();
         $seo_fields = config('chuckcms.auth.seo_fields');
         $this->validate(request(), [//@todo create custom Request class for page validation
             'title' => 'max:185',
@@ -142,9 +142,9 @@ class PageController extends BaseController
         $page->page = $request['page'];
         $page->active = 0;
         $page->isHp = $request['isHp'];
-        $page->save();
-        return redirect()->route('dashboard.page.edit', ['page_id' => $page->id, 'seo_fields' => $seo_fields]);
-        // return view('chuckcms::backend.pages.edit', compact('templates', 'page', 'pageViews', 'roles'));
+        // $page->save();
+        // return redirect()->route('dashboard.page.edit', ['page_id' => $page->id, 'seo_fields' => $seo_fields]);
+        return view('chuckcms::backend.pages.create' , compact('templates', 'page', 'pageViews', 'roles', 'seo_fields'));
     }
 
     /**
