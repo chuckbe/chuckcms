@@ -28,6 +28,10 @@ class Module extends Eloquent
 
     public function getSettingsAttribute()
     {
+        if(array_key_exists('settings', $this->json)) {
+            return $this->json['settings'];
+        }
+        
         if(!array_key_exists('admin', $this->json)) {
             return array();
         }
