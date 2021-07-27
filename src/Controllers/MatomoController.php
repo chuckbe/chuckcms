@@ -12,6 +12,7 @@ use Chuckbe\Chuckcms\Chuck\SiteRepository;
 use Chuckbe\Chuckcms\Models\User;
 use ChuckSite;
 use VisualAppeal\Matomo;
+use Matomo\ReportingApi\QueryFactory;
 
 class MatomoController extends BaseController
 {
@@ -50,12 +51,108 @@ class MatomoController extends BaseController
         }
         return view('chuckcms::backend.matomo.index');
     }
+    public function ReportingApi(Request $request)
+    {
+        $data = $request->all();
+        $query_factory = QueryFactory::create(config('chuckcms.analytics.matomoURL'));
+        $query_factory
+            ->set('idSite', $this->siteId)
+            ->set('token_auth', $this->authToken);
+        
+        $date = 'today';
+        $period = 'day';
+        
+        if($data["value"]["range"] !== "Today" || $data["value"]["range"] !== "Yesterday"){
+            
+            if(isset($data["value"]["y2"],$data["value"]["m2"],$data["value"]["d2"])){
+                $now = \Carbon\Carbon::now();
+                $startdate = \Carbon\Carbon::createFromFormat('Y-m-d', $data["value"]["y2"].'-'.$data["value"]["m2"].'-'.$data["value"]["d2"]);
+                $enddate = \Carbon\Carbon::createFromFormat('Y-m-d',$data["value"]["y1"].'-'.$data["value"]["m1"].'-'.$data["value"]["d1"]);
+                $checkforrange = $now->diffInDays($enddate);
+                if($checkforrange !== 0){
+                    $period = 'range';
+                    $date = $data["value"]["y2"].'-'.$data["value"]["m2"].'-'.$data["value"]["d2"].','.$data["value"]["y1"].'-'.$data["value"]["m1"].'-'.$data["value"]["d1"];
+                }else{
+                    $diff = $startdate->diffInDays($enddate);
+                    if($diff == 6){
+                        $period = 'week';
+                        $date = 'last7';
+                    }
+                    if($diff == 29){
+                        $period = 'month';
+                        $date = 'last30';
+                    }
+                }
+                
+            }      
+        }
+        if($data["value"]["range"] == "Today"){
+            $date = 'today';
+            $period = 'day';
+        }
+        if($data["value"]["range"] == "Yesterday"){
+            $date = 'yesterday';
+            $period = 'day';
+        }
+        $status = $query_factory->getQuery('HeatmapSessionRecording.getAvailableStatuses')
+        ->execute()
+        ->getResponse();
+
+        if($data["value"]["range"] == "Yesterday" || $data["value"]["range"] == "Today"){
+            $LastVisitsDetails = $query_factory->getQuery('Live.getLastVisitsDetails')
+            ->setParameter('date', $date)
+            ->setParameter('period', $period)
+            ->setParameter('filter_limit', 100)
+            ->execute()
+            ->getResponse();
+        }else{
+            $LastVisitsDetails = $query_factory->getQuery('Live.getLastVisitsDetails')
+            ->setParameter('date', $date)
+            ->setParameter('period', $period)
+            ->setParameter('filter_limit', 10000)
+            ->execute()
+            ->getResponse();
+        }
+
+        return response()->json([
+            'success'=>'success',
+            'LastVisitsDetails' => $LastVisitsDetails,
+            'status'=> $status
+        ]);
+
+    }
+
+    public function Livecounter(Request $request)
+    {
+        $data = $request->all();
+        $query_factory = QueryFactory::create(config('chuckcms.analytics.matomoURL'));
+        $query_factory
+            ->set('idSite', $this->siteId)
+            ->set('token_auth', $this->authToken);
+
+        $liveCounters = $query_factory->getQuery('Live.getCounters')
+        ->setParameter('lastMinutes', 3)
+        ->execute()
+        ->getResponse();
+
+        return response()->json([
+            'success'=>'success',
+            'liveCounter' => $liveCounters
+        ]);
+    }
     public function matomo(Request $request)
     {
         $data = $request->all();
+        $query_factory = QueryFactory::create(config('chuckcms.analytics.matomoURL'));
+        $query_factory
+            ->set('idSite', $this->siteId)
+            ->set('token_auth', $this->authToken);
+        $matomoVersion = $query_factory->getQuery('API.getMatomoVersion')->execute()->getResponse()->value;
+
         $matomo = new Matomo(config('chuckcms.analytics.matomoURL'), $this->authToken, $this->siteId, Matomo::FORMAT_JSON);
-        $matomoVersion = $matomo->getMatomoVersion();
+        // $matomoVersion = $matomo->getMatomoVersion();
         if($data["value"]["range"] == "Today"){
+           
             $matomo->setPeriod(Matomo::PERIOD_DAY);
             $matomo->setDate(Matomo::DATE_TODAY);
             $matomoSummary = $matomo->getVisitsSummary();
@@ -72,7 +169,8 @@ class MatomoController extends BaseController
             $getSearchEngines = $matomo->getSearchEngines();
             $matomoUniqueVisitors = $matomo->setPeriod(Matomo::PERIOD_DAY)->getUniqueVisitors();
         }
-        
+       
+
         return response()->json([
             'success'=>'success',
             'matomoVersion' => $matomoVersion,

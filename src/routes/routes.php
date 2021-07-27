@@ -251,6 +251,10 @@ Route::group(['middleware' => ['web']], function() {
             Route::post('/dashboard/matomo/changerange', 'Chuckbe\Chuckcms\Controllers\MatomoController@matomo');
             Route::get('/dashboard/matomo/livevisit', 'Chuckbe\Chuckcms\Controllers\MatomoController@counter')->name('dashboard.livevisits');
             Route::post('/dashboard/matomo/submitmatomo', 'Chuckbe\Chuckcms\Controllers\MatomoController@submit')->name('dashboard.matomosubmit');
+            Route::post('/dashboard/matomo/api', 'Chuckbe\Chuckcms\Controllers\MatomoController@ReportingApi')->name('dashboard.api')
+            ;
+            Route::get('/reportingApi', 'Chuckbe\Chuckcms\Controllers\MatomoController@ReportingApi');
+            Route::get('/reportingApi/livecounter', 'Chuckbe\Chuckcms\Controllers\MatomoController@Livecounter');
         });
 
         Route::group(['middleware' => ['permission:edit settings']], function () {

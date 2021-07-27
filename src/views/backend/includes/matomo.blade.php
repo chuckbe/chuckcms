@@ -1,4 +1,5 @@
 <div class="container p3 min-height">
+	
 	<div class="row mb-3">
 		<div class="col-sm-12">
 			<nav aria-label="breadcrumb">
@@ -15,6 +16,55 @@
 					</div>
 				</ol>
 			</nav>
+		</div>
+  	</div>
+	<div class="row mb-3">
+		<div class="col-lg-12 mb-3">
+				<div class="card card-default">
+					<div class="breadcrumb separator">
+						<div class="breadcrumb-item">sessions</div>
+					</div>
+					<div class="card-block">
+						{{-- <ul id="sessions" style="list-style: none;"></ul> --}}
+						<div class="sessions-table table-responsive">
+							<table class="table table-hover" id="table" data-show-header="true" data-pagination="true" data-page-size="5">
+							<thead>
+								<tr>
+									<th scope="col" class="border-top-0">Url</th>
+									<th scope="col" class="border-top-0">Pageviews</th>
+									<th scope="col" class="border-top-0">Time</th>
+									<th scope="col" class="border-top-0">Time on website</th>
+									<th scope="col" class="border-top-0">Location</th>
+									<th scope="col" class="border-top-0">Device</th>
+									<th scope="col" class="border-top-0">OS</th>
+									<th scope="col" class="border-top-0">Browser</th>
+								</tr>
+							</thead>
+			  				<tbody id="table_body_sessions">
+							</tbody>
+							<nav aria-label="Page navigation example">
+								<ul class="pagination">
+									<li class="page-item">
+									<a class="page-link" href="#" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span>
+										<span class="sr-only">Previous</span>
+									</a>
+									</li>
+									<li class="page-item"><a class="page-link" href="#">1</a></li>
+									<li class="page-item"><a class="page-link" href="#">2</a></li>
+									<li class="page-item"><a class="page-link" href="#">3</a></li>
+									<li class="page-item">
+									<a class="page-link" href="#" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+										<span class="sr-only">Next</span>
+									</a>
+									</li>
+								</ul>
+							</nav>
+						</table>
+					</div>
+				</div>
+			</div>
 		</div>
   	</div>
 	<div class="row mb-3">
@@ -99,6 +149,7 @@
 		  </div>
     	</div>
   	</div>
+	
 </div>
 <div class="modal" id="settingsmodal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-dialog-centered" role="document">
