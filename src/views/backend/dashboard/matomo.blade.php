@@ -33,7 +33,7 @@
 </div>
 <div class="row mb-3">
   <div class="col-lg-12">
-    <h3 class="lead">Visitor Log</h3>
+    <h3 class="lead">Visits Log</h3>
       <ul id="visitorcards" class="m-0 p-0">
         
       </ul>
@@ -102,4 +102,51 @@
             </div>
         </div>
     </div>
+</div>
+<div class="modal modal-visitor-profile-info fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content border-0">
+      <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="visitor-profile-overview col-6">
+            <div class="w-100">
+              <div class="row mx-0">
+                <div class="visitor-profile-avatar pr-2">
+                  <img src="https://analytics.chuck.be/plugins/Live/images/unknown_avatar.png" alt="" title="">
+                </div>
+                <div class="visitor-profile-header pl-2">
+                  <h1>Visitor profile</h1>
+                  <div class="visitor-profile-id">
+                    <span>ID</span>
+                  </div>
+                  <span class="visitorLogIcons">
+                    <span class="visitorDetails">
+                    </span>
+                  </span>               
+                </div>
+                <div class="visitor-profile-summary visitor-profile-resume py-3">
+                  <h2>Summary</h2>
+                  <div>
+                    <p>
+                      Spent a total of <strong>1 min 10s</strong> on the website, and viewed 
+                      <strong title="9 Unique Pageviews, 0 Pages viewed more than once">9 pages</strong> 
+                      in <strong>2 visits</strong>.
+                    </p>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
 </div>

@@ -10,27 +10,6 @@
 @section('css')
   @if(ChuckSite::getSetting('integrations.matomo-site-id') !== null && ChuckSite::getSetting('integrations.matomo-auth-key') !== null)
     <style>
-
-      /* pagination */
-      .easyPaginateNav{
-        display: inline-block;
-      }
-      .easyPaginateNav a {
-        color: black;
-        float: left;
-        padding: 8px 16px;
-        text-decoration: none;
-      }
-      .easyPaginateNav a.current {
-        background-color: #007bff;
-        color: white;
-      }
-      .easyPaginateNav a:hover:not(.current) {background-color: #ddd;}
-      .easyPaginateNav {
-        display: flex;
-        justify-content: flex-end;
-      }
-
       .daterangepicker {
         position: absolute;
         color: inherit;
@@ -493,13 +472,14 @@
         position: absolute;
         background: #000;
         color: white;
-        text-align: center;
+        text-align: left;
         padding: 5px;
         display: block;
         border-radius: 2px;
         left:10px;
         top: 30px;
         font-size: 8px;
+        width: max-content;
         transition: 0.5s ease display;
       }
       .visitorLogIconWithDetails:hover .details{
@@ -602,6 +582,77 @@
       }
       .pageviewActions.last-action > ol.actionList > li.last-action {
         margin-bottom: 0;
+      }
+      .modal-visitor-profile-info .modal-header{
+        position: absolute;
+        z-index: 1024;
+        right: 0;
+        border: none;
+      }
+      .modal-visitor-profile-info .modal-dialog{
+        min-width: 1024px;
+      }
+      .modal-visitor-profile-info .visitor-profile-overview {
+        margin: 0;
+        border-right: 1px solid #d1cec8;
+        padding: 22px 0 0 22px;
+      }
+      .visitor-profile-header h1 {
+        display: inline-block;
+        word-wrap: break-word;
+        margin: 0;
+        font-size: 1.3rem;
+        color: #0d0d0d;
+      }
+      .close:hover,.close:focus{
+        border: none;
+        outline: none;
+      }
+      .visitor-profile-id {
+        line-height: 24px;
+        font-size: 13px;
+      }
+      .visitor-profile-avatar{
+        width: 25%;
+      }
+      .visitor-profile-header{
+        width: 75%
+      }
+      .visitor-profile-header .visitorLogIcons .visitorLogIconWithDetails:after {
+        content: attr(profile-header-text);
+        text-overflow: ellipsis;
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        position: absolute;
+        left: 26px;
+        top:8px;
+      }
+      .visitor-profile-header .visitorLogIcons .visitorLogIconWithDetails {
+        display: block;
+        float: left;
+        width: 50%;
+        padding: 6px 0;
+        box-sizing: content-box;
+        height: 16px;
+        position: relative;
+        font-size: 13px;
+      }
+      .visitor-profile-summary h2{
+          line-height: 30px;
+          vertical-align: top;
+          font-size: 23px !important;
+          margin: 0 0 5px 0;
+          color: #212121;
+      }
+      .visitor-profile-summary p{
+          margin: 6px 1em 0 0;
+          font-size: 13px;
+          color: #5e5e5c;
+      }
+      .visitor-profile-summary p strong{
+        color: #212121;
+        font-weight: normal !important;
       }
     </style>
   @endif
@@ -713,7 +764,7 @@
 
 @if(ChuckSite::getSetting('integrations.matomo-site-id') !== null && ChuckSite::getSetting('integrations.matomo-auth-key') !== null)
     @include('chuckcms::backend.dashboard.matomoscript')
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    {{-- <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> --}}
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 @else
 <script>

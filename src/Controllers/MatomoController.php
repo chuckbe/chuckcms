@@ -62,18 +62,17 @@ class MatomoController extends BaseController
         $date = 'today';
         $period = 'day';
         
-        if($data["value"]["range"] !== "Today" || $data["value"]["range"] !== "Yesterday"){
-            
+        if($data["value"]["range"] !== "Today" || $data["value"]["range"] !== "Yesterday"){        
             if(isset($data["value"]["y2"],$data["value"]["m2"],$data["value"]["d2"])){
                 $now = \Carbon\Carbon::now();
                 $startdate = \Carbon\Carbon::createFromFormat('Y-m-d', $data["value"]["y2"].'-'.$data["value"]["m2"].'-'.$data["value"]["d2"]);
                 $enddate = \Carbon\Carbon::createFromFormat('Y-m-d',$data["value"]["y1"].'-'.$data["value"]["m1"].'-'.$data["value"]["d1"]);
                 $checkforrange = $now->diffInDays($enddate);
+                $diff = $startdate->diffInDays($enddate);
                 if($checkforrange !== 0){
                     $period = 'range';
-                    $date = $data["value"]["y2"].'-'.$data["value"]["m2"].'-'.$data["value"]["d2"].','.$data["value"]["y1"].'-'.$data["value"]["m1"].'-'.$data["value"]["d1"];
+                    $date = $data["value"]["y2"].'-'.$data["value"]["m2"].'-'.$data["value"]["d2"].','.$data["value"]["y1"].'-'.$data["value"]["m1"].'-'.$data["value"]["d1"];                    
                 }else{
-                    $diff = $startdate->diffInDays($enddate);
                     if($diff == 6){
                         $period = 'week';
                         $date = 'last7';
@@ -83,7 +82,6 @@ class MatomoController extends BaseController
                         $date = 'last30';
                     }
                 }
-                
             }      
         }
         if($data["value"]["range"] == "Today"){
@@ -98,21 +96,12 @@ class MatomoController extends BaseController
         ->execute()
         ->getResponse();
 
-        if($data["value"]["range"] == "Yesterday" || $data["value"]["range"] == "Today"){
-            $LastVisitsDetails = $query_factory->getQuery('Live.getLastVisitsDetails')
+        $LastVisitsDetails = $query_factory->getQuery('Live.getLastVisitsDetails')
             ->setParameter('date', $date)
             ->setParameter('period', $period)
-            ->setParameter('filter_limit', 100)
+            ->setParameter('filter_limit', -1)
             ->execute()
             ->getResponse();
-        }else{
-            $LastVisitsDetails = $query_factory->getQuery('Live.getLastVisitsDetails')
-            ->setParameter('date', $date)
-            ->setParameter('period', $period)
-            ->setParameter('filter_limit', 10000)
-            ->execute()
-            ->getResponse();
-        }
 
         return response()->json([
             'success'=>'success',
@@ -120,6 +109,25 @@ class MatomoController extends BaseController
             'status'=> $status
         ]);
 
+    }
+
+    public function visitorsummary(Request $request)
+    {
+        $data = $request->all();
+        $query_factory = QueryFactory::create(config('chuckcms.analytics.matomoURL'));
+        $query_factory
+            ->set('idSite', $this->siteId)
+            ->set('token_auth', $this->authToken);
+
+        $visitorProfile = $query_factory->getQuery('Live.getVisitorProfile')
+            ->setParameter('visitorId', $data['visitorid'])
+            ->execute()
+            ->getResponse();
+        
+        return response()->json([
+            'success'=>'success',
+            'visitorProfile' => $visitorProfile
+        ]);
     }
 
     public function Livecounter(Request $request)
