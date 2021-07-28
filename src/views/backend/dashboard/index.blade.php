@@ -30,8 +30,7 @@
         display: flex;
         justify-content: flex-end;
       }
-    </style>
-    <style>
+
       .daterangepicker {
         position: absolute;
         color: inherit;
@@ -604,8 +603,6 @@
       .pageviewActions.last-action > ol.actionList > li.last-action {
         margin-bottom: 0;
       }
-      
-
     </style>
   @endif
 @endsection
@@ -718,7 +715,6 @@
     @include('chuckcms::backend.dashboard.matomoscript')
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    @include('chuckcms::backend.dashboard.pagination')
 @else
 <script>
 (function(w,d,s,g,js,fs){

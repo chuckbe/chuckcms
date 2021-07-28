@@ -56,14 +56,12 @@
 <script src="https://cdn.chuck.be/chuckcms/jquery-ui-1.12.1/jquery-ui.min.js" type="text/javascript"></script>
 <script src="https://cdn.chuck.be/chuckcms/popper.js@1.16.0/popper.min.js" type="text/javascript"></script>
 <script src="https://cdn.chuck.be/chuckcms/bootstrap-4.5.0-dist/js/bootstrap.min.js" type="text/javascript"></script>
-{{-- <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script> --}}
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/select2/js/select2.full.min.js"></script>
 <script src="https://cdn.chuck.be/chuckcms/js/dashboard.js" type="text/javascript"></script>
 <script src="https://cdn.chuck.be/chuckcms/js/table.js" type="text/javascript"></script>
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js" type="text/javascript"></script> --}}
-<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js" type="text/javascript"></script>
 @yield('scripts')
 </body>
 </html>
