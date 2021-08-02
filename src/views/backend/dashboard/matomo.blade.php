@@ -11,40 +11,59 @@
         </div>
       </ol>
     </nav>
-    <div class="card-block">
-      <header>
-        <div class="row">
-          <div class="col-12 mb-2">
-            <div id="embed-api-auth-container"></div>
-            <div id="view-name"></div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-6">
-            <div id="view-selector-container"></div>
-          </div>
-          <div class="col-sm-6">
-            <div id="active-users-container" class="h-100 pt-3 pb-4 text-center"></div>
-          </div>
-        </div>
-      </header>
-    </div>
-  </div>
-</div>
-<div class="row mb-3">
-  <div class="col-lg-12">
-    <h3 class="lead">Visits Log</h3>
-      <ul id="visitorcards" class="m-0 p-0">
-        
-      </ul>
-      <nav>
-        <ul class="pagination justify-content-center pagination-sm">
-        </ul>
-      </nav>
   </div>
 </div>
 
 <div class="row mb-3">
+  <div class="col-lg-3 d-md-block sidebar collapse">
+    <div class="card shadow">
+      <nav id="sidebarMenu">
+        <div class="sidebar-sticky">
+          <ul class="nav flex-column">
+            <li class="nav-item sidebar-dropdown-menu active">
+              <a class="nav-link text-dark font-weight-bold" href="#" data-category="visitors">
+                <span class="menu-icon icon-reporting-visitors"></span> Visitors
+              </a>
+              <ul class="sidebar-sub-menu p-0 m-0">
+                <li><a class="text-dark" href="#" data-link="overview">Overview</a></li>
+                <li class="active"><a class="text-dark" href="#" data-link="visitor Log">Visitor Log</a></li>
+              </ul>
+            </li>
+            <li class="nav-item sidebar-dropdown-menu">
+              <a class="nav-link text-dark font-weight-bold active" href="#" data-category="heatmaps">
+                <span class="menu-icon icon-drop"></span> Heatmaps
+              </a>
+              <ul class="sidebar-sub-menu p-0 m-0">
+                
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div class="col-lg-9 menu-items-content">
+    <div class="matomo-items" data-item='overview'>
+      <h3 class="lead">Overview</h3>
+      <ul id="visitoroverviewcards" class="m-0 p-0"></ul>
+    </div>
+    <div class="matomo-items active" data-item='visitor Log'>
+      <h3 class="lead">Visits Log</h3>
+      <ul id="visitorcards" class="m-0 p-0"></ul>
+      <nav><ul class="pagination justify-content-end pagination-sm"></ul></nav>
+    </div>
+
+
+
+    {{-- heatmaps --}}
+    <div class="matomo-items" data-item='heatmap'>
+      <h3 class="lead">Heatmap</h3>
+      <ul id="Heatmapcards" class="m-0 p-0"></ul>
+    </div>
+  </div>
+</div>
+
+{{-- <div class="row mb-3">
     <div class="col-lg-4 mb-3">
         <div class="card card-default">
             <div class="breadcrumb separator">
@@ -102,7 +121,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <div class="modal modal-visitor-profile-info fade" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content border-0">
@@ -113,7 +132,7 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="visitor-profile-overview col-6">
+          <div class="visitor-profile-overview col-7">
             <div class="w-100">
               <div class="row mx-0">
                 <div class="visitor-profile-avatar pr-2">
@@ -129,9 +148,9 @@
                     </span>
                   </span>               
                 </div>
-                <div class="visitor-profile-summary visitor-profile-resume py-3">
+                <div class="visitor-profile-summary visitor-profile-resume py-4">
                   <h2>Summary</h2>
-                  <div>
+                  <div class="summary">
                     <p>
                       Spent a total of <strong>1 min 10s</strong> on the website, and viewed 
                       <strong title="9 Unique Pageviews, 0 Pages viewed more than once">9 pages</strong> 

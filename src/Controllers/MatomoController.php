@@ -92,21 +92,30 @@ class MatomoController extends BaseController
             $date = 'yesterday';
             $period = 'day';
         }
-        $status = $query_factory->getQuery('HeatmapSessionRecording.getAvailableStatuses')
+        $heatMaps = $query_factory->getQuery('HeatmapSessionRecording.getHeatmaps')
         ->execute()
         ->getResponse();
 
-        $LastVisitsDetails = $query_factory->getQuery('Live.getLastVisitsDetails')
+        // $heatMapsRecords = $query_factory->getQuery('HeatmapSessionRecording.getRecordedHeatmapMetadata')
+        //                             ->setParameter('idSiteHsr', $heatMaps[0]['idsitehsr'])
+        //                             ->execute()
+        //                             ->getResponse();
+            
+        
+
+
+        $lastVisitsDetails = $query_factory->getQuery('Live.getLastVisitsDetails')
             ->setParameter('date', $date)
             ->setParameter('period', $period)
             ->setParameter('filter_limit', -1)
             ->execute()
             ->getResponse();
+        
 
         return response()->json([
             'success'=>'success',
-            'LastVisitsDetails' => $LastVisitsDetails,
-            'status'=> $status
+            'lastVisitsDetails' => $lastVisitsDetails,
+            'heatMaps' =>$heatMaps
         ]);
 
     }

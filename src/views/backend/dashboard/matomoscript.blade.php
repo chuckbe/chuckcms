@@ -3,6 +3,52 @@
         return (new Array(length+1).join(pad)+string).slice(-length);
     }
     
+
+    $(function() {
+        $.fn.resizeiframe=function(){
+            console.log($(this).contents().find("body").find(".widget").height());
+            // $(this).load(function() {
+            //     $(this).height( $(this).contents().find("body").height() );
+            // });
+            // $(this).click(function() {
+            //     $(this).height( $(this).contents().find("body").height() );
+            // });
+        }
+        $(document).on('click', '#sidebarMenu .nav-item a', function(e){
+            e.preventDefault();
+            $('#sidebarMenu .nav-item .sidebar-sub-menu li').each(function(index, el){
+                if($(el).hasClass( "active" )){
+                    $(el).removeClass("active");
+                }
+            });
+        });
+        $(document).on('click', '#sidebarMenu .nav-item .sidebar-sub-menu li', function(){
+            let link = $(this).children('a').data('link');
+            if(link == 'heatmap'){
+                $('.menu-items-content .matomo-items #Heatmapcards .heatmapcard').each(function(index, el){
+                    if($(el).hasClass( "active" )){
+                        $(el).removeClass("active");
+                    }
+                });
+                let hmn = $(this).children('a').data('heatmapname');
+                $(`#Heatmapcards .heatmapcard[data-heatmap="${hmn}"]`).addClass("active");
+            }
+            $('.menu-items-content .matomo-items').each(function(index, el){
+                if($(el).hasClass( "active" )){
+                    $(el).removeClass("active");
+                }
+            });
+            $('#sidebarMenu .nav-item .sidebar-sub-menu li').each(function(index, el){
+                if($(el).hasClass( "active" )){
+                    $(el).removeClass("active");
+                }
+            });
+            let target = $(`.menu-items-content div[data-item='${link}']`);
+            target.addClass("active");
+            $(this).addClass("active");
+        })
+    });
+    
     $(function() {
         let start = moment().subtract(0, 'days');
         let end = moment();
@@ -58,11 +104,11 @@
                 },
                 success:function(response){
                     if(response.success == 'success'){
-                        // console.log(response.status);
-                        // console.log(response.LastVisitsDetails);
+                        console.log(response.heatMaps);
+                        // console.log(response.lastVisitsDetails);
                         $('#visitorcards').empty();
-                        if(response.LastVisitsDetails.length > 0){
-                            $.each(response.LastVisitsDetails, function( index, value ) {
+                        if(response.lastVisitsDetails.length > 0){
+                            $.each(response.lastVisitsDetails, function( index, value ) {
                                 let tts = 0;
                                 $.each(value.actionDetails,function(i,v){
                                     if("timeSpent" in v){
@@ -75,7 +121,7 @@
                                             <a class="visitor-log-visitor-profile-link visitorLogTooltip" data-visitor-id="${value.visitorId}">
                                                 <i class="fa fa-id-card" aria-hidden="true"></i> <span>View visitor profile</span>
                                             </a>
-                                            <div class="col-3 s12 m3">
+                                            <div class="col-4 s12 m3">
                                                 <strong 
                                                     class="visitor-log-datetime visitorLogTooltip" 
                                                     title="This visitor's last visit was ${parseInt(((value.secondsSinceLastVisit/60)/60)/24,10)} days ago.">
@@ -144,7 +190,7 @@
                                                     </span>
                                                 </span>
                                             </div>
-                                            <div id="visitorActions_${index}" class="col-7 s12 m7 column">
+                                            <div id="visitorActions_${index}" class="col-6 s12 m7 column">
                                                 <strong>${value.actions > 1 ? value.actions + ' Actions' : value.actions + ' Action'}</stong>
                                             </div>
                                         </div>
@@ -265,6 +311,18 @@
                         }else{
                             $("#visitorcards").append(`<h2>Data not available</h2>`);
                             $("#visitorcards ").siblings('nav').remove();
+                        }
+                        $("#Heatmapcards").empty();
+                        if(response.heatMaps.length > 0){
+                            $.each(response.heatMaps, function( index, value ) {
+                                let el = $('.sidebar-dropdown-menu').find('a[data-category="heatmaps"]').siblings('.sidebar-sub-menu');
+                                $(el).append(`<li><a class="text-dark" href="#" data-link="heatmap" data-heatmapName="${value.name}">${value.name}</a></li>`);
+                                $('#Heatmapcards').append(`<li class="my-3 heatmapcard" data-heatmap="${value.name}"><iframe id="iframe_${value.name}" src="https://analytics.chuck.be/${value.heatmapViewUrl}"></iframe></li>`);
+                                $(`#iframe_${value.name}`).resizeiframe();
+                            });
+
+                        }else{
+                            $("#Heatmapcards").append(`<h2>Data not available</h2>`);
                         }
                     }
                 },
@@ -395,7 +453,7 @@
                     _token: _token
                 },
                 success:function(response){
-                    // console.log(response);
+                    console.log(response.visitorProfile);
                     if(response.success == 'success'){
                         $('.modal-visitor-profile-info').attr('id', visitorId);
                         $('<span>', {text: visitorId+" "}).append('.visitor-profile-overview .visitor-profile-header .visitor-profile-id');
@@ -457,6 +515,13 @@
                                 </ul>
                             </span>
                         `);
+                        $('.modal-visitor-profile-info .visitor-profile-summary .summary').html(`
+                            <p>
+                            Spent a total of <strong>1 min 10s</strong> on the website, and viewed 
+                            <strong title="9 Unique Pageviews, 0 Pages viewed more than once">9 pages</strong> 
+                            in <strong>2 visits</strong>.
+                            </p>
+                        `)
                         
                         $(`#${visitorId}`).modal({
                             show: true
