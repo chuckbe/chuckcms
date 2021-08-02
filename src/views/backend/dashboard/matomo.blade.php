@@ -45,7 +45,12 @@
   <div class="col-lg-9 menu-items-content">
     <div class="matomo-items" data-item='overview'>
       <h3 class="lead">Overview</h3>
-      <ul id="visitoroverviewcards" class="m-0 p-0"></ul>
+      <ul id="visitoroverviewcards" class="m-0 p-0">
+        <li class="card shadow my-3 p-3">
+          <h3 class="lead font-weight-bold">Visits Overview</h3>
+          <ul id="visitsoverview"></ul>
+        </li>
+      </ul>
     </div>
     <div class="matomo-items active" data-item='visitor Log'>
       <h3 class="lead">Visits Log</h3>

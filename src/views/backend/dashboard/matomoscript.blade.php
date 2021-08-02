@@ -5,15 +5,6 @@
     
 
     $(function() {
-        $.fn.resizeiframe=function(){
-            console.log($(this).contents().find("body").find(".widget").height());
-            // $(this).load(function() {
-            //     $(this).height( $(this).contents().find("body").height() );
-            // });
-            // $(this).click(function() {
-            //     $(this).height( $(this).contents().find("body").height() );
-            // });
-        }
         $(document).on('click', '#sidebarMenu .nav-item a', function(e){
             e.preventDefault();
             $('#sidebarMenu .nav-item .sidebar-sub-menu li').each(function(index, el){
@@ -46,7 +37,7 @@
             let target = $(`.menu-items-content div[data-item='${link}']`);
             target.addClass("active");
             $(this).addClass("active");
-        })
+        });
     });
     
     $(function() {
@@ -104,7 +95,25 @@
                 },
                 success:function(response){
                     if(response.success == 'success'){
-                        console.log(response.heatMaps);
+                        console.log(response.visitsSummary);
+                        console.log(convertedRange);
+                        $('#visitoroverviewcards #visitoroverview').empty();
+                        if(Object.keys(response.visitsSummary).length > 0){
+                            if(convertedRange.range == 'Today' || convertedRange.range == 'Yesterday'){
+                                let value = response.visitsSummary;
+                                $('#visitoroverviewcards #visitsoverview').html(`<li><strong>${value.nb_visits}</strong> visits, <strong>${value.nb_uniq_visitors}</strong> unique visitors</li>`);
+                            }else{
+                                let dateRanges = [];
+                                // $.each(Object.keys(response.visitsSummary)), function( index, value ) {
+                                //     dateRanges.push({
+
+                                //     })
+
+                                // });
+                            }
+                        }else{
+                            $('#visitoroverviewcards #visitsoverview').html(`<li><h2>Data not available</h2></li>`);
+                        }
                         // console.log(response.lastVisitsDetails);
                         $('#visitorcards').empty();
                         if(response.lastVisitsDetails.length > 0){

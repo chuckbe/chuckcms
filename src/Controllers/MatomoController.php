@@ -92,18 +92,23 @@ class MatomoController extends BaseController
             $date = 'yesterday';
             $period = 'day';
         }
-        $heatMaps = $query_factory->getQuery('HeatmapSessionRecording.getHeatmaps')
+        
+        $visitsSummary = $query_factory->getQuery('VisitsSummary.get')
+        ->setParameter('date', $date)
+        ->setParameter('period', $period)                
         ->execute()
         ->getResponse();
 
-        // $heatMapsRecords = $query_factory->getQuery('HeatmapSessionRecording.getRecordedHeatmapMetadata')
-        //                             ->setParameter('idSiteHsr', $heatMaps[0]['idsitehsr'])
-        //                             ->execute()
-        //                             ->getResponse();
+        $visitsSummaryGraph = $query_factory->getQuery('ImageGraph.get')
+        ->setParameter('apiModule', 'VisitsSummary')
+        ->setParameter('apiAction', 'get') 
+        ->setParameter('date', $date)
+        ->setParameter('period', $period)                
+        ->execute()
+        ->getResponse();
+  
+
             
-        
-
-
         $lastVisitsDetails = $query_factory->getQuery('Live.getLastVisitsDetails')
             ->setParameter('date', $date)
             ->setParameter('period', $period)
@@ -111,9 +116,16 @@ class MatomoController extends BaseController
             ->execute()
             ->getResponse();
         
+              
+        $heatMaps = $query_factory->getQuery('HeatmapSessionRecording.getHeatmaps')
+        ->execute()
+        ->getResponse();
+        
 
         return response()->json([
             'success'=>'success',
+            'visitsSummary' => $visitsSummary,
+            'visitsSummaryGraph' => $visitsSummaryGraph,
             'lastVisitsDetails' => $lastVisitsDetails,
             'heatMaps' =>$heatMaps
         ]);
