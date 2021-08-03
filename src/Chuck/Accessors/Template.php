@@ -44,7 +44,7 @@ class Template
     public function getSetting($var)
     {
         $setting = $this->resolveSetting($var, $this->templateSettings);
-        return $setting ? $setting : null;
+        return !is_null($setting) ? $setting : null;
     }
 
     private function resolveSetting($var, $settings)

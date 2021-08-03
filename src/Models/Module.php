@@ -46,7 +46,7 @@ class Module extends Eloquent
     public function getSetting(string $string)
     {
         $setting = $this->resolveSetting($string);
-        return $setting ? $setting : null;
+        return !is_null($setting) ? $setting : null;
     }
 
     private function resolveSetting($var)

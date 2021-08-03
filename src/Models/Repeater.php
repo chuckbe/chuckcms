@@ -28,7 +28,7 @@ class Repeater extends Eloquent
     public function getJson(string $string)
     {
         $json = $this->resolveJson($string);
-        return $json ? $json : null;
+        return !is_null($json) ? $json : null;
     }
 
     private function resolveJson($var)

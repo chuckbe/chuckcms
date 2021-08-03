@@ -69,13 +69,13 @@ class Site
     public function getSetting($var)
     {
         $setting = $this->resolveSetting($var, $this->siteSettings);
-        return $setting ? $setting : null;
+        return !is_null($setting) ? $setting : null;
     }
 
     public function getSite($var)
     {
         $setting = $this->resolveSiteAttribute($var, $this->currentSite);
-        return $setting ? $setting : null;
+        return !is_null($setting) ? $setting : null;
     }
 
     public function getSupportedLocales()
@@ -114,6 +114,8 @@ class Site
         if ($var == 'slug') {
             return $currentSite->slug;
         }
+
+        return null;
     }
 
     public function module(string $slug)
