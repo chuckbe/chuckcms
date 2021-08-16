@@ -44,5 +44,4 @@ return [
     'analytics' => [
         'matomoURL' => 'https://analytics.chuck.be'
     ],
-
 ];

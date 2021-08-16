@@ -1,4 +1,4 @@
-<div class="container p3 min-height">
+{{-- <div class="container p3 min-height">
 	
 	<div class="row mb-3">
 		<div class="col-sm-12">
@@ -25,7 +25,6 @@
 						<div class="breadcrumb-item">sessions</div>
 					</div>
 					<div class="card-block">
-						{{-- <ul id="sessions" style="list-style: none;"></ul> --}}
 						<div class="sessions-table table-responsive">
 							<table class="table table-hover" id="table" data-show-header="true" data-pagination="true" data-page-size="5">
 							<thead>
@@ -156,9 +155,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Matomo Settings</h5>
-        {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button> --}}
       </div>
       <div class="modal-body">
         <form id="matomodata" action="{{ route('dashboard.matomosubmit') }}" method="post">
@@ -195,4 +191,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> --}}

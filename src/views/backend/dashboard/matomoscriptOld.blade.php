@@ -96,8 +96,33 @@
                 success:function(response){
                     if(response.success == 'success'){
                         $('#visitoroverviewcards #visitoroverview').empty();
+                        // if(Object.keys(response.visitsSummary).length > 0){
+                        //     if(convertedRange.range == 'Today' || convertedRange.range == 'Yesterday'){
+                        //         let value = response.visitsSummary;
+                        //         $('#visitoroverviewcards #visitsoverview').html(`<li><strong>${value.nb_visits}</strong> visits, <strong>${value.nb_uniq_visitors}</strong> unique visitors</li>`);
+                        //     }else{
+                        //         let visits;
+                        //         let uniquevisits;
+                        //         $.each(response.visitsSummary, function(index, value){
+                        //             if(value.length > 0 || Object.keys(value).length > 0){
+                        //                 if(visits === undefined){
+                        //                     visits = value.nb_visits;
+                        //                 }else{
+                        //                     visits = visits + value.nb_visits;
+                        //                 }
+                        //                 if(uniquevisits === undefined){
+                        //                     uniquevisits = value.nb_uniq_visitors;
+                        //                 }else{
+                        //                     uniquevisits = uniquevisits + value.nb_uniq_visitors;
+                        //                 }
+                        //             }
+                        //         });
+                        //         $('#visitoroverviewcards #visitsoverview').html(`<li><strong>${visits}</strong> visits, <strong>${uniquevisits}</strong> unique visitors</li>`);
+                        //     }
+                        // }else{
+                        //     $('#visitoroverviewcards #visitsoverview').html(`<li><h2>Data not available</h2></li>`);
+                        // }
                         $('#visitorcards').empty();
-                        console.log(response.matomoUrl);
                         if(response.lastVisitsDetails.length > 0){
                             $.each(response.lastVisitsDetails, function( index, value ) {
                                 let tts = 0;
@@ -129,21 +154,21 @@
                                                     IP: ${value.visitIp}
                                                     <br>
                                                     <span>
-                                                        <img width="16" class="flag" src="${response.matomoUrl}/${value.countryFlag}">&nbsp;
+                                                        <img width="16" class="flag" src="https://analytics.chuck.be/${value.countryFlag}">&nbsp;
                                                         ${value.city}
                                                     </span>
                                                 </span>
-                                                ${value.referrerType == 'search' ? `<div class="visitorReferrer search"><span title="${value.referrerKeyword}"><img class="mr-2" width="16" src="${response.matomoUrl}/${value.referrerSearchEngineIcon}" alt="${value.referrerName}"><span>${value.referrerName}</span></span></div>` : ''}
+                                                ${value.referrerType == 'search' ? `<div class="visitorReferrer search"><span title="${value.referrerKeyword}"><img class="mr-2" width="16" src="https://analytics.chuck.be/${value.referrerSearchEngineIcon}" alt="${value.referrerName}"><span>${value.referrerName}</span></span></div>` : ''}
                                                 ${value.referrerType == 'direct' ? `<div class="visitorReferrer direct">Direct Entry</div>` : ''}
                                                 ${value.referrerType == 'website' ? `<div class="visitorReferrer website"><span>Website: </span><a href="${value.referrerUrl}" rel="noreferrer noopener" target="_blank" class="visitorLogTooltip" title="${value.referrerUrl}" style="text-decoration:underline;">${value.referrerName}</a></div>` : ''}
-                                                ${value.sessionReplayUrl !== null ? `<a class="visitorLogReplaySession" href="${response.matomoUrl}/index.php${value.sessionReplayUrl}" target="_blank" rel="noreferrer noopener"><i class="far fa-play-circle"></i> Replay recorded session</a>` : ''}
+                                                ${value.sessionReplayUrl !== null ? `<a class="visitorLogReplaySession" href="https://analytics.chuck.be/index.php${value.sessionReplayUrl}" target="_blank" rel="noreferrer noopener"><i class="far fa-play-circle"></i> Replay recorded session</a>` : ''}
                                             </div> 
                                             <div class="col s12 m2 own-visitor-column"> 
                                                 <span class="visitorLogIcons">
                                                     <span class="visitorDetails">
-                                                        ${value.visitorType == 'returning' ? `<span class="visitorLogIconWithDetails visitorTypeIcon"><img src="${response.matomoUrl}/${value.visitorTypeIcon}"><ul class="details"><li>Returning Visitor - ${value.visitCount > 1 ? value.visitCount + ' visits': value.visitCount + ' visit'}</li></ul></span>` : ``}
+                                                        ${value.visitorType == 'returning' ? `<span class="visitorLogIconWithDetails visitorTypeIcon"><img src="https://analytics.chuck.be/${value.visitorTypeIcon}"><ul class="details"><li>Returning Visitor - ${value.visitCount > 1 ? value.visitCount + ' visits': value.visitCount + ' visit'}</li></ul></span>` : ``}
                                                         <span class="visitorLogIconWithDetails flag" profile-header-text="Warrenville">
-                                                            <img src="${response.matomoUrl}/${value.countryFlag}">
+                                                            <img src="https://analytics.chuck.be/${value.countryFlag}">
                                                             <ul class="details">
                                                                 <li>Country: ${value.country}</li>
                                                                 <li>Region: ${value.region}</li>                
@@ -154,7 +179,7 @@
                                                             </ul>
                                                         </span>
                                                         <span class="visitorLogIconWithDetails" profile-header-text="${value.browser}">
-                                                            <img src="${response.matomoUrl}/${value.browserIcon}">
+                                                            <img src="https://analytics.chuck.be/${value.browserIcon}">
                                                             <ul class="details">
                                                                 <li>Browser: ${value.browser}</li>
                                                                 <li>Browser engine: ${value.browserFamily}</li>
@@ -164,13 +189,13 @@
                                                             </ul>
                                                         </span>
                                                         <span class="visitorLogIconWithDetails" profile-header-text="${value.operatingSystem}">
-                                                            <img src="${response.matomoUrl}/${value.operatingSystemIcon}">
+                                                            <img src="https://analytics.chuck.be/${value.operatingSystemIcon}">
                                                             <ul class="details">
                                                                 <li>Operating system: ${value.operatingSystemName} ${value.operatingSystemVersion}</li>
                                                             </ul>
                                                         </span>
                                                         <span class="visitorLogIconWithDetails" profile-header-text="${value.resolution}">
-                                                            <img src="${response.matomoUrl}/${value.deviceTypeIcon}">
+                                                            <img src="https://analytics.chuck.be/${value.deviceTypeIcon}">
                                                             <ul class="details">
                                                                 <li>Device type: ${value.deviceType}</li>
                                                                 <li>Device brand: ${value.deviceBrand}</li>                
@@ -189,7 +214,7 @@
                                 `);
                                 $.each(value.pluginsIcons,function(i,v){
                                     $(`#visitorcards .card #pluginlist_${index}`).append(`
-                                        <img width="16px" height="16px" src="${response.matomoUrl}/${v.pluginIcon}" alt="${v.pluginName}">
+                                        <img width="16px" height="16px" src="https://analytics.chuck.be/${v.pluginIcon}" alt="${v.pluginName}">
                                     `);
                                 });
                                 if(tts > 0){
@@ -225,7 +250,7 @@
                                                 ">
                                                 <div>
                                                     <span class="truncated-text-line">${v.title}</span>
-                                                    <img src="${response.matomoUrl}/${v.iconSVG}" class="action-list-action-icon action">
+                                                    <img src="https://analytics.chuck.be/${v.iconSVG}" class="action-list-action-icon action">
                                                     <p>                  
                                                         <a 
                                                             href="${v.url}" 
@@ -247,7 +272,7 @@
                                                                 ${v.subtitle}
                                                                 ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}">
                                                         <div>
-                                                            <img src="${response.matomoUrl}/${v.iconSVG}" class="action-list-action-icon ${v.type}">
+                                                            <img src="https://analytics.chuck.be/${v.iconSVG}" class="action-list-action-icon ${v.type}">
                                                             <a href="${v.url}" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line">
                                                                 ${v.url}
                                                             </a>
@@ -267,7 +292,7 @@
                                                                 ${v.subtitle}
                                                                 ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}">
                                                         <div>
-                                                            <img src="${response.matomoUrl}/${v.iconSVG}" class="action-list-action-icon ${v.type}">
+                                                            <img src="https://analytics.chuck.be/${v.iconSVG}" class="action-list-action-icon ${v.type}">
                                                             <a href="${v.url}" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line">
                                                                 ${v.url}
                                                             </a>
@@ -282,7 +307,7 @@
                                                             ${v.subtitle}
                                                             ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}">
                                                     <div>
-                                                        <img src="${response.matomoUrl}/${v.iconSVG}" class="action-list-action-icon ${v.type}">
+                                                        <img src="https://analytics.chuck.be/${v.iconSVG}" class="action-list-action-icon ${v.type}">
                                                         <a href="${v.url}" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line">
                                                             ${v.url}
                                                         </a>
@@ -303,6 +328,22 @@
                             $("#visitorcards").append(`<h2>Data not available</h2>`);
                             $("#visitorcards ").siblings('nav').remove();
                         }
+                        $("#Heatmapcards").empty();
+                        $('.sidebar-dropdown-menu').find('a[data-category="heatmaps"]').siblings('.sidebar-sub-menu').empty();
+                        // if(response.heatMaps.length > 0){
+                        //     $.each(response.heatMaps, function( index, value ) {
+                        //         let el = $('.sidebar-dropdown-menu').find('a[data-category="heatmaps"]').siblings('.sidebar-sub-menu');
+                        //         $(el).append(`<li><a class="text-dark" href="#" data-link="heatmap" data-heatmapName="${value.name}">${value.name}</a></li>`);
+                        //         $('#Heatmapcards').append(`<li class="my-3 heatmapcard" data-heatmap="${value.name}"><iframe id="iframe_${value.name}" src="https://analytics.chuck.be/${value.heatmapViewUrl}"></iframe></li>`);
+                        //         // console.log(`https://analytics.chuck.be/${value.heatmapViewUrl}`);
+                        //         // if($(`#Heatmapcards #iframe_${value.name} .heatmapVis .heatmapWrapper .heatmapContainer`).children().length == 0){
+                        //         //     window.location.href = `https://analytics.chuck.be/index.php?module=Login&action=logme&login=rawaldeep&password=ac22d9b4456bb00b36ed297172dea58f&url=http://matomo.local/dashboard`
+                        //         // }
+                        //     });
+                           
+                        // }else{
+                        //     $("#Heatmapcards").append(`<h2>Data not available</h2>`);
+                        // }
                     }
                 },
                 complete: function(){
@@ -403,8 +444,29 @@
             }
         }, cb);
         cb(start, end);
+        
+        // function liveVisitCounter(){
+        //     $.ajax({
+        //         url: "/reportingApi/livecounter",
+        //         type: "get",
+        //         data: {
+        //             _token: _token
+        //         },
+        //         success:function(response){
+        //             if(response.success == 'success'){
+        //                 $('#LiveVisitors').text(response.liveCounter[0].visits);
+        //                 $("#counter-visitor").text(response.liveCounter[0].visits > 1 ? response.liveCounter[0].visits + " visitors" : response.liveCounter[0].visits + " visitor");
+        //                 $("#counter-actions").text(response.liveCounter[0].actions > 1 ? response.liveCounter[0].actions + " actions" : response.liveCounter[0].actions + " action");
+        //             }
+        //         }
+        //     });
+        // }
+        // liveVisitCounter();
+        // setTimeout(liveVisitCounter, 20000);
 
         $(document).on('click','a.visitorLogTooltip',function(){
+            //  $(this) = your current element that clicked.
+            // additional code
             let visitorId = $(this).data("visitor-id");
             $.ajax({
                 url: "/reportingApi/visitorsummary",
@@ -414,12 +476,23 @@
                     _token: _token
                 },
                 success:function(response){
+                    console.log(response.visitorProfile);
                     if(response.success == 'success'){
                         $('.modal-visitor-profile-info').attr('id', visitorId);
                         $('<span>', {text: visitorId+" "}).append('.visitor-profile-overview .visitor-profile-header .visitor-profile-id');
+                        // if(response.visitorProfile.totalVisits > 1){
+                        //     $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`
+                        //         <span class="visitorLogIconWithDetails visitorTypeIcon">
+                        //             <img src="https://analytics.chuck.be/plugins/Live/images/returningVisitor.png">
+                        //             <ul class="details">
+                        //                 <li>Returning Visitor - ${response.visitorProfile.totalVisits} visits</li>
+                        //             </ul>
+                        //         </span>
+                        //     `)
+                        // }
                         $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`
                             <span class="visitorLogIconWithDetails flag" profile-header-text="${response.visitorProfile.countries[0].cities[0]}">
-                                <img src="${response.matomoUrl}/${response.visitorProfile.countries[0].flag}">
+                                <img src="https://analytics.chuck.be/${response.visitorProfile.countries[0].flag}">
                                 <ul class="details">
                                     <li>Country: ${response.visitorProfile.countries[0].prettyName}</li>
                                     <li>City: ${response.visitorProfile.countries[0].cities[0]}</li>                
@@ -431,7 +504,7 @@
                         `);
                         $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`
                             <span class="visitorLogIconWithDetails" profile-header-text="${response.visitorProfile.lastVisits[0].browser}">
-                                <img src="${response.matomoUrl}/${response.visitorProfile.lastVisits[0].browserIcon}">
+                                <img src="https://analytics.chuck.be/${response.visitorProfile.lastVisits[0].browserIcon}">
                                 <ul class="details">
                                     <li>Browser: ${response.visitorProfile.lastVisits[0].browser}</li>
                                     <li>Browser engine: ${response.visitorProfile.lastVisits[0].browserFamily}</li>
@@ -443,12 +516,12 @@
                         `);
                         $.each(response.visitorProfile.lastVisits[0].pluginsIcons,function(i,v){
                             $(`#pluginlist_modal${visitorId}`).append(`
-                                <img width="16px" height="16px" src="${response.matomoUrl}/${v.pluginIcon}" alt="${v.pluginName}">
+                                <img width="16px" height="16px" src="https://analytics.chuck.be/${v.pluginIcon}" alt="${v.pluginName}">
                             `);
                         });
                         $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`
                             <span class="visitorLogIconWithDetails" profile-header-text="${response.visitorProfile.lastVisits[0].operatingSystem}">
-                                <img src="${response.matomoUrl}/${response.visitorProfile.lastVisits[0].operatingSystemIcon}">
+                                <img src="https://analytics.chuck.be/${response.visitorProfile.lastVisits[0].operatingSystemIcon}">
                                 <ul class="details">
                                     <li>Operating system: ${response.visitorProfile.lastVisits[0].operatingSystem}</li>
                                 </ul>
@@ -456,7 +529,7 @@
                         `);
                         $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`
                             <span class="visitorLogIconWithDetails" profile-header-text="${response.visitorProfile.lastVisits[0].resolution}">
-                                <img src="${response.matomoUrl}/${response.visitorProfile.lastVisits[0].deviceTypeIcon}">
+                                <img src="https://analytics.chuck.be/${response.visitorProfile.lastVisits[0].deviceTypeIcon}">
                                 <ul class="details">
                                     <li>Device type: ${response.visitorProfile.lastVisits[0].deviceType}</li>
                                     <li>Device brand: ${response.visitorProfile.lastVisits[0].deviceBrand}</li>                
@@ -465,74 +538,14 @@
                                 </ul>
                             </span>
                         `);
-                        if(response.visitorProfile.totalDownloads > 0){
-                            $('.modal-visitor-profile-info .visitor-profile-summary .summary').html(`
-                                <p>
-                                    Spent a total of <strong>${response.visitorProfile.totalVisitDurationPretty}</strong> on the website, and performed 
-                                    <strong>${response.visitorProfile.totalActions} ${response.visitorProfile.totalActions == 1  ? 'action' : 'actions'}</strong> (${response.visitorProfile.totalPageViews} ${response.visitorProfile.totalPageViews == 1 ? 'Pageview' : 'Pageviews'} ${response.visitorProfile.totalDownloads} ${response.visitorProfile.totalDownloads == 1 ? 'Download' : 'Downloads'}, ${response.visitorProfile.totalOutlinks > 0 ? response.visitorProfile.totalOutlinks == 1 ? response.visitorProfile.totalOutlinks+' Outlink' : response.visitorProfile.totalOutlinks+' Outlinks' : ''} )
-                                    in ${response.visitorProfile.totalVisits} ${response.visitorProfile.totalVisits == 1  ? 'visit' : 'visits'}.
-                                    <br>
-                                    converted ${response.visitorProfile.totalGoalConversions == 1 ? response.visitorProfile.totalGoalConversions+' Goal' : response.visitorProfile.totalGoalConversions+' Goals'}
-                                    ${ response.visitorProfile.averagePageLoadTime !== undefined ? '<br>Each page took on average'+response.visitorProfile.averagePageLoadTime+'s to load for this visitor.' : ''}
-                                </p>
-                            `)
-                        }else{
-                            $('.modal-visitor-profile-info .visitor-profile-summary .summary').html(`
-                                <p>
-                                    Spent a total of <strong>${response.visitorProfile.totalVisitDurationPretty}</strong> on the website, and viewed 
-                                    ${response.visitorProfile.totalPageViews} ${response.visitorProfile.totalPageViews == 1 ? 'Page' : 'Pages'}
-                                    in ${response.visitorProfile.totalVisits} ${response.visitorProfile.totalVisits == 1  ? 'visit' : 'visits'}.
-                                    <br>
-                                    converted ${response.visitorProfile.totalGoalConversions == 1 ? response.visitorProfile.totalGoalConversions+' Goal' : response.visitorProfile.totalGoalConversions+' Goals'}
-                                     ${ response.visitorProfile.averagePageLoadTime !== undefined ? '<br>Each page took on average '+response.visitorProfile.averagePageLoadTime+'s to load for this visitor.' : ''}
-                                </p>
-                            `)
-                        }
-                        $('.modal-visitor-profile-info .visitor-profile-summary .ecommerce').html(`
+                        $('.modal-visitor-profile-info .visitor-profile-summary .summary').html(`
                             <p>
-                                Generated a Life Time Revenue of €${response.visitorProfile.totalEcommerceRevenue}. Purchased ${response.visitorProfile.totalEcommerceItems} items in ${response.visitorProfile.totalEcommerceConversions} ecommerce orders.
+                            Spent a total of <strong>1 min 10s</strong> on the website, and viewed 
+                            <strong title="9 Unique Pageviews, 0 Pages viewed more than once">9 pages</strong> 
+                            in <strong>2 visits</strong>.
                             </p>
-                        `);
-                        $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit').html(`
-                            <div class="col-6">
-                                <h2>First Visit</h2>
-                                <div class="firstvisit">
-                                    <p>
-                                        ${response.visitorProfile.firstVisit.prettyDate} <span class="text-muted">- ${response.visitorProfile.firstVisit.daysAgo} days ago</span>
-                                        <br>
-                                        from <strong>${response.visitorProfile.firstVisit.referralSummary}</strong>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <h2>Last Visit</h2>
-                                <div class="firstvisit">
-                                    <p>
-                                        ${response.visitorProfile.lastVisit.prettyDate} <span class="text-muted">- ${response.visitorProfile.lastVisit.daysAgo} days ago</span>
-                                        <br>
-                                        from <strong>${response.visitorProfile.firstVisit.referralSummary}</strong>
-                                    </p>
-                                </div>
-                            </div>
-                        `);
-                        $('.modal-visitor-profile-info .visitor-profile-summary .devices').html(``);
-                        $(response.visitorProfile.devices).each(function(i, v) {
-                            let devices = '';
-                            $(v.devices).each(function(index, value){ 
-                                devices +=  value.name+"("+value.count+"x)";
-                            });
-                            $('.modal-visitor-profile-info .visitor-profile-summary .devices').append(`
-                                <p>
-                                    <img height="16" src="${response.matomoUrl}/${v.icon}">
-                                    <span>
-                                        <strong>${v.count}</strong> visits from <strong>${v.type}</strong>
-                                        devices: ${devices} 
-                                    </span>
-                                </p>
-                            `);
-                        });
-                        $('.modal-visitor-profile-info .visitor-profile-summary .location').html(``);
-
+                        `)
+                        
                         $(`#${visitorId}`).modal({
                             show: true
                         });

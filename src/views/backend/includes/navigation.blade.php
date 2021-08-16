@@ -58,11 +58,6 @@
                 <li class="nav-item">
                     <a href="{{ route('dashboard.settings') }}" class="nav-link">Instellingen</a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('dashboard.matomo') }}" class="nav-link">Matomo</a>
-                </li>
-
-                
             </ul>
             <span class="navbar-text ml-auto d-none d-lg-inline-block">
                 <div class="dropdown">

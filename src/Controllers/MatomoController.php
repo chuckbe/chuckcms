@@ -39,22 +39,11 @@ class MatomoController extends BaseController
     }
 
  
-    /**
-     * Show the dashboard -> pages.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index()
-    {
-        if($this->siteId == null || $this->authToken == null){
-            return view('chuckcms::backend.matomo.index', ['matomoSiteId' => $this->siteId, 'matomoAuthToken' => $this->authToken]);
-        }
-        return view('chuckcms::backend.matomo.index');
-    }
     public function ReportingApi(Request $request)
     {
         $data = $request->all();
-        $query_factory = QueryFactory::create(config('chuckcms.analytics.matomoURL'));
+        $matomoUrl = ChuckSite::getSetting('integrations.matomo-site-url') !== null ? ChuckSite::getSetting('integrations.matomo-site-url') : config('chuckcms.analytics.matomoURL');
+        $query_factory = QueryFactory::create($matomoUrl);
         $query_factory
             ->set('idSite', $this->siteId)
             ->set('token_auth', $this->authToken);
@@ -92,22 +81,6 @@ class MatomoController extends BaseController
             $date = 'yesterday';
             $period = 'day';
         }
-        
-        $visitsSummary = $query_factory->getQuery('VisitsSummary.get')
-        ->setParameter('date', $date)
-        ->setParameter('period', $period)                
-        ->execute()
-        ->getResponse();
-
-        $visitsSummaryGraph = $query_factory->getQuery('ImageGraph.get')
-        ->setParameter('apiModule', 'VisitsSummary')
-        ->setParameter('apiAction', 'get') 
-        ->setParameter('date', $date)
-        ->setParameter('period', $period)                
-        ->execute()
-        ->getResponse();
-  
-
             
         $lastVisitsDetails = $query_factory->getQuery('Live.getLastVisitsDetails')
             ->setParameter('date', $date)
@@ -116,18 +89,12 @@ class MatomoController extends BaseController
             ->execute()
             ->getResponse();
         
-              
-        $heatMaps = $query_factory->getQuery('HeatmapSessionRecording.getHeatmaps')
-        ->execute()
-        ->getResponse();
-        
+
 
         return response()->json([
             'success'=>'success',
-            'visitsSummary' => $visitsSummary,
-            'visitsSummaryGraph' => $visitsSummaryGraph,
             'lastVisitsDetails' => $lastVisitsDetails,
-            'heatMaps' =>$heatMaps
+            'matomoUrl' => $matomoUrl
         ]);
 
     }
@@ -135,6 +102,7 @@ class MatomoController extends BaseController
     public function visitorsummary(Request $request)
     {
         $data = $request->all();
+        $matomoUrl = ChuckSite::getSetting('integrations.matomo-site-url') !== null ? ChuckSite::getSetting('integrations.matomo-site-url') : config('chuckcms.analytics.matomoURL');
         $query_factory = QueryFactory::create(config('chuckcms.analytics.matomoURL'));
         $query_factory
             ->set('idSite', $this->siteId)
@@ -144,83 +112,13 @@ class MatomoController extends BaseController
             ->setParameter('visitorId', $data['visitorid'])
             ->execute()
             ->getResponse();
-        
         return response()->json([
             'success'=>'success',
-            'visitorProfile' => $visitorProfile
+            'visitorProfile' => $visitorProfile,
+            'matomoUrl' => $matomoUrl
         ]);
     }
 
-    public function Livecounter(Request $request)
-    {
-        $data = $request->all();
-        $query_factory = QueryFactory::create(config('chuckcms.analytics.matomoURL'));
-        $query_factory
-            ->set('idSite', $this->siteId)
-            ->set('token_auth', $this->authToken);
-
-        $liveCounters = $query_factory->getQuery('Live.getCounters')
-        ->setParameter('lastMinutes', 3)
-        ->execute()
-        ->getResponse();
-
-        return response()->json([
-            'success'=>'success',
-            'liveCounter' => $liveCounters
-        ]);
-    }
-    public function matomo(Request $request)
-    {
-        $data = $request->all();
-        $query_factory = QueryFactory::create(config('chuckcms.analytics.matomoURL'));
-        $query_factory
-            ->set('idSite', $this->siteId)
-            ->set('token_auth', $this->authToken);
-        $matomoVersion = $query_factory->getQuery('API.getMatomoVersion')->execute()->getResponse()->value;
-
-        $matomo = new Matomo(config('chuckcms.analytics.matomoURL'), $this->authToken, $this->siteId, Matomo::FORMAT_JSON);
-        // $matomoVersion = $matomo->getMatomoVersion();
-        if($data["value"]["range"] == "Today"){
-           
-            $matomo->setPeriod(Matomo::PERIOD_DAY);
-            $matomo->setDate(Matomo::DATE_TODAY);
-            $matomoSummary = $matomo->getVisitsSummary();
-            $matomoCountries = $matomo->getCountry();
-            $matomoUniqueVisitors = $matomo->getUniqueVisitors();
-            $getOSFamilies = $matomo->getOSFamilies();
-            $getSearchEngines = $matomo->getSearchEngines();
-        }else{
-            $matomo->setRange(date('Y-m-d', mktime(0, 0, 0, $data["value"]["m2"], $data["value"]["d2"], $data["value"]["y2"])), date('Y-m-d', mktime(0, 0, 0, $data["value"]["m1"], $data["value"]["d1"], $data["value"]["y1"])));
-            $matomoSummary = $matomo->setPeriod(Matomo::PERIOD_RANGE)->getVisitsSummary();
-            $getOSFamilies = $matomo->getOSFamilies();
-            $matomoCountries = $matomo->getCountry();
-            
-            $getSearchEngines = $matomo->getSearchEngines();
-            $matomoUniqueVisitors = $matomo->setPeriod(Matomo::PERIOD_DAY)->getUniqueVisitors();
-        }
-       
-
-        return response()->json([
-            'success'=>'success',
-            'matomoVersion' => $matomoVersion,
-            'matomoSummary' => $matomoSummary,
-            'matomoUniqueVisitors' => $matomoUniqueVisitors,
-            'getSearchEngines' => $getSearchEngines,
-            'matomoCountries' => $matomoCountries,
-            'getOSFamilies' => $getOSFamilies
-        ]);
-    }
-
-    public function counter(Request $request)
-    {
-        $data = $request->all();
-        $matomo = new Matomo(config('chuckcms.analytics.matomoURL'), $this->authToken, $this->siteId, Matomo::FORMAT_JSON);
-        $liveCounter = $matomo->getCounters($lastMinutes = 3);
-        return response()->json([
-            'success'=>'success',
-            'liveCounter' => $liveCounter
-        ]);
-    }
 
     public function submit(Request $request)
     {

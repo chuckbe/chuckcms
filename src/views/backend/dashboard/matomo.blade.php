@@ -161,8 +161,26 @@
                       <strong title="9 Unique Pageviews, 0 Pages viewed more than once">9 pages</strong> 
                       in <strong>2 visits</strong>.
                     </p>
+                  </div>
+                  <h2 class="mt-3">Ecommerce</h2>
+                  <div class="ecommerce">
+                    <p>
+                      Spent a total of <strong>1 min 10s</strong> on the website, and viewed 
+                      <strong title="9 Unique Pageviews, 0 Pages viewed more than once">9 pages</strong> 
+                      in <strong>2 visits</strong>.
+                    </p>
+                  </div>
+                  <div class="row mt-3 firstlastvisit">
                     
                   </div>
+                  <h2 class="mt-3">Devices</h2>
+                  <div class="devices">
+                  </div>
+                  <h2 class="mt-3">Location</h2>
+                  <div class="location">
+                  </div>
+
+
                 </div>
               </div>
             </div>

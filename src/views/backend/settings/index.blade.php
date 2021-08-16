@@ -193,6 +193,14 @@
             </div>
             {{--  to add matomo  --}}
             <div class="form-group form-group-default ">
+              <label>Matomo setup url</label>
+              <input type="text" class="form-control" placeholder="Matomo setup url" name="integrations[matomo-site-url]" value="{{ array_key_exists('matomo-site-url', $site->settings['integrations']) ? $site->settings['integrations']['matomo-site-url'] : null }}">
+            </div>
+            {{-- <div class="form-group form-group-default ">
+              <label>Matomo Site URL</label>
+              <input type="text" class="form-control" placeholder="Matomo Site Id" name="integrations[matomo-site-url]" value="{{ array_key_exists('matomo-site-url', $site->settings['integrations']) ? $site->settings['integrations']['matomo-site-url'] : null }}">
+            </div> --}}
+            <div class="form-group form-group-default ">
               <label>Matomo Site ID</label>
               <input type="text" class="form-control" placeholder="Matomo Site Id" name="integrations[matomo-site-id]" value="{{ array_key_exists('matomo-site-id', $site->settings['integrations']) ? $site->settings['integrations']['matomo-site-id'] : null }}">
             </div>
