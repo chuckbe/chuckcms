@@ -555,9 +555,120 @@
                                 </p>
                             `);
                         })
-                        $('.modal-visitor-profile-info .visitor-profile-visits-info').append(`
-                            
-                        `);
+                        $('.modal-visitor-profile-info .visitor-profile-visits-info').html(``);
+                        $(response.visitorProfile.lastVisits).each(function(i,v){
+                            $('.modal-visitor-profile-info .visitor-profile-visits-info').append(`
+                                <div class="visitor-profile-visit-title row">
+                                    Visit #<span class="counter">${response.visitorProfile.lastVisits.length - i}</span>
+                                    <span class="visitor-profile-date" title="${v.serverDatePrettyFirstAction} ${v.serverTimePrettyFirstAction}">
+                                        ${v.serverDatePrettyFirstAction} ${v.serverTimePrettyFirstAction}
+                                    </span>
+                                </div>
+                            `);
+                            $('.modal-visitor-profile-info .visitor-profile-visits-info').append(`
+                                <div class="visitor-profile-visit-details">
+                                    <span class="visitorDetails">
+                                        <span class="visitorLogIconWithDetails" profile-header-text="${response.visitorProfile.lastVisits[0].browser}">
+                                            <img src="${response.matomoUrl}/${response.visitorProfile.lastVisits[0].browserIcon}">
+                                            <ul class="details">
+                                                <li>Browser: ${response.visitorProfile.lastVisits[0].browser}</li>
+                                                <li>Browser engine: ${response.visitorProfile.lastVisits[0].browserFamily}</li>
+                                                <li id="pluginlist_modal${visitorId}" class="plugins">
+                                                    Plugins:
+                                                </li>
+                                            </ul>
+                                        </span>
+                                    </span>
+                                    <a href="#" class="visitor-profile-show-actions">
+                                        ${v.actions} ${v.actions == 1 ? 'action' : 'actions'} in ${v.visitDurationPretty}
+                                    </a>
+                                </div>
+                            `);
+                            $('.modal-visitor-profile-info .visitor-profile-visits-info').append(`
+                                <ol class="visitorLog visitor-profile-actions actionList"></ol>
+                            `);
+                            $(v.actionDetails).each(function(index, value){
+                                switch(value.type){
+                                    case 'action':
+                                        $('.modal-visitor-profile-info .visitor-profile-visits-info .actionList').append(`
+                                            <li class="action folder" 
+                                                title="
+                                                ${value.serverTimePretty}
+                                                ${value.subtitle}
+                                                ${value.pageLoadTime !== undefined ? `Page load time: ${value.pageLoadTime}` : ''}
+                                                ${value.timeSpentPretty !== undefined ? `Time on page: ${value.timeSpentPretty}` : ''}
+                                            ">
+                                                <div>
+                                                    <span class="truncated-text-line">${value.title}</span>
+                                                    <img src="${response.matomoUrl}/${value.iconSVG}" class="action-list-action-icon action">
+                                                    <p>                  
+                                                        <a 
+                                                            href="${value.url}" 
+                                                            rel="noreferrer noopener" 
+                                                            target="_blank" 
+                                                            class="action-list-url truncated-text-line">
+                                                                ${value.url}
+                                                        </a>
+                                                    </p>            
+                                                </div>
+                                            </li>
+                                        `);
+                                        break;
+                                    case 'outlink':
+                                        $('.modal-visitor-profile-info .visitor-profile-visits-info .actionList').append(`
+                                            <li class="action outlink ml-3" 
+                                                title="
+                                                ${value.serverTimePretty}
+                                                ${value.subtitle}
+                                                ${value.pageLoadTime !== undefined ? `Page load time: ${value.pageLoadTime}` : ''}
+                                                ${value.timeSpentPretty !== undefined ? `Time on page: ${value.timeSpentPretty}` : ''}
+                                            ">
+                                                <div>
+                                                    <span class="truncated-text-line">${value.title}</span>
+                                                    <img src="${response.matomoUrl}/${value.iconSVG}" class="action-list-action-icon action">
+                                                    <p>                  
+                                                        <a 
+                                                            href="${value.url}" 
+                                                            rel="noreferrer noopener" 
+                                                            target="_blank" 
+                                                            class="action-list-url truncated-text-line">
+                                                                ${value.url}
+                                                        </a>
+                                                    </p>            
+                                                </div>
+                                            </li>
+                                        `);
+                                        break;
+                                    case 'download':
+                                        $('.modal-visitor-profile-info .visitor-profile-visits-info .actionList').append(`
+                                            <li class="action download ml-3" 
+                                                title="
+                                                ${value.serverTimePretty}
+                                                ${value.subtitle}
+                                                ${value.pageLoadTime !== undefined ? `Page load time: ${value.pageLoadTime}` : ''}
+                                                ${value.timeSpentPretty !== undefined ? `Time on page: ${value.timeSpentPretty}` : ''}
+                                            ">
+                                                <div>
+                                                    <span class="truncated-text-line">${value.title}</span>
+                                                    <img src="${response.matomoUrl}/${value.iconSVG}" class="action-list-action-icon action">
+                                                    <p>                  
+                                                        <a 
+                                                            href="${value.url}" 
+                                                            rel="noreferrer noopener" 
+                                                            target="_blank" 
+                                                            class="action-list-url truncated-text-line">
+                                                                ${value.url}
+                                                        </a>
+                                                    </p>            
+                                                </div>
+                                            </li>
+                                        `);
+                                        break;
+                                    default:
+                                }
+                            });
+                        });
+                        
 
                         $(`#${visitorId}`).modal({
                             show: true

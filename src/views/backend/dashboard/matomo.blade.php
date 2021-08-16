@@ -185,8 +185,8 @@
               </div>
             </div>
           </div>
-          <div class="visitor-profile-visits-info col-3">
-            
+          <div class="visitor-profile-visits-info col-5">
+
           </div>
         </div>
 
