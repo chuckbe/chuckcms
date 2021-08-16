@@ -416,6 +416,7 @@
                 success:function(response){
                     if(response.success == 'success'){
                         $('.modal-visitor-profile-info').attr('id', visitorId);
+                        console.log(response.visitorProfile);
                         $('<span>', {text: visitorId+" "}).append('.visitor-profile-overview .visitor-profile-header .visitor-profile-id');
                         $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`
                             <span class="visitorLogIconWithDetails flag" profile-header-text="${response.visitorProfile.countries[0].cities[0]}">
@@ -532,6 +533,31 @@
                             `);
                         });
                         $('.modal-visitor-profile-info .visitor-profile-summary .location').html(``);
+                        $(response.visitorProfile.countries).each(function(i,v){
+                            let cities = '';
+                            if($(v.cities).length > 1)
+                            {    
+                                $(v.cities).each(function(index, value){ 
+                                    cities +=  value+","
+                                });
+                            }else{
+                                $(v.cities).each(function(index, value){ 
+                                    cities +=  value
+                                });
+                            }
+                            $('.modal-visitor-profile-info .visitor-profile-summary .location').append(`
+                                <p>
+                                    <strong>${v.nb_visits == 1 ? v.nb_visits+" visit": v.nb_visits+" visits"}</strong> 
+                                    from 
+                                    <span title="${cities}">different cities</span>, ${v.prettyName}&nbsp;
+                                    <img height="16px" src="${response.matomoUrl}/${v.flag}" title="${v.prettyName}">        
+                                    <a class="visitor-profile-show-map" href="#">(show&nbsp;map)</a> 
+                                </p>
+                            `);
+                        })
+                        $('.modal-visitor-profile-info .visitor-profile-visits-info').append(`
+                            
+                        `);
 
                         $(`#${visitorId}`).modal({
                             show: true
