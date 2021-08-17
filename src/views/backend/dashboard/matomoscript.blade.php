@@ -557,7 +557,7 @@
                         })
                         $('.modal-visitor-profile-info .visitor-profile-visits-info').html(``);
                         $(response.visitorProfile.lastVisits).each(function(i,v){
-                            $('.modal-visitor-profile-info .visitor-profile-visits-info').append(`
+                            $(`.modal-visitor-profile-info .visitor-profile-visits-info`).append(`
                                 <div class="visitor-profile-visit-title row">
                                     Visit #<span class="counter">${response.visitorProfile.lastVisits.length - i}</span>
                                     <span class="visitor-profile-date" title="${v.serverDatePrettyFirstAction} ${v.serverTimePrettyFirstAction}">
@@ -565,32 +565,65 @@
                                     </span>
                                 </div>
                             `);
+                            
                             $('.modal-visitor-profile-info .visitor-profile-visits-info').append(`
-                                <div class="visitor-profile-visit-details">
+                                <div class="visitor-profile-visit-details" id=${'visit'+(response.visitorProfile.lastVisits.length - i)}>
                                     <span class="visitorDetails">
-                                        <span class="visitorLogIconWithDetails" profile-header-text="${response.visitorProfile.lastVisits[0].browser}">
-                                            <img src="${response.matomoUrl}/${response.visitorProfile.lastVisits[0].browserIcon}">
+                                        <span class="visitorLogIconWithDetails" profile-header-text="${v.browser}">
+                                            <img src="${response.matomoUrl}/${v.browserIcon}">
                                             <ul class="details">
-                                                <li>Browser: ${response.visitorProfile.lastVisits[0].browser}</li>
-                                                <li>Browser engine: ${response.visitorProfile.lastVisits[0].browserFamily}</li>
-                                                <li id="pluginlist_modal${visitorId}" class="plugins">
+                                                <li>Browser: ${v.browser}</li>
+                                                <li>Browser engine: ${v.browserFamily}</li>
+                                                <li id="pluginlist_modal${visitorId}_${i}" class="plugins">
                                                     Plugins:
                                                 </li>
                                             </ul>
                                         </span>
+                                        <span class="visitorLogIconWithDetails" profile-header-text="${v.operatingSystem}">
+                                            <img src="${response.matomoUrl}/${v.operatingSystemIcon}">
+                                            <ul class="details">
+                                                <li>Operating system: ${v.operatingSystem}</li>
+                                            </ul>
+                                        </span>
+                                        <span class="visitorLogIconWithDetails" profile-header-text="${v.resolution}">
+                                            <img src="${response.matomoUrl}/${v.deviceTypeIcon}">
+                                            <ul class="details">
+                                                <li>Device type: ${v.deviceType}</li>
+                                                <li>Device brand: ${v.deviceBrand}</li>                
+                                                <li>Device model: ${v.deviceModel}</li>                
+                                                <li>Resolution: ${v.resolution}</li>            
+                                            </ul>
+                                        </span>
                                     </span>
-                                    <a href="#" class="visitor-profile-show-actions">
+                                    <a href="#" class="visitor-profile-show-actions ml-auto">
                                         ${v.actions} ${v.actions == 1 ? 'action' : 'actions'} in ${v.visitDurationPretty}
                                     </a>
                                 </div>
                             `);
-                            $('.modal-visitor-profile-info .visitor-profile-visits-info').append(`
+                            $.each(v.pluginsIcons,function(index,value){
+                                $(`.modal-visitor-profile-info .visitor-profile-visit-details#${'visit'+(response.visitorProfile.lastVisits.length - i)} .visitorDetails .visitorLogIconWithDetails #pluginlist_modal${visitorId}_${i}`).append(`
+                                    <img width="16px" height="16px" src="${response.matomoUrl}/${value.pluginIcon}" alt="${value.pluginName}">
+                                `);
+                            });
+                            if(v.sessionReplayUrl !== null){
+                                $(`.modal-visitor-profile-info .visitor-profile-visit-details#${'visit'+(response.visitorProfile.lastVisits.length - i)}`).prepend(`
+                                    <a 
+                                        class="visitorLogReplaySession" 
+                                        href="${response.matomoUrl}/index.php${v.sessionReplayUrl}" 
+                                        target="_blank" rel="noreferrer noopener"><i class="far fa-play-circle"></i>
+                                    </a>
+                                `);
+                                $(`.modal-visitor-profile-info .visitor-profile-visit-details#${'visit'+(response.visitorProfile.lastVisits.length - i)} .visitorDetails`).css("margin-left", "26px")
+                            } 
+                            
+                               
+                            $(`.modal-visitor-profile-info .visitor-profile-visit-details#${'visit'+(response.visitorProfile.lastVisits.length - i)}`).append(`
                                 <ol class="visitorLog visitor-profile-actions actionList"></ol>
                             `);
                             $(v.actionDetails).each(function(index, value){
                                 switch(value.type){
                                     case 'action':
-                                        $('.modal-visitor-profile-info .visitor-profile-visits-info .actionList').append(`
+                                    $(`.modal-visitor-profile-info .visitor-profile-visit-details#${'visit'+(response.visitorProfile.lastVisits.length - i)} .actionList`).append(`
                                             <li class="action folder" 
                                                 title="
                                                 ${value.serverTimePretty}
@@ -615,7 +648,7 @@
                                         `);
                                         break;
                                     case 'outlink':
-                                        $('.modal-visitor-profile-info .visitor-profile-visits-info .actionList').append(`
+                                        $(`.modal-visitor-profile-info .visitor-profile-visit-details#${'visit'+(response.visitorProfile.lastVisits.length - i)} .actionList`).append(`
                                             <li class="action outlink ml-3" 
                                                 title="
                                                 ${value.serverTimePretty}
@@ -640,7 +673,7 @@
                                         `);
                                         break;
                                     case 'download':
-                                        $('.modal-visitor-profile-info .visitor-profile-visits-info .actionList').append(`
+                                        $(`.modal-visitor-profile-info .visitor-profile-visit-details#${'visit'+(response.visitorProfile.lastVisits.length - i)} .actionList`).append(`
                                             <li class="action download ml-3" 
                                                 title="
                                                 ${value.serverTimePretty}
