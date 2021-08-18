@@ -46,8 +46,66 @@
             }
         });
     }
+    function visitData(){
+        let val = $('#reportrange span').text();
+        let convertedRange = {};
+        if(val=="Today"){
+            convertedRange = {
+                range: val,
+                d1: moment().format('DD'),
+                m1: moment().format('MM'),
+                y1: moment().format('YYYY')
+            }
+        }else if(val == "Yesterday"){
+            convertedRange = {
+                range: val,
+                d1: moment().format('DD'),
+                m1: moment().format('MM'),
+                y1: moment().format('YYYY'),
+                d2: moment().subtract(1, 'days').format('DD'),
+                m2: moment().subtract(1, 'days').format('MM'),
+                y2: moment().subtract(1, 'days').format('YYYY'),
+            }
+        }else{
+            let dates = val.split("-");
+            convertedRange = {
+                range: val,
+                d1: moment(dates[1]).format('DD'),
+                m1: moment(dates[1]).format('MM'),
+                y1: moment(dates[1]).format('YYYY'),
+                d2: moment(dates[0]).format('DD'),
+                m2: moment(dates[0]).format('MM'),
+                y2: moment(dates[0]).format('YYYY'),
+            }
+        }
+        $.ajax({
+            url: "/dashboard/matomo/api/overview",
+            type: "post",
+            data: {
+                value : convertedRange,
+                _token: _token
+            },
+            success:function(response){
+                if(response.success == 'success'){
+                    let visits = response.visits.value;
+                    let uniquevisitors = response.uniqueVisitors.value;
+                    console.log(response.visitimg);
+                    $('.menu-items-content #visitoroverviewcards #visitsoverview').empty();
+                    $('.menu-items-content #visitoroverviewcards #visitsoverview').append(`
+                        <li><img style="max-width: 100px; margin-right: 5px;" src=${response.visitimg}>
+                            <strong>${visits}</strong> visits, <strong>${uniquevisitors}</strong> unique visitors
+                        </li>
+                    `);
+                }
+            },
+            complete: function(){
+                // forceView=1&viewDataTable=sparkline&module=API&action=get&idSite=10&period=day&date=2021-07-19,2021-08-17&segment=&showtitle=1&random=6179&columns=nb_visits%2Cnb_uniq_visitors&colors=%7B"backgroundColor"%3A"%23ffffff"%2C"lineColor"%3A"%23162c4a"%2C"minPointColor"%3A"%23ff7f7f"%2C"maxPointColor"%3A"%2375bf7c"%2C"lastPointColor"%3A"%2355aaff"%2C"fillColor"%3A"%23ffffff"%7D
+            }
+        });
+    }
     function getOverview(){
         liveCounter();
+        visitData();
     }
     
     $(function() {
@@ -100,6 +158,11 @@
             target.addClass("active");
             $(this).addClass("active");
             if(link == 'overview'){
+                getOverview();
+            }
+        });
+        $('body').on('DOMSubtreeModified','#reportrange span', function(){
+            if($('[data-item="overview"]').hasClass("active")){
                 getOverview();
             }
         });
@@ -448,7 +511,6 @@
                     });
                 }
             });
-            
         }
         
         $('#reportrange').daterangepicker({
