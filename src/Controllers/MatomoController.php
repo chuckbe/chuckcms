@@ -39,7 +39,7 @@ class MatomoController extends BaseController
     }
 
  
-    public function ReportingApi(Request $request)
+    public function reportingApi(Request $request)
     {
         $data = $request->all();
         $matomoUrl = ChuckSite::getSetting('integrations.matomo-site-url') !== null ? ChuckSite::getSetting('integrations.matomo-site-url') : config('chuckcms.analytics.matomoURL');
@@ -99,11 +99,11 @@ class MatomoController extends BaseController
 
     }
 
-    public function visitorsummary(Request $request)
+    public function visitorSummary(Request $request)
     {
         $data = $request->all();
         $matomoUrl = ChuckSite::getSetting('integrations.matomo-site-url') !== null ? ChuckSite::getSetting('integrations.matomo-site-url') : config('chuckcms.analytics.matomoURL');
-        $query_factory = QueryFactory::create(config('chuckcms.analytics.matomoURL'));
+        $query_factory = QueryFactory::create($matomoUrl);
         $query_factory
             ->set('idSite', $this->siteId)
             ->set('token_auth', $this->authToken);
@@ -119,6 +119,51 @@ class MatomoController extends BaseController
         ]);
     }
 
+    public function getHeatMaps(Request $request)
+    {
+        $data = $request->all();
+        $matomoUrl = ChuckSite::getSetting('integrations.matomo-site-url') !== null ? ChuckSite::getSetting('integrations.matomo-site-url') : config('chuckcms.analytics.matomoURL');
+        $query_factory = QueryFactory::create($matomoUrl);
+        $query_factory
+            ->set('idSite', $this->siteId)
+            ->set('token_auth', $this->authToken);
+        
+        $heatMaps = $query_factory->getQuery('HeatmapSessionRecording.getHeatmaps')
+        ->execute()
+        ->getResponse();
+
+        return response()->json([
+            'success'=>'success',
+            'matomoUrl' => $matomoUrl,
+            'heatMaps' => $heatMaps
+        ]);
+        
+    }
+
+    public function getLiveCounter(Request $request)
+    {
+        $data = $request->all();
+        $matomoUrl = ChuckSite::getSetting('integrations.matomo-site-url') !== null ? ChuckSite::getSetting('integrations.matomo-site-url') : config('chuckcms.analytics.matomoURL');
+        $query_factory = QueryFactory::create($matomoUrl);
+        $query_factory
+            ->set('idSite', $this->siteId)
+            ->set('token_auth', $this->authToken);
+
+        $unblock = $query_factory->getQuery('Login.unblockBruteForceIPs')
+        ->execute()
+        ->getResponse();
+        
+        $liveCounter = $query_factory->getQuery('Live.getCounters')
+            ->setParameter('lastMinutes', 3)
+            ->execute()
+            ->getResponse();
+
+        return response()->json([
+            'success'=>'success',
+            'liveCounter' => $liveCounter,
+            'unblock'=> $unblock
+        ]);
+    }
 
     public function submit(Request $request)
     {

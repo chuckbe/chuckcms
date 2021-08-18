@@ -1,17 +1,79 @@
 <script>
+    let _token = $('meta[name="csrf-token"]').attr('content');
     function str_pad_left(string,pad,length) {
         return (new Array(length+1).join(pad)+string).slice(-length);
     }
+    //  heatmaps
     
+    function getHeatMaps(){
+        $.ajax({
+            url: "/dashboard/matomo/api/heatmaps",
+            type: "post",
+            data: {
+                _token: _token
+            },
+            success:function(response){
+                if(response.success == 'success'){
+                    $(`div[data-item="heatmap"] #Heatmapcards`).empty();
+                    $(response.heatMaps).each(function(i, v) {
+                        $(`div[data-item="heatmap"] #Heatmapcards`).append(`
+                            <li>
+                                <iframe style="height: 5000px" class="w-100 border-0" id="iframe_${v.name}" src="${response.matomoUrl}/${v.heatmapViewUrl}"></iframe>
+                            </li>
+                        `);
+                    });
+                }
+            },
+            complete: function(){
 
+            }
+        });
+    }
+
+    function liveCounter(){
+        $.ajax({
+            url: "/dashboard/matomo/api/livecounter",
+            type: "post",
+            data: {
+                _token: _token
+            },
+            success:function(response){
+                $('.menu-items-content #visitoroverviewcards #liveVisitors .simple-realtime-visitor-counter').html(`<span>${response.liveCounter[0].visitors}</span>`);
+                $('.menu-items-content #visitoroverviewcards #liveVisitors .simple-realtime-elaboration').html(`<span><strong>${response.liveCounter[0].visits} visits</strong> and <strong>${response.liveCounter[0].actions} actions</strong> in the last <strong>3 minutes</strong></span>`);
+            },
+            complete: function(){
+                setTimeout(liveCounter, 180000);
+            }
+        });
+    }
+    function getOverview(){
+        liveCounter();
+    }
+    
     $(function() {
         $(document).on('click', '#sidebarMenu .nav-item a', function(e){
             e.preventDefault();
+            $('#sidebarMenu .nav-item').each(function(index, el){
+                if($(el).hasClass( "active" )){
+                    $(el).removeClass("active");
+                }
+            });
+            $(this).parent().addClass("active");
             $('#sidebarMenu .nav-item .sidebar-sub-menu li').each(function(index, el){
                 if($(el).hasClass( "active" )){
                     $(el).removeClass("active");
                 }
             });
+            let category = $(this).data('category');
+            if(category == 'heatmaps') {
+                $('.menu-items-content .matomo-items').each(function(index, el){
+                    if($(el).hasClass( "active" )){
+                        $(el).removeClass("active");
+                    }
+                });
+                $(`.menu-items-content div[data-item='heatmap']`).addClass("active");
+                getHeatMaps();
+            }
         });
         $(document).on('click', '#sidebarMenu .nav-item .sidebar-sub-menu li', function(){
             let link = $(this).children('a').data('link');
@@ -37,13 +99,16 @@
             let target = $(`.menu-items-content div[data-item='${link}']`);
             target.addClass("active");
             $(this).addClass("active");
+            if(link == 'overview'){
+                getOverview();
+            }
         });
     });
     
     $(function() {
         let start = moment().subtract(0, 'days');
         let end = moment();
-        let _token = $('meta[name="csrf-token"]').attr('content');
+        
         function cb(start, end) {
             $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
             let values = $('#reportrange span').html().split(" - ");
@@ -97,7 +162,6 @@
                     if(response.success == 'success'){
                         $('#visitoroverviewcards #visitoroverview').empty();
                         $('#visitorcards').empty();
-                        console.log(response.matomoUrl);
                         if(response.lastVisitsDetails.length > 0){
                             $.each(response.lastVisitsDetails, function( index, value ) {
                                 let tts = 0;
@@ -385,7 +449,6 @@
                 }
             });
             
-           
         }
         
         $('#reportrange').daterangepicker({
@@ -403,7 +466,6 @@
             }
         }, cb);
         cb(start, end);
-
         $(document).on('click','a.visitorLogTooltip',function(){
             let visitorId = $(this).data("visitor-id");
             $.ajax({
@@ -416,7 +478,6 @@
                 success:function(response){
                     if(response.success == 'success'){
                         $('.modal-visitor-profile-info').attr('id', visitorId);
-                        console.log(response.visitorProfile);
                         $('<span>', {text: visitorId+" "}).append('.visitor-profile-overview .visitor-profile-header .visitor-profile-id');
                         $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`
                             <span class="visitorLogIconWithDetails flag" profile-header-text="${response.visitorProfile.countries[0].cities[0]}">

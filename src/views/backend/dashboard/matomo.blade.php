@@ -33,9 +33,7 @@
               <a class="nav-link text-dark font-weight-bold active" href="#" data-category="heatmaps">
                 <span class="menu-icon icon-drop"></span> Heatmaps
               </a>
-              <ul class="sidebar-sub-menu p-0 m-0">
-                
-              </ul>
+              <ul class="sidebar-sub-menu p-0 m-0"></ul>
             </li>
           </ul>
         </div>
@@ -45,12 +43,24 @@
   <div class="col-lg-9 menu-items-content">
     <div class="matomo-items" data-item='overview'>
       <h3 class="lead">Overview</h3>
-      <ul id="visitoroverviewcards" class="m-0 p-0">
-        <li class="card shadow my-3 p-3">
+      <div id="visitoroverviewcards" class="m-0 p-0 row">
+        <div class="card shadow my-3 p-3 col-3">
+          <div id="liveVisitors">
+            <h3 class="lead font-weight-bold  text-center">Real Time Visitor Count</h3>
+            <div class="simple-realtime-visitor-counter" title="0 visitors">
+                <span>0</span>
+            </div>
+            <div class="simple-realtime-elaboration">
+              <span><strong>0 visits</strong> and <strong>0 actions</strong> in the last <strong>3 minutes</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card shadow my-3 p-3 col-12">
           <h3 class="lead font-weight-bold">Visits Overview</h3>
           <ul id="visitsoverview"></ul>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
     <div class="matomo-items active" data-item='visitor Log'>
       <h3 class="lead">Visits Log</h3>
@@ -68,65 +78,6 @@
   </div>
 </div>
 
-{{-- <div class="row mb-3">
-    <div class="col-lg-4 mb-3">
-        <div class="card card-default">
-            <div class="breadcrumb separator">
-                <div class="breadcrumb-item">Real Time Visitor Count</div>
-            </div>
-            <div class="card-block text-center">
-                <div class="bg-light rounded px-1 py-3" style="margin: 0 30%">
-                    <span class="font-weight-bold" style="font-size:2rem;" id="LiveVisitors"></span>
-                </div>
-                <p class="pt-3">
-                    <span id="counter-visitor" class="font-weight-bold"></span> and <span id="counter-actions" class="font-weight-bold"></span><br> in Last 20 seconds
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-6 mb-3">
-        <div class="card card-default">
-            <div class="breadcrumb separator">
-                <div class="breadcrumb-item">Info</div>
-            </div>
-            <div class="card-block p-3">
-                <p><strong>Average Bounce Rate:</strong> <span id="avgBouceRate"></span></p>
-                <p><strong>Total visits:</strong> <span id="totalVisits"></span></p>
-                <p><strong>Average Time spend by a user on site:</strong> <span id="avgTimeSpend"></span></p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row mb-3">
-    <div class="col-lg-12 mb-3">
-            <div class="card card-default">
-                <div class="breadcrumb separator">
-                    <div class="breadcrumb-item">sessions</div>
-                </div>
-                <div class="card-block">
-                    <div class="sessions-table table-responsive">
-                        <table class="table table-hover" id="table" data-show-header="true" data-pagination="true" data-page-size="5">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="border-top-0">Url</th>
-                                <th scope="col" class="border-top-0">Pageviews</th>
-                                <th scope="col" class="border-top-0">Time</th>
-                                <th scope="col" class="border-top-0">Time on website</th>
-                                <th scope="col" class="border-top-0">Location</th>
-                                <th scope="col" class="border-top-0">Device</th>
-                                <th scope="col" class="border-top-0">OS</th>
-                                <th scope="col" class="border-top-0">Browser</th>
-                            </tr>
-                        </thead>
-                          <tbody id="table_body_sessions">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
 <div class="modal modal-visitor-profile-info fade" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content border-0">
