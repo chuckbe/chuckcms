@@ -87,13 +87,17 @@
             },
             success:function(response){
                 if(response.success == 'success'){
-                    let visits = response.visits.value;
-                    let uniquevisitors = response.uniqueVisitors.value;
-                    console.log(response.visitimg);
+                    let visits = response.visitssummary.nb_visits;
+                    let uniquevisitors = response.visitssummary.nb_unique_visitors;
+                    let avgTimeSpend = moment.utc(response.visitssummary.avg_time_on_site*1000).format('mm:ss').split(":");
+                    
                     $('.menu-items-content #visitoroverviewcards #visitsoverview').empty();
                     $('.menu-items-content #visitoroverviewcards #visitsoverview').append(`
-                        <li><img style="max-width: 100px; margin-right: 5px;" src=${response.visitimg}>
+                        <li class="py-3"><img style="max-width: 100px; margin-right: 5px;" src=${response.visitimg}>
                             <strong>${visits}</strong> visits, <strong>${uniquevisitors}</strong> unique visitors
+                        </li>
+                        <li class="py-3"><img style="max-width: 100px; margin-right: 5px;" src=${response.avgvisitimg}>
+                             <strong>${avgTimeSpend[0]} min ${avgTimeSpend[1]}s</strong> average visit duration
                         </li>
                     `);
                 }

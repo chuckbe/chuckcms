@@ -198,25 +198,20 @@ class MatomoController extends BaseController
         $query_factory
             ->set('idSite', $this->siteId)
             ->set('token_auth', $this->authToken);
-
-        $visits = $query_factory->getQuery('VisitsSummary.getVisits')
-            ->setParameter('date', $date)
-            ->setParameter('period', $period)
-            ->execute()
-            ->getResponse();
-        $uniqueVisitors = $query_factory->getQuery('VisitsSummary.getUniqueVisitors')
+        
+        $visitssummary = $query_factory->getQuery('VisitsSummary.get ')
             ->setParameter('date', $date)
             ->setParameter('period', $period)
             ->execute()
             ->getResponse();
         
-            ->getResponse();
             
         return response()->json([
                 'success'=>'success',
-                'visits' => $visits,
-                'uniqueVisitors' => $uniqueVisitors,
-                'visitimg'=> $matomoUrl.'/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite='.$this->siteId.'&period='.$period.'&date='.$date.'&segment=&showtitle=1&random=6179&columns=nb_visits%2Cnb_uniq_visitors'
+                'visitimg'=> $matomoUrl.'/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite='.$this->siteId.'&period='.$period.'&date='.$date.'&segment=&showtitle=1&random=6179&columns=nb_visits%2Cnb_uniq_visitors',
+                'avgvisitimg'=> $matomoUrl.'/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite='.$this->siteId.'&period='.$period.'&date='.$date.'&segment=&showtitle=1&random=6179&columns=avg_time_on_site',
+                'visitssummary' => $visitssummary,
+
             ]);
     }
 
