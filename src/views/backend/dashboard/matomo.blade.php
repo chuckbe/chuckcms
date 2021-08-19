@@ -35,6 +35,12 @@
               </a>
               <ul class="sidebar-sub-menu p-0 m-0"></ul>
             </li>
+            <li class="nav-item sidebar-dropdown-menu">
+              <a class="nav-link text-dark font-weight-bold active" href="#" data-category="sessionrecordings">
+                <span class="menu-icon icon-play"></span> Session Recordings
+              </a>
+              <ul class="sidebar-sub-menu p-0 m-0"></ul>
+            </li>
           </ul>
         </div>
       </nav>

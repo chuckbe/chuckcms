@@ -168,14 +168,32 @@
                 }
             });
             let category = $(this).data('category');
-            if(category == 'heatmaps') {
-                $('.menu-items-content .matomo-items').each(function(index, el){
-                    if($(el).hasClass( "active" )){
-                        $(el).removeClass("active");
-                    }
-                });
-                $(`.menu-items-content div[data-item='heatmap']`).addClass("active");
-                getHeatMaps();
+            switch(category) {
+                case 'visitors':
+                    $('#sidebarMenu .nav-item .sidebar-sub-menu li').each(function(index, el){
+                        if($(el).hasClass( "active" )){
+                            $(el).removeClass("active");
+                        }
+                    });
+                    $('.menu-items-content .matomo-items').each(function(index, el){
+                        if($(el).hasClass( "active" )){
+                            $(el).removeClass("active");
+                        }
+                    });
+                    $(`.menu-items-content div[data-item='overview']`).addClass("active");
+                    $('#sidebarMenu .nav-item.active .sidebar-sub-menu li a[data-link="overview"]').parent().addClass("active");
+                    getOverview();
+                    break;
+                case 'heatmaps':
+                    $('.menu-items-content .matomo-items').each(function(index, el){
+                        if($(el).hasClass( "active" )){
+                            $(el).removeClass("active");
+                        }
+                    });
+                    $(`.menu-items-content div[data-item='heatmap']`).addClass("active");
+                    getHeatMaps();
+                    break;
+                default:
             }
         });
         $(document).on('click', '#sidebarMenu .nav-item .sidebar-sub-menu li', function(){
