@@ -71,15 +71,33 @@
     <div class="matomo-items active" data-item='visitor Log'>
       <h3 class="lead">Visits Log</h3>
       <ul id="visitorcards" class="m-0 p-0"></ul>
-      <nav><ul class="pagination justify-content-end pagination-sm"></ul></nav>
+      <nav><ul class="pagination pagination-visitors justify-content-end pagination-sm"></ul></nav>
     </div>
-
-
 
     {{-- heatmaps --}}
     <div class="matomo-items" data-item='heatmap'>
       <h3 class="lead">Heatmap</h3>
       <ul id="Heatmapcards" class="m-0 p-0"></ul>
+    </div>
+
+    <div class="matomo-items" data-item='sessionrecordings'>
+      <h3 class="lead">Session recording</h3>
+      <table id="sessionrecordings" class="table table-striped table-bordered nowrap w-100">
+        <thead>
+            <tr>
+                <th>ENTRY URL → EXIT URL</th>
+                <th>PAGEVIEWS</th>
+                <th>TIME</th>
+                <th>TIME ON WEBSITE</th>
+                <th>LOCATION</th>
+                <th>DEVICE</th>
+                <th>OS</th>
+                <th>BROWSER</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table
     </div>
   </div>
 </div>

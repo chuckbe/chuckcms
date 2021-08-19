@@ -131,6 +131,21 @@ class MatomoController extends BaseController
         $heatMaps = $query_factory->getQuery('HeatmapSessionRecording.getHeatmaps')
         ->execute()
         ->getResponse();
+        
+        // $heatmapTypes = $query_factory->getQuery('HeatmapSessionRecording.getAvailableHeatmapTypes')
+        // ->execute()
+        // ->getResponse();
+
+        // $heatMap = $query_factory->getQuery('HeatmapSessionRecording.getRecordedHeatmap')
+        // ->setParameter('idSiteHsr', get_object_vars($heatMaps[0])['idsitehsr'])
+        // ->setParameter('heatmapType', "Scroll")
+        // ->setParameter('deviceType', 'Desktop')
+        // ->setParameter('date', 'yesterday')
+        // ->setParameter('period', 'day')
+        // ->execute()
+        // ->getResponse();
+
+
 
         return response()->json([
             'success'=>'success',
@@ -138,6 +153,62 @@ class MatomoController extends BaseController
             'heatMaps' => $heatMaps
         ]);
         
+    }
+
+    public function getSessionRecordings(Request $request)
+    {
+        $data = $request->all();
+        $matomoUrl = ChuckSite::getSetting('integrations.matomo-site-url') !== null ? ChuckSite::getSetting('integrations.matomo-site-url') : config('chuckcms.analytics.matomoURL');
+        if($data["value"]["range"] !== "Today" || $data["value"]["range"] !== "Yesterday"){
+            if(isset($data["value"]["y2"]) && isset($data["value"]["y1"])){
+                $now = \Carbon\Carbon::now();
+                $startdate = \Carbon\Carbon::createFromFormat('Y-m-d', $data["value"]["y2"].'-'.$data["value"]["m2"].'-'.$data["value"]["d2"]);
+                $enddate = \Carbon\Carbon::createFromFormat('Y-m-d',$data["value"]["y1"].'-'.$data["value"]["m1"].'-'.$data["value"]["d1"]);
+                $checkforrange = $now->diffInDays($enddate);
+          
+                if($checkforrange !== 0){
+                    $period = 'range';
+                    $date = date('Y-m-d', strtotime($startdate)).",".date('Y-m-d', strtotime($enddate));
+                }
+            }
+        }
+        if($data["value"]["range"] == "Today"){
+            $date = 'today';
+            $period = 'day';
+        }
+        if($data["value"]["range"] == "Yesterday"){
+            $date = 'yesterday';
+            $period = 'day';
+        }
+        
+        
+        
+        $query_factory = QueryFactory::create($matomoUrl);
+        $query_factory
+            ->set('idSite', $this->siteId)
+            ->set('token_auth', $this->authToken);
+
+        $sessionRecordings = $query_factory->getQuery('HeatmapSessionRecording.getSessionRecordings')
+            ->execute()
+            ->getResponse();  
+        
+        
+        $recordedSessions = $query_factory->getQuery('HeatmapSessionRecording.getRecordedSessions')
+        ->setParameter('idSiteHsr', get_object_vars($sessionRecordings[0])['idsitehsr'])
+        ->setParameter('date', $date)
+        ->setParameter('period', $period)
+        ->setParameter('filter_limit', -1)
+        ->execute()
+        ->getResponse();
+
+        
+        return response()->json([
+            'success'=>'success',
+            'matomoUrl' => $matomoUrl,
+            'sessionRecordings' => $sessionRecordings,
+            'recordedSessions'=> $recordedSessions
+        ]);
+
     }
 
     public function getLiveCounter(Request $request)

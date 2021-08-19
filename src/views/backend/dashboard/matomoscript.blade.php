@@ -152,6 +152,61 @@
         liveCounter();
         visitData();
     }
+    function getSessionRecordings(){
+        let val = $('#reportrange span').text();
+        let convertedRange = {};
+        if(val=="Today"){
+            convertedRange = {
+                range: val,
+                d1: moment().format('DD'),
+                m1: moment().format('MM'),
+                y1: moment().format('YYYY')
+            }
+        }else if(val == "Yesterday"){
+            convertedRange = {
+                range: val,
+                d1: moment().format('DD'),
+                m1: moment().format('MM'),
+                y1: moment().format('YYYY'),
+                d2: moment().subtract(1, 'days').format('DD'),
+                m2: moment().subtract(1, 'days').format('MM'),
+                y2: moment().subtract(1, 'days').format('YYYY'),
+            }
+        }else{
+            let dates = val.split("-");
+            convertedRange = {
+                range: val,
+                d1: moment(dates[1]).format('DD'),
+                m1: moment(dates[1]).format('MM'),
+                y1: moment(dates[1]).format('YYYY'),
+                d2: moment(dates[0]).format('DD'),
+                m2: moment(dates[0]).format('MM'),
+                y2: moment(dates[0]).format('YYYY'),
+            }
+        }
+        $('#sessionrecordings').DataTable({
+            "ordering": false,
+            "info":     false,
+            "search": false
+        });
+
+        $.ajax({
+            url: "/dashboard/matomo/api/sessionrecordings",
+            type: "post",
+            data: {
+                value : convertedRange,
+                _token: _token
+            },
+            success:function(response){
+                if(response.success == 'success'){
+                    console.log(response);
+                }
+            },
+            complete: function(){
+            
+            }
+        });
+    }
     
     $(function() {
         $(document).on('click', '#sidebarMenu .nav-item a', function(e){
@@ -192,6 +247,15 @@
                     });
                     $(`.menu-items-content div[data-item='heatmap']`).addClass("active");
                     getHeatMaps();
+                    break;
+                case 'sessionrecordings':
+                    $('.menu-items-content .matomo-items').each(function(index, el){
+                        if($(el).hasClass( "active" )){
+                            $(el).removeClass("active");
+                        }
+                    });
+                    $(`.menu-items-content div[data-item='sessionrecordings']`).addClass("active");
+                    getSessionRecordings();
                     break;
                 default:
             }
@@ -543,16 +607,16 @@
                         currentPage = whichPage;
                         $("#visitorcards .card").hide().slice((currentPage - 1) * limitPerPage, currentPage * limitPerPage)
                         .show()
-                        $(".pagination li").slice(1, -1).remove();
+                        $(".pagination-visitors li").slice(1, -1).remove();
                         let arr = getPageList(totalPages, currentPage, paginationSize);
                         arr.forEach(item => {
                             $("<li>", {class : 'page-item ' + (item ? "current-page " : "") + (item === currentPage ? "active " : "")})
                             .append($('<a>', {class : 'page-link', href: "javascript:void(0)" ,text: item || "..."}))
-                            .insertBefore(".pagination #next-page");
+                            .insertBefore(".pagination-visitors #next-page");
                         });
                         return true;
                     }
-                    $(".pagination").append(
+                    $(".pagination-visitors").append(
                         $("<li>").addClass("page-item").attr({ id: "previous-page" })
                         .append(
                         $("<a>").addClass("page-link").attr({href: "javascript:void(0)"}).text("Prev")
@@ -564,16 +628,16 @@
                     );
                     $("#visitorcards").show();
                     showPage(1);
-                    $(document).on("click",".pagination li.current-page:not(.active)", function(){
+                    $(document).on("click",".pagination-visitors li.current-page:not(.active)", function(){
                         return showPage(+$(this).text());
                     });
-                    $("#next-page").on("click", function() {
+                    $(".pagination-visitors #next-page").on("click", function() {
                         return showPage(currentPage + 1);
                     });
-                    $("#previous-page").on("click", function() {
+                    $(".pagination-visitors #previous-page").on("click", function() {
                         return showPage(currentPage - 1);
                     });
-                    $(".pagination").on("click", function() {
+                    $(".pagination-visitors").on("click", function() {
                         $("html,body").animate({ scrollTop: 0 }, 0);
                     });
                 }
