@@ -3,6 +3,15 @@
     function str_pad_left(string,pad,length) {
         return (new Array(length+1).join(pad)+string).slice(-length);
     }
+    function humanizeNumber(n) {
+        n = n.toString()
+        while (true) {
+            var n2 = n.replace(/(\d)(\d{3})($|,|\.)/g, '$1,$2$3')
+            if (n == n2) break
+            n = n2
+        }
+        return n
+    }
     //  heatmaps
     
     function getHeatMaps(){
@@ -87,18 +96,50 @@
             },
             success:function(response){
                 if(response.success == 'success'){
-                    let visits = response.visitssummary.nb_visits;
-                    let uniquevisitors = response.visitssummary.nb_unique_visitors;
-                    let avgTimeSpend = moment.utc(response.visitssummary.avg_time_on_site*1000).format('mm:ss').split(":");
+                    let visits = humanizeNumber(response.data.nb_visits);
+                    let uniquevisitors = humanizeNumber(response.data.nb_uniq_visitors);
+                    let avgTimeSpend = moment.utc(response.data.avg_time_on_site*1000).format('mm:ss').split(":");
+                    let bounceRate = response.data.bounce_rate;
+                    let actionsPerVisit = response.data.nb_actions_per_visit;
+                    let pageViews = humanizeNumber(response.data.nb_pageviews);
+                    let uniquePageViews = humanizeNumber(response.data.nb_uniq_pageviews);
+                    let totalSearches = humanizeNumber(response.data.nb_searches);
+                    let uniqueKeywords = humanizeNumber(response.data.nb_keywords);
+                    let downloads = humanizeNumber(response.data.nb_downloads);
+                    let uniqueDownloads = humanizeNumber(response.data.nb_uniq_downloads);
+                    let outlinks = humanizeNumber(response.data.nb_outlinks);
+                    let uniqueOutlinks = humanizeNumber(response.data.nb_uniq_outlinks);
+                    let maxActions = humanizeNumber(response.data.max_actions);
                     
                     $('.menu-items-content #visitoroverviewcards #visitsoverview').empty();
                     $('.menu-items-content #visitoroverviewcards #visitsoverview').append(`
-                        <li class="py-3"><img style="max-width: 100px; margin-right: 5px;" src=${response.visitimg}>
-                            <strong>${visits}</strong> visits, <strong>${uniquevisitors}</strong> unique visitors
-                        </li>
-                        <li class="py-3"><img style="max-width: 100px; margin-right: 5px;" src=${response.avgvisitimg}>
-                             <strong>${avgTimeSpend[0]} min ${avgTimeSpend[1]}s</strong> average visit duration
-                        </li>
+                        <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.visitimg}>
+                            <span><strong>${visits}</strong> visits, <strong>${uniquevisitors}</strong> unique visitors</span>
+                        </div>
+                        <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.avgvisitimg}>
+                             <span><strong>${avgTimeSpend[0]} min ${avgTimeSpend[1]}s</strong> average visit duration</span>
+                        </div>
+                        <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.avgvisitimg}>
+                             <span><strong>${bounceRate}</strong> visits have bounced (left the website after one page)</span>
+                        </div>
+                        <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.actions_per_visit_img}>
+                             <span><strong>${actionsPerVisit}</strong> actions (page views, downloads, outlinks and internal site searches) per visit</span>
+                        </div>
+                        <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.pageviewimg}>
+                             <span><strong>${pageViews}</strong> pageviews, <strong>${uniquePageViews}</strong> unique pageviews</span>
+                        </div>
+                        <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.searchesandkeywordsimg}>
+                             <span><strong>${totalSearches}</strong> total searches on your website, <strong>${uniqueKeywords}</strong> unique keywords</span>
+                        </div>
+                        <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.downloadsimg}>
+                             <span><strong>${downloads}</strong> downloads, <strong>${uniqueDownloads}</strong> unique downloads</span>
+                        </div>
+                        <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.outlinksimg}>
+                             <span><strong>${outlinks}</strong> outlinks, <strong>${uniqueOutlinks}</strong> unique outlinks</span>
+                        </div>
+                        <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.maxactionsimg}>
+                             <span><strong>${maxActions}</strong> max actions in one visit</span>
+                        </div>
                     `);
                 }
             },
@@ -165,11 +206,15 @@
                 getOverview();
             }
         });
-        $('body').on('DOMSubtreeModified','#reportrange span', function(){
-            if($('[data-item="overview"]').hasClass("active")){
-                getOverview();
+        let reportrangedate = document.querySelector('#reportrange span')
+        let observer = new MutationObserver(function(mutations) {
+            if(document.querySelector('[data-item="overview"]').classList.contains("active")){
+                getOverview(); 
             }
+            
         });
+        let config = { attributes: true, childList: true, characterData: true };
+        observer.observe(reportrangedate, config);
     });
     
     $(function() {
@@ -837,10 +882,10 @@
                 }
             });
         });
-         $('.modal-visitor-profile-info').on('hidden.bs.modal', function(){
+        $('.modal-visitor-profile-info').on('hidden.bs.modal', function(){
              $('.modal-visitor-profile-info').removeAttr('id');
              $('.modal-visitor-profile-info .modal-body .visitor-profile-overview .visitor-profile-header .visitor-profile-id span:last-of-type').remove();
              $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').empty();
-         });
+        });
     });
 </script>

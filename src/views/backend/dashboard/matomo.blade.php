@@ -58,7 +58,7 @@
 
         <div class="card shadow my-3 p-3 col-12">
           <h3 class="lead font-weight-bold">Visits Overview</h3>
-          <ul id="visitsoverview" class="mt-4 mx-0"></ul>
+          <div id="visitsoverview" class="mt-4 mx-0 row"></div>
         </div>
       </div>
     </div>
