@@ -206,9 +206,34 @@ class MatomoController extends BaseController
             'success'=>'success',
             'matomoUrl' => $matomoUrl,
             'sessionRecordings' => $sessionRecordings,
-            'recordedSessions'=> $recordedSessions
+            'recordedSessions'=> $recordedSessions,
+            'sitehrs' => get_object_vars($sessionRecordings[0])['idsitehsr']
         ]);
 
+    }
+
+    public function getRecordedSession(Request $request)
+    {
+        $data = $request->all();
+        $matomoUrl = ChuckSite::getSetting('integrations.matomo-site-url') !== null ? ChuckSite::getSetting('integrations.matomo-site-url') : config('chuckcms.analytics.matomoURL');
+        $query_factory = QueryFactory::create($matomoUrl);
+        $query_factory
+            ->set('idSite', $this->siteId)
+            ->set('token_auth', $this->authToken);
+    
+        $recordedSessions = $query_factory->getQuery('HeatmapSessionRecording.getRecordedSession')
+            ->setParameter('idSiteHsr', $data["idSiteHsr"])
+            ->setParameter('idLogHsr', $data["idLogHsr"])
+            ->setParameter('filter_limit', -1)
+            ->execute()
+            ->getResponse();
+
+        return response()->json([
+            'success'=>'success',
+            'matomoUrl' => $matomoUrl,
+            'recordedSession' => $recordedSessions
+        ]);
+        
     }
 
     public function getLiveCounter(Request $request)

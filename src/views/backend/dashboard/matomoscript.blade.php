@@ -24,13 +24,29 @@
             success:function(response){
                 if(response.success == 'success'){
                     $(`div[data-item="heatmap"] #Heatmapcards`).empty();
+                    $(`nav#sidebarMenu .nav .nav-item [data-category="heatmaps"]`).parent().find(`.sidebar-sub-menu`).empty();
                     $(response.heatMaps).each(function(i, v) {
+                        $(`nav#sidebarMenu .nav .nav-item [data-category="heatmaps"]`).parent().find(`.sidebar-sub-menu`).append(`
+                            <li ${i == 0  ? 'class="active"' : ''}>
+                                <a class="text-dark" data-link="heatmap" data-heatmapname="${(v.name).replace(/\s+/g, '-').toLowerCase()}" target="_blank" href="${response.matomoUrl}/${v.heatmapViewUrl}">${v.name}</a>
+                            </li>
+                        `)
                         $(`div[data-item="heatmap"] #Heatmapcards`).append(`
-                            <li>
-                                <iframe style="height: 5000px" class="w-100 border-0" id="iframe_${v.name}" src="${response.matomoUrl}/${v.heatmapViewUrl}"></iframe>
+                            <li class="heatmapcard${i == 0 ? ' active' : ''}" data-heatmap=${(v.name).replace(/\s+/g, '-').toLowerCase()}>
+                                <iframe style="height: 5000px" class="w-100 border-0" id="iframe_${(v.name).replace(/\s+/g, '-').toLowerCase()}" src="${response.matomoUrl}/${v.heatmapViewUrl}"></iframe>
                             </li>
                         `);
                     });
+                    if(!$(`nav#sidebarMenu .nav .nav-item [data-category="heatmaps"]`).parent().hasClass( "active" )){
+                        $(`nav#sidebarMenu .nav .nav-item [data-category="heatmaps"]`).parent().find(`.sidebar-sub-menu li`).each(function(index, el){
+                            if($(el).hasClass( "active" )){
+                                $(el).removeClass("active");
+                            }
+                        });
+                        if($(`nav#sidebarMenu .nav .nav-item [data-category="heatmaps"]`).hasClass( "active")){
+                            $(`nav#sidebarMenu .nav .nav-item [data-category="heatmaps"]`).removeClass("active");
+                        }
+                    }
                 }
             },
             complete: function(){
@@ -184,12 +200,7 @@
                 y2: moment(dates[0]).format('YYYY'),
             }
         }
-        $('#sessionrecordings').DataTable({
-            "ordering": false,
-            "info":     false,
-            "search": false
-        });
-
+        
         $.ajax({
             url: "/dashboard/matomo/api/sessionrecordings",
             type: "post",
@@ -199,11 +210,92 @@
             },
             success:function(response){
                 if(response.success == 'success'){
-                    console.log(response);
+                    
+                    $('#sessionrecordings .tbody').empty()
+                    $(response.recordedSessions).each(function(index, el){
+                        let seconds = Math.floor(el.time_on_site/1000);
+                        let d = Math.floor(seconds / (3600*24));
+                        let h = Math.floor(seconds % (3600*24) / 3600);
+                        let m = Math.floor(seconds % 3600 / 60);
+                        let s = Math.floor(seconds % 60);
+
+                        $('#sessionrecordings tbody').append(`
+                            <tr data-sitehr=${response.sitehrs} data-expanded="${el.first_url == el.last_url ? 'false' : 'true'}" data-loghr=${el.idloghsr}>
+                                <td class="position-relative" title="${el.first_url == el.last_url ? el.first_url : el.first_url+'→'+el.last_url}" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 30ch;">
+                                    ${el.first_url == el.last_url ? '<span class="icon-outlink"></span> '+el.first_url : '<span class="icon-btn"></span> '+el.first_url+"→"+el.last_url}
+                                    <div class="play-icons position-absolute">
+                                        <a class="session-play" href="${response.matomoUrl}/${el.sessionReplayUrl}" target="_blank"><i class="far fa-play-circle" aria-hidden="true"></i></a>
+                                        <a class="session-visitor visitorLogTooltip" data-visitor-id="${el.idvisitor}">
+                                            <i class="fa fa-id-card" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>${el.nb_pageviews}</td>
+                                <td>${moment(el.server_time).format('MMM Do YYYY hh:mm:ss')}</td>
+                                <td>
+                                ${d > 0 ? (d > 9 ? d+":" : "0"+d+":") : ""}
+                                ${h > 0 ? (h > 9 ? h+":" : "0"+h+":") : ""}
+                                ${m > 0 ? (m > 9 ? m+":" : "0"+m+":") : "00:"}
+                                ${s > 0 ? (s > 9 ? s : "0"+s) : "00"}
+                                </td>
+                                <td title="${el.location_city}">
+                                    <img 
+                                        width="16" 
+                                        class="flag" 
+                                        src="${response.matomoUrl}/plugins/Morpheus/icons/dist/flags/${el.location_country}.png">
+                                </td>
+                                <td title="${el.config_device_model}">
+                                    <img 
+                                        width="16" 
+                                        src="${response.matomoUrl}/plugins/Morpheus/icons/dist/devices/${el.config_device_type == 0 ? 'desktop' : el.config_device_type == 1 ? 'smartphone' : 'tablet'}.png">
+                                </td>
+                                <td title="${el.config_os}"><img width="16" src="${response.matomoUrl}/plugins/Morpheus/icons/dist/os/${el.config_os}.png"></td>
+                                <td title="${el.config_browser_name}"><img width="16" src="${response.matomoUrl}/plugins/Morpheus/icons/dist/browsers/${el.config_browser_name}.png"></td>
+
+                            </tr>
+                        `);
+                    })
                 }
             },
             complete: function(){
-            
+                $('table#sessionrecordings').footable({
+                    "paging": {
+                        "size": 10,
+                        "enabled": true
+                    },
+                    calculateWidthOverride: function() {
+                        return { width: $(window).width() };
+                    }
+                });
+                $(document).on('click', '#sessionrecordings tbody tr', function(){
+                    if($(this).data('expanded')){
+                        $('#sessionrecordings tbody tr').not(this).each(function(index, el){
+                            $(el).find('.icon-btn.expanded').removeClass('expanded')
+                        });
+                        if($(this).find('.icon-btn').hasClass('expanded')){
+                            $(this).find('.icon-btn').removeClass('expanded')
+                        }else{
+                            $(this).find('.icon-btn').addClass('expanded')
+                            $.ajax({
+                                url: "/dashboard/matomo/api/recordedsessions",
+                                type: "post",
+                                data: {
+                                    idLogHsr: $(this).data('loghr'),
+                                    idSiteHsr: $(this).data('sitehr'),
+                                    _token: _token
+                                },
+                                success:function(response){
+                                    if(response.success == 'success'){
+                                        console.log(response.recordedSession)
+                                    }
+                                },
+                                complete: function(){
+
+                                }
+                            });
+                        }
+                    }
+                });
             }
         });
     }
@@ -247,6 +339,8 @@
                     });
                     $(`.menu-items-content div[data-item='heatmap']`).addClass("active");
                     getHeatMaps();
+                    $(`#sidebarMenu .nav-item.active .sidebar-sub-menu li:first`).addClass("active");
+                    $(`.menu-items-content div[data-item='heatmap'] #Heatmapcards li:first`).addClass("active");
                     break;
                 case 'sessionrecordings':
                     $('.menu-items-content .matomo-items').each(function(index, el){
@@ -268,6 +362,7 @@
                         $(el).removeClass("active");
                     }
                 });
+
                 let hmn = $(this).children('a').data('heatmapname');
                 $(`#Heatmapcards .heatmapcard[data-heatmap="${hmn}"]`).addClass("active");
             }
@@ -297,6 +392,7 @@
         });
         let config = { attributes: true, childList: true, characterData: true };
         observer.observe(reportrangedate, config);
+        
     });
     
     $(function() {
@@ -642,6 +738,7 @@
                     });
                 }
             });
+            getHeatMaps();
         }
         
         $('#reportrange').daterangepicker({

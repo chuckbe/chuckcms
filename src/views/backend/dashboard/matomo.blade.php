@@ -82,7 +82,7 @@
 
     <div class="matomo-items" data-item='sessionrecordings'>
       <h3 class="lead">Session recording</h3>
-      <table id="sessionrecordings" class="table table-striped table-bordered nowrap w-100">
+      <table id="sessionrecordings" data-paging="true" class="table table-bordered table-hover footable">
         <thead>
             <tr>
                 <th>ENTRY URL → EXIT URL</th>

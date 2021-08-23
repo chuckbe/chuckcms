@@ -257,6 +257,7 @@ Route::group(['middleware' => ['web']], function() {
             Route::post('/dashboard/matomo/api/livecounter', 'Chuckbe\Chuckcms\Controllers\MatomoController@getLiveCounter')->name('dashboard.apilivecounter');
             Route::post('/dashboard/matomo/api/overview', 'Chuckbe\Chuckcms\Controllers\MatomoController@getVisitsData')->name('dashboard.apioverview');
             Route::post('/dashboard/matomo/api/sessionrecordings', 'Chuckbe\Chuckcms\Controllers\MatomoController@getSessionRecordings')->name('dashboard.apiSessionRecordings');
+            Route::post('/dashboard/matomo/api/recordedsessions', 'Chuckbe\Chuckcms\Controllers\MatomoController@getRecordedSession')->name('dashboard.apiRecordedSessions');
             Route::get('/reportingApi', 'Chuckbe\Chuckcms\Controllers\MatomoController@reportingApi');
             
             
