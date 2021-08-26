@@ -2,6 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Eloquent;
 
 /**
@@ -12,6 +13,8 @@ use Eloquent;
  */
 class Repeater extends Eloquent
 {
+    use SoftDeletes;
+    
     /**
      * The attributes that are mass assignable.
      *
