@@ -193,13 +193,18 @@ class MatomoController extends BaseController
             ->getResponse();  
         
         
-        $recordedSessions = $query_factory->getQuery('HeatmapSessionRecording.getRecordedSessions')
-        ->setParameter('idSiteHsr', get_object_vars($sessionRecordings[0])['idsitehsr'])
-        ->setParameter('date', $date)
-        ->setParameter('period', $period)
-        ->setParameter('filter_limit', -1)
-        ->execute()
-        ->getResponse();
+        if (!empty($sessionRecordings)) {
+            $recordedSessions = $query_factory->getQuery('HeatmapSessionRecording.getRecordedSessions')
+            ->setParameter('idSiteHsr', get_object_vars($sessionRecordings[0])['idsitehsr'])
+            ->setParameter('date', $date)
+            ->setParameter('period', $period)
+            ->setParameter('filter_limit', -1)
+            ->execute()
+            ->getResponse();
+        }else{
+            $recordedSessions = [];
+        }
+        
 
         
         return response()->json([
@@ -207,7 +212,7 @@ class MatomoController extends BaseController
             'matomoUrl' => $matomoUrl,
             'sessionRecordings' => $sessionRecordings,
             'recordedSessions'=> $recordedSessions,
-            'sitehrs' => get_object_vars($sessionRecordings[0])['idsitehsr']
+            'sitehrs' => empty($sessionRecordings) ? null :get_object_vars($sessionRecordings[0])['idsitehsr']
         ]);
 
     }

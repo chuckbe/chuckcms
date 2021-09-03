@@ -200,7 +200,7 @@
                 y2: moment(dates[0]).format('YYYY'),
             }
         }
-        
+
         $.ajax({
             url: "/dashboard/matomo/api/sessionrecordings",
             type: "post",
@@ -251,7 +251,6 @@
                                 </td>
                                 <td title="${el.config_os}"><img width="16" src="${response.matomoUrl}/plugins/Morpheus/icons/dist/os/${el.config_os}.png"></td>
                                 <td title="${el.config_browser_name}"><img width="16" src="${response.matomoUrl}/plugins/Morpheus/icons/dist/browsers/${el.config_browser_name}.png"></td>
-
                             </tr>
                         `);
                     })
@@ -268,6 +267,7 @@
                     }
                 });
                 $(document).on('click', '#sessionrecordings tbody tr', function(){
+                    let row = $(this);
                     if($(this).data('expanded')){
                         $('#sessionrecordings tbody tr').not(this).each(function(index, el){
                             $(el).find('.icon-btn.expanded').removeClass('expanded')
@@ -286,6 +286,23 @@
                                 },
                                 success:function(response){
                                     if(response.success == 'success'){
+                                        $(row).append(`
+                                            <tr>
+                                                <table id="${$(this).data('sitehr')}" data-paging="true" class="table table-bordered table-hover footable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>URL</th>
+                                                            <th>TIME</th>
+                                                            <th>TIME ON PAGE</th>
+                                                            <th>RESOLUTION</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </tr>
+                                        `)
+
                                         console.log(response.recordedSession)
                                     }
                                 },
