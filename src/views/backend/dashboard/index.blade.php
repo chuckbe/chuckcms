@@ -52,6 +52,7 @@
 <div class="container p3 min-height">
   @if(ChuckSite::getSetting('integrations.matomo-site-id') !== null && ChuckSite::getSetting('integrations.matomo-auth-key') !== null)
     @include('chuckcms::backend.dashboard.matomo')
+    <div id="map"></div>
   @else
     <div class="row">
       <div class="col-sm-12">
@@ -530,10 +531,9 @@
 <link rel="stylesheet" href="https://ga-dev-tools.appspot.com/public/css/chartjs-visualizations.css">
 
 
-{{-- <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script> --}}
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/moment.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.core.min.js"></script>
+
 @endsection

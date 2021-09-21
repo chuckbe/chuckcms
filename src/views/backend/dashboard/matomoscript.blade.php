@@ -164,9 +164,71 @@
             }
         });
     }
+    function getReferrers(){
+        let val = $('#reportrange span').text();
+        let convertedRange = {};
+        if(val=="Today"){
+            convertedRange = {
+                range: val,
+                d1: moment().format('DD'),
+                m1: moment().format('MM'),
+                y1: moment().format('YYYY')
+            }
+        }else if(val == "Yesterday"){
+            convertedRange = {
+                range: val,
+                d1: moment().format('DD'),
+                m1: moment().format('MM'),
+                y1: moment().format('YYYY'),
+                d2: moment().subtract(1, 'days').format('DD'),
+                m2: moment().subtract(1, 'days').format('MM'),
+                y2: moment().subtract(1, 'days').format('YYYY'),
+            }
+        }else{
+            let dates = val.split("-");
+            convertedRange = {
+                range: val,
+                d1: moment(dates[1]).format('DD'),
+                m1: moment(dates[1]).format('MM'),
+                y1: moment(dates[1]).format('YYYY'),
+                d2: moment(dates[0]).format('DD'),
+                m2: moment(dates[0]).format('MM'),
+                y2: moment(dates[0]).format('YYYY'),
+            }
+        }
+        $.ajax({
+            url: "/dashboard/matomo/api/overview/referrers",
+            type: "post",
+            data: {
+                value : convertedRange,
+                _token: _token
+            },
+            success:function(response){
+                if(response.success == 'success'){
+                    console.log(response.data);
+                    $('#referrers .referrerslist').empty();
+                    $.each(response.data ,  function(k, v){
+                        $('#referrers .referrerslist').append(`<li class="py-2">
+                            <div>
+                                <img src="${response.matomoUrl}/${v.logo}" style="max-width: 15px">
+                                <span>${v.label} :</span>
+                                <span>${v.nb_uniq_visitors}</span>
+                            </div>
+                            
+                        </li>`)
+                    })
+                    
+                }
+            },
+            complete: function(){
+                
+            }
+        });
+    }
     function getOverview(){
         liveCounter();
         visitData();
+        getReferrers();
     }
     function getSessionRecordings(){
         let val = $('#reportrange span').text();

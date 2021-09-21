@@ -29,7 +29,7 @@
                 <li class="active"><a class="text-dark" href="#" data-link="visitor Log">Visitor Log</a></li>
               </ul>
             </li>
-            <li class="nav-item sidebar-dropdown-menu">
+            {{-- <li class="nav-item sidebar-dropdown-menu">
               <a class="nav-link text-dark font-weight-bold active" href="#" data-category="heatmaps">
                 <span class="menu-icon icon-drop"></span> Heatmaps
               </a>
@@ -40,7 +40,7 @@
                 <span class="menu-icon icon-play"></span> Session Recordings
               </a>
               <ul class="sidebar-sub-menu p-0 m-0"></ul>
-            </li>
+            </li> --}}
           </ul>
         </div>
       </nav>
@@ -50,21 +50,38 @@
     <div class="matomo-items" data-item='overview'>
       <h3 class="lead">Overview</h3>
       <div id="visitoroverviewcards" class="m-0 p-0 row">
-        <div class="card shadow my-3 p-3 col-3">
-          <div id="liveVisitors">
-            <h3 class="lead font-weight-bold  text-center">Real Time Visitor Count</h3>
-            <div class="simple-realtime-visitor-counter" title="0 visitors">
-                <span>0</span>
+        
+        <div class="col-12 col-lg-3">
+          <div class="card shadow my-3 p-3">
+            <div id="liveVisitors">
+              <h3 class="lead font-weight-bold  text-center">Real Time Visitor Count</h3>
+              <div class="simple-realtime-visitor-counter" title="0 visitors">
+                  <span>0</span>
+              </div>
+              <div class="simple-realtime-elaboration">
+                <span><strong>0 visits</strong> and <strong>0 actions</strong> in the last <strong>3 minutes</strong></span>
+              </div>
             </div>
-            <div class="simple-realtime-elaboration">
-              <span><strong>0 visits</strong> and <strong>0 actions</strong> in the last <strong>3 minutes</strong></span>
+          </div>
+        </div>
+        
+        <div class="col-12 col-lg-9">
+          <div class="card shadow my-3 p-3">
+            <div id="referrers">
+              <h3 class="lead font-weight-bold">Referrers</h3>
+              <ul class="referrerslist pl-1">
+
+              </ul>
             </div>
           </div>
         </div>
 
-        <div class="card shadow my-3 p-3 col-12">
-          <h3 class="lead font-weight-bold">Visits Overview</h3>
-          <div id="visitsoverview" class="mt-4 mx-0 row"></div>
+        
+        <div class="col-12 col-lg-12">
+          <div class="card shadow my-3 p-3">
+            <h3 class="lead font-weight-bold">Visits Overview</h3>
+            <div id="visitsoverview" class="mt-4 mx-0 row"></div>
+          </div>
         </div>
       </div>
     </div>

@@ -327,6 +327,62 @@ class MatomoController extends BaseController
             ]);
     }
 
+    public function getReferrers(Request $request)
+    {
+        $data = $request->all();
+        if($data["value"]["range"] !== "Today" || $data["value"]["range"] !== "Yesterday"){        
+            if(isset($data["value"]["y2"],$data["value"]["m2"],$data["value"]["d2"])){
+                $now = \Carbon\Carbon::now();
+                $startdate = \Carbon\Carbon::createFromFormat('Y-m-d', $data["value"]["y2"].'-'.$data["value"]["m2"].'-'.$data["value"]["d2"]);
+                $enddate = \Carbon\Carbon::createFromFormat('Y-m-d',$data["value"]["y1"].'-'.$data["value"]["m1"].'-'.$data["value"]["d1"]);
+                $checkforrange = $now->diffInDays($enddate);
+                $diff = $startdate->diffInDays($enddate);
+                if($checkforrange !== 0){
+                    $period = 'range';
+                    $date = $data["value"]["y2"].'-'.$data["value"]["m2"].'-'.$data["value"]["d2"].','.$data["value"]["y1"].'-'.$data["value"]["m1"].'-'.$data["value"]["d1"];                    
+                    $imgDate = $date;
+                }else{
+                    $imgDate = $data["value"]["y2"].'-'.$data["value"]["m2"].'-'.$data["value"]["d2"].','.$data["value"]["y1"].'-'.$data["value"]["m1"].'-'.$data["value"]["d1"];
+                    if($diff == 6){
+                        $period = 'week';
+                        $date = 'last7';
+                    }
+                    if($diff == 29){
+                        $period = 'month';
+                        $date = 'last30';
+                    }
+                }
+            }      
+        }
+        if($data["value"]["range"] == "Today"){
+            $date = 'today';
+            $period = 'day';
+            $imgDate = date('Y-m-d').",".date('Y-m-d', strtotime(date('Y-m-d')." +2 day"));
+        }
+        if($data["value"]["range"] == "Yesterday"){
+            $date = 'yesterday';
+            $period = 'day';
+            $imgDate = date('Y-m-d', strtotime(date('Y-m-d')." -1 day")).",".date('Y-m-d', strtotime(date('Y-m-d')." +1 day"));
+        }
+        $matomoUrl = ChuckSite::getSetting('integrations.matomo-site-url') !== null ? ChuckSite::getSetting('integrations.matomo-site-url') : config('chuckcms.analytics.matomoURL');
+        $query_factory = QueryFactory::create($matomoUrl);
+        $query_factory
+            ->set('idSite', $this->siteId)
+            ->set('token_auth', $this->authToken);
+        
+        $data = $query_factory->getQuery('Referrers.getAll')
+            ->setParameter('date', $date)
+            ->setParameter('period', $period)
+            ->execute()
+            ->getResponse();
+
+        return response()->json([
+            'success'=>'success',
+            'matomoUrl' => $matomoUrl,
+            'data'=> $data
+        ]);
+    }
+
     public function submit(Request $request)
     {
         $request->validate([
