@@ -205,7 +205,6 @@
             },
             success:function(response){
                 if(response.success == 'success'){
-                    console.log(response.data);
                     $('#referrers .referrerslist').empty();
                     $.each(response.data ,  function(k, v){
                         $('#referrers .referrerslist').append(`<li class="py-2">

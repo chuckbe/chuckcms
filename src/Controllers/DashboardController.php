@@ -2,11 +2,11 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
+use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\PageBlock;
-use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
-use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Repeater;
+use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Site;
 use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\User;

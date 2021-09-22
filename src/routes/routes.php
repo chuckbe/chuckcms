@@ -367,12 +367,12 @@ Route::group(compact('middleware', 'prefix', 'as', 'namespace'), function() {
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
-        'middleware' => [ 
-            'Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect', 
-            'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter', 
-            'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath', 
-            'web'
-            ]
+    'middleware' => [ 
+        'Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect', 
+        'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter', 
+        'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath', 
+        'web'
+        ]
     ], function() {
     Route::any('/{slug?}', 'Chuckbe\Chuckcms\Controllers\FrontEndController@index')->where('slug', '(.*)')->name('page')->fallback();
 });
