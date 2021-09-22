@@ -11,8 +11,7 @@ use Chuckbe\Chuckcms\Models\Site;
 use Chuckbe\Chuckcms\Chuck\SiteRepository;
 use Chuckbe\Chuckcms\Models\User;
 use ChuckSite;
-use VisualAppeal\Matomo;
-use Matomo\ReportingApi\QueryFactory;
+use Chuckbe\Chuckcms\Chuck\Matomo\QueryFactory;
 
 class MatomoController extends BaseController
 {

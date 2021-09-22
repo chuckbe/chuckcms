@@ -87,9 +87,6 @@ class ChuckcmsServiceProvider extends ServiceProvider
         $this->app->register(
             'Msurguy\Honeypot\HoneypotServiceProvider'
         );
-        $this->app->register(
-            'Chuckbe\Chuckcms\Providers\ChuckDashboardMatomoViewComposerServiceProvider'
-        );
 
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
         $loader->alias('ChuckSite', 'Chuckbe\Chuckcms\Facades\Site');

@@ -14,8 +14,7 @@
         "unisharp/laravel-filemanager": "^1.8",
         "mcamara/laravel-localization": "^1.3",
         "msurguy/honeypot": "^1.0",
-        "visualappeal/matomo-php-api": "^1.6"
-
+        "guzzlehttp/guzzle": "~6.0"
     },
     "authors": [{
         "name": "Karel Brijs",
@@ -23,7 +22,8 @@
     }],
     "autoload": {
         "psr-4": {
-            "Chuckbe\\Chuckcms\\": "src"
+            "Chuckbe\\Chuckcms\\": "src",
+            "Matomo\\ReportingApi\\": "matomo"
         }
     },
     "extra": {

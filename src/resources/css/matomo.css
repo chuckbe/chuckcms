@@ -22,6 +22,18 @@
 .icon-drop:before {
     content: "\e612";
 }
+.icon-play:before {
+    content: "\e038";
+}
+.icon-outlink:before {
+    content: "\f08e";
+}
+.icon-btn:not(.expanded):before {
+    content: "\f196";
+}
+.icon-btn.expanded:before {
+    content: "\f147";
+}
 .menu-items-content div.matomo-items:not(.active){
     display: none;
 }
@@ -32,6 +44,9 @@
     font-size: 13px;
     line-height: 16px;
     padding: 11px 22px 11px 45px;
+}
+.sidebar-dropdown-menu.active > a{
+    background-color: #ccc;
 }
 .sidebar-dropdown-menu .sidebar-sub-menu li:hover, .sidebar-dropdown-menu .sidebar-sub-menu li:focus, .sidebar-dropdown-menu .sidebar-sub-menu li.active{
     background-color: #eff0f1;
@@ -491,7 +506,9 @@ ol.actionList > li:not(.pageviewActions):before {
     left: -14px;
     z-index: 2;
 }
-ol.actionList > li:not(.pageviewActions):after {
+ol.actionList > li:not(.pageviewActions):after,
+ol.actionList > li:not(.download):after,
+ol.actionList > li:not(.outlink):after {
     content: " ";
     border-left: 2px solid #d2d2d2;
     position: absolute;
@@ -611,4 +628,114 @@ li.pageviewActions > ol.actionList {
 .visitor-profile-summary p strong{
     color: #212121;
     font-weight: normal !important;
+}
+.visitor-profile-visits-info {
+    max-height: 600px;
+    overflow-y: scroll;
+}
+.visitor-profile-visit-title {
+    display: block;
+    font-size: 23px;
+    padding: 13px 15px;
+    border: none;
+    color: #212121;
+    cursor: pointer;
+    background-color: #f2f2f2;
+}
+.visitor-profile-visit-title .visitor-profile-date {
+    font-weight: normal;
+    float: right;
+    font-size: 10px;
+    margin-top: 30px;
+}
+.modal-visitor-profile-info .visitor-profile-visits-info .actionList {
+    font-size: 13px;
+    line-height: 20px;
+    margin: 0;
+}
+.modal-visitor-profile-info .visitor-profile-visits-info .visitor-profile-visit-details  {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: .5rem 0;
+}
+.modal-visitor-profile-info .visitor-profile-visits-info .visitor-profile-visit-details .visitorLogReplaySession {
+    position:absolute;
+    margin-top: 4px;
+}
+.modal-visitor-profile-info .visitor-profile-visits-info .visitor-profile-visit-details .visitorDetails{
+    visibility: hidden;
+}
+.modal-visitor-profile-info .visitor-profile-visits-info .visitor-profile-visit-details:hover .visitorDetails{
+    visibility: visible;
+}
+.visitor-profile-visit-details .visitor-profile-show-actions {
+    font-size: 10px;
+}
+.visitorLogIconReplaySession {
+    display: block;
+    float: left;
+    font-size: 18px;
+    margin: 4px 10px 0 0;
+}
+.menu-items-content #visitoroverviewcards #liveVisitors {
+    text-align: center;
+}
+.simple-realtime-visitor-counter {
+    background-color: #F1F0EB;
+    border-radius: 10px;
+    display: inline-block;
+    margin: 2em 0 1em 0;
+    padding: 3em;
+}
+.menu-items-content #visitoroverviewcards #visitsoverview > div {
+    display: flex;
+}
+#sessionrecordings.table thead tr th {
+    font-size: 10px;
+}
+#sessionrecordings_wrapper .row{
+    width: 100%;
+}
+#sessionrecordings_paginate{
+    display: flex;
+    justify-content: flex-end;
+}
+#sessionrecordings_paginate .pagination .paginate_button a {
+    position: relative;
+    display: block;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-top-left-radius: .2rem;
+    border-bottom-left-radius: .2rem;
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    margin-left: -1px;
+}
+#sessionrecordings tbody{
+    font-size: 10px;
+}
+#sessionrecordings tbody tr{
+    cursor: pointer;
+}
+#sessionrecordings tbody tr .play-icons{
+    opacity: 0;
+    right: 0;
+    bottom: 0;
+}
+#sessionrecordings tbody tr:hover .play-icons{
+    opacity: 1;
+}
+#sessionrecordings tbody tr .session-play,
+#sessionrecordings tbody tr .session-visitor{
+    font-size: 20px;
+    color: #007bff;
+}
+#sessionrecordings tbody tr .play-icons .session-play:hover,
+#sessionrecordings tbody tr .play-icons .session-play:focus,
+#sessionrecordings tbody tr .play-icons .session-visitor:hover,
+#sessionrecordings tbody tr .play-icons .session-visitor:focus{
+    color: #43a047 !important;
 }

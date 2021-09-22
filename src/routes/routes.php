@@ -246,22 +246,20 @@ Route::group(['middleware' => ['web']], function() {
 
     // Dashboard Settings / Sites Routes...
         Route::group(['middleware' => ['permission:show settings']], function () {
-            Route::get('/dashboard/settings', 'Chuckbe\Chuckcms\Controllers\DashboardController@settings')->name('dashboard.settings');
-            Route::get('/dashboard/matomo', 'Chuckbe\Chuckcms\Controllers\MatomoController@index')->name('dashboard.matomo');
-            Route::post('/dashboard/matomo/changerange', 'Chuckbe\Chuckcms\Controllers\MatomoController@matomo');
-            Route::get('/dashboard/matomo/livevisit', 'Chuckbe\Chuckcms\Controllers\MatomoController@counter')->name('dashboard.livevisits');
-            Route::post('/dashboard/matomo/submitmatomo', 'Chuckbe\Chuckcms\Controllers\MatomoController@submit')->name('dashboard.matomosubmit');
             Route::post('/dashboard/matomo/api', 'Chuckbe\Chuckcms\Controllers\MatomoController@ReportingApi')->name('dashboard.api');
-            Route::post('/reportingApi/visitorsummary', 'Chuckbe\Chuckcms\Controllers\MatomoController@visitorSummary');
             Route::post('/dashboard/matomo/api/heatmaps', 'Chuckbe\Chuckcms\Controllers\MatomoController@getHeatMaps')->name('dashboard.apiheatmaps');
             Route::post('/dashboard/matomo/api/livecounter', 'Chuckbe\Chuckcms\Controllers\MatomoController@getLiveCounter')->name('dashboard.apilivecounter');
             Route::post('/dashboard/matomo/api/overview', 'Chuckbe\Chuckcms\Controllers\MatomoController@getVisitsData')->name('dashboard.apioverview');
             Route::post('/dashboard/matomo/api/overview/referrers', 'Chuckbe\Chuckcms\Controllers\MatomoController@getReferrers')->name('dashboard.apioverview.referrers');
             Route::post('/dashboard/matomo/api/sessionrecordings', 'Chuckbe\Chuckcms\Controllers\MatomoController@getSessionRecordings')->name('dashboard.apiSessionRecordings');
             Route::post('/dashboard/matomo/api/recordedsessions', 'Chuckbe\Chuckcms\Controllers\MatomoController@getRecordedSession')->name('dashboard.apiRecordedSessions');
+            Route::get('/dashboard/settings', 'Chuckbe\Chuckcms\Controllers\DashboardController@settings')->name('dashboard.settings');
+            Route::get('/dashboard/matomo', 'Chuckbe\Chuckcms\Controllers\MatomoController@index')->name('dashboard.matomo');
+            Route::post('/dashboard/matomo/changerange', 'Chuckbe\Chuckcms\Controllers\MatomoController@matomo');
+            Route::get('/dashboard/matomo/livevisit', 'Chuckbe\Chuckcms\Controllers\MatomoController@counter')->name('dashboard.livevisits');
+            Route::post('/dashboard/matomo/submitmatomo', 'Chuckbe\Chuckcms\Controllers\MatomoController@submit')->name('dashboard.matomosubmit');
+            Route::post('/reportingApi/visitorsummary', 'Chuckbe\Chuckcms\Controllers\MatomoController@visitorSummary');
             Route::get('/reportingApi', 'Chuckbe\Chuckcms\Controllers\MatomoController@reportingApi');
-            
-            
         });
 
         Route::group(['middleware' => ['permission:edit settings']], function () {
