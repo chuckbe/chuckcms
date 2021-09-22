@@ -229,6 +229,7 @@
         liveCounter();
         visitData();
         getReferrers();
+
     }
     function getSessionRecordings(){
         let val = $('#reportrange span').text();
@@ -1145,5 +1146,9 @@
              $('.modal-visitor-profile-info .modal-body .visitor-profile-overview .visitor-profile-header .visitor-profile-id span:last-of-type').remove();
              $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').empty();
         });
+    });
+    $(document).ajaxStop(function () {
+        $('.menu-items-content div.matomo-items.active').show();
+        $('.menu-items-content .loader').hide();
     });
 </script>

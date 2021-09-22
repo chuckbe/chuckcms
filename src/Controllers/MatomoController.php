@@ -120,7 +120,6 @@ class MatomoController extends BaseController
 
     public function getHeatMaps(Request $request)
     {
-        $data = $request->all();
         $matomoUrl = ChuckSite::getSetting('integrations.matomo-site-url') !== null ? ChuckSite::getSetting('integrations.matomo-site-url') : config('chuckcms.analytics.matomoURL');
         $query_factory = QueryFactory::create($matomoUrl);
         $query_factory
@@ -130,21 +129,6 @@ class MatomoController extends BaseController
         $heatMaps = $query_factory->getQuery('HeatmapSessionRecording.getHeatmaps')
         ->execute()
         ->getResponse();
-        
-        // $heatmapTypes = $query_factory->getQuery('HeatmapSessionRecording.getAvailableHeatmapTypes')
-        // ->execute()
-        // ->getResponse();
-
-        // $heatMap = $query_factory->getQuery('HeatmapSessionRecording.getRecordedHeatmap')
-        // ->setParameter('idSiteHsr', get_object_vars($heatMaps[0])['idsitehsr'])
-        // ->setParameter('heatmapType', "Scroll")
-        // ->setParameter('deviceType', 'Desktop')
-        // ->setParameter('date', 'yesterday')
-        // ->setParameter('period', 'day')
-        // ->execute()
-        // ->getResponse();
-
-
 
         return response()->json([
             'success'=>'success',
@@ -339,9 +323,9 @@ class MatomoController extends BaseController
                 if($checkforrange !== 0){
                     $period = 'range';
                     $date = $data["value"]["y2"].'-'.$data["value"]["m2"].'-'.$data["value"]["d2"].','.$data["value"]["y1"].'-'.$data["value"]["m1"].'-'.$data["value"]["d1"];                    
-                    $imgDate = $date;
+                    // $imgDate = $date;
                 }else{
-                    $imgDate = $data["value"]["y2"].'-'.$data["value"]["m2"].'-'.$data["value"]["d2"].','.$data["value"]["y1"].'-'.$data["value"]["m1"].'-'.$data["value"]["d1"];
+                    // $imgDate = $data["value"]["y2"].'-'.$data["value"]["m2"].'-'.$data["value"]["d2"].','.$data["value"]["y1"].'-'.$data["value"]["m1"].'-'.$data["value"]["d1"];
                     if($diff == 6){
                         $period = 'week';
                         $date = 'last7';
@@ -356,12 +340,12 @@ class MatomoController extends BaseController
         if($data["value"]["range"] == "Today"){
             $date = 'today';
             $period = 'day';
-            $imgDate = date('Y-m-d').",".date('Y-m-d', strtotime(date('Y-m-d')." +2 day"));
+            // $imgDate = date('Y-m-d').",".date('Y-m-d', strtotime(date('Y-m-d')." +2 day"));
         }
         if($data["value"]["range"] == "Yesterday"){
             $date = 'yesterday';
             $period = 'day';
-            $imgDate = date('Y-m-d', strtotime(date('Y-m-d')." -1 day")).",".date('Y-m-d', strtotime(date('Y-m-d')." +1 day"));
+            // $imgDate = date('Y-m-d', strtotime(date('Y-m-d')." -1 day")).",".date('Y-m-d', strtotime(date('Y-m-d')." +1 day"));
         }
         $matomoUrl = ChuckSite::getSetting('integrations.matomo-site-url') !== null ? ChuckSite::getSetting('integrations.matomo-site-url') : config('chuckcms.analytics.matomoURL');
         $query_factory = QueryFactory::create($matomoUrl);

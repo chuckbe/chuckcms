@@ -402,6 +402,25 @@
     font-size: 13px;
     text-align: left;
 }
+#referrers {
+    min-height: 230px;
+}
+#referrers .referrerslist{
+    max-height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+#referrers .referrerslist li{
+    width: 50%;
+}
+@media (max-width: 992px) {
+    #referrers .referrerslist li{
+        width: 100%;
+    }
+    .menu-items-content{
+        padding-top: 3rem;
+    }
+}
 a.visitor-log-visitor-profile-link {
     z-index: 2;
     position: absolute;
