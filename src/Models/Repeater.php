@@ -2,26 +2,26 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Eloquent;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property string $slug
  * @property string $url
  * @property string $page
- * @property array $json
+ * @property array  $json
  */
 class Repeater extends Eloquent
 {
     use SoftDeletes;
-    
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'slug', 'url', 'page', 'json'
+        'slug', 'url', 'page', 'json',
     ];
 
     protected $casts = [
@@ -31,6 +31,7 @@ class Repeater extends Eloquent
     public function getJson(string $string)
     {
         $json = $this->resolveJson($string);
+
         return !is_null($json) ? $json : null;
     }
 
@@ -52,7 +53,8 @@ class Repeater extends Eloquent
     /**
      * Dynamically retrieve attributes on the model.
      *
-     * @param  string  $key
+     * @param string $key
+     *
      * @return mixed
      */
     public function __get($key)

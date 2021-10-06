@@ -3,16 +3,11 @@
 namespace Chuckbe\Chuckcms\Chuck;
 
 use Chuckbe\Chuckcms\Models\Form;
-use Chuckbe\Chuckcms\Models\Template;
-use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\PageBlock;
-use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Repeater;
-
+use Chuckbe\Chuckcms\Models\Resource;
 use ChuckSite;
-
 use View;
-use Session;
 
 class PageBlockRepository
 {
@@ -22,7 +17,6 @@ class PageBlockRepository
     {
         $this->pageblock = $pageblock;
     }
-
 
     public function getRenderedByPageBlocks($ogpageblocks)
     {
@@ -38,47 +32,47 @@ class PageBlockRepository
                     }
                 }
             }
-            
 
             $findThis = $this->getResources($body, '[', ']');
-            
+
             // THERE ARE DYNAMICS IN THIS PAGEBLOCK, LET'S RETRIEVE IT
             if (count($findThis) > 0) {
                 //@todo LOOP OVER findThis variable and resolve order for rendering
-                
+
                 // PAGEBLOCK CONTAINS A LOOP, LET'S RETRIEVE IT
                 if (strpos($findThis[0], 'LOOP') !== false) {
-                    $repeater_slug = implode(" ", $this->getResources($body, '[LOOP=', ']'));
-                    $repeater_body = implode(" ", $this->getResources($body, '[LOOP=' . $repeater_slug . ']', '[/LOOP]'));
-                    
-                    $newbody = str_replace('[LOOP=' . $repeater_slug . ']' . $repeater_body . '[/LOOP]', $this->getRepeaterContents($repeater_slug, $repeater_body), $body);
+                    $repeater_slug = implode(' ', $this->getResources($body, '[LOOP=', ']'));
+                    $repeater_body = implode(' ', $this->getResources($body, '[LOOP='.$repeater_slug.']', '[/LOOP]'));
+
+                    $newbody = str_replace('[LOOP='.$repeater_slug.']'.$repeater_body.'[/LOOP]', $this->getRepeaterContents($repeater_slug, $repeater_body), $body);
 
                 // THERE IS NO LOOP, CONTINUE
-                }elseif (strpos($findThis[0], 'FORM') !== false) {// PAGEBLOCK CONTAINS A FORM, LET'S RETRIEVE IT
-                    $form_slug = implode(" ", $this->getResources($body, '[FORM=', ']'));
-                    
+                } elseif (strpos($findThis[0], 'FORM') !== false) {// PAGEBLOCK CONTAINS A FORM, LET'S RETRIEVE IT
+                    $form_slug = implode(' ', $this->getResources($body, '[FORM=', ']'));
+
                     $newbody = $this->getFormHtml($form_slug, $body);
                 } else {// THERE IS NO FORM, SO JUST RETRIEVE THE DYNAMIC CONTENT
-                    $newbody = $this->getResourceContent($findThis, $pageblock->id, $body); //Maybe write a function in the model?    
+                    $newbody = $this->getResourceContent($findThis, $pageblock->id, $body); //Maybe write a function in the model?
                 }
             } else {
                 $newbody = $body;
             }
-            $pageblocks[] = array(
-                'id' => $pageblock->id,
+            $pageblocks[] = [
+                'id'      => $pageblock->id,
                 'page_id' => $pageblock->page_id,
-                'name' => $pageblock->name,
-                'slug' => $pageblock->slug,
-                'body' => $newbody,
-                'raw' => $pageblock->body,
-                'order' => $pageblock->order
-                );
+                'name'    => $pageblock->name,
+                'slug'    => $pageblock->slug,
+                'body'    => $newbody,
+                'raw'     => $pageblock->body,
+                'order'   => $pageblock->order,
+            ];
         }
+
         return $pageblocks;
     }
 
     public function getRenderedByPageBlock($pageblock)
-    {   
+    {
         $body = $pageblock->body;
         $findUrlTags = $this->getResources($body, '[%', '%]');
         $url = env('APP_URL', ChuckSite::getSetting('domain'));
@@ -94,35 +88,35 @@ class PageBlockRepository
         // THERE ARE DYNAMICS IN THIS PAGEBLOCK, LET'S RETRIEVE IT
         if (count($findThis) > 0) {
             //@todo LOOP OVER findThis variable and resolve order for rendering
-            
+
             // PAGEBLOCK CONTAINS A LOOP, LET'S RETRIEVE IT
             if (strpos($findThis[0], 'LOOP') !== false) {
-                $repeater_slug = implode(" ", $this->getResources($body, '[LOOP=', ']'));
-                $repeater_body = implode(" ", $this->getResources($body, '[LOOP=' . $repeater_slug . ']', '[/LOOP]'));
-                
-                $newbody = str_replace('[LOOP=' . $repeater_slug . ']' . $repeater_body . '[/LOOP]', $this->getRepeaterContents($repeater_slug, $repeater_body), $body);
+                $repeater_slug = implode(' ', $this->getResources($body, '[LOOP=', ']'));
+                $repeater_body = implode(' ', $this->getResources($body, '[LOOP='.$repeater_slug.']', '[/LOOP]'));
+
+                $newbody = str_replace('[LOOP='.$repeater_slug.']'.$repeater_body.'[/LOOP]', $this->getRepeaterContents($repeater_slug, $repeater_body), $body);
 
             // THERE IS NO LOOP, CONTINUE
-            }elseif (strpos($findThis[0], 'FORM') !== false) {// PAGEBLOCK CONTAINS A FORM, LET'S RETRIEVE IT
-                $form_slug = implode(" ", $this->getResources($body, '[FORM=', ']'));
-                
+            } elseif (strpos($findThis[0], 'FORM') !== false) {// PAGEBLOCK CONTAINS A FORM, LET'S RETRIEVE IT
+                $form_slug = implode(' ', $this->getResources($body, '[FORM=', ']'));
+
                 $newbody = $this->getFormHtml($form_slug, $body);
             } else {// THERE IS NO FORM, SO JUST RETRIEVE THE DYNAMIC CONTENT
-                $newbody = $this->getResourceContent($findThis, $pageblock->id, $body); //Maybe write a function in the model?    
+                $newbody = $this->getResourceContent($findThis, $pageblock->id, $body); //Maybe write a function in the model?
             }
         } else {
             $newbody = $body;
         }
-        $new_pageblock = array(
-            'id' => $pageblock->id,
+        $new_pageblock = [
+            'id'      => $pageblock->id,
             'page_id' => $pageblock->page_id,
-            'name' => $pageblock->name,
-            'slug' => $pageblock->slug,
-            'body' => $newbody,
-            'raw' => $pageblock->body,
-            'lang' => $pageblock->lang
-        );
-        
+            'name'    => $pageblock->name,
+            'slug'    => $pageblock->slug,
+            'body'    => $newbody,
+            'raw'     => $pageblock->body,
+            'lang'    => $pageblock->lang,
+        ];
+
         return $new_pageblock;
     }
 
@@ -130,23 +124,24 @@ class PageBlockRepository
     {
         $pageblock->body = $html;
         $pageblock->update();
+
         return $this->getRenderedByPageBlock($pageblock);
     }
 
-    public function getResources($str, $startDelimiter, $endDelimiter) 
+    public function getResources($str, $startDelimiter, $endDelimiter)
     {
-        $contents = array();
+        $contents = [];
         $startDelimiterLength = strlen($startDelimiter);
         $endDelimiterLength = strlen($endDelimiter);
         $startFrom = 0;
         while (false !== ($contentStart = strpos($str, $startDelimiter, $startFrom))) {
-        $contentStart += $startDelimiterLength;
-        $contentEnd = strpos($str, $endDelimiter, $contentStart);
-        if (false === $contentEnd) {
-            break;
-        }
-        $contents[] = substr($str, $contentStart, $contentEnd - $contentStart);
-        $startFrom = $contentEnd + $endDelimiterLength;
+            $contentStart += $startDelimiterLength;
+            $contentEnd = strpos($str, $endDelimiter, $contentStart);
+            if (false === $contentEnd) {
+                break;
+            }
+            $contents[] = substr($str, $contentStart, $contentEnd - $contentStart);
+            $startFrom = $contentEnd + $endDelimiterLength;
         }
 
         return $contents;
@@ -157,23 +152,24 @@ class PageBlockRepository
         $body = $page_block_body;
         foreach ($resources as $resource) {
             $res_arr = explode('+', $resource);
-            $res_slug = (string)$res_arr[0];
-            $res_json = (string)$res_arr[1];
+            $res_slug = (string) $res_arr[0];
+            $res_json = (string) $res_arr[1];
             $res_object = Resource::where('slug', $res_slug)->first();
             $json = $res_object->json[app()->getLocale()];
             $match = $json[$res_json];
-            $body = str_replace('[' . $res_slug . '+' . $res_json . ']', $match, $body);
+            $body = str_replace('['.$res_slug.'+'.$res_json.']', $match, $body);
         }
+
         return $body;
     }
 
     public function getFormHtml($form_slug, $page_block_body)
     {
-        $slug = $form_slug;        
+        $slug = $form_slug;
         $form = Form::where('slug', $slug)->first();
         $render = View::make('chuckcms::backend.forms.render', ['form' => $form])->render();
-        $html = str_replace('[FORM=' . $slug . ']', $render, $page_block_body);
-        
+        $html = str_replace('[FORM='.$slug.']', $render, $page_block_body);
+
         return $html;
     }
 
@@ -183,12 +179,12 @@ class PageBlockRepository
         if (strpos($repeater_slug, ' LIMIT=') !== false) {
             $explode = explode(' LIMIT=', $repeater_slug);
             $slug = $explode[0];
-            $limit = (int)$explode[1];
+            $limit = (int) $explode[1];
             $contents = Repeater::where('slug', $slug)->take($limit)->get();
         } else {
             $contents = Repeater::where('slug', $slug)->get();
         }
-        $resources = $this->getResources($page_block_body, '[' . $slug . '+', ']');
+        $resources = $this->getResources($page_block_body, '['.$slug.'+', ']');
         $new_body = [];
         $i = 0;
         foreach ($contents as $content) {
@@ -196,12 +192,13 @@ class PageBlockRepository
             foreach ($resources as $resource) {
                 $json = $content->json;
                 $match = $json[$resource];
-                $body = str_replace('[' . $slug . '+' . $resource . ']', $match, $body);
+                $body = str_replace('['.$slug.'+'.$resource.']', $match, $body);
             }
             $new_body[] = $body;
             $i++;
         }
-        $str_body = implode(" ", $new_body);
+        $str_body = implode(' ', $new_body);
+
         return $str_body;
     }
 
@@ -216,6 +213,7 @@ class PageBlockRepository
 
         $pageblock->update();
         $target_pb->update();
+
         return $this->getRenderedByPageBlock($pageblock);
     }
 
@@ -230,6 +228,7 @@ class PageBlockRepository
 
         $pageblock->update();
         $target_pb->update();
+
         return $this->getRenderedByPageBlock($pageblock);
     }
 

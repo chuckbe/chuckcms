@@ -3,28 +3,27 @@
 namespace Chuckbe\Chuckcms\Controllers;
 
 use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
-
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\PageBlock;
-use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Redirect;
 use Chuckbe\Chuckcms\Models\Repeater;
+use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Site;
 use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\User;
-
-use Spatie\Permission\Models\Role;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\URL;
+use Spatie\Permission\Models\Role;
 
 class PageController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     private $page;
     private $pageblock;
@@ -35,21 +34,23 @@ class PageController extends BaseController
     private $site;
     private $template;
     private $user;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
     public function __construct(
-        Page $page, 
-        PageBlock $pageblock, 
-        PageBlockRepository $pageBlockRepository, 
-        Redirect $redirect, 
+        Page $page,
+        PageBlock $pageblock,
+        PageBlockRepository $pageBlockRepository,
+        Redirect $redirect,
         Resource $resource,
-        Repeater $repeater, 
-        Site $site, 
+        Repeater $repeater,
+        Site $site,
         Template $template,
-        User $user)
+        User $user
+    )
     {
         $this->page = $page;
         $this->pageblock = $pageblock;
@@ -71,7 +72,7 @@ class PageController extends BaseController
     public function index()
     {
         $pages = $this->page->ordered()->get();
-        
+
         return view('chuckcms::backend.pages.index', compact('pages'));
     }
 
@@ -86,6 +87,7 @@ class PageController extends BaseController
         $page = $this->page->getByIdWithBlocks($page_id);
         $pageViews = $this->template->getPageViews();
         $roles = Role::all();
+
         return view('chuckcms::backend.pages.edit', compact('templates', 'page', 'pageViews', 'roles'));
     }
 
@@ -98,6 +100,7 @@ class PageController extends BaseController
     {
         $templates = $this->template->where('active', 1)->get();
         $pageViews = $this->template->getPageViews();
+
         return view('chuckcms::backend.pages.create', compact('templates', 'pageViews'));
     }
 
@@ -111,11 +114,13 @@ class PageController extends BaseController
         $this->validate(request(), [//@todo create custom Request class for page validation
             'page_title' => 'max:185',
         ]);
-        if($request['create']){
+        if ($request['create']) {
             $this->page->create($request);
-        } if($request['update']){
+        }
+        if ($request['update']) {
             $this->page->updatePage($request);
         }
+
         return redirect()->route('dashboard.pages');
     }
 
@@ -129,8 +134,9 @@ class PageController extends BaseController
         $this->validate(request(), [//@todo create custom Request class for page validation
             'page_id' => 'required',
         ]);
-        
+
         $status = $this->page->deleteById($request->get('page_id'));
+
         return $status;
     }
 
@@ -144,6 +150,7 @@ class PageController extends BaseController
         $page = $this->page->getById($page_id);
         $page->moveOrderUp();
         $page->save();
+
         return redirect()->route('dashboard.pages');
     }
 
@@ -157,6 +164,7 @@ class PageController extends BaseController
         $page = $this->page->getById($page_id);
         $page->moveToStart();
         $page->save();
+
         return redirect()->route('dashboard.pages');
     }
 
@@ -170,6 +178,7 @@ class PageController extends BaseController
         $page = $this->page->getById($page_id);
         $page->moveOrderDown();
         $page->save();
+
         return redirect()->route('dashboard.pages');
     }
 
@@ -183,6 +192,7 @@ class PageController extends BaseController
         $page = $this->page->getById($page_id);
         $page->moveToEnd();
         $page->save();
+
         return redirect()->route('dashboard.pages');
     }
 
@@ -193,7 +203,7 @@ class PageController extends BaseController
      */
     public function builderIndex(Request $request, $page_id)
     {
-        if($request->has('lang')) {
+        if ($request->has('lang')) {
             app()->setLocale($request->get('lang'));
         } else {
             return redirect()->to(URL::current().'?lang='.app()->getLocale());
@@ -202,57 +212,55 @@ class PageController extends BaseController
         $template = $this->template->where('id', $page->template_id)->first();
         $pageblocks = $this->pageBlockRepository->getRenderedByPageBlocks($this->pageblock->getAllByPageId($page->id));
 
-        $block_dir = array_slice(scandir('chuckbe/' . $template->slug . '/blocks'), 2);        
-        $blocks = $this->dirToArray($template->path . '/blocks');
-        
+        $block_dir = array_slice(scandir('chuckbe/'.$template->slug.'/blocks'), 2);
+        $blocks = $this->dirToArray($template->path.'/blocks');
+
         return view('chuckcms::backend.pages.pagebuilder.index', compact('template', 'page', 'pageblocks', 'blocks'));
     }
 
-    public function dirToArray($dir) { 
-   
-        $result = array(); 
+    public function dirToArray($dir)
+    {
+        $result = [];
 
-        $cdir = scandir($dir); 
-        foreach ($cdir as $key => $value) 
-        { 
-            if (!in_array($value, array(".", ".."))) { 
-                if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) { 
-                    $result[$value] = $this->dirToArray($dir . DIRECTORY_SEPARATOR . $value); 
-                } 
-                else { 
+        $cdir = scandir($dir);
+        foreach ($cdir as $key => $value) {
+            if (!in_array($value, ['.', '..'])) {
+                if (is_dir($dir.DIRECTORY_SEPARATOR.$value)) {
+                    $result[$value] = $this->dirToArray($dir.DIRECTORY_SEPARATOR.$value);
+                } else {
                     if ($value !== '.DS_Store' && (strpos($value, '.html') !== false)) {
                         $blockKey = str_replace('.html', '', $value);
                         $blockName = str_replace('-', ' ', $blockKey);
-                        if (file_exists($dir . DIRECTORY_SEPARATOR . $blockKey . '.jpg')) {
-                            $blockImage = $dir . DIRECTORY_SEPARATOR . $blockKey . '.jpg';
-                        } elseif (file_exists($dir . DIRECTORY_SEPARATOR . $blockKey . '.jpeg')) {
-                            $blockImage = $dir . DIRECTORY_SEPARATOR . $blockKey . '.jpeg';
-                        } elseif (file_exists($dir . DIRECTORY_SEPARATOR . $blockKey . '.png')) {
-                            $blockImage = $dir . DIRECTORY_SEPARATOR . $blockKey . '.png';
+                        if (file_exists($dir.DIRECTORY_SEPARATOR.$blockKey.'.jpg')) {
+                            $blockImage = $dir.DIRECTORY_SEPARATOR.$blockKey.'.jpg';
+                        } elseif (file_exists($dir.DIRECTORY_SEPARATOR.$blockKey.'.jpeg')) {
+                            $blockImage = $dir.DIRECTORY_SEPARATOR.$blockKey.'.jpeg';
+                        } elseif (file_exists($dir.DIRECTORY_SEPARATOR.$blockKey.'.png')) {
+                            $blockImage = $dir.DIRECTORY_SEPARATOR.$blockKey.'.png';
                         } else {
                             $blockImage = 'https://ui-avatars.com/api/?length=5&size=150&name=BLOCK&background=0D8ABC&color=fff&font-size=0.2';
                         }
-                        $result[$blockKey] = array(
-                            'name' => $blockName,
-                            'location' => $dir . DIRECTORY_SEPARATOR . $value,
-                            'img' => $blockImage
-                        );
+                        $result[$blockKey] = [
+                            'name'     => $blockName,
+                            'location' => $dir.DIRECTORY_SEPARATOR.$value,
+                            'img'      => $blockImage,
+                        ];
                     }
-                } 
-            } 
-        } 
+                }
+            }
+        }
 
-        return $result; 
+        return $result;
     }
 
     /**
-     * Return the raw page - ready for the builder
+     * Return the raw page - ready for the builder.
      *
      * @return \Illuminate\View\View
      */
     public function builderRaw(Request $request, $page_id)
     {
-        if($request->has('lang')) {
+        if ($request->has('lang')) {
             app()->setLocale($request->get('lang'));
         } else {
             return redirect()->to(URL::current().'?lang='.app()->getLocale());

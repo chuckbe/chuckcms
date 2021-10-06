@@ -6,7 +6,7 @@ use Eloquent;
 
 /**
  * @property string $slug
- * @property array $entry
+ * @property array  $entry
  */
 class FormEntry extends Eloquent
 {
@@ -16,7 +16,7 @@ class FormEntry extends Eloquent
      * @var array
      */
     protected $fillable = [
-        'slug', 'entry'
+        'slug', 'entry',
     ];
 
     protected $casts = [

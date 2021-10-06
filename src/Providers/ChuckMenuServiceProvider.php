@@ -23,8 +23,8 @@ class ChuckMenuServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('ChuckMenu', function() {
-            return new \Chuckbe\Chuckcms\Chuck\Accessors\Menu;
+        $this->app->bind('ChuckMenu', function () {
+            return new \Chuckbe\Chuckcms\Chuck\Accessors\Menu();
         });
     }
 }

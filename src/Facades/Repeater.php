@@ -1,10 +1,14 @@
-<?php 
+<?php
+
 namespace Chuckbe\Chuckcms\Facades;
+
 use Illuminate\Support\Facades\Facade;
 
-class Repeater extends Facade {
+class Repeater extends Facade
+{
     /**
-     * Return facade accessor
+     * Return facade accessor.
+     *
      * @return string
      */
     protected static function getFacadeAccessor()

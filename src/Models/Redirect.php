@@ -7,7 +7,7 @@ use Eloquent;
 /**
  * @property string $slug
  * @property string $to
- * @property int $type
+ * @property int    $type
  */
 class Redirect extends Eloquent
 {
@@ -17,6 +17,6 @@ class Redirect extends Eloquent
      * @var array
      */
     protected $fillable = [
-        'slug', 'to', 'type'
+        'slug', 'to', 'type',
     ];
 }

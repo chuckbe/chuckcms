@@ -2,8 +2,6 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use ChuckSite;
-
 use Eloquent;
 
 class Module extends Eloquent
@@ -14,7 +12,7 @@ class Module extends Eloquent
      * @var array
      */
     protected $fillable = [
-        'name', 'slug', 'hintpath', 'path', 'type', 'version', 'author', 'json'
+        'name', 'slug', 'hintpath', 'path', 'type', 'version', 'author', 'json',
     ];
 
     /**
@@ -28,16 +26,16 @@ class Module extends Eloquent
 
     public function getSettingsAttribute()
     {
-        if(array_key_exists('settings', $this->json)) {
+        if (array_key_exists('settings', $this->json)) {
             return $this->json['settings'];
         }
-        
-        if(!array_key_exists('admin', $this->json)) {
-            return array();
+
+        if (!array_key_exists('admin', $this->json)) {
+            return [];
         }
 
-        if(!array_key_exists('settings', $this->json['admin'])) {
-            return array();
+        if (!array_key_exists('settings', $this->json['admin'])) {
+            return [];
         }
 
         return $this->json['admin']['settings'];
@@ -46,6 +44,7 @@ class Module extends Eloquent
     public function getSetting(string $string)
     {
         $setting = $this->resolveSetting($string);
+
         return !is_null($setting) ? $setting : null;
     }
 

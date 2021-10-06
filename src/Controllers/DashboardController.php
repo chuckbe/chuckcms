@@ -2,24 +2,24 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
+use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\PageBlock;
-use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
-use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Repeater;
+use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Site;
 use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\User;
-
-use Illuminate\Http\Request;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
 
 class DashboardController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     protected $template;
     protected $site;
@@ -54,7 +54,7 @@ class DashboardController extends BaseController
      * @return \Illuminate\View\View
      */
     public function index()
-    { 
+    {
         return view('chuckcms::backend.dashboard.index');
     }
 
@@ -67,7 +67,7 @@ class DashboardController extends BaseController
     {
         $pages = $this->page->get();
         $site = $this->site->first(); //change method to get active site
-        
+
         return view('chuckcms::backend.settings.index', compact('pages', 'site'));
     }
 }

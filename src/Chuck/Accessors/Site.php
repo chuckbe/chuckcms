@@ -2,11 +2,9 @@
 
 namespace Chuckbe\Chuckcms\Chuck\Accessors;
 
-use Chuckbe\Chuckcms\Chuck\SiteRepository;
 use Chuckbe\Chuckcms\Chuck\ModuleRepository;
+use Chuckbe\Chuckcms\Chuck\SiteRepository;
 use Chuckbe\Chuckcms\Models\Site as SiteModel;
-use Exception;
-use Illuminate\Support\Facades\Schema;
 
 class Site
 {
@@ -16,7 +14,7 @@ class Site
     private $siteSettings;
     private $siteSupportedLocales;
 
-    public function __construct(SiteModel $site, SiteRepository $siteRepository, ModuleRepository $moduleRepository) 
+    public function __construct(SiteModel $site, SiteRepository $siteRepository, ModuleRepository $moduleRepository)
     {
         $this->currentSite = $this->getCurrentSite($site);
         $this->siteSettings = $this->getSiteSettings($site);
@@ -33,6 +31,7 @@ class Site
     private function getSiteSettings(SiteModel $site)
     {
         $settings = $site->settings;
+
         return $settings;
     }
 
@@ -45,7 +44,7 @@ class Site
     {
         $settings = $site->settings;
         $locales = [];
-        if (is_array($settings)) { 
+        if (is_array($settings)) {
             foreach (config('lang.allLocales') as $langKey => $langValue) {
                 if (in_array($langKey, explode(',', $settings['lang']))) {
                     $locales[$langKey] = $langValue;
@@ -63,24 +62,28 @@ class Site
     public function getSettings()
     {
         $settings = $this->siteSettings;
+
         return $settings ? $settings : null;
     }
 
     public function getSetting($var)
     {
         $setting = $this->resolveSetting($var, $this->siteSettings);
+
         return !is_null($setting) ? $setting : null;
     }
 
     public function getSite($var)
     {
         $setting = $this->resolveSiteAttribute($var, $this->currentSite);
+
         return !is_null($setting) ? $setting : null;
     }
 
     public function getSupportedLocales()
     {
         $supportedLocales = $this->siteSupportedLocales;
+
         return $supportedLocales ? $supportedLocales : null;
     }
 

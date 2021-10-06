@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddUrlAndPageFieldToRepeatersTable extends Migration
 {
@@ -13,11 +13,10 @@ class AddUrlAndPageFieldToRepeatersTable extends Migration
      */
     public function up()
     {
-        Schema::table('repeaters', function(Blueprint $table) {
+        Schema::table('repeaters', function (Blueprint $table) {
             $table->string('url')->nullable()->default(null)->after('slug');
             $table->string('page')->nullable()->default('default')->after('url');
         });
-    
     }
 
     /**
@@ -27,7 +26,7 @@ class AddUrlAndPageFieldToRepeatersTable extends Migration
      */
     public function down()
     {
-        Schema::table('repeaters', function(Blueprint $table) {
+        Schema::table('repeaters', function (Blueprint $table) {
             $table->dropColumn('url');
             $table->dropColumn('page');
         });

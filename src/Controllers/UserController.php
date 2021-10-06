@@ -6,23 +6,24 @@ use Chuckbe\Chuckcms\Chuck\UserRepository;
 use Chuckbe\Chuckcms\Mail\UserActivationMail;
 use Chuckbe\Chuckcms\Models\User;
 use ChuckSite;
-
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-
-use Mail;
-use Illuminate\Http\Request;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
+use Mail;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UserController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     private $user;
     private $userRepository;
+
     /**
      * Create a new controller instance.
      *
@@ -43,24 +44,24 @@ class UserController extends BaseController
     {
         $users = $this->user->get();
         $roles = Role::all();
-        
+
         return view('chuckcms::backend.users.index', compact('users', 'roles'));
     }
 
     public function invite(Request $request)
     {
         $this->validate(request(), [//@todo create custom Request class for page validation
-            'name' => 'max:185|required',
+            'name'  => 'max:185|required',
             'email' => 'email|required|unique:users',
-            'role' => 'required|in:user,moderator,administrator,super-admin'
+            'role'  => 'required|in:user,moderator,administrator,super-admin',
         ]);
 
         // create the user
         $user = $this->user->create([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'token' => $this->userRepository->createToken(),
-            'password' => bcrypt($this->userRepository->createToken())
+            'name'     => $request->get('name'),
+            'email'    => $request->get('email'),
+            'token'    => $this->userRepository->createToken(),
+            'password' => bcrypt($this->userRepository->createToken()),
         ]);
         // add role
         $user->assignRole($request->get('role'));
@@ -100,10 +101,10 @@ class UserController extends BaseController
     public function activate(Request $request)
     {
         $this->validate(request(), [//@todo create custom Request class for user password validation
-            'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
+            'password'       => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
             'password_again' => 'required|same:password',
-            '_user_token' => 'required',
-            '_user_id' => 'required'
+            '_user_token'    => 'required',
+            '_user_id'       => 'required',
         ]);
 
         $token = $request->get('_user_token');
@@ -116,8 +117,8 @@ class UserController extends BaseController
         }
 
         $this->user->where('token', $token)->where('id', $user_id)->where('active', 0)->update([
-            'active' => 1,
-            'password' => bcrypt($request->get('password'))
+            'active'   => 1,
+            'password' => bcrypt($request->get('password')),
         ]);
 
         return redirect()->route('login');
@@ -132,6 +133,7 @@ class UserController extends BaseController
     {
         $roles = Role::all();
         $permissions = Permission::all();
+
         return view('chuckcms::backend.users.edit', compact('user', 'roles', 'permissions'));
     }
 
@@ -146,7 +148,7 @@ class UserController extends BaseController
 
         $user->update([
             'active' => 0,
-            'token' => $this->userRepository->createToken()
+            'token'  => $this->userRepository->createToken(),
         ]);
 
         //send the email
@@ -171,17 +173,17 @@ class UserController extends BaseController
     public function save(Request $request)
     {
         $this->validate(request(), [//@todo create custom Request class for page validation
-            'name' => 'max:185|required',
+            'name'  => 'max:185|required',
             'email' => 'email|required',
-            'role' => 'required|in:user,moderator,administrator,super-admin'
+            'role'  => 'required|in:user,moderator,administrator,super-admin',
         ]);
 
         // update the user
         $user = $this->user->create([// TODO CHANGE TO UPDATE METHOD
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'token' => $this->userRepository->createToken(),
-            'password' => bcrypt($this->userRepository->createToken())
+            'name'     => $request->get('name'),
+            'email'    => $request->get('email'),
+            'token'    => $this->userRepository->createToken(),
+            'password' => bcrypt($this->userRepository->createToken()),
         ]);
         // add role
         $user->assignRole($request->get('role'));
@@ -215,8 +217,9 @@ class UserController extends BaseController
         $this->validate(request(), [
             'user_id' => 'required',
         ]);
-        
+
         $status = $this->user->deleteById($request->get('user_id'));
+
         return $status;
     }
 }

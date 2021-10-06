@@ -11,7 +11,7 @@ class ModuleRepository
         // updateOrCreate the module
         $find = Module::where('slug', $array['slug'])->first();
 
-        if($find == null) {
+        if ($find == null) {
             $result = Module::create($array);
         } else {
             $result = $find->update($array);
@@ -22,7 +22,7 @@ class ModuleRepository
 
     public static function get($slug = null)
     {
-        if(!is_null($slug)) {
+        if (!is_null($slug)) {
             return Module::where('slug', $slug)->firstOrFail();
         }
 
@@ -30,13 +30,12 @@ class ModuleRepository
     }
 
     /**
-     * Return the settings array of the module -> method can be phased out
+     * Return the settings array of the module -> method can be phased out.
      *
-     * @var Module $module
+     * @var Module
      **/
     public function getSettings(Module $module)
     {
         return $module->settings;
     }
-
 }

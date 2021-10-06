@@ -3,7 +3,7 @@
 return [
 
     'allLocales' => [
-    'ace'         => ['name' => 'Achinese',               'script' => 'Latn', 'native' => 'Aceh', 'regional' => ''],
+        'ace'         => ['name' => 'Achinese',               'script' => 'Latn', 'native' => 'Aceh', 'regional' => ''],
         'af'          => ['name' => 'Afrikaans',              'script' => 'Latn', 'native' => 'Afrikaans', 'regional' => 'af_ZA'],
         'agq'         => ['name' => 'Aghem',                  'script' => 'Latn', 'native' => 'Aghem', 'regional' => ''],
         'ak'          => ['name' => 'Akan',                   'script' => 'Latn', 'native' => 'Akan', 'regional' => 'ak_GH'],
@@ -283,7 +283,7 @@ return [
         'km'          => ['name' => 'Khmer',                  'script' => 'Khmr', 'native' => 'ភាសាខ្មែរ', 'regional' => 'km_KH'],
         'mn-Mong'     => ['name' => 'Mongolian (Mongolian)',  'script' => 'Mong', 'native' => 'ᠮᠣᠨᠭᠭᠣᠯ ᠬᠡᠯᠡ', 'regional' => 'mn_MN'],
         'shi-Tfng'    => ['name' => 'Tachelhit (Tifinagh)',   'script' => 'Tfng', 'native' => 'ⵜⴰⵎⴰⵣⵉⵖⵜ', 'regional' => ''],
-        'tzm'         => ['name' => 'Central Atlas Tamazight (Tifinagh)','script' => 'Tfng', 'native' => 'ⵜⴰⵎⴰⵣⵉⵖⵜ', 'regional' => ''],
+        'tzm'         => ['name' => 'Central Atlas Tamazight (Tifinagh)', 'script' => 'Tfng', 'native' => 'ⵜⴰⵎⴰⵣⵉⵖⵜ', 'regional' => ''],
         'yue'         => ['name' => 'Yue',                    'script' => 'Hant', 'native' => '廣州話', 'regional' => 'yue_HK'],
         'ja'          => ['name' => 'Japanese',               'script' => 'Jpan', 'native' => '日本語', 'regional' => 'ja_JP'],
         'zh'          => ['name' => 'Chinese (Simplified)',   'script' => 'Hans', 'native' => '简体中文', 'regional' => 'zh_CN'],
@@ -302,5 +302,5 @@ return [
     'featuredLocale' => 'nl',
 
     'useAcceptLanguageHeader' => true,
-    'hideDefaultLocaleInURL' => true,
+    'hideDefaultLocaleInURL'  => true,
 ];

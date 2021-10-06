@@ -5,7 +5,7 @@ namespace Chuckbe\Chuckcms\Models;
 use Eloquent;
 
 /**
- * @property int $id
+ * @property int    $id
  * @property string $name
  */
 class Menus extends Eloquent
@@ -18,17 +18,17 @@ class Menus extends Eloquent
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name',
     ];
 
-    public function __construct( array $attributes = [] ){
+    public function __construct(array $attributes = [])
+    {
         //parent::construct( $attributes );
-        $this->table = config('menu.table_prefix') . config('menu.table_name_menus');
+        $this->table = config('menu.table_prefix').config('menu.table_name_menus');
     }
 
     public static function byName($name)
     {
         return self::where('name', '=', $name)->first();
     }
-
 }

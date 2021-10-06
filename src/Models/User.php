@@ -2,8 +2,8 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -22,7 +22,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'active', 'token'
+        'name', 'email', 'password', 'active', 'token',
     ];
 
     /**
@@ -41,10 +41,10 @@ class User extends Authenticatable
             $roles = $user->getRoleNames();
             $permissions = $user->getDirectPermissions();
 
-            foreach($roles as $role) {
+            foreach ($roles as $role) {
                 $user->removeRole($role);
             }
-            foreach($permissions as $permission) {
+            foreach ($permissions as $permission) {
                 $user->removePermissionTo($permission);
             }
 
