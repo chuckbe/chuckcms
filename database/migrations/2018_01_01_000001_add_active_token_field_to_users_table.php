@@ -13,11 +13,17 @@ class AddActiveTokenFieldToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function(Blueprint $table) {
-            $table->string('token', 24)->unique()->after('remember_token');
-            $table->tinyInteger('active')->default(0)->after('token');
-        });
-    
+        if (!Schema::hasColumn('users', 'token')) {
+            Schema::table('users', function(Blueprint $table) {
+                $table->string('token', 24)->unique()->after('remember_token');
+            });
+        }
+
+        if (!Schema::hasColumn('users', 'active')) {
+            Schema::table('users', function(Blueprint $table) {
+                $table->tinyInteger('active')->default(0)->after('token');
+            });
+        }
     }
 
     /**
@@ -27,9 +33,16 @@ class AddActiveTokenFieldToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function(Blueprint $table) {
-            $table->dropColumn('token');
-            $table->dropColumn('active');
-        });
+        if (Schema::hasColumn('users', 'token')) {
+            Schema::table('users', function(Blueprint $table) {
+                $table->dropColumn('token');
+            });
+        }
+
+        if (Schema::hasColumn('users', 'active')) {
+            Schema::table('users', function(Blueprint $table) {
+                $table->dropColumn('active');
+            });
+        }
     }
 }
