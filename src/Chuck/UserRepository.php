@@ -3,7 +3,7 @@
 namespace Chuckbe\Chuckcms\Chuck;
 
 use Chuckbe\Chuckcms\Models\User;
-use Illuminate\Support\Facades\Str;
+use Illuminate\Support\Str;
 
 class UserRepository
 {
