@@ -3,13 +3,13 @@
 namespace Chuckbe\Chuckcms\Chuck;
 
 use Chuckbe\Chuckcms\Models\User;
-use Str;
+use Illuminate\Support\Facades\Str;
 
 class UserRepository
 {
-    protected $user; 
+    protected $user;
 
-	public function __construct(User $user)
+    public function __construct(User $user)
     {
         $this->user = $user;
     }
