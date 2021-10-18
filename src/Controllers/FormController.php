@@ -23,6 +23,7 @@ class FormController extends BaseController
     private $form;
     private $formEntry;
     private $template;
+    
     /**
      * Create a new controller instance.
      *
@@ -35,6 +36,12 @@ class FormController extends BaseController
         $this->template = $template;
     }
 
+
+    /**
+     * Show Forms.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         $forms = $this->form->get();
@@ -42,6 +49,13 @@ class FormController extends BaseController
         return view('chuckcms::backend.forms.index', compact('forms'));
     }
 
+
+    /**
+     * Create Form.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Routing\Redirector
+     */
     public function create(Request $request)
     {
         $this->validate($request, [
@@ -83,6 +97,13 @@ class FormController extends BaseController
         return redirect()->route('dashboard.forms.edit', ['slug' => $form_slug]);
     }
 
+
+    /**
+     * Edit Form.
+     * 
+     * @param string $slug
+     * @return \Illuminate\View\View
+     */
     public function edit($slug)
     {
         $form = $this->form->getBySlug($slug);
@@ -90,6 +111,8 @@ class FormController extends BaseController
         return view('chuckcms::backend.forms.edit', compact('form', 'emailTemplates'));
     }
 
+
+    
     public function save(Request $request)
     {
         $form = [];
@@ -148,6 +171,7 @@ class FormController extends BaseController
         return redirect()->route('dashboard.forms');
     }
 
+    
     public function postForm(Request $request)
     {
         $slug = $request->get('_form_slug');

@@ -31,6 +31,9 @@ class FrontEndController extends BaseController
     private $repeater;
     private $role;
     private $template;
+    
+    
+    
     /**
      * Create a new controller instance.
      *

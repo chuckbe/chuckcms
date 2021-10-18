@@ -42,23 +42,46 @@ class ContentController extends BaseController
         $this->user = $user;
     }
 
+    /**
+     * Show content-> resources 
+     * 
+     * @return \Illuminate\View\View
+    */
     public function resourceIndex()
     {
         $resources = $this->resource->get();
         return view('chuckcms::backend.content.resource.index', compact('resources'));
     }
 
+    /**
+     * Show resource create page 
+     * 
+     * @return \Illuminate\View\View
+    */
     public function resourceCreate()
     {
         return view('chuckcms::backend.content.resource.create');
     }
 
+
+    /**
+     * Show resource edit page 
+     * 
+     * @param string $slug
+     * @return \Illuminate\View\View
+    */
     public function resourceEdit($slug)
     {
         $resource = Resource::where('slug', $slug)->first();
         return view('chuckcms::backend.content.resource.edit', compact('resource'));
     }
 
+    /**
+     * Save resource
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Routing\Redirector
+    */
     public function resourceSave(Request $request)
     {
         //validate the request
@@ -84,6 +107,13 @@ class ContentController extends BaseController
         return redirect()->route('dashboard.content.resources');
     }
 
+
+    /**
+     * delete a resource
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return string
+    */
     public function resourceDelete(Request $request)
     {
         $this->validate(request(), [//@todo create custom Request class for site validation
@@ -99,6 +129,11 @@ class ContentController extends BaseController
         }
     }
 
+    /**
+     * Show content -> repeaters
+     * 
+     * @return \Illuminate\View\View
+    */
     public function repeaterIndex()
     {
         $repeaters = $this->content->where('type', 'repeater')->get();
@@ -106,12 +141,24 @@ class ContentController extends BaseController
         return view('chuckcms::backend.content.repeater.index', compact('repeaters'));
     }
 
+    /**
+     * Show repeater create page
+     * 
+     * @return \Illuminate\View\View
+    */
     public function repeaterCreate()
     {
         $pageViews = $this->template->getPageViews();
         return view('chuckcms::backend.content.repeater.create', compact('pageViews'));
     }
 
+
+    /**
+     * Show repeater edit page 
+     * 
+     * @param string $slug
+     * @return \Illuminate\View\View
+    */
     public function repeaterEdit($slug)
     {
         $pageViews = $this->template->getPageViews();
@@ -119,6 +166,13 @@ class ContentController extends BaseController
         return view('chuckcms::backend.content.repeater.edit', compact('pageViews', 'repeater'));
     }
 
+    
+    /**
+     * Show repeater edit page 
+     * 
+     * @param string $slug
+     * @return Illuminate\Support\Facades\Response;
+    */
     public function repeaterJson($slug)
     {
         $repeater = Content::where('slug', $slug)->first();
@@ -133,6 +187,12 @@ class ContentController extends BaseController
         //return view('chuckcms::backend.content.repeater.edit', compact('pageViews', 'repeater'));
     }
 
+    /**
+     * Save repeater
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Routing\Redirector
+    */
     public function repeaterSave(Request $request)
     {
         //add validation / move to repository...
@@ -175,6 +235,12 @@ class ContentController extends BaseController
         return redirect()->route('dashboard.content.repeaters');
     }
 
+    /**
+     * Import repeater
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Routing\Redirector
+    */
     public function repeaterImport(Request $request)
     {
         $this->validate(request(), [//@todo create custom Request class for page validation
@@ -226,6 +292,13 @@ class ContentController extends BaseController
         return redirect()->route('dashboard.content.repeaters')->with('notification', $notification);
     }
 
+
+    /**
+     * delete a repeater
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return string
+    */
     public function repeaterDelete(Request $request)
     {
         $this->validate(request(), [//@todo create custom Request class for site validation
@@ -242,6 +315,12 @@ class ContentController extends BaseController
         }
     }
 
+    /**
+     * Show repeater entries 
+     * 
+     * @param string $slug
+     * @return \Illuminate\View\View
+    */
     public function repeaterEntriesIndex($slug)
     {
         $content = Content::where('slug', $slug)->first();
@@ -249,12 +328,24 @@ class ContentController extends BaseController
         return view('chuckcms::backend.content.repeater.entries.index', compact('content', 'repeaters'));
     }
 
+    /**
+     * Show repeater entry create page 
+     * 
+     * @param string $slug
+     * @return \Illuminate\View\View
+    */
     public function repeaterEntriesCreate($slug)
     {
         $content = Content::where('slug', $slug)->first();
         return view('chuckcms::backend.content.repeater.entries.create', compact('content'));
     }
 
+    /**
+     * Save repeater entry
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Routing\Redirector
+    */
     public function repeaterEntriesSave(Request $request)
     {
         $slug = $request->get('content_slug');
@@ -269,6 +360,13 @@ class ContentController extends BaseController
         }
     }
 
+    /**
+     * Show repeater entry edit page 
+     * 
+     * @param string $slug
+     * @param string $id
+     * @return \Illuminate\View\View
+    */
     public function repeaterEntriesEdit($slug, $id)
     {
         $content = Content::where('slug', $slug)->first();

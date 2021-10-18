@@ -228,8 +228,9 @@ class UserController extends BaseController
 
         $user->roles()->detach();
         
-
-        $user->assignRole($roles);
+        foreach ($roles as $role) {
+            $user->assignRole($role);
+        }
 
         //redirect back
         return redirect()->back()->with('notification', 'Gebruiker bijgewerkt!');
