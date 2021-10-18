@@ -100,7 +100,9 @@ class UserController extends BaseController
     public function activate(Request $request)
     {
         $this->validate(request(), [//@todo create custom Request class for user password validation
-            'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
+            // @todo fix regex code to be able to work on php 7.3 and above (must also have backwords compatibility)
+            // 'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
+            'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d])(?=.*[!$#%]).*$/',
             'password_again' => 'required|same:password',
             '_user_token' => 'required',
             '_user_id' => 'required'
@@ -204,6 +206,36 @@ class UserController extends BaseController
         //redirect back
         return redirect()->back()->with('notification', 'Gebruiker uitgenodigd!');
     }
+
+    public function update(Request $request)
+    {
+        $this->validate(request(), [//@todo create custom Request class for page validation
+            'name' => 'max:185|required',
+            'email' => 'email|required',
+            'roles' => 'required'
+        ]);
+
+        $user_id = $request->get('user_id');
+
+        $user = $this->user->where('id', $user_id)->first();
+
+        $user->update([
+            'name' => $request->get('name'),
+            'email' => $request->get('email')
+        ]);
+
+        $roles = $request->get('roles');
+
+        $user->roles()->detach();
+        
+
+        $user->assignRole($roles);
+
+        //redirect back
+        return redirect()->back()->with('notification', 'Gebruiker bijgewerkt!');
+       
+    }
+
 
     /**
      * Delete the user.

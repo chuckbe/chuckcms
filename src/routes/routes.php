@@ -20,7 +20,9 @@ Route::group(['middleware' => ['web']], function() {
 Route::group(['middleware' => ['web']], function() {
     Route::group(['middleware' => 'auth'], function () {
     // Dashboard Routes...
-        Route::get('/dashboard', 'Chuckbe\Chuckcms\Controllers\DashboardController@index')->name('dashboard');
+        Route::group(['middleware' => ['role:super-admin|administrator|moderator']], function () {
+            Route::get('/dashboard', 'Chuckbe\Chuckcms\Controllers\DashboardController@index')->name('dashboard');
+        });
     // Dashboard Pages Routes...
         Route::group(['middleware' => ['permission:show pages']], function () {
             Route::get('/dashboard/pages', 'Chuckbe\Chuckcms\Controllers\PageController@index')->name('dashboard.pages');
@@ -221,6 +223,7 @@ Route::group(['middleware' => ['web']], function() {
         Route::group(['middleware' => ['permission:edit users']], function () {
             Route::post('/dashboard/user/resend-invation', 'Chuckbe\Chuckcms\Controllers\UserController@resendInvitation')->name('dashboard.user.resend.invitation');
             Route::get('/dashboard/users/edit/{user}', 'Chuckbe\Chuckcms\Controllers\UserController@edit')->name('dashboard.users.edit');
+            Route::post('/dashboard/user/update', 'Chuckbe\Chuckcms\Controllers\UserController@update')->name('dashboard.users.update');
         });
         
 		Route::group(['middleware' => ['permission:delete users']], function () {
@@ -238,6 +241,7 @@ Route::group(['middleware' => ['web']], function() {
         Route::group(['middleware' => ['permission:edit roles']], function () {
             Route::get('/dashboard/users/role/edit/{role}', 'Chuckbe\Chuckcms\Controllers\UserRoleController@edit')->name('dashboard.users.roles.edit');
             Route::post('/dashboard/users/role/save', 'Chuckbe\Chuckcms\Controllers\UserRoleController@save')->name('dashboard.users.roles.save');
+            
         });
         
         Route::group(['middleware' => ['permission:delete roles']], function () {
@@ -363,7 +367,6 @@ Route::group([
     ], function() {
     Route::any('/{slug?}', 'Chuckbe\Chuckcms\Controllers\FrontEndController@index')->where('slug', '(.*)')->name('page')->fallback();
 });
-
 
 
 

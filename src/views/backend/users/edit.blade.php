@@ -13,7 +13,7 @@
         </nav>
     </div>
   </div>
-  <form action="{{ route('dashboard.page.save') }}" method="POST">
+  <form action="{{ route('dashboard.users.update') }}" method="POST">
     <div class="row bg-light shadow-sm rounded p-3 mb-3 mx-1">
       <div class="col-sm-12">
         <div class="my-3">

@@ -124,35 +124,36 @@ class GenerateRolesPermissions extends Command
         // create roles and assign created permissions
         $role = Role::firstOrCreate(['name' => 'user']);
         $role->revokePermissionTo(Permission::all());
-        $role->givePermissionTo([
-            'show pages',
+        //to do fix this
+        // $role->givePermissionTo([
+        //     'show pages',
 
-            'show menus',
+        //     'show menus',
 
-            'show templates',
+        //     'show templates',
 
-            'show forms',
+        //     'show forms',
             
-            'show formentry',
+        //     'show formentry',
 
-            'show formentries',
+        //     'show formentries',
 
-            'show media',
+        //     'show media',
 
-            'show users',
+        //     'show users',
 
-            'show content',
+        //     'show content',
 
-            'show resource',
+        //     'show resource',
 
-            'show repeaters',
+        //     'show repeaters',
 
-            'show repeaters entries',
+        //     'show repeaters entries',
 
-            'show settings',
+        //     'show settings',
 
-            'show redirects'
-        ]);
+        //     'show redirects'
+        // ]);
 
         $role = Role::firstOrCreate(['name' => 'moderator']);
         $role->revokePermissionTo(Permission::all());

@@ -93,7 +93,6 @@ class Page extends Eloquent implements Sortable
     public function updatePage($values)
     {
         $page = $this->getById($values['page_id']);
-        
         $meta = [];
         foreach (ChuckSite::getSupportedLocales() as $langKey => $langValue) {
             $page->setTranslation('title', $langKey, $values->get('page_title')[$langKey]);

@@ -47,6 +47,7 @@ class DashboardController extends BaseController
         $this->user = $user;
         $this->middleware('auth');
     }
+    
 
     /**
      * Show the application dashboard.
@@ -54,9 +55,10 @@ class DashboardController extends BaseController
      * @return \Illuminate\View\View
      */
     public function index()
-    { 
+    {
         return view('chuckcms::backend.dashboard.index');
     }
+
 
     /**
      * Show the dashboard -> pages.
