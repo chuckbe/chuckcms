@@ -2,6 +2,9 @@
 
 namespace Chuckbe\Chuckcms\Controllers\Auth;
 
+
+use Chuckbe\Chuckcms\Models\Template;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -22,6 +25,20 @@ class ForgotPasswordController extends BaseController
     */
 
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, SendsPasswordResetEmails;
+
+    // public function showLinkRequestForm(Request $request)
+    // {
+    //     if ($request->token == null) {
+    //         $template = Template::first();
+    //         return view('chuckcms::auth.passwords.email', compact('template'));
+    //     } else {
+    //         $template = Template::first();
+    //         return view('chuckcms::auth.passwords.reset')->with(
+    //             ['template' => $template, 'token' => $request->token, 'email' => $request->email]
+    //         );
+    //     }
+        
+    // }
 
     /**
      * Create a new controller instance.

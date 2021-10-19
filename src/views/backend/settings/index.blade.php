@@ -149,6 +149,10 @@
               <input type="text" class="form-control" placeholder="Twitter" name="socialmedia[twitter]" value="{{ $site->settings['socialmedia']['twitter'] }}">
             </div>
             <div class="form-group form-group-default ">
+              <label>Tiktok</label>
+              <input type="text" class="form-control" placeholder="tiktok" name="socialmedia[tiktok]" value="{{ $site->settings['socialmedia']['tiktok'] }}">
+            </div>
+            <div class="form-group form-group-default ">
               <label>Pinterest</label>
               <input type="text" class="form-control" placeholder="Pinterest" name="socialmedia[pinterest]" value="{{ $site->settings['socialmedia']['pinterest'] }}">
             </div>
@@ -163,6 +167,10 @@
             <div class="form-group form-group-default ">
               <label>Google Plus</label>
               <input type="text" class="form-control" placeholder="Google Plus" name="socialmedia[googleplus]" value="{{ $site->settings['socialmedia']['googleplus'] }}">
+            </div>
+            <div class="form-group form-group-default ">
+              <label>LinkedIn</label>
+              <input type="text" class="form-control" placeholder="LinkedIn" name="socialmedia[linkedin]" value="{{ $site->settings['socialmedia']['linkedin'] }}">
             </div>
             <div class="form-group form-group-default ">
               <label>Tumblr</label>

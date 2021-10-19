@@ -29,7 +29,7 @@ class Template extends Eloquent
 
     public function getEmailTemplates()
     {
-        $activeTemplate = $this->where('active', 1)->get()
+        $activeTemplates = $this->where('active', 1)->get()
         ->filter(function($temp){
             if(strstr($temp->type, 'ecommerce') || strstr($temp->type,'default')){
                 return $temp;
@@ -37,9 +37,9 @@ class Template extends Eloquent
             return;
         });
         // $templates = $this->where('active', 1)->where('type', 'default')->get();
-
+        
         $emailTemplates = [];
-        foreach ($activeTemplate as $template) {
+        foreach ($activeTemplates as $template) {
             if (file_exists(base_path('vendor/' . $template->path . '/src/views/templates/' . $template->slug . '/mails'))) {
                 $mailDir = array_slice(scandir(base_path('vendor/' . $template->path . '/src/views/templates/' . $template->slug . '/mails')), 2);
                 if (count($mailDir) > 0) {

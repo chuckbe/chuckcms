@@ -85,10 +85,12 @@ class GenerateSite extends Command
             $settings['company']['tel'] = '0470 12 34 56';
             $settings['socialmedia']['facebook'] = 'https://facebook.com/chuckcmsmedia';
             $settings['socialmedia']['twitter'] = 'https://twitter.com/chuckcms';
+            $settings['socialmedia']['tiktok'] = 'https://tiktok.com/chuckcms';
             $settings['socialmedia']['pinterest'] = 'https://pinterest.com/chuckcms';
             $settings['socialmedia']['instagram'] = 'https://instagram.com/chuckcms';
             $settings['socialmedia']['snapchat'] = 'https://snapchat.co/username';
             $settings['socialmedia']['googleplus'] = 'https://plus.google.com/+ChuckCMS';
+            $settings['socialmedia']['linkedin'] = 'https://linkedin.com/chuckcms';
             $settings['socialmedia']['tumblr'] = 'https://tumblr.com/chuckcms';
             $settings['socialmedia']['youtube'] = 'https://youtube.com/chuckcms';
             $settings['socialmedia']['vimeo'] = 'https://vimeo.com/chuckcms';
