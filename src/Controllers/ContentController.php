@@ -68,6 +68,7 @@ class ContentController extends BaseController
      * Show resource edit page 
      * 
      * @param string $slug
+     * 
      * @return \Illuminate\View\View
     */
     public function resourceEdit($slug)
@@ -80,6 +81,7 @@ class ContentController extends BaseController
      * Save resource
      * 
      * @param \Illuminate\Http\Request $request
+     * 
      * @return \Illuminate\Routing\Redirector
     */
     public function resourceSave(Request $request)
@@ -112,6 +114,7 @@ class ContentController extends BaseController
      * delete a resource
      * 
      * @param \Illuminate\Http\Request $request
+     * 
      * @return string
     */
     public function resourceDelete(Request $request)
@@ -157,6 +160,7 @@ class ContentController extends BaseController
      * Show repeater edit page 
      * 
      * @param string $slug
+     * 
      * @return \Illuminate\View\View
     */
     public function repeaterEdit($slug)
@@ -171,6 +175,7 @@ class ContentController extends BaseController
      * Show repeater edit page 
      * 
      * @param string $slug
+     * 
      * @return Illuminate\Support\Facades\Response;
     */
     public function repeaterJson($slug)
@@ -191,6 +196,7 @@ class ContentController extends BaseController
      * Save repeater
      * 
      * @param \Illuminate\Http\Request $request
+     * 
      * @return \Illuminate\Routing\Redirector
     */
     public function repeaterSave(Request $request)
@@ -239,6 +245,7 @@ class ContentController extends BaseController
      * Import repeater
      * 
      * @param \Illuminate\Http\Request $request
+     * 
      * @return \Illuminate\Routing\Redirector
     */
     public function repeaterImport(Request $request)
@@ -297,6 +304,7 @@ class ContentController extends BaseController
      * delete a repeater
      * 
      * @param \Illuminate\Http\Request $request
+     * 
      * @return string
     */
     public function repeaterDelete(Request $request)
@@ -319,6 +327,7 @@ class ContentController extends BaseController
      * Show repeater entries 
      * 
      * @param string $slug
+     * 
      * @return \Illuminate\View\View
     */
     public function repeaterEntriesIndex($slug)
@@ -332,6 +341,7 @@ class ContentController extends BaseController
      * Show repeater entry create page 
      * 
      * @param string $slug
+     * 
      * @return \Illuminate\View\View
     */
     public function repeaterEntriesCreate($slug)
@@ -344,6 +354,7 @@ class ContentController extends BaseController
      * Save repeater entry
      * 
      * @param \Illuminate\Http\Request $request
+     * 
      * @return \Illuminate\Routing\Redirector
     */
     public function repeaterEntriesSave(Request $request)
@@ -364,7 +375,9 @@ class ContentController extends BaseController
      * Show repeater entry edit page 
      * 
      * @param string $slug
+     * 
      * @param string $id
+     * 
      * @return \Illuminate\View\View
     */
     public function repeaterEntriesEdit($slug, $id)
@@ -378,6 +391,7 @@ class ContentController extends BaseController
      * Delete the resource from the page.
      *
      * @param  Request $request
+     * 
      * @return string $status
      */
     public function repeaterEntriesDelete(Request $request)
