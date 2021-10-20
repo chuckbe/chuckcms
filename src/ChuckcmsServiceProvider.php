@@ -17,8 +17,6 @@ class ChuckcmsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadRoutesFrom(__DIR__ . '/routes/routes.php');
-        
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         
         $this->publishes([
@@ -59,6 +57,24 @@ class ChuckcmsServiceProvider extends ServiceProvider
         
         $this->loadViewsFrom(__DIR__ . '/views', 'chuckcms');
         // publish error views + publish updated lfm views
+        
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/chuckcms.php', 'chuckcms'
+        );
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/menu.php', 'menu'
+        );
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/lfm.php', 'lfm'
+        );
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/lang.php', 'lang'
+        );
+
 
         $this->app->register(
             'Chuckbe\Chuckcms\Providers\ChuckSiteServiceProvider'
@@ -70,6 +86,10 @@ class ChuckcmsServiceProvider extends ServiceProvider
 
         $this->app->register(
             'Chuckbe\Chuckcms\Providers\ChuckConfigServiceProvider'
+        );
+
+        $this->app->register(
+            'Chuckbe\Chuckcms\Providers\ChuckServiceProvider'
         );
 
         $this->app->register(
@@ -90,26 +110,10 @@ class ChuckcmsServiceProvider extends ServiceProvider
 
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
         $loader->alias('ChuckSite', 'Chuckbe\Chuckcms\Facades\Site');
+        $loader->alias('Chuck', 'Chuckbe\Chuckcms\Facades\Chuck');
         $loader->alias('ChuckRepeater', 'Chuckbe\Chuckcms\Facades\Repeater');
         $loader->alias('ChuckTemplate', 'Chuckbe\Chuckcms\Facades\Template');
         $loader->alias('ChuckMenu', 'Chuckbe\Chuckcms\Facades\Menu');
         $loader->alias('Honeypot', 'Msurguy\Honeypot\HoneypotFacade');
-
-
-        $this->mergeConfigFrom(
-            __DIR__ . '/../config/chuckcms.php', 'chuckcms'
-        );
-
-        $this->mergeConfigFrom(
-            __DIR__ . '/../config/menu.php', 'menu'
-        );
-
-        $this->mergeConfigFrom(
-            __DIR__ . '/../config/lfm.php', 'lfm'
-        );
-
-        $this->mergeConfigFrom(
-            __DIR__ . '/../config/lang.php', 'lang'
-        );
     }
 }

@@ -34,6 +34,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $guard_name = 'web';
+
     public function deleteById($id)
     {
         $user = $this->where('id', $id)->first();
