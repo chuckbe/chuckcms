@@ -25,7 +25,7 @@ class ChuckRepeaterServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('ChuckRepeater', function() {
+        $this->app->bind('ChuckRepeater', function () {
             return new \Chuckbe\Chuckcms\Chuck\Accessors\Repeater(\App::make(Repeater::class), \App::make(RepeaterRepository::class));
         });
     }

@@ -3,9 +3,6 @@
 namespace Chuckbe\Chuckcms\Models;
 
 use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
-use Chuckbe\Chuckcms\Models\Resource;
-use Chuckbe\Chuckcms\Models\Repeater;
-
 use Eloquent;
 
 class PageBlock extends Eloquent
@@ -18,14 +15,16 @@ class PageBlock extends Eloquent
     public function getAllByPageId($page_id)
     {
         $pageblocks = $this->where('page_id', $page_id)->where('lang', app()->getLocale())->orderBy('order', 'asc')->get();
+
         return $pageblocks;
     }
 
     public function getRenderedById($pageblock_id, PageBlockRepository $pageBlockRepository)
     {
-    	$pageblock = $this->where('id', $pageblock_id)->first();
-    	$new_pageblock = $pageBlockRepository->getRenderedByPageBlock($pageblock);
-    	return $new_pageblock;
+        $pageblock = $this->where('id', $pageblock_id)->first();
+        $new_pageblock = $pageBlockRepository->getRenderedByPageBlock($pageblock);
+
+        return $new_pageblock;
     }
 
     public function getById($id)
@@ -38,8 +37,6 @@ class PageBlock extends Eloquent
         return $this->where('page_id', $page_id)->where('lang', app()->getLocale())->count();
     }
 
-
-
     public function moveUpById($id)//@todo add to pageblock repository
     {
         $pageblock = $this->find($id);
@@ -51,6 +48,7 @@ class PageBlock extends Eloquent
 
         $pageblock->update();
         $target_pb->update();
+
         return $this->getRenderedById($pageblock->id);
     }
 
@@ -65,6 +63,7 @@ class PageBlock extends Eloquent
 
         $pageblock->update();
         $target_pb->update();
+
         return $this->getRenderedById($pageblock->id);
     }
 
@@ -84,6 +83,7 @@ class PageBlock extends Eloquent
         $pageblock->order = 1;
         $pageblock->lang = app()->getLocale();
         $pageblock->save();
+
         return $pageblock;
     }
 
@@ -97,6 +97,7 @@ class PageBlock extends Eloquent
         $pageblock->order = $this->getCountByPageId($page->id) + 1;
         $pageblock->lang = app()->getLocale();
         $pageblock->save();
+
         return $pageblock;
     }
 }

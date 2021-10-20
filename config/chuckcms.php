@@ -1,43 +1,43 @@
 <?php
 
 return [
-	
+
     'auth' => [
         'get_login' => [
             'controller' => 'Chuckbe\Chuckcms\Controllers\Auth\LoginController',
-            'action' => 'showLoginForm'
+            'action'     => 'showLoginForm',
         ],
         'post_login' => [
             'controller' => 'Chuckbe\Chuckcms\Controllers\Auth\LoginController',
-            'action' => 'login'
+            'action'     => 'login',
         ],
         'post_logout' => [
             'controller' => 'Chuckbe\Chuckcms\Controllers\Auth\LoginController',
-            'action' => 'logout'
+            'action'     => 'logout',
         ],
         'get_register' => [
             'controller' => 'Chuckbe\Chuckcms\Controllers\Auth\RegisterController',
-            'action' => 'showRegistrationForm'
+            'action'     => 'showRegistrationForm',
         ],
         'post_register' => [
             'controller' => 'Chuckbe\Chuckcms\Controllers\Auth\RegisterController',
-            'action' => 'register'
+            'action'     => 'register',
         ],
         'get_password_reset' => [
             'controller' => 'Chuckbe\Chuckcms\Controllers\Auth\ForgotPasswordController',
-            'action' => 'showLinkRequestForm'
+            'action'     => 'showLinkRequestForm',
         ],
         'post_password_email' => [
             'controller' => 'Chuckbe\Chuckcms\Controllers\Auth\ForgotPasswordController',
-            'action' => 'sendResetLinkEmail'
+            'action'     => 'sendResetLinkEmail',
         ],
         'get_password_reset_token' => [
             'controller' => 'Chuckbe\Chuckcms\Controllers\Auth\ForgotPasswordController',
-            'action' => 'showResetForm'
+            'action'     => 'showResetForm',
         ],
         'post_password_reset' => [
             'controller' => 'Chuckbe\Chuckcms\Controllers\Auth\ForgotPasswordController',
-            'action' => 'reset'
+            'action'     => 'reset',
         ],
 
     ],

@@ -2,11 +2,11 @@
 
 namespace Chuckbe\Chuckcms\Controllers\Auth;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Routing\Controller as BaseController;
 
 class ResetPasswordController extends BaseController
 {
@@ -21,7 +21,10 @@ class ResetPasswordController extends BaseController
     |
     */
 
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, ResetsPasswords;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
+    use ResetsPasswords;
 
     /**
      * Where to redirect users after resetting their password.
@@ -30,8 +33,9 @@ class ResetPasswordController extends BaseController
      */
     protected $redirectTo = '/dashboard';
 
-    protected function redirectTo() { 
-        return '/' . Auth::user()->roles()->first()->redirect;
+    protected function redirectTo()
+    {
+        return '/'.Auth::user()->roles()->first()->redirect;
     }
 
     /**

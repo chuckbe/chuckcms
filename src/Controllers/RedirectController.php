@@ -3,16 +3,17 @@
 namespace Chuckbe\Chuckcms\Controllers;
 
 use Chuckbe\Chuckcms\Models\Redirect;
-
-use Illuminate\Http\Request;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 
 class RedirectController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     /**
      * Create a new controller instance.
@@ -32,7 +33,7 @@ class RedirectController extends BaseController
     public function index()
     {
         $redirects = $this->redirect->get();
-        
+
         return view('chuckcms::backend.redirects.index', compact('redirects'));
     }
 
@@ -42,14 +43,15 @@ class RedirectController extends BaseController
 
         $this->validate($request, [//@todo create custom Request class for redirect validation
             'slug' => 'max:185|required|unique:redirects',
-            'to' => 'required|max:185',
-            'type' => 'required|numeric|in:301,302'
+            'to'   => 'required|max:185',
+            'type' => 'required|numeric|in:301,302',
         ]);
 
         $redirect = Redirect::firstOrNew(
-            ['slug' => $request['slug']], 
-            ['to' => $request['to'], 
-            'type' => $request['type']]);
+            ['slug' => $request['slug']],
+            ['to'      => $request['to'],
+                'type' => $request['type'], ]
+        );
 
         if ($redirect->save()) {
             return redirect()->route('dashboard.redirects');
@@ -61,16 +63,16 @@ class RedirectController extends BaseController
         //$request['slug'] = str_slug($request->slug, '-');
 
         $this->validate($request, [//@todo create custom Request class for redirect validation
-            'id' => 'required',
+            'id'   => 'required',
             'slug' => 'required|max:185',
-            'to' => 'required|max:185',
-            'type' => 'required|numeric|in:301,302'
+            'to'   => 'required|max:185',
+            'type' => 'required|numeric|in:301,302',
         ]);
 
         $redirect = Redirect::where('id', $request['id'])->update([
-            'slug' => $request['slug'], 
-            'to' => $request['to'], 
-            'type' => $request['type']
+            'slug' => $request['slug'],
+            'to'   => $request['to'],
+            'type' => $request['type'],
         ]);
 
         return redirect()->route('dashboard.redirects');

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddRolesFieldToPagesTable extends Migration
 {
@@ -13,8 +13,8 @@ class AddRolesFieldToPagesTable extends Migration
      */
     public function up()
     {
-        Schema::table('pages', function(Blueprint $table) {
-            $table->string('roles')->nullable()->default(NULL)->after('active');
+        Schema::table('pages', function (Blueprint $table) {
+            $table->string('roles')->nullable()->default(null)->after('active');
         });
     }
 
@@ -25,7 +25,7 @@ class AddRolesFieldToPagesTable extends Migration
      */
     public function down()
     {
-        Schema::table('pages', function(Blueprint $table) {
+        Schema::table('pages', function (Blueprint $table) {
             $table->dropColumn('roles');
         });
     }

@@ -2,25 +2,24 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
+use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\PageBlock;
-use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
-use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Repeater;
+use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Template;
-
 use File;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 
 class PageBlockController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     protected $template;
     protected $page;
@@ -47,7 +46,8 @@ class PageBlockController extends BaseController
     /**
      * Get rendered pageblock html as a string.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return array $pageblock
      */
     public function show(Request $request)
@@ -55,13 +55,15 @@ class PageBlockController extends BaseController
         // AUTHORIZE ... COMES HERE
         $pb = $this->pageblock->where('id', $request->get('pageblock_id'))->first();
         $pageblock = $this->pageBlockRepository->getRenderedByPageBlock($pageblock);
+
         return $pageblock;
     }
 
     /**
      * Show the application dashboard.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return array $pageblock
      */
     public function update(Request $request)
@@ -69,59 +71,67 @@ class PageBlockController extends BaseController
         // AUTHORIZE ... COMES HERE
         $pageblock = $this->pageblock->getById($request->get('pageblock_id'));
         $pageblock = $this->pageBlockRepository->updateBody($pageblock, $request->get('html'));
+
         return $pageblock;
     }
 
     /**
      * Move the resource one place up.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return array $pageblock
      */
     public function moveUp(Request $request)
     {
         // AUTHORIZE ... COMES HERE
         $pageblock = $this->pageBlockRepository->moveUpById($request->get('pageblock_id'));
+
         return $pageblock;
     }
 
     /**
      * Move the resource one place down.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return array $pageblock
      */
     public function moveDown(Request $request)
     {
         // AUTHORIZE ... COMES HERE
         $pageblock = $this->pageBlockRepository->moveDownById($request->get('pageblock_id'));
+
         return $pageblock;
     }
 
     /**
      * Delete the resource from the page.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return string $tatus
      */
     public function delete(Request $request)
     {
         // AUTHORIZE ... COMES HERE
         $status = $this->pageBlockRepository->deleteById($request->get('pageblock_id'));
+
         return $status;
     }
 
     /**
-     * Add Block From Location To Top of Page and Store to Database
+     * Add Block From Location To Top of Page and Store to Database.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return string
      */
     public function addBlockTop(Request $request)
     {
-        if($request->has('lang')) {
+        if ($request->has('lang')) {
             app()->setLocale($request->get('lang'));
-        } 
+        }
 
         // AUTHORIZE ... COMES HERE
         $contents = File::get($request['location']);
@@ -132,16 +142,17 @@ class PageBlockController extends BaseController
     }
 
     /**
-     * Add Block From Location To Bottom of Page and Store to Database
+     * Add Block From Location To Bottom of Page and Store to Database.
      *
-     * @param  Request $request
+     * @param Request $request
+     *
      * @return string
      */
     public function addBlockBottom(Request $request)
     {
-        if($request->has('lang')) {
+        if ($request->has('lang')) {
             app()->setLocale($request->get('lang'));
-        } 
+        }
 
         // AUTHORIZE ... COMES HERE
         $contents = File::get($request['location']);

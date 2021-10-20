@@ -2,15 +2,14 @@
 
 namespace Chuckbe\Chuckcms\Controllers\Auth;
 
-use Chuckbe\Chuckcms\Models\User;
 use Chuckbe\Chuckcms\Chuck\UserRepository;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
-
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
+use Chuckbe\Chuckcms\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends BaseController
 {
@@ -25,7 +24,10 @@ class RegisterController extends BaseController
     |
     */
 
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, RegistersUsers;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
+    use RegistersUsers;
 
     /**
      * Where to redirect users after registration.
@@ -34,8 +36,9 @@ class RegisterController extends BaseController
      */
     protected $redirectTo = '/dashboard';
 
-    protected function redirectTo() { 
-        return '/' . Auth::user()->roles()->first()->redirect;
+    protected function redirectTo()
+    {
+        return '/'.Auth::user()->roles()->first()->redirect;
     }
 
     /**
@@ -64,14 +67,15 @@ class RegisterController extends BaseController
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
@@ -79,17 +83,18 @@ class RegisterController extends BaseController
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return \App\User
      */
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'name'     => $data['name'],
+            'email'    => $data['email'],
             'password' => bcrypt($data['password']),
-            'token' => $this->userRepository->createToken(),
-            'active' => 1,
+            'token'    => $this->userRepository->createToken(),
+            'active'   => 1,
         ]);
     }
 }

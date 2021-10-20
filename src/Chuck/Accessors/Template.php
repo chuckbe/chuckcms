@@ -2,7 +2,6 @@
 
 namespace Chuckbe\Chuckcms\Chuck\Accessors;
 
-use App\Http\Requests;
 use Chuckbe\Chuckcms\Models\Template as TemplateModel;
 
 class Template
@@ -10,7 +9,7 @@ class Template
     private $template;
     private $templateSettings;
 
-    public function __construct($template = null) 
+    public function __construct($template = null)
     {
         $this->template = $this->getCurrentTemplate($template);
         $this->templateSettings = $this->getCurrentSettings($this->template);
@@ -44,6 +43,7 @@ class Template
     public function getSetting($var)
     {
         $setting = $this->resolveSetting($var, $this->templateSettings);
+
         return !is_null($setting) ? $setting : null;
     }
 
@@ -57,5 +57,4 @@ class Template
 
         return $setting;
     }
-
 }

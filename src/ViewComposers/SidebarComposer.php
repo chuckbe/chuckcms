@@ -2,8 +2,8 @@
 
 namespace Chuckbe\Chuckcms\ViewComposers;
 
-use Illuminate\View\View;
 use Chuckbe\Chuckcms\Chuck\ModuleRepository;
+use Illuminate\View\View;
 
 class SidebarComposer
 {
@@ -17,7 +17,8 @@ class SidebarComposer
     /**
      * Create a new sidebar composer.
      *
-     * @param  ModuleRepository  $modules
+     * @param ModuleRepository $modules
+     *
      * @return void
      */
     public function __construct(ModuleRepository $modules)
@@ -29,7 +30,8 @@ class SidebarComposer
     /**
      * Bind data to the view.
      *
-     * @param  View  $view
+     * @param View $view
+     *
      * @return void
      */
     public function compose(View $view)
