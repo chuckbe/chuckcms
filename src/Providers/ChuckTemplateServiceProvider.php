@@ -24,11 +24,12 @@ class ChuckTemplateServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('ChuckTemplate', function() {
+        $this->app->bind('ChuckTemplate', function () {
             $template = TemplateModel::first();
             if ($template == null) {
                 throw new Exception('Whoops! No Template Defined...');
             }
+
             return new \Chuckbe\Chuckcms\Chuck\Accessors\Template($template->slug);
         });
     }

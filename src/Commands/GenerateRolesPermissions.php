@@ -3,8 +3,8 @@
 namespace Chuckbe\Chuckcms\Commands;
 
 use Illuminate\Console\Command;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class GenerateRolesPermissions extends Command
 {
@@ -132,7 +132,7 @@ class GenerateRolesPermissions extends Command
             'show templates',
 
             'show forms',
-            
+
             'show formentry',
 
             'show formentries',
@@ -151,7 +151,7 @@ class GenerateRolesPermissions extends Command
 
             'show settings',
 
-            'show redirects'
+            'show redirects',
         ]);
 
         $role = Role::firstOrCreate(['name' => 'moderator']);
@@ -205,7 +205,7 @@ class GenerateRolesPermissions extends Command
 
             'show redirects',
             'create redirects',
-            'edit redirects'
+            'edit redirects',
         ]);
 
         $role = Role::firstOrCreate(['name' => 'administrator']);
@@ -280,7 +280,7 @@ class GenerateRolesPermissions extends Command
             'show redirects',
             'create redirects',
             'edit redirects',
-            'delete redirects'
+            'delete redirects',
         ]);
 
         $role = Role::firstOrCreate(['name' => 'super-admin']);
@@ -309,8 +309,5 @@ class GenerateRolesPermissions extends Command
         $this->info(' ');
         $this->info('Successfully generated all default roles and permissions.');
         $this->info(' ');
-    
-
-        
     }
 }

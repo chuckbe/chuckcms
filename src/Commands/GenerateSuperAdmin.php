@@ -64,17 +64,17 @@ class GenerateSuperAdmin extends Command
         // Validate user input
         $this->info('Validating your information and generating a new user...');
 
-        $data = array(
-            'name'  => $name,
-            'email' => $email,
-            'password'  => $password
-        );
+        $data = [
+            'name'      => $name,
+            'email'     => $email,
+            'password'  => $password,
+        ];
 
-        $rules = array(
-            'name' => 'required|max:185',
-            'email' => 'required|email',
-            'password'  => 'required|min:8'
-        );
+        $rules = [
+            'name'      => 'required|max:185',
+            'email'     => 'required|email',
+            'password'  => 'required|min:8',
+        ];
 
         $validator = \Validator::make($data, $rules);
 
@@ -86,11 +86,11 @@ class GenerateSuperAdmin extends Command
         } else {
             // create the user
             $user = $this->user->create([
-                'name' => $name,
-                'email' => $email,
-                'token' => $this->userRepository->createToken(),
+                'name'     => $name,
+                'email'    => $email,
+                'token'    => $this->userRepository->createToken(),
                 'password' => bcrypt($password),
-                'active' => 1
+                'active'   => 1,
             ]);
             // add role
             $user->assignRole('super-admin');
@@ -109,10 +109,8 @@ class GenerateSuperAdmin extends Command
             $this->info('..         ..');
             $this->info('.         .');
             $this->info(' ');
-            $this->info('New super admin: ' . $name . ' (' . $email . ') generated successfully');
+            $this->info('New super admin: '.$name.' ('.$email.') generated successfully');
             $this->info(' ');
         }
-
-        
     }
 }

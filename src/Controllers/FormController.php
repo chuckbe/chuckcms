@@ -6,23 +6,24 @@ use Chuckbe\Chuckcms\Mail\FormActionMail;
 use Chuckbe\Chuckcms\Models\Form;
 use Chuckbe\Chuckcms\Models\FormEntry;
 use Chuckbe\Chuckcms\Models\Template;
-
-use Mail;
 use ChuckSite;
-
-use Illuminate\Http\Request;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
+use Mail;
 
 class FormController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     private $form;
     private $formEntry;
     private $template;
+
     /**
      * Create a new controller instance.
      *
@@ -38,34 +39,34 @@ class FormController extends BaseController
     public function index()
     {
         $forms = $this->form->get();
-        
+
         return view('chuckcms::backend.forms.index', compact('forms'));
     }
 
     public function create(Request $request)
     {
         $this->validate($request, [
-            'slug' => 'max:185|required|unique:forms',
-            'title' => 'required|max:185'
+            'slug'  => 'max:185|required|unique:forms',
+            'title' => 'required|max:185',
         ]);
 
         $form = [];
         $form_slug = $request->get('slug');
         $fields_slug = 'text';
-        
-        $form['fields'][$form_slug . '_' . $fields_slug]['label'] = 'Text';
-        $form['fields'][$form_slug . '_' . $fields_slug]['type'] = 'text';
-        $form['fields'][$form_slug . '_' . $fields_slug]['class'] = 'form-control';
-        $form['fields'][$form_slug . '_' . $fields_slug]['parentclass'] = null;
-        $form['fields'][$form_slug . '_' . $fields_slug]['placeholder'] = 'Text';
-        $form['fields'][$form_slug . '_' . $fields_slug]['validation'] = 'required';
-        $form['fields'][$form_slug . '_' . $fields_slug]['value'] = null;
-        $form['fields'][$form_slug . '_' . $fields_slug]['attributes']['id'] = 'text_input_id';
-        $form['fields'][$form_slug . '_' . $fields_slug]['required'] = "true";
+
+        $form['fields'][$form_slug.'_'.$fields_slug]['label'] = 'Text';
+        $form['fields'][$form_slug.'_'.$fields_slug]['type'] = 'text';
+        $form['fields'][$form_slug.'_'.$fields_slug]['class'] = 'form-control';
+        $form['fields'][$form_slug.'_'.$fields_slug]['parentclass'] = null;
+        $form['fields'][$form_slug.'_'.$fields_slug]['placeholder'] = 'Text';
+        $form['fields'][$form_slug.'_'.$fields_slug]['validation'] = 'required';
+        $form['fields'][$form_slug.'_'.$fields_slug]['value'] = null;
+        $form['fields'][$form_slug.'_'.$fields_slug]['attributes']['id'] = 'text_input_id';
+        $form['fields'][$form_slug.'_'.$fields_slug]['required'] = 'true';
 
         $form['actions']['store'] = true;
         $form['actions']['send'] = false;
-        
+
         $form['actions']['redirect'] = ChuckSite::getSite('domain');
 
         $form['files'] = false;
@@ -75,11 +76,11 @@ class FormController extends BaseController
         $form['button']['id'] = 'send_form_btn';
 
         $form = Form::create(
-            ['title' => $request->get('title'),
-            'slug' => $form_slug,
-            'form' => $form]
+            ['title'   => $request->get('title'),
+                'slug' => $form_slug,
+                'form' => $form, ]
         );
-        
+
         return redirect()->route('dashboard.forms.edit', ['slug' => $form_slug]);
     }
 
@@ -87,6 +88,7 @@ class FormController extends BaseController
     {
         $form = $this->form->getBySlug($slug);
         $emailTemplates = $this->template->getEmailTemplates();
+
         return view('chuckcms::backend.forms.edit', compact('form', 'emailTemplates'));
     }
 
@@ -96,26 +98,26 @@ class FormController extends BaseController
         $form_slug = $request->get('form_slug');
         $fields_slug = $request->get('fields_slug');
         $countFS = count($fields_slug);
-        for ($i=0; $i < $countFS; $i++) { 
-            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['label'] = $request->get('fields_label')[$i];
-            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['type'] = $request->get('fields_type')[$i];
-            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['class'] = $request->get('fields_class')[$i];
-            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['parentclass'] = $request->get('fields_parentclass')[$i];
-            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['placeholder'] = $request->get('fields_placeholder')[$i];
-            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['validation'] = $request->get('fields_validation')[$i];
-            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['value'] = $request->get('fields_value')[$i];
-            $countFAN = count(explode(';',$request->get('fields_attributes_name')[$i]));
-            for ($k=0; $k < $countFAN; $k++) { 
-                $form['fields'][$form_slug . '_' . $fields_slug[$i]]['attributes'][explode(';',$request->get('fields_attributes_name')[$i])[$k]] = explode(';',$request->get('fields_attributes_value')[$i])[$k];
+        for ($i = 0; $i < $countFS; $i++) {
+            $form['fields'][$form_slug.'_'.$fields_slug[$i]]['label'] = $request->get('fields_label')[$i];
+            $form['fields'][$form_slug.'_'.$fields_slug[$i]]['type'] = $request->get('fields_type')[$i];
+            $form['fields'][$form_slug.'_'.$fields_slug[$i]]['class'] = $request->get('fields_class')[$i];
+            $form['fields'][$form_slug.'_'.$fields_slug[$i]]['parentclass'] = $request->get('fields_parentclass')[$i];
+            $form['fields'][$form_slug.'_'.$fields_slug[$i]]['placeholder'] = $request->get('fields_placeholder')[$i];
+            $form['fields'][$form_slug.'_'.$fields_slug[$i]]['validation'] = $request->get('fields_validation')[$i];
+            $form['fields'][$form_slug.'_'.$fields_slug[$i]]['value'] = $request->get('fields_value')[$i];
+            $countFAN = count(explode(';', $request->get('fields_attributes_name')[$i]));
+            for ($k = 0; $k < $countFAN; $k++) {
+                $form['fields'][$form_slug.'_'.$fields_slug[$i]]['attributes'][explode(';', $request->get('fields_attributes_name')[$i])[$k]] = explode(';', $request->get('fields_attributes_value')[$i])[$k];
             }
-            $form['fields'][$form_slug . '_' . $fields_slug[$i]]['required'] = $request->get('fields_required')[$i];
+            $form['fields'][$form_slug.'_'.$fields_slug[$i]]['required'] = $request->get('fields_required')[$i];
         }
 
-        $form['actions']['store'] = $request->get('action_store') == "true" ? true : false;
-        
-        if($request->get('action_send') !== 'false' && $request->get('action_send') !== false) {
+        $form['actions']['store'] = $request->get('action_store') == 'true' ? true : false;
+
+        if ($request->get('action_send') !== 'false' && $request->get('action_send') !== false) {
             $countActions = count($request->get('action_send_slug'));
-            for ($g=0; $g < $countActions; $g++) { 
+            for ($g = 0; $g < $countActions; $g++) {
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['to'] = $request->get('action_send_to')[$g];
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['to_name'] = $request->get('action_send_to_name')[$g];
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['from'] = $request->get('action_send_from')[$g];
@@ -125,13 +127,12 @@ class FormController extends BaseController
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['files'] = $request->get('action_send_files')[$g];
                 $form['actions']['send'][$request->get('action_send_slug')[$g]]['template'] = $request->get('action_send_template')[$g];
             }
-
         } else {
             $form['actions']['send'] = false;
         }
         $form['actions']['redirect'] = $request->get('action_redirect');
 
-        $form['files'] = $request->get('files_allowed') == "true" ? true : false;
+        $form['files'] = $request->get('files_allowed') == 'true' ? true : false;
 
         $form['button']['class'] = $request->get('button_class');
         $form['button']['label'] = $request->get('button_label');
@@ -140,11 +141,11 @@ class FormController extends BaseController
         // updateOrCreate the site
         Form::updateOrCreate(
             ['id' => $request->get('form_id')],
-            ['title' => $request->get('form_title'),
-            'slug' => $request->get('form_slug'),
-            'form' => $form]
+            ['title'   => $request->get('form_title'),
+                'slug' => $request->get('form_slug'),
+                'form' => $form, ]
         );
-        
+
         return redirect()->route('dashboard.forms');
     }
 
@@ -156,38 +157,42 @@ class FormController extends BaseController
         $this->validate(request(), $rules);
         $store = $form->storeEntry($request);
         if ($store !== 'error') {
-            //send emails 
-            if($form->form['actions']['send'] !== false){
+            //send emails
+            if ($form->form['actions']['send'] !== false) {
                 foreach ($form->form['actions']['send'] as $sendKey => $sendValue) {
                     $mailData = $form->getMailData($sendValue, $request, $store);
                     Mail::send(new FormActionMail($mailData));
                 }
             }
+
             return redirect()->to($form->form['actions']['redirect']);
         } else {
             // error catching ... ?
         }
-        
+
         return view('chuckcms::backend.forms.index', compact('forms'));
     }
 
     /**
      * Delete the form.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return string $status
      */
     public function delete(Request $request)
     {
         // AUTHORIZE ... COMES HERE
         $status = $this->form->deleteById($request->get('form_id'));
+
         return $status;
     }
 
     /**
      * Show the form entries.
      *
-     * @param  $slug
+     * @param $slug
+     *
      * @return \Illuminate\View\View
      */
     public function entries($slug)
@@ -195,14 +200,16 @@ class FormController extends BaseController
         // AUTHORIZE ... COMES HERE
         $form = $this->form->getBySlug($slug);
         $entries = $this->formEntry->getBySlug($slug);
+
         return view('chuckcms::backend.forms.entries', compact('form', 'entries'));
     }
 
     /**
      * Show the form entry.
      *
-     * @param  $slug
-     * @param  $id
+     * @param $slug
+     * @param $id
+     *
      * @return \Illuminate\View\View
      */
     public function entry($slug, $id)
@@ -210,6 +217,7 @@ class FormController extends BaseController
         // AUTHORIZE ... COMES HERE
         $form = $this->form->getBySlug($slug);
         $entry = $this->formEntry->getById($id);
+
         return view('chuckcms::backend.forms.entries.index', compact('form', 'entry'));
     }
 }

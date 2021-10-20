@@ -7,15 +7,16 @@ use Illuminate\Http\Request;
 
 class Template extends Eloquent
 {
-    public function pages(){
+    public function pages()
+    {
         return $this->hasMany('Chuckbe\Chuckcms\Models\Page');
     }
 
     protected $casts = [
         'fonts' => 'array',
-        'css' => 'array',
-        'js' => 'array',
-        'json' => 'array'
+        'css'   => 'array',
+        'js'    => 'array',
+        'json'  => 'array',
     ];
 
     /**
@@ -24,7 +25,7 @@ class Template extends Eloquent
      * @var array
      */
     protected $fillable = [
-        'name', 'slug', 'hintpath', 'path', 'type', 'version', 'author', 'active', 'fonts', 'css', 'js', 'json'
+        'name', 'slug', 'hintpath', 'path', 'type', 'version', 'author', 'active', 'fonts', 'css', 'js', 'json',
     ];
 
     public function getEmailTemplates()
@@ -32,29 +33,30 @@ class Template extends Eloquent
         $templates = $this->where('active', 1)->where('type', 'default')->get();
         $emailTemplates = [];
         foreach ($templates as $template) {
-            if (file_exists(base_path('vendor/' . $template->path . '/src/views/templates/' . $template->slug . '/mails'))) {
-                $mailDir = array_slice(scandir(base_path('vendor/' . $template->path . '/src/views/templates/' . $template->slug . '/mails')), 2);
+            if (file_exists(base_path('vendor/'.$template->path.'/src/views/templates/'.$template->slug.'/mails'))) {
+                $mailDir = array_slice(scandir(base_path('vendor/'.$template->path.'/src/views/templates/'.$template->slug.'/mails')), 2);
                 if (count($mailDir) > 0) {
                     $emailTemplates[$template->slug]['hintpath'] = $template->hintpath;
                     foreach ($mailDir as $mdKey => $mdValue) {
                         if (strpos($mdValue, '.blade.php')) {
                             $emailTemplates[$template->slug]['files'][] = str_replace('.blade.php', '', $mdValue);
-                        }    
+                        }
                     }
                 }
             }
-            if (file_exists(base_path('resources/views/vendor/' . $template->slug . '/templates/' . $template->slug . '/mails'))) {
-                $mailDirVendor = array_slice(scandir(base_path('resources/views/vendor/' . $template->slug . '/templates/' . $template->slug . '/mails')), 2);
+            if (file_exists(base_path('resources/views/vendor/'.$template->slug.'/templates/'.$template->slug.'/mails'))) {
+                $mailDirVendor = array_slice(scandir(base_path('resources/views/vendor/'.$template->slug.'/templates/'.$template->slug.'/mails')), 2);
                 if (count($mailDirVendor) > 0) {
                     $emailTemplates[$template->slug]['hintpath'] = $template->hintpath;
                     foreach ($mailDirVendor as $mdKey => $mdValue) {
                         if (strpos($mdValue, '.blade.php')) {
                             $emailTemplates[$template->slug]['files'][] = str_replace('.blade.php', '', $mdValue);
-                        }    
+                        }
                     }
                 }
             }
         }
+
         return $emailTemplates;
     }
 
@@ -63,40 +65,41 @@ class Template extends Eloquent
         $templates = $this->where('active', 1)->get();
         $pageViews = [];
         foreach ($templates as $template) {
-            if (file_exists(base_path('packages/' . $template->path . '/src/views/templates/' . $template->slug))) {
-                $pageDir = array_slice(scandir(base_path('packages/' . $template->path . '/src/views/templates/' . $template->slug)), 2);
+            if (file_exists(base_path('packages/'.$template->path.'/src/views/templates/'.$template->slug))) {
+                $pageDir = array_slice(scandir(base_path('packages/'.$template->path.'/src/views/templates/'.$template->slug)), 2);
                 if (count($pageDir) > 0) {
                     $pageViews[$template->slug]['hintpath'] = $template->hintpath;
                     foreach ($pageDir as $pdKey => $pdValue) {
                         if (strpos($pdValue, '.blade.php')) {
                             $pageViews[$template->slug]['files'][] = str_replace('.blade.php', '', $pdValue);
-                        }    
+                        }
                     }
                 }
             }
-            if (file_exists(base_path('vendor/' . $template->path . '/src/views/templates/' . $template->slug))) {
-                $pageDir = array_slice(scandir(base_path('vendor/' . $template->path . '/src/views/templates/' . $template->slug)), 2);
+            if (file_exists(base_path('vendor/'.$template->path.'/src/views/templates/'.$template->slug))) {
+                $pageDir = array_slice(scandir(base_path('vendor/'.$template->path.'/src/views/templates/'.$template->slug)), 2);
                 if (count($pageDir) > 0) {
                     $pageViews[$template->slug]['hintpath'] = $template->hintpath;
                     foreach ($pageDir as $pdKey => $pdValue) {
                         if (strpos($pdValue, '.blade.php')) {
                             $pageViews[$template->slug]['files'][] = str_replace('.blade.php', '', $pdValue);
-                        }    
+                        }
                     }
                 }
             }
-            if (file_exists(base_path('resources/views/vendor/' . $template->slug . '/templates/' . $template->slug))) {
-                $pageDir = array_slice(scandir(base_path('resources/views/vendor/' . $template->slug . '/templates/' . $template->slug)), 2);
+            if (file_exists(base_path('resources/views/vendor/'.$template->slug.'/templates/'.$template->slug))) {
+                $pageDir = array_slice(scandir(base_path('resources/views/vendor/'.$template->slug.'/templates/'.$template->slug)), 2);
                 if (count($pageDir) > 0) {
                     $pageViews[$template->slug]['hintpath'] = $template->hintpath;
                     foreach ($pageDir as $pdKey => $pdValue) {
                         if (strpos($pdValue, '.blade.php')) {
                             $pageViews[$template->slug]['files'][] = str_replace('.blade.php', '', $pdValue);
-                        }    
+                        }
                     }
                 }
             }
         }
+
         return $pageViews;
     }
 
@@ -112,7 +115,7 @@ class Template extends Eloquent
 
         $css = [];
         $countCss = count($request->css_slug);
-        for ($i=0; $i < $countCss; $i++) { 
+        for ($i = 0; $i < $countCss; $i++) {
             $css[$request->css_slug[$i]]['href'] = $request->css_href[$i];
             $css[$request->css_slug[$i]]['asset'] = $request->css_asset[$i] == 1 ? 'true' : 'false';
         }
@@ -121,7 +124,7 @@ class Template extends Eloquent
 
         $js = [];
         $countJs = count($request->js_slug);
-        for ($k=0; $k < $countJs; $k++) { 
+        for ($k = 0; $k < $countJs; $k++) {
             $js[$request->js_slug[$k]]['href'] = $request->js_href[$k];
             $js[$request->js_slug[$k]]['asset'] = $request->js_asset[$k] == 1 ? 'true' : 'false';
         }
@@ -130,7 +133,7 @@ class Template extends Eloquent
 
         $json = $template->json;
         if (count($json) > 0) {
-            foreach ($request->json_slug as $jsonKey => $jsonValue) { 
+            foreach ($request->json_slug as $jsonKey => $jsonValue) {
                 $json[$jsonKey]['value'] = $jsonValue;
             }
 

@@ -5,11 +5,11 @@ namespace Chuckbe\Chuckcms\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class FormActionMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public $mailData;
 
@@ -37,10 +37,11 @@ class FormActionMail extends Mailable
         if (is_array($this->mailData['files'])) {
             foreach ($this->mailData['files'] as $file) {
                 if ($file !== null) {
-                    $mail->attach(public_path($file));    
+                    $mail->attach(public_path($file));
                 }
             }
         }
+
         return $mail;
     }
 }

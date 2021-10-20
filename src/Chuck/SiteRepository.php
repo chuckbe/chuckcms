@@ -6,7 +6,6 @@ use Chuckbe\Chuckcms\Models\Site;
 
 class SiteRepository
 {
-
     public static function updateOrCreateFromRequest($req)
     {
         $settings = [];
@@ -25,16 +24,16 @@ class SiteRepository
         foreach ($req->get('integrations') as $igsKey => $igsValue) {
             $settings['integrations'][$igsKey] = $igsValue;
         }
-        $settings['lang'] = implode(",", $req->get('lang'));
-        $settings['domain'] = $req->get('site_domain'); 
-        
+        $settings['lang'] = implode(',', $req->get('lang'));
+        $settings['domain'] = $req->get('site_domain');
+
         // updateOrCreate the site
         $result = Site::updateOrCreate(
             ['id' => $req->get('site_id')],
-            ['name' => $req->get('site_name'),
-            'slug' => $req->get('site_slug'),
-            'domain' => $req->get('site_domain'),
-            'settings' => $settings]
+            ['name'        => $req->get('site_name'),
+                'slug'     => $req->get('site_slug'),
+                'domain'   => $req->get('site_domain'),
+                'settings' => $settings, ]
         );
 
         return $result;
@@ -47,5 +46,4 @@ class SiteRepository
 
         return $result;
     }
-
 }

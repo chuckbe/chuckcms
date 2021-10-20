@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddRedirectFieldToRolesTable extends Migration
 {
@@ -13,7 +13,7 @@ class AddRedirectFieldToRolesTable extends Migration
      */
     public function up()
     {
-        Schema::table('roles', function(Blueprint $table) {
+        Schema::table('roles', function (Blueprint $table) {
             $table->string('redirect')->default('dashboard')->after('guard_name');
         });
     }
@@ -25,7 +25,7 @@ class AddRedirectFieldToRolesTable extends Migration
      */
     public function down()
     {
-        Schema::table('roles', function(Blueprint $table) {
+        Schema::table('roles', function (Blueprint $table) {
             $table->dropColumn('redirect');
         });
     }
