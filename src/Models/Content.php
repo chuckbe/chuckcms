@@ -2,8 +2,6 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use Chuckbe\Chuckcms\Models\Repeater;
-
 use Eloquent;
 
 /**
@@ -17,7 +15,7 @@ class Content extends Eloquent
      * @var array
      */
     protected $fillable = [
-        'slug', 'type', 'content'
+        'slug', 'type', 'content',
     ];
 
     protected $casts = [
@@ -42,6 +40,7 @@ class Content extends Eloquent
         foreach ($this->content['fields'] as $fieldKey => $fieldValue) {
             $rules[$fieldKey] = $fieldValue['validation'];
         }
+
         return $rules;
     }
 
@@ -50,7 +49,7 @@ class Content extends Eloquent
         $slug = $input->get('content_slug');
         if (is_array($this->content['actions']['detail'])) {
             if (array_key_exists('url', $this->content['actions']['detail'])) {
-                $url = $this->getUrlFromInput($this->content['actions']['detail']['url'], $input);    
+                $url = $this->getUrlFromInput($this->content['actions']['detail']['url'], $input);
                 $page = $this->content['actions']['detail']['page'];
             } else {
                 $url = null;
@@ -60,29 +59,29 @@ class Content extends Eloquent
             $url = null;
             $page = 'default';
         }
-        
-        
+
         $json = [];
         foreach ($this->content['fields'] as $fieldKey => $fieldValue) {
-            $cleanKey = str_replace($slug . '_', '', $fieldKey);
+            $cleanKey = str_replace($slug.'_', '', $fieldKey);
             $json[$cleanKey] = $input->get($fieldKey);
         }
-        
+
         Repeater::updateOrCreate(
             ['id' => $input->get('repeater_id')],
-            ['slug' => $slug,
-            'url' => $url,
-            'page' => $page,
-            'json' => $json
-        ]);
-        
+            ['slug'    => $slug,
+                'url'  => $url,
+                'page' => $page,
+                'json' => $json,
+            ]
+        );
+
         return 'success';
     }
 
     public function deleteById($id)
     {
         $repeater = Repeater::where('id', $id)->first();
-        
+
         if ($repeater->delete()) {
             return 'success';
         } else {
@@ -95,25 +94,26 @@ class Content extends Eloquent
         $fields = $this->getContents($url, '[', ']');
         $finalUrl = $url;
         foreach ($fields as $field) {
-            $finalUrl = str_replace('[' . $field . ']', $input->get($field), $finalUrl);
+            $finalUrl = str_replace('['.$field.']', $input->get($field), $finalUrl);
         }
+
         return $finalUrl;
     }
 
-    public function getContents($str, $startDelimiter, $endDelimiter) 
+    public function getContents($str, $startDelimiter, $endDelimiter)
     {
-        $contents = array();
+        $contents = [];
         $startDelimiterLength = strlen($startDelimiter);
         $endDelimiterLength = strlen($endDelimiter);
         $startFrom = 0;
         while (false !== ($contentStart = strpos($str, $startDelimiter, $startFrom))) {
-        $contentStart += $startDelimiterLength;
-        $contentEnd = strpos($str, $endDelimiter, $contentStart);
-        if (false === $contentEnd) {
-            break;
-        }
-        $contents[] = substr($str, $contentStart, $contentEnd - $contentStart);
-        $startFrom = $contentEnd + $endDelimiterLength;
+            $contentStart += $startDelimiterLength;
+            $contentEnd = strpos($str, $endDelimiter, $contentStart);
+            if (false === $contentEnd) {
+                break;
+            }
+            $contents[] = substr($str, $contentStart, $contentEnd - $contentStart);
+            $startFrom = $contentEnd + $endDelimiterLength;
         }
 
         return $contents;

@@ -2,8 +2,6 @@
 
 namespace Chuckbe\Chuckcms\Providers;
 
-use Chuckbe\Chuckcms\Chuck\RepeaterRepository;
-use Chuckbe\Chuckcms\Models\Repeater;
 use Illuminate\Support\ServiceProvider;
 
 class ChuckServiceProvider extends ServiceProvider
@@ -25,8 +23,8 @@ class ChuckServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('Chuck', function() {
-            return new \Chuckbe\Chuckcms\Chuck\Accessors\Chuck;
+        $this->app->bind('Chuck', function () {
+            return new \Chuckbe\Chuckcms\Chuck\Accessors\Chuck();
         });
     }
 }

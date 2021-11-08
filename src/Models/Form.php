@@ -2,8 +2,6 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use Chuckbe\Chuckcms\Models\FormEntry;
-
 use Eloquent;
 
 /**
@@ -17,7 +15,7 @@ class Form extends Eloquent
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'form'
+        'title', 'slug', 'form',
     ];
 
     protected $casts = [
@@ -37,6 +35,7 @@ class Form extends Eloquent
         }
         $rules['chuck_telephone'] = 'honeypot';
         $rules['chuck_email'] = 'required|honeytime:12';
+
         return $rules;
     }
 
@@ -57,12 +56,12 @@ class Form extends Eloquent
                         if ($input->hasFile($fieldKey)) {
                             $avatar = $input->file($fieldKey);
                             $random = str_random(8);
-                            $filename = time() . '_' . $random . '.' . $avatar->getClientOriginalExtension();
+                            $filename = time().'_'.$random.'.'.$avatar->getClientOriginalExtension();
                             if (!file_exists(public_path('/files/uploads/'))) {
                                 mkdir(public_path('/files/uploads/'), 0777, true);
                             }
                             $avatar->move(public_path('/files/uploads/'), $filename);
-                            $filepath = '/files/uploads/' . $filename;
+                            $filepath = '/files/uploads/'.$filename;
                         } else {
                             $filepath = null;
                         }
@@ -117,14 +116,12 @@ class Form extends Eloquent
         foreach ($sendData as $sendKey => $sendValue) {
             $findThis = $this->getResources($sendValue, '[', ']');
             if (count($findThis) > 0) {
-            
                 foreach ($findThis as $founded) {
                     if (strpos($founded, $input->get('_form_slug')) !== false) {
-                        $sendValue = str_replace('[' . $founded . ']', $input->get($founded), $sendValue);
+                        $sendValue = str_replace('['.$founded.']', $input->get($founded), $sendValue);
                     }
                 }
                 $inputData = $sendValue;
-                
             } else {
                 $inputData = $sendValue;
             }
@@ -139,25 +136,26 @@ class Form extends Eloquent
                 }
             }
         }
+
         return $mailData;
     }
 
-    public function getResources($str, $startDelimiter, $endDelimiter) 
+    public function getResources($str, $startDelimiter, $endDelimiter)
     {
-        $contents = array();
+        $contents = [];
         $startDelimiterLength = strlen($startDelimiter);
         $endDelimiterLength = strlen($endDelimiter);
         $startFrom = 0;
-        $contentStart =  0;
+        $contentStart = 0;
         $contentEnd = 0;
         while (false !== ($contentStart = strpos($str, $startDelimiter, $startFrom))) {
-        $contentStart += $startDelimiterLength;
-        $contentEnd = strpos($str, $endDelimiter, $contentStart);
-        if (false === $contentEnd) {
-            break;
-        }
-        $contents[] = substr($str, $contentStart, $contentEnd - $contentStart);
-        $startFrom = $contentEnd + $endDelimiterLength;
+            $contentStart += $startDelimiterLength;
+            $contentEnd = strpos($str, $endDelimiter, $contentStart);
+            if (false === $contentEnd) {
+                break;
+            }
+            $contents[] = substr($str, $contentStart, $contentEnd - $contentStart);
+            $startFrom = $contentEnd + $endDelimiterLength;
         }
 
         return $contents;

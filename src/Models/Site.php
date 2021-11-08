@@ -15,7 +15,7 @@ class Site extends Eloquent
      * @var array
      */
     protected $fillable = [
-        'name', 'slug', 'domain', 'settings'
+        'name', 'slug', 'domain', 'settings',
     ];
 
     protected $casts = [

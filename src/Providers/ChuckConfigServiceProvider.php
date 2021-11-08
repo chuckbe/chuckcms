@@ -2,9 +2,8 @@
 
 namespace Chuckbe\Chuckcms\Providers;
 
-use ChuckSite;
 use Chuckbe\Chuckcms\Models\Site;
-
+use ChuckSite;
 use Illuminate\Support\ServiceProvider;
 use Schema;
 
@@ -18,14 +17,14 @@ class ChuckConfigServiceProvider extends ServiceProvider
     public function boot()
     {
         config([
-            'app.locale' => 'nl',
+            'app.locale'          => 'nl',
             'app.fallback_locale' => 'en',
 
             // UniSharp/laravel-filemanager
             'lfm_config.url_prefix' => 'dashboard/mediacenter',
 
             // laravel/laravel
-            'auth.providers.users.model' => \Chuckbe\Chuckcms\Models\User::class
+            'auth.providers.users.model' => \Chuckbe\Chuckcms\Models\User::class,
         ]);
 
         if (Schema::hasTable('sites')) {
@@ -37,15 +36,15 @@ class ChuckConfigServiceProvider extends ServiceProvider
         if ($site !== null) {
             config([
                 // mcamara/laravel-localization
-                'laravellocalization.supportedLocales' => ChuckSite::getSupportedLocales(),
+                'laravellocalization.supportedLocales'        => ChuckSite::getSupportedLocales(),
                 'laravellocalization.useAcceptLanguageHeader' => config('lang.useAcceptLanguageHeader'),
-                'laravellocalization.hideDefaultLocaleInURL' => config('lang.hideDefaultLocaleInURL'),
+                'laravellocalization.hideDefaultLocaleInURL'  => config('lang.hideDefaultLocaleInURL'),
             ]);
         } else {
             config([
-                'laravellocalization.supportedLocales' => config('lang.supportedLocales'),
+                'laravellocalization.supportedLocales'        => config('lang.supportedLocales'),
                 'laravellocalization.useAcceptLanguageHeader' => true,
-                'laravellocalization.hideDefaultLocaleInURL' => false,
+                'laravellocalization.hideDefaultLocaleInURL'  => false,
             ]);
         }
     }
@@ -57,6 +56,5 @@ class ChuckConfigServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        
     }
 }

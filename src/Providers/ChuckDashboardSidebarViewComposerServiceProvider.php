@@ -16,11 +16,13 @@ class ChuckDashboardSidebarViewComposerServiceProvider extends ServiceProvider
     {
         // Using class based composers...
         View::composer(
-            'chuckcms::backend.includes.sidebar', 'Chuckbe\Chuckcms\ViewComposers\SidebarComposer'
+            'chuckcms::backend.includes.sidebar',
+            'Chuckbe\Chuckcms\ViewComposers\SidebarComposer'
         );
 
         View::composer(
-            'chuckcms::backend.includes.navigation', 'Chuckbe\Chuckcms\ViewComposers\SidebarComposer'
+            'chuckcms::backend.includes.navigation',
+            'Chuckbe\Chuckcms\ViewComposers\SidebarComposer'
         );
     }
 

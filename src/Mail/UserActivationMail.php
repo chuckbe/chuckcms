@@ -5,11 +5,11 @@ namespace Chuckbe\Chuckcms\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class UserActivationMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public $mailData;
 
@@ -35,7 +35,7 @@ class UserActivationMail extends Mailable
     {
         return $this->from($this->mailData['from'], $this->mailData['from_name'])
                     ->to($this->mailData['to'], $this->mailData['to_name'])
-                    ->subject('Activeer je account op ' . $this->settings['domain'])
+                    ->subject('Activeer je account op '.$this->settings['domain'])
                     ->view('chuckcms::backend.mails.userActivationMail');
     }
 }

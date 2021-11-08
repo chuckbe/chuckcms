@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddLangFieldToPageBlocksTable extends Migration
 {
@@ -13,8 +13,8 @@ class AddLangFieldToPageBlocksTable extends Migration
      */
     public function up()
     {
-        Schema::table('page_blocks', function(Blueprint $table) {
-            $table->string('lang')->nullable()->default(NULL)->after('order');
+        Schema::table('page_blocks', function (Blueprint $table) {
+            $table->string('lang')->nullable()->default(null)->after('order');
         });
     }
 
@@ -25,7 +25,7 @@ class AddLangFieldToPageBlocksTable extends Migration
      */
     public function down()
     {
-        Schema::table('page_blocks', function(Blueprint $table) {
+        Schema::table('page_blocks', function (Blueprint $table) {
             $table->dropColumn('lang');
         });
     }

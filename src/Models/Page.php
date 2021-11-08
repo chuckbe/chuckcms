@@ -2,11 +2,8 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use Chuckbe\Chuckcms\Models\PageBlock;
 use ChuckSite;
-
-use \Illuminate\Database\Eloquent\Model as Eloquent;
-
+use Illuminate\Database\Eloquent\Model as Eloquent;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 use Spatie\Translatable\HasTranslations;
@@ -17,15 +14,17 @@ class Page extends Eloquent implements Sortable
     use HasTranslations;
 
     public $sortable = [
-        'order_column_name' => 'order',
+        'order_column_name'  => 'order',
         'sort_when_creating' => true,
     ];
 
-    public function template(){
+    public function template()
+    {
         return $this->belongsTo('Chuckbe\Chuckcms\Models\Template');
     }
 
-    public function page_blocks(){
+    public function page_blocks()
+    {
         return $this->hasMany('Chuckbe\Chuckcms\Models\PageBlock')->orderBy('order');
     }
 
@@ -41,7 +40,7 @@ class Page extends Eloquent implements Sortable
 
     public static function getUrl($id)
     {
-        return ChuckSite::getSetting('domain') . '/' . self::where('id', $id)->first()->slug;
+        return ChuckSite::getSetting('domain').'/'.self::where('id', $id)->first()->slug;
     }
 
     public function create($values)
@@ -52,7 +51,7 @@ class Page extends Eloquent implements Sortable
         foreach (ChuckSite::getSupportedLocales() as $langKey => $langValue) {
             $page->setTranslation('title', $langKey, $values->get('page_title')[$langKey]);
             $page->setTranslation('slug', $langKey, $values->get('page_slug')[$langKey]);
-            
+
             $meta[$langKey]['title'] = $values->get('meta_title')[$langKey];
             $meta[$langKey]['description'] = $values->get('meta_description')[$langKey];
             $meta[$langKey]['keywords'] = $values->get('meta_keywords')[$langKey];
@@ -73,10 +72,10 @@ class Page extends Eloquent implements Sortable
                 $follow = 'nofollow';
             }
 
-            $meta[$langKey]['robots'] = $index . $follow;
-            $meta[$langKey]['googlebots'] = $index . $follow;
+            $meta[$langKey]['robots'] = $index.$follow;
+            $meta[$langKey]['googlebots'] = $index.$follow;
             $count = count($values->get('meta_key')[$langKey]);
-            for ($i=0; $i < $count; $i++) { 
+            for ($i = 0; $i < $count; $i++) {
                 $meta[$langKey][$values->get('meta_key')[$langKey][$i]] = $values->get('meta_value')[$langKey][$i];
             }
         }
@@ -93,13 +92,13 @@ class Page extends Eloquent implements Sortable
     public function updatePage($values)
     {
         $page = $this->getById($values['page_id']);
-        
+
         $meta = [];
         foreach (ChuckSite::getSupportedLocales() as $langKey => $langValue) {
             $page->setTranslation('title', $langKey, $values->get('page_title')[$langKey]);
             $page->setTranslation('slug', $langKey, $values->get('page_slug')[$langKey]);
             $count = count($values->get('meta_key')[$langKey]);
-            for ($i=0; $i < $count; $i++) { 
+            for ($i = 0; $i < $count; $i++) {
                 $meta[$langKey][$values->get('meta_key')[$langKey][$i]] = $values->get('meta_value')[$langKey][$i];
             }
         }
@@ -109,7 +108,7 @@ class Page extends Eloquent implements Sortable
         $page->page = $values['page'];
         $page->active = $values['active'];
         $page->isHp = $values['isHp'];
-        $page->roles = count(is_array($values['roles']) ? $values['roles'] : array()) > 0 ? implode('|', $values['roles']) : NULL;
+        $page->roles = count(is_array($values['roles']) ? $values['roles'] : []) > 0 ? implode('|', $values['roles']) : null;
 
         $page->save();
     }

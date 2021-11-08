@@ -54,17 +54,17 @@ class GenerateSite extends Command
         // Validate user input
         $this->info('Validating your information and generating a new site...');
 
-        $data = array(
-            'name'  => $name,
-            'slug' => $slug,
-            'domain'  => $domain
-        );
+        $data = [
+            'name'    => $name,
+            'slug'    => $slug,
+            'domain'  => $domain,
+        ];
 
-        $rules = array(
-            'name' => 'required|max:185',
-            'slug' => 'required|unique:sites',
-            'domain'  => 'required|min:11'
-        );
+        $rules = [
+            'name'    => 'required|max:185',
+            'slug'    => 'required|unique:sites',
+            'domain'  => 'required|min:11',
+        ];
 
         $validator = \Validator::make($data, $rules);
 
@@ -100,10 +100,10 @@ class GenerateSite extends Command
             $settings['domain'] = $domain;
             // create the site
             $this->siteRepository->createFromArray([
-                'name' => $name,
-                'slug' => $slug,
-                'domain' => $domain,
-                'settings' => $settings
+                'name'     => $name,
+                'slug'     => $slug,
+                'domain'   => $domain,
+                'settings' => $settings,
             ]);
 
             $this->info('.         .');
@@ -121,10 +121,8 @@ class GenerateSite extends Command
             $this->info('..         ..');
             $this->info('.         .');
             $this->info(' ');
-            $this->info('New site: ' . $name . ' (' . $domain . ') generated successfully');
+            $this->info('New site: '.$name.' ('.$domain.') generated successfully');
             $this->info(' ');
         }
-
-        
     }
 }

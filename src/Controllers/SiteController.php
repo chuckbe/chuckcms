@@ -2,23 +2,25 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
-use Chuckbe\Chuckcms\Models\Site;
 use Chuckbe\Chuckcms\Chuck\SiteRepository;
+use Chuckbe\Chuckcms\Models\Site;
 use Chuckbe\Chuckcms\Models\User;
-
-use Illuminate\Http\Request;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 
 class SiteController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     private $site;
     private $siteRepository;
     private $user;
+
     /**
      * Create a new controller instance.
      *
@@ -35,16 +37,16 @@ class SiteController extends BaseController
     {
         //validate the request
         $this->validate(request(), [//@todo create custom Request class for site validation
-            'site_name' => 'max:185|required',
-            'site_slug' => 'max:70',
-            'site_domain' => 'required',
-            'company.*' => 'string|nullable',
-            'socialmedia.*' => 'string|nullable',
-            'favicon.*' => 'string|nullable',
-            'logo.*' => 'string|nullable',
+            'site_name'      => 'max:185|required',
+            'site_slug'      => 'max:70',
+            'site_domain'    => 'required',
+            'company.*'      => 'string|nullable',
+            'socialmedia.*'  => 'string|nullable',
+            'favicon.*'      => 'string|nullable',
+            'logo.*'         => 'string|nullable',
             'integrations.*' => 'string|nullable',
-            'lang' => 'array',
-            'site_id' => 'required|nullable'
+            'lang'           => 'array',
+            'site_id'        => 'required|nullable',
         ]);
 
         //update or create settings
@@ -58,7 +60,7 @@ class SiteController extends BaseController
     {
         // Look up the user
         $user = $this->user->where('token', $token)->where('active', 0)->first();
-        
+
         if (!$user) {
             //if the invite doesn't exist do something more graceful than this
             return redirect()->route('page');
@@ -70,10 +72,10 @@ class SiteController extends BaseController
     public function activate(Request $request)
     {
         $this->validate(request(), [//@todo create custom Request class for user password validation
-            'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
+            'password'       => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/',
             'password_again' => 'required|same:password',
-            '_user_token' => 'required',
-            '_user_id' => 'required'
+            '_user_token'    => 'required',
+            '_user_id'       => 'required',
         ]);
 
         $token = $request->get('_user_token');
@@ -86,8 +88,8 @@ class SiteController extends BaseController
         }
 
         $this->user->where('token', $token)->where('id', $user_id)->where('active', 0)->update([
-            'active' => 1,
-            'password' => bcrypt($request->get('password'))
+            'active'   => 1,
+            'password' => bcrypt($request->get('password')),
         ]);
 
         return redirect()->route('login');

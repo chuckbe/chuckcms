@@ -6,7 +6,7 @@ use Eloquent;
 
 /**
  * @property string $slug
- * @property array $json
+ * @property array  $json
  */
 class Resource extends Eloquent
 {
