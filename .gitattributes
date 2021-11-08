@@ -1,2 +1,3 @@
 src/resources/* linguist-vendored
 src/views/* linguist-vendored
+.blade.php linguist-vendored

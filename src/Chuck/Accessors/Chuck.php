@@ -11,25 +11,52 @@ class Chuck
         //
     }
 
-    public static function routes()
+    public static function auth()
     {
         Route::group(['middleware' => ['web']], function() {
         // Login Routes...
-            Route::get('login', ['as' => 'login', 'uses' => config('chuckcms.auth.get_login.controller').'@'.config('chuckcms.auth.get_login.action')]);
-            Route::post('login', ['as' => 'login.post', 'uses' => config('chuckcms.auth.post_login.controller').'@'.config('chuckcms.auth.post_login.action')]);
-            Route::post('logout', ['as' => 'logout', 'uses' => config('chuckcms.auth.post_logout.controller').'@'.config('chuckcms.auth.post_logout.action')]);
+            if ( config('chuckcms.auth.get_login.active') ) {
+                Route::get('login', ['as' => 'login', 'uses' => config('chuckcms.auth.get_login.controller').'@'.config('chuckcms.auth.get_login.action')]);
+            }
 
+            if ( config('chuckcms.auth.post_login.active') ) {
+                Route::post('login', ['as' => 'login.post', 'uses' => config('chuckcms.auth.post_login.controller').'@'.config('chuckcms.auth.post_login.action')]);
+            }
+
+            if ( config('chuckcms.auth.post_logout.active') ) {
+                Route::post('logout', ['as' => 'logout', 'uses' => config('chuckcms.auth.post_logout.controller').'@'.config('chuckcms.auth.post_logout.action')]);
+            }
         // Registration Routes...
-            Route::get('register', ['as' => 'register', 'uses' => config('chuckcms.auth.get_register.controller').'@'.config('chuckcms.auth.get_register.action')]);
-            Route::post('register', ['as' => 'register.post', 'uses' => config('chuckcms.auth.post_register.controller').'@'.config('chuckcms.auth.post_register.action')]);
+            if ( config('chuckcms.auth.get_register.active') ) {
+                Route::get('register', ['as' => 'register', 'uses' => config('chuckcms.auth.get_register.controller').'@'.config('chuckcms.auth.get_register.action')]);
+            }
+
+            if ( config('chuckcms.auth.post_register.active') ) {
+                Route::post('register', ['as' => 'register.post', 'uses' => config('chuckcms.auth.post_register.controller').'@'.config('chuckcms.auth.post_register.action')]);
+            }
 
         // Password Reset Routes...
-            Route::get('password/reset', ['as' => 'password.reset', 'uses' => config('chuckcms.auth.get_password_reset.controller').'@'.config('chuckcms.auth.get_password_reset.action')]);
-            Route::post('password/email', ['as' => 'password.email', 'uses' => config('chuckcms.auth.post_password_email.controller').'@'.config('chuckcms.auth.post_password_email.action')]);
-            Route::get('password/reset/{token}', ['as' => 'password.reset.token', 'uses' => config('chuckcms.auth.get_password_reset_token.controller').'@'.config('chuckcms.auth.get_password_reset_token.action')]);
-            Route::post('password/reset', ['as' => 'password.reset.post', 'uses' => config('chuckcms.auth.post_password_reset.controller').'@'.config('chuckcms.auth.post_password_reset.action')]);
-        });
+            
+            if ( config('chuckcms.auth.get_password_reset.active') ) {
+                Route::get('password/reset', ['as' => 'password.reset', 'uses' => config('chuckcms.auth.get_password_reset.controller').'@'.config('chuckcms.auth.get_password_reset.action')]);
+            }
 
+            if ( config('chuckcms.auth.post_password_email.active') ) {
+                Route::post('password/email', ['as' => 'password.email', 'uses' => config('chuckcms.auth.post_password_email.controller').'@'.config('chuckcms.auth.post_password_email.action')]);
+            }
+
+            if ( config('chuckcms.auth.get_password_reset_token.active') ) {
+                Route::get('password/reset/{token}', ['as' => 'password.reset.token', 'uses' => config('chuckcms.auth.get_password_reset_token.controller').'@'.config('chuckcms.auth.get_password_reset_token.action')]);
+            }
+
+            if ( config('chuckcms.auth.post_password_reset.active') ) {
+                Route::post('password/reset', ['as' => 'password.reset.post', 'uses' => config('chuckcms.auth.post_password_reset.controller').'@'.config('chuckcms.auth.post_password_reset.action')]);
+            }
+        });
+    }
+
+    public static function routes()
+    {
         Route::group(['middleware' => ['web']], function() {
             Route::group(['middleware' => 'auth'], function () {
             // Dashboard Routes...
