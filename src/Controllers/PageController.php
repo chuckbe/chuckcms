@@ -50,8 +50,7 @@ class PageController extends BaseController
         Site $site,
         Template $template,
         User $user
-    )
-    {
+    ) {
         $this->page = $page;
         $this->pageblock = $pageblock;
         $this->pageBlockRepository = $pageBlockRepository;

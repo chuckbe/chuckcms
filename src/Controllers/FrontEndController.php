@@ -43,8 +43,7 @@ class FrontEndController extends BaseController
         Repeater $repeater,
         Role $role,
         Template $template
-    )
-    {
+    ) {
         $this->page = $page;
         $this->pageblock = $pageblock;
         $this->pageBlockRepository = $pageBlockRepository;
