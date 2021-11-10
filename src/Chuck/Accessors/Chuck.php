@@ -395,7 +395,7 @@ class Chuck
                 'web',
             ],
         ], function () {
-                Route::any('/{slug?}', '\Chuckbe\Chuckcms\Controllers\FrontEndController@index')->where('slug', '(.*)')->name('page')->fallback();
-            });
+            Route::any('/{slug?}', '\Chuckbe\Chuckcms\Controllers\FrontEndController@index')->where('slug', '(.*)')->name('page')->fallback();
+        });
     }
 }
