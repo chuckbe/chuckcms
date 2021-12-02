@@ -385,7 +385,10 @@ class Chuck
                 'as'   => 'getDelete',
             ]);
         });
+    }
 
+    public static function frontend()
+    {
         Route::group([
             'prefix'     => \LaravelLocalization::setLocale(),
             'middleware' => [
