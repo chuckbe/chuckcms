@@ -246,8 +246,8 @@
 
     function init() {
       $(".resource_slug_input").keyup(function(){
-          var text = $(this).val();
-          slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'');
+          var text = $(this).val();  
+          slug_text = text.toLowerCase().replace(/[^\w  .\-]+/g,'').replace(/ +/g,'');
           $(".resource_slug_input").val(slug_text);   
       });
 
@@ -255,7 +255,7 @@
           console.log('This is the index of the element : ',$('.meta_field_row').index($(this)));
           var text = $(this).val();
           var iOrder = $(this).attr('data-order');
-          slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'');
+          slug_text = text.toLowerCase().replace(/[^\w  .\-]+/g,'').replace(/ +/g,'');
           $(".meta_key[data-order="+iOrder+"]").val(slug_text);   
           
       });
