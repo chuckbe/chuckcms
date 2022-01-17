@@ -1,0 +1,32 @@
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    function str_pad_left(string,pad,length) {
+        return (new Array(length+1).join(pad)+string).slice(-length);
+    }
+    function humanizeNumber(n) {
+        n = n.toString()
+        while (true) {
+            var n2 = n.replace(/(\d)(\d{3})($|,|\.)/g, '$1,$2$3')
+            if (n == n2) break
+            n = n2
+        }
+        return n
+    }
+
+    $(function() {
+        let start = moment().subtract(0, 'days');
+        let end = moment();
+
+        console.log(start, end);
+
+    });
+
+    $(document).ajaxStop(function () {
+        $('.menu-items-content div.matomo-items.active').show();
+        $('.menu-items-content .loader').hide();
+    });
+</script>
