@@ -30,7 +30,7 @@ class CreatePermissionTables extends Migration
         });
 
         Schema::create($tableNames['model_has_permissions'], function (Blueprint $table) use ($tableNames) {
-           
+            $table->increments('id');
             $table->unsignedInteger('permission_id');
             $table->morphs('model');
 
@@ -43,7 +43,7 @@ class CreatePermissionTables extends Migration
         });
 
         Schema::create($tableNames['model_has_roles'], function (Blueprint $table) use ($tableNames) {
-          
+            $table->increments('id');
             $table->unsignedInteger('role_id');
             $table->morphs('model');
 
@@ -52,12 +52,11 @@ class CreatePermissionTables extends Migration
                 ->on($tableNames['roles'])
                 ->onDelete('cascade');
 
-
             $table->primary(['role_id', 'model_id', 'model_type']);
         });
 
         Schema::create($tableNames['role_has_permissions'], function (Blueprint $table) use ($tableNames) {
-           
+            $table->increments('id');
             $table->unsignedInteger('permission_id');
             $table->unsignedInteger('role_id');
 
@@ -70,6 +69,8 @@ class CreatePermissionTables extends Migration
                 ->references('id')
                 ->on($tableNames['roles'])
                 ->onDelete('cascade');
+
+            $table->primary(['permission_id', 'role_id']);
 
             app('cache')->forget('spatie.permission.cache');
         });
