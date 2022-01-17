@@ -7,7 +7,6 @@ namespace Chuckbe\Chuckcms\Chuck\Matomo;
  */
 interface QueryInterface
 {
-
     /**
      * Sets a range of query parameters.
      *

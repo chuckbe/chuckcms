@@ -9,7 +9,6 @@ use GuzzleHttp\Psr7\Response;
  */
 class QueryResult
 {
-
     /**
      * The raw HTTP response.
      *

@@ -7,7 +7,6 @@ namespace Chuckbe\Chuckcms\Chuck\Matomo;
  */
 class Query implements QueryInterface
 {
-
     /**
      * An HTTP client that encapsulates a GuzzleHttp client.
      *

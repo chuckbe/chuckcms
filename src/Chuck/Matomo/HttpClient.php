@@ -9,7 +9,6 @@ use GuzzleHttp\ClientInterface;
  */
 class HttpClient implements HttpClientInterface
 {
-
     /**
      * The Guzzle HTTP client.
      *
