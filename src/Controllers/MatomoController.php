@@ -12,6 +12,7 @@ use Chuckbe\Chuckcms\Chuck\SiteRepository;
 use Chuckbe\Chuckcms\Models\User;
 use ChuckSite;
 use Chuckbe\Chuckcms\Chuck\Matomo\QueryFactory;
+use Carbon\Carbon;
 
 class MatomoController extends BaseController
 {
@@ -38,90 +39,45 @@ class MatomoController extends BaseController
         $this->user = $user;
         $this->matomoUrl = ChuckSite::getSetting('integrations.matomo-site-url');
     }
-
-    public function getDateOrPeriodFromRequest($data, $periodCheck = false) 
-    {
-        $date = 'today';
-        $period = 'day';
-
-        if($data["value"]["range"] !== "Today" || $data["value"]["range"] !== "Yesterday"){
-            if(isset($data["value"]["y2"],$data["value"]["m2"],$data["value"]["d2"])){
-                $now = \Carbon\Carbon::now();
-                $startdate = \Carbon\Carbon::createFromFormat('Y-m-d', $data["value"]["y2"].'-'.$data["value"]["m2"].'-'.$data["value"]["d2"]);
-                $enddate = \Carbon\Carbon::createFromFormat('Y-m-d',$data["value"]["y1"].'-'.$data["value"]["m1"].'-'.$data["value"]["d1"]);
-                $checkforrange = $now->diffInDays($enddate);
-                $diff = $startdate->diffInDays($enddate);
-                if($checkforrange !== 0){
-                    $period = 'range';
-                    $date = $data["value"]["y2"].'-'.$data["value"]["m2"].'-'.$data["value"]["d2"].','.$data["value"]["y1"].'-'.$data["value"]["m1"].'-'.$data["value"]["d1"];                    
-                }else{
-                    if($diff == 6){
-                        $period = 'week';
-                        $date = 'last7';
-                    }
-                    if($diff == 29){
-                        $period = 'month';
-                        $date = 'last30';
-                    }
-                }
-            }
-        }
-
-        if($data["value"]["range"] == "Today"){
-            $date = 'today';
-        }
-
-        if($data["value"]["range"] == "Yesterday"){
-            $date = 'yesterday';
-        }
-
-
-        $periodCheck = array(
-            'date' => $date,
-            'period' => $period
-        );
-
-        return $periodCheck;
-    }
-
  
     public function reportingApi(Request $request)
     {
-        $data = $request->all();
-        $matomoUrl = $this->matomoUrl;
-        $query_factory = QueryFactory::create($matomoUrl);
+        $query_factory = QueryFactory::create($this->matomoUrl);
         $query_factory
             ->set('idSite', $this->siteId)
             ->set('token_auth', $this->authToken);
         
-        $periodCheck = $this->getDateOrPeriodFromRequest($data);
+        $date = $this->getDateOrPeriodFromRequest($request);
+        $period = $this->getDateOrPeriodFromRequest($request, true);
             
         $lastVisitsDetails = $query_factory->getQuery('Live.getLastVisitsDetails')
-            ->setParameter('date', $periodCheck['date'])
-            ->setParameter('period', $periodCheck['period'])
+            ->setParameter('date', $date)
+            ->setParameter('period', $period)
             ->setParameter('filter_limit', -1)
             ->execute()
             ->getResponse();
+        
+
+        $view = view('chuckcms::backend.dashboard.blocks.logs')->render();
 
         return response()->json([
-            'lastVisitsDetails' => $lastVisitsDetails
+            'lastVisitsDetails' => $lastVisitsDetails,
+            'htmlData' => $view
         ]);
-
     }
 
     public function visitorSummary(Request $request)
     {
-        $data = $request->all();
-        $matomoUrl = $this->matomoUrl;
-        $query_factory = QueryFactory::create($matomoUrl);
+        $query_factory = QueryFactory::create($this->matomoUrl);
         $query_factory
             ->set('idSite', $this->siteId)
             ->set('token_auth', $this->authToken);
 
         $visitorProfile = $query_factory->getQuery('Live.getVisitorProfile')
-            ->setParameter('visitorId', $data['visitorid'])
+            ->setParameter('visitorId', $request->all()['visitorid'])
             ->execute()
             ->getResponse();
+
         return response()->json([
             'visitorProfile' => $visitorProfile
         ]);
@@ -129,8 +85,7 @@ class MatomoController extends BaseController
 
     public function getLiveCounter()
     {
-        $matomoUrl = $this->matomoUrl;
-        $query_factory = QueryFactory::create($matomoUrl);
+        $query_factory = QueryFactory::create($this->matomoUrl);
         $query_factory
             ->set('idSite', $this->siteId)
             ->set('token_auth', $this->authToken);
@@ -147,32 +102,34 @@ class MatomoController extends BaseController
 
     public function getVisitsData(Request $request)
     {
-        $data = $request->all();
-        $matomoUrl = $this->matomoUrl;
-
-        $periodCheck = $this->getDateOrPeriodFromRequest($data);
+        $date = $this->getDateOrPeriodFromRequest($request);
+        $period = $this->getDateOrPeriodFromRequest($request, true);
 
         $imgDate = '';
-        $period = $periodCheck['period'];
-        $date = $periodCheck['date'];
 
         switch ($period) {
             case 'range':
-                $imgDate = $periodCheck['date'];
+                $imgDate = $date;
                 break;
             case 'week': case 'month':
-                $imgDate = $data["value"]["y2"].'-'.$data["value"]["m2"].'-'.$data["value"]["d2"].','.$data["value"]["y1"].'-'.$data["value"]["m1"].'-'.$data["value"]["d1"];
+                $value = $request->all()["value"];
+                $range = array(
+                    'start' => $value["y2"].'-'.$value["m2"].'-'.$value["d2"],
+                    'end'   => $value["y1"].'-'.$value["m1"].'-'.$value["d1"]
+                );
+                $imgDate = $range['start'].','.$range['end'];
                 break;
             case 'day':
-                if($periodCheck['date'] == 'today'){
+                if($date == 'today'){
                     $imgDate = date('Y-m-d').",".date('Y-m-d', strtotime(date('Y-m-d')." +2 day"));
                 }
-                if($periodCheck['date'] == 'yesterday'){
+                if($date == 'yesterday'){
                     $imgDate = date('Y-m-d').",".date('Y-m-d', strtotime(date('Y-m-d')." +2 day"));
                 }
                 break;
         }
 
+        $matomoUrl = $this->matomoUrl;
         $query_factory = QueryFactory::create($matomoUrl);
 
         $query_factory
@@ -201,23 +158,23 @@ class MatomoController extends BaseController
 
     public function getReferrers(Request $request)
     {
-        $data = $request->all();
-        $matomoUrl = $this->matomoUrl;
-        $query_factory = QueryFactory::create($matomoUrl);
+        $query_factory = QueryFactory::create($this->matomoUrl);
+
         $query_factory
             ->set('idSite', $this->siteId)
             ->set('token_auth', $this->authToken);
 
-        $periodCheck = $this->getDateOrPeriodFromRequest($data);
+        $date = $this->getDateOrPeriodFromRequest($request);
+        $period = $this->getDateOrPeriodFromRequest($request, true);
         
-        $data = $query_factory->getQuery('Referrers.getAll')
-            ->setParameter('date', $periodCheck['date'])
-            ->setParameter('period', $periodCheck['period'])
+        $referrers = $query_factory->getQuery('Referrers.getAll')
+            ->setParameter('date', $date)
+            ->setParameter('period', $period)
             ->execute()
             ->getResponse();
 
         return response()->json([
-            'data'=> $data
+            'data'=> $referrers
         ]);
     }
 
@@ -247,6 +204,90 @@ class MatomoController extends BaseController
         //redirect back
         return redirect()->route('dashboard.matomo')->with('notification', 'Instellingen opgeslagen!');
         
+    }
+
+
+    // private function getDateOrPeriodFromRequest(Request $request, $periodCheck = false) 
+    // {
+    //     $data = $request->all()['value'];
+
+    //     $date = strtolower($data["range"]); //$data["value"]["range"]
+    //     $period = 'day';
+
+    //     if(!isset($data["y2"],$data["m2"],$data["d2"])){
+    //         return $periodCheck ? $period : $date;
+    //     }
+
+    //     $range = array(
+    //         'start' => $data["y2"].'-'.$data["m2"].'-'.$data["d2"],
+    //         'end'   => $data["y1"].'-'.$data["m1"].'-'.$data["d1"]
+    //     );
+        
+    //     $now = Carbon::now();
+    //     $start = Carbon::createFromFormat('Y-m-d', $range['start']);
+    //     $end = Carbon::createFromFormat('Y-m-d', $range['end']);
+        
+    //     $difference = $now->diffInDays($end);
+        
+    //     if ($difference > 0) {
+    //         $period = 'range';
+    //         $date = $range['start'].','.$range['end'];
+    //     }
+
+    //     $diffStartToEnd = $start->diffInDays($end);
+    //     if($diffStartToEnd == 6){
+    //         $period = 'week';
+    //         $date = 'last7';
+    //     }
+
+    //     if($diffStartToEnd == 29){
+    //         $period = 'month';
+    //         $date = 'last30';
+    //     }
+
+    //     return $periodCheck ? $period : $date;
+    // }
+
+    private function getDateOrPeriodFromRequest(Request $request, $periodCheck = false) 
+    {
+        $data = $request->all()['value'];
+        $date = strtolower($data["range"]);
+        $period = 'day';
+
+        if(!isset($data["y2"],$data["m2"],$data["d2"])){
+            return $periodCheck ? $period : $date;
+        }
+
+        $range = array(
+            'start' => $data["y2"].'-'.$data["m2"].'-'.$data["d2"],
+            'end'   => $data["y1"].'-'.$data["m1"].'-'.$data["d1"]
+        );
+
+        $now = Carbon::now();
+        $start = Carbon::createFromFormat('Y-m-d', $range['start']);
+        $end = Carbon::createFromFormat('Y-m-d', $range['end']);
+
+
+        $difference = $now->diffInDays($end); // difference in days between end date and now
+        $diffStartToEnd = $start->diffInDays($end); //difference in days between start date and end date
+
+
+        if($diffStartToEnd == 6){
+            $period = 'week';
+            $date = 'last7';
+        }
+
+        if($diffStartToEnd == 29){
+            $period = 'month';
+            $date = 'last30';
+        }
+
+        if ($difference > 0) {
+            $period = 'range';
+            $date = $range['start'].','.$range['end'];
+        }
+        
+        return $periodCheck ? $period : $date;
     }
 
 }

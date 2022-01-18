@@ -252,7 +252,6 @@
     $(function() {
         let start = moment().subtract(0, 'days');
         let end = moment();
-        
 
         function cb(start, end) {
             $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
@@ -312,87 +311,163 @@
                                     tts = parseInt(v.timeSpent, 10) + tts;
                                 }
                             });
-                            $("#visitorcards").append(`
-                                <li class="card shadow my-3">
-                                    <div class="card-body d-flex">
-                                        <a class="visitor-log-visitor-profile-link visitorLogTooltip" data-visitor-id="${value.visitorId}">
-                                            <i class="fa fa-id-card" aria-hidden="true"></i> <span>View visitor profile</span>
-                                        </a>
-                                        <div class="col-4 s12 m3">
-                                            <strong 
-                                                class="visitor-log-datetime visitorLogTooltip" 
-                                                title="This visitor's last visit was ${parseInt(((value.secondsSinceLastVisit/60)/60)/24,10)} days ago.">
-                                                ${value.serverDatePretty}
-                                                - ${value.serverTimePretty}
-                                            </strong>
-                                            <span 
-                                                class="visitor-log-ip-location visitorLogTooltip" 
-                                                title="Visitor ID: ${value.visitorId}
-                                                        Visit ID: ${value.idVisit}
-                                                        ${value.location}
-                                                        GPS (lat/long): ${value.latitude},${value.longitude}
-                                                ">
-                                                IP: ${value.visitIp}
-                                                <br>
-                                                <span>
-                                                    <img width="16" class="flag" src="${matomoUrl}/${value.countryFlag}">&nbsp;
-                                                    ${value.city}
-                                                </span>
-                                            </span>
-                                            ${value.referrerType == 'search' ? `<div class="visitorReferrer search"><span title="${value.referrerKeyword}"><img class="mr-2" width="16" src="${matomoUrl}/${value.referrerSearchEngineIcon}" alt="${value.referrerName}"><span>${value.referrerName}</span></span></div>` : ''}
-                                            ${value.referrerType == 'direct' ? `<div class="visitorReferrer direct">Direct Entry</div>` : ''}
-                                            ${value.referrerType == 'website' ? `<div class="visitorReferrer website"><span>Website: </span><a href="${value.referrerUrl}" rel="noreferrer noopener" target="_blank" class="visitorLogTooltip" title="${value.referrerUrl}" style="text-decoration:underline;">${value.referrerName}</a></div>` : ''}
-                                            ${value.sessionReplayUrl !== null ? `<a class="visitorLogReplaySession" href="${matomoUrl}/index.php${value.sessionReplayUrl}" target="_blank" rel="noreferrer noopener"><i class="far fa-play-circle"></i> Replay recorded session</a>` : ''}
-                                        </div> 
-                                        <div class="col s12 m2 own-visitor-column"> 
-                                            <span class="visitorLogIcons">
-                                                <span class="visitorDetails">
-                                                    ${value.visitorType == 'returning' ? `<span class="visitorLogIconWithDetails visitorTypeIcon"><img src="${matomoUrl}/${value.visitorTypeIcon}"><ul class="details"><li>Returning Visitor - ${value.visitCount > 1 ? value.visitCount + ' visits': value.visitCount + ' visit'}</li></ul></span>` : ``}
-                                                    <span class="visitorLogIconWithDetails flag" profile-header-text="Warrenville">
-                                                        <img src="${matomoUrl}/${value.countryFlag}">
-                                                        <ul class="details">
-                                                            <li>Country: ${value.country}</li>
-                                                            <li>Region: ${value.region}</li>                
-                                                            <li>City: ${value.city}</li>                
-                                                            <li>Browser language: ${value.language}</li>                                
-                                                            <li>IP: ${value.visitIp}</li>
-                                                            <li>Visitor ID: ${value.visitorId}</li>
-                                                        </ul>
-                                                    </span>
-                                                    <span class="visitorLogIconWithDetails" profile-header-text="${value.browser}">
-                                                        <img src="${matomoUrl}/${value.browserIcon}">
-                                                        <ul class="details">
-                                                            <li>Browser: ${value.browser}</li>
-                                                            <li>Browser engine: ${value.browserFamily}</li>
-                                                            <li id="pluginlist_${index}" class="plugins">
-                                                                Plugins:
-                                                            </li>
-                                                        </ul>
-                                                    </span>
-                                                    <span class="visitorLogIconWithDetails" profile-header-text="${value.operatingSystem}">
-                                                        <img src="${matomoUrl}/${value.operatingSystemIcon}">
-                                                        <ul class="details">
-                                                            <li>Operating system: ${value.operatingSystemName} ${value.operatingSystemVersion}</li>
-                                                        </ul>
-                                                    </span>
-                                                    <span class="visitorLogIconWithDetails" profile-header-text="${value.resolution}">
-                                                        <img src="${matomoUrl}/${value.deviceTypeIcon}">
-                                                        <ul class="details">
-                                                            <li>Device type: ${value.deviceType}</li>
-                                                            <li>Device brand: ${value.deviceBrand}</li>                
-                                                            <li>Device model: ${value.deviceModel}</li>                
-                                                            <li>Resolution: ${value.resolution}</li>            
-                                                        </ul>
-                                                    </span>
-                                                </span>
+
+                            $("#visitorcards").append(`<li class="card shadow my-3" data-log="${index}_${value.visitorId}">${response.htmlData}</li>`);
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] a.visitor-log-visitor-profile-link`).attr('data-visitor-id', value.visitorId);
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] strong.visitorLogTooltip`)
+                            .attr('title', `This visitor's last visit was ${parseInt(((value.secondsSinceLastVisit/60)/60)/24,10)} days ago.`);
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] strong.visitorLogTooltip`).text(`
+                                ${value.serverDatePretty}
+                                - ${value.serverTimePretty}
+                            `);
+
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] span.visitor-log-ip-location`)
+                            .attr('title', `Visitor ID: ${value.visitorId} \n Visit ID: ${value.idVisit} \n ${value.location} \n GPS (lat/long): ${value.latitude},${value.longitude}
+                            `);
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] span.visitor-log-ip-location #visitip`).text(`
+                                IP: ${value.visitIp}
+                            `);
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] span.visitor-log-ip-location #visitip`).css({
+                                'font-size': "11px"
+                            });
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] span.visitor-log-ip-location span#visitor_city_span`).html(`
+                                <img width="16" class="flag" src='${matomoUrl}/${value.countryFlag}'>&nbsp;
+                                ${value.city}
+                            `);
+
+                            switch(value.referrerType) {
+                                case 'search':
+                                    $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .visitorreferencearea`).html(`
+                                        <div class="visitorReferrer search">
+                                            <span title="${value.referrerKeyword}">
+                                                <img 
+                                                    class="mr-2" 
+                                                    width="16" 
+                                                    src="${matomoUrl}/${value.referrerSearchEngineIcon}" 
+                                                    alt="${value.referrerName}">
+                                                <span>${value.referrerName}</span>
                                             </span>
                                         </div>
-                                        <div id="visitorActions_${index}" class="col-6 s12 m7 column">
-                                            <strong>${value.actions > 1 ? value.actions + ' Actions' : value.actions + ' Action'}</stong>
+                                    `);
+                                    break;
+                                case 'direct':
+                                    $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .visitorreferencearea`).html(`
+                                        <div class="visitorReferrer direct">Direct Entry</div>
+                                    `);
+                                    break;
+                                case 'website':
+                                    $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .visitorreferencearea`).html(`
+                                        <div class="visitorReferrer website">
+                                            <span>Website: </span>
+                                            <a 
+                                                href="${value.referrerUrl}" 
+                                                rel="noreferrer noopener" 
+                                                target="_blank" 
+                                                class="visitorLogTooltip" 
+                                                title="${value.referrerUrl}" 
+                                                style="text-decoration:underline;">
+                                                ${value.referrerName}
+                                            </a>
                                         </div>
-                                    </div>
+                                    `);
+                                    break;
+                                default:
+                            }
+
+                            // visit log returning user icon
+                            if(value.visitorType == 'returning'){
+                                $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails`).append('<span class="visitorLogIconWithDetails visitorTypeIcon"></span>');
+                            
+                                $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails`).append(`
+                                    <img src="${matomoUrl}/${value.visitorTypeIcon}">
+                                `);
+
+                                $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails`).append('<ul class="details"></ul>');
+
+                                $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails ul.details`).append(`
+                                    <li>Returning Visitor - ${value.visitCount > 1 ? value.visitCount + ' visits': value.visitCount + ' visit'}</li>
+                                `);
+                            }
+
+                            // visit log flag icon
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails`)
+                            .append(`<span class="visitorLogIconWithDetails flag" profile-header-text=""></span>`);
+
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.flag`)
+                            .append(`<img src="${matomoUrl}/${value.countryFlag}">`);
+
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.flag`)
+                            .append(`<ul class="details"></ul>`);
+
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.flag ul.details`)
+                            .append(`
+                                <li>Country: ${value.country}</li>
+                                <li>Region: ${value.region}</li>
+                                <li>City: ${value.city}</li> 
+                                <li>Browser language: ${value.language}</li>  
+                                <li>IP: ${value.visitIp}</li>
+                                <li>Visitor ID: ${value.visitorId}</li>
+                            `);
+
+                            // visit log browser icon
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails`)
+                            .append(`<span class="visitorLogIconWithDetails" profile-header-text="${value.browser}"></span>`);
+
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.browser}"]`)
+                            .append(`<img src="${matomoUrl}/${value.browserIcon}">`);
+
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.browser}"]`)
+                            .append(`<ul class="details"></ul>`);
+
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.browser}"] ul.details`)
+                            .append(`
+                                <li>Browser: ${value.browser}</li>
+                                <li>Browser engine: ${value.browserFamily}</li>
+                                <li id="pluginlist_${index}" class="plugins">
+                                    Plugins:
                                 </li>
                             `);
+
+                            // visit log operation system icon
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails`)
+                            .append(`<span class="visitorLogIconWithDetails" profile-header-text="${value.operatingSystem}"></span>`);
+
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.operatingSystem}"]`)
+                            .append(`<img src="${matomoUrl}/${value.operatingSystemIcon}">`);
+
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.operatingSystem}"]`)
+                            .append(`<ul class="details"></ul>`);
+
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.operatingSystem}"] ul.details`)
+                            .append(`
+                                <li>Operating system: ${value.operatingSystemName} ${value.operatingSystemVersion}</li>
+                            `);
+
+                            // visit log resolution icon
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails`)
+                            .append(`<span class="visitorLogIconWithDetails" profile-header-text="${value.resolution}"></span>`);
+
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.resolution}"]`)
+                            .append(`<img src="${matomoUrl}/${value.deviceTypeIcon}">`);
+
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.resolution}"]`)
+                            .append(`<ul class="details"></ul>`);
+
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.resolution}"] ul.details`)
+                            .append(`
+                                <li>Device type: ${value.deviceType}</li>
+                                <li>Device brand: ${value.deviceBrand}</li>                
+                                <li>Device model: ${value.deviceModel}</li>                
+                                <li>Resolution: ${value.resolution}</li>  
+                            `);
+
+
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .visitorActions`).attr('id', `visitorActions_${index}`);
+
+                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .visitorActions`).html(`
+                                <strong>${value.actions > 1 ? value.actions + ' Actions' : value.actions + ' Action'}</strong>
+                            `);
+                            
                             $.each(value.pluginsIcons,function(i,v){
                                 $(`#visitorcards .card #pluginlist_${index}`).append(`
                                     <img width="16px" height="16px" src="${matomoUrl}/${v.pluginIcon}" alt="${v.pluginName}">
@@ -412,93 +487,80 @@
                                 }
                             }
                             if(value.actions > 0){
-                                $(`#visitorcards .card #visitorActions_${index}`).append(`
-                                    <div class="visitor-log-page-list">
-                                        <ol class="visitorLog actionList"> 
-                                        </ol>
-                                    </div>
-                                `);
+                                $(`#visitorcards .card #visitorActions_${index}`).append(`<div class="visitor-log-page-list"></div>`);
+                                $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list`).append('<ol class="visitorLog actionList"></ol>');
+
                             }
+
                             $.each(value.actionDetails, function(i,v){
                                 if(v.type == 'action'){
                                     $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog`).append(`
-                                        <li class="action folder" 
-                                            title="
-                                            ${v.serverTimePretty}
-                                            ${v.subtitle}
-                                            ${v.pageLoadTime !== undefined ? `Page load time: ${v.pageLoadTime}` : ''}
-                                            ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}
-                                            ">
-                                            <div>
-                                                <span class="truncated-text-line">${v.title}</span>
-                                                <img src="${matomoUrl}/${v.iconSVG}" class="action-list-action-icon action">
-                                                <p>                  
-                                                    <a 
-                                                        href="${v.url}" 
-                                                        rel="noreferrer noopener" 
-                                                        target="_blank" 
-                                                        class="action-list-url truncated-text-line">
-                                                            ${v.url}
-                                                    </a>
-                                                </p>            
+                                        <li id="visitor_action_folder_${i}"
+                                        class="action folder"
+                                        title="${v.serverTimePretty} \n ${v.subtitle} \n ${v.pageLoadTime !== undefined ? `Page load time: ${v.pageLoadTime}` : ''} \n ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}
+                                        "></li>
+                                    `);
+                                    $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog #visitor_action_folder_${i}`).append(`
+                                        <div class="action_folder_inner"><span class="truncated-text-line">${v.title}</span></div>
+                                    `);
+                                    $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog #visitor_action_folder_${i} .action_folder_inner`).append(`
+                                        <img src="${matomoUrl}/${v.iconSVG}" class="action-list-action-icon action">
+                                    `);
+                                    $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog #visitor_action_folder_${i} .action_folder_inner`).append(`
+                                        <p><a href="${v.url}" target="_blank" rel="noreferrer noopener" class="action-list-url truncated-text-line" >${v.url}</a></p>
+                                    `);
+                                }
+                                if(v.type != 'action' && $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog.actionList`).children('.action.folder').length > 0 && $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index}`).length > 0){
+                                    $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index} .actionList`).append(`
+                                        <li class="action outlink" title="${v.serverTimePretty} \n ${v.subtitle} \n ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}">
+                                            <div class="outlink_folder_inner">
+                                                <img src="${matomoUrl}/${v.iconSVG}" class="action-list-action-icon ${v.type}">
+                                                <a href="${v.url}" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line">
+                                                    ${v.url}
+                                                </a>
                                             </div>
                                         </li>
                                     `);
-                                }else{
-                                    if($(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog.actionList`).children('.action.folder').length > 0){
-                                        if($(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index}`).length > 0){
-                                            $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index} .actionList`).append(`
-                                                <li class="action" 
-                                                    title="${v.serverTimePretty}
-                                                            ${v.subtitle}
-                                                            ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}">
-                                                    <div>
-                                                        <img src="${matomoUrl}/${v.iconSVG}" class="action-list-action-icon ${v.type}">
-                                                        <a href="${v.url}" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line">
-                                                            ${v.url}
-                                                        </a>
-                                                    </div>
-                                                </li>
-                                            `);
-                                        }else{
-                                            $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog`).append(`
-                                                <li id="pageviewActions_${index}" class="pageviewActions last-action" data-view-count="${v.pageviewPosition}">
-                                                    <ol class="actionList p-0">
-                                                    </ol>
-                                                </li>
-                                            `);
-                                            $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index} .actionList`).append(`
-                                                <li class="action" 
-                                                    title="${v.serverTimePretty}
-                                                            ${v.subtitle}
-                                                            ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}">
-                                                    <div>
-                                                        <img src="${matomoUrl}/${v.iconSVG}" class="action-list-action-icon ${v.type}">
-                                                        <a href="${v.url}" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line">
-                                                            ${v.url}
-                                                        </a>
-                                                    </div>
-                                                </li>
-                                            `);
-                                        }
-                                    }else{
-                                        $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog.actionList`).append(`
-                                            <li class="action" 
-                                                title="${v.serverTimePretty}
-                                                        ${v.subtitle}
-                                                        ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}">
-                                                <div>
-                                                    <img src="${matomoUrl}/${v.iconSVG}" class="action-list-action-icon ${v.type}">
-                                                    <a href="${v.url}" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line">
-                                                        ${v.url}
-                                                    </a>
-                                                </div>
-                                            </li>                                         
-                                        `)
-                                    }
-                                    
+                                }
+                                if(v.type != 'action' && $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog.actionList`).children('.action.folder').length > 0 && $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index}`).length == 0){
+                                    // add action here from line 691
+                                    $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog`).append(`
+                                        <li id="pageviewActions_${index}" class="pageviewActions last-action" data-view-count="${v.pageviewPosition}">
+                                            <ol class="actionList p-0">
+                                            </ol>
+                                        </li>
+                                    `);
+                                    $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index} .actionList`).append(`
+                                        <li class="action" 
+                                            title="${v.serverTimePretty}
+                                                    ${v.subtitle}
+                                                    ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}">
+                                            <div>
+                                                <img src="${matomoUrl}/${v.iconSVG}" class="action-list-action-icon ${v.type}">
+                                                <a href="${v.url}" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line">
+                                                    ${v.url}
+                                                </a>
+                                            </div>
+                                        </li>
+                                    `);
+                                }
+                                if(v.type != 'action' && $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog.actionList`).children('.action.folder').length == 0) {
+                                    $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog.actionList`).append(`
+                                        <li class="action" 
+                                            title="${v.serverTimePretty}
+                                                    ${v.subtitle}
+                                                    ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}">
+                                            <div>
+                                                <img src="${response.matomoUrl}/${v.iconSVG}" class="action-list-action-icon ${v.type}">
+                                                <a href="${v.url}" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line">
+                                                    ${v.url}
+                                                </a>
+                                            </div>
+                                        </li>                                         
+                                    `)
                                 }
                             });
+                            
                             if($(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index}`).length > 0){
                                 let el = $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index} .actionList`);
                                 let lastchild = $(el).children('.action').last();
