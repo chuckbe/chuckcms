@@ -747,12 +747,17 @@
                             </ul>
                         </span>
                     `);
-                    
+
                     if(response.visitorProfile.totalDownloads > 0){
                         $('.modal-visitor-profile-info .visitor-profile-summary .summary').html(`
                             <p>
                                 Spent a total of <strong>${response.visitorProfile.totalVisitDurationPretty}</strong> on the website, and performed 
-                                <strong>${response.visitorProfile.totalActions} ${response.visitorProfile.totalActions == 1  ? 'action' : 'actions'}</strong> (${response.visitorProfile.totalPageViews} ${response.visitorProfile.totalPageViews == 1 ? 'Pageview' : 'Pageviews'} ${response.visitorProfile.totalDownloads} ${response.visitorProfile.totalDownloads == 1 ? 'Download' : 'Downloads'}, ${response.visitorProfile.totalOutlinks > 0 ? response.visitorProfile.totalOutlinks == 1 ? response.visitorProfile.totalOutlinks+' Outlink' : response.visitorProfile.totalOutlinks+' Outlinks' : ''} )
+                                <strong>${response.visitorProfile.totalActions} ${response.visitorProfile.totalActions == 1  ? 'action' : 'actions'}</strong> 
+                                (
+                                    ${response.visitorProfile.totalPageViews} ${response.visitorProfile.totalPageViews == 1 ? 'Pageview' : 'Pageviews'} 
+                                    ${response.visitorProfile.totalDownloads} ${response.visitorProfile.totalDownloads == 1 ? 'Download' : 'Downloads'}, 
+                                    ${response.visitorProfile.totalOutlinks > 0 ? response.visitorProfile.totalOutlinks == 1 ? response.visitorProfile.totalOutlinks+' Outlink' : response.visitorProfile.totalOutlinks+' Outlinks' : ''} 
+                                )
                                 in ${response.visitorProfile.totalVisits} ${response.visitorProfile.totalVisits == 1  ? 'visit' : 'visits'}.
                                 <br>
                                 converted ${response.visitorProfile.totalGoalConversions == 1 ? response.visitorProfile.totalGoalConversions+' Goal' : response.visitorProfile.totalGoalConversions+' Goals'}
@@ -776,28 +781,34 @@
                             Generated a Life Time Revenue of €${response.visitorProfile.totalEcommerceRevenue}. Purchased ${response.visitorProfile.totalEcommerceItems} items in ${response.visitorProfile.totalEcommerceConversions} ecommerce orders.
                         </p>
                     `);
-                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit').html(`
-                        <div class="col-6">
-                            <h2>First Visit</h2>
-                            <div class="firstvisit">
-                                <p>
-                                    ${response.visitorProfile.firstVisit.prettyDate} <span class="text-muted">- ${response.visitorProfile.firstVisit.daysAgo} days ago</span>
-                                    <br>
-                                    from <strong>${response.visitorProfile.firstVisit.referralSummary}</strong>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <h2>Last Visit</h2>
-                            <div class="firstvisit">
-                                <p>
-                                    ${response.visitorProfile.lastVisit.prettyDate} <span class="text-muted">- ${response.visitorProfile.lastVisit.daysAgo} days ago</span>
-                                    <br>
-                                    from <strong>${response.visitorProfile.firstVisit.referralSummary}</strong>
-                                </p>
-                            </div>
-                        </div>
+
+                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit').html('');
+
+                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit').append(`
+                        <div class="col-6 first_visit_outer"></div>
+                        <div class="col-6 last_visit_outer"></div>
                     `);
+
+                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit .first_visit_outer').append(`<h2>First Visit</h2>`);
+                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit .first_visit_outer').append(`<div class="firstvisit"></div>`);
+                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit .first_visit_outer .firstvisit').append(`
+                        <p>
+                            ${response.visitorProfile.firstVisit.prettyDate} <span class="text-muted">- ${response.visitorProfile.firstVisit.daysAgo} days ago</span>
+                            <br>
+                            from <strong>${response.visitorProfile.firstVisit.referralSummary}</strong>
+                        </p>
+                    `);
+
+                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit .last_visit_outer').append(`<h2>Last Visit</h2>`);
+                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit .last_visit_outer').append(`<div class="lastvisit"></div>`);
+                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit .last_visit_outer .lastvisit').append(`
+                        <p>
+                            ${response.visitorProfile.lastVisit.prettyDate} <span class="text-muted">- ${response.visitorProfile.lastVisit.daysAgo} days ago</span>
+                            <br>
+                            from <strong>${response.visitorProfile.firstVisit.referralSummary}</strong>
+                        </p>
+                    `);
+
                     $('.modal-visitor-profile-info .visitor-profile-summary .devices').html(``);
                     $(response.visitorProfile.devices).each(function(i, v) {
                         let devices = '';
