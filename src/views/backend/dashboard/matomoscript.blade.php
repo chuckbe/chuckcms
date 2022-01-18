@@ -560,7 +560,7 @@
                                     `)
                                 }
                             });
-                            
+
                             if($(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index}`).length > 0){
                                 let el = $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index} .actionList`);
                                 let lastchild = $(el).children('.action').last();
@@ -678,36 +678,54 @@
                 },
                 success:function(response){
                     $('.modal-visitor-profile-info').attr('id', visitorId);
+                    
                     $('<span>', {text: visitorId+" "}).append('.visitor-profile-overview .visitor-profile-header .visitor-profile-id');
-                    $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`
-                        <span class="visitorLogIconWithDetails flag" profile-header-text="${response.visitorProfile.countries[0].cities[0]}">
+
+                    // visit summary flag 
+                    $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`<span class="visitorLogIconWithDetails flag" profile-header-text="${response.visitorProfile.countries[0].cities[0]}"></span>`);
+                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails.flag[profile-header-text="${response.visitorProfile.countries[0].cities[0]}"]`).append(`
                             <img src="${matomoUrl}/${response.visitorProfile.countries[0].flag}">
-                            <ul class="details">
-                                <li>Country: ${response.visitorProfile.countries[0].prettyName}</li>
-                                <li>City: ${response.visitorProfile.countries[0].cities[0]}</li>                
-                                <li>Browser language: ${response.visitorProfile.lastVisits[0].language}</li>                                
-                                <li>IP: ${response.visitorProfile.lastVisits[0].visitIp}</li>
-                                <li>Visitor ID: ${response.visitorProfile.lastVisits[0].visitorId}</li>
-                            </ul>
-                        </span>
                     `);
+                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails.flag[profile-header-text="${response.visitorProfile.countries[0].cities[0]}"]`).append(`
+                            <ul class="details"></ul>
+                    `);
+                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails.flag[profile-header-text="${response.visitorProfile.countries[0].cities[0]}"] ul.details`).append(`
+                        <li>Country: ${response.visitorProfile.countries[0].prettyName}</li>
+                        <li>City: ${response.visitorProfile.countries[0].cities[0]}</li>                
+                        <li>Browser language: ${response.visitorProfile.lastVisits[0].language}</li>                                
+                        <li>IP: ${response.visitorProfile.lastVisits[0].visitIp}</li>
+                        <li>Visitor ID: ${response.visitorProfile.lastVisits[0].visitorId}</li>
+                    `);
+
+                    // visit summary browser
                     $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`
-                        <span class="visitorLogIconWithDetails" profile-header-text="${response.visitorProfile.lastVisits[0].browser}">
-                            <img src="${matomoUrl}/${response.visitorProfile.lastVisits[0].browserIcon}">
-                            <ul class="details">
-                                <li>Browser: ${response.visitorProfile.lastVisits[0].browser}</li>
-                                <li>Browser engine: ${response.visitorProfile.lastVisits[0].browserFamily}</li>
-                                <li id="pluginlist_modal${visitorId}" class="plugins">
-                                    Plugins:
-                                </li>
-                            </ul>
-                        </span>
+                        <span class="visitorLogIconWithDetails" profile-header-text="${response.visitorProfile.lastVisits[0].browser}"></span>
                     `);
+
+                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails[profile-header-text="${response.visitorProfile.lastVisits[0].browser}"]`).append(`
+                        <img src="${matomoUrl}/${response.visitorProfile.lastVisits[0].browserIcon}">
+                    `);
+
+                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails[profile-header-text="${response.visitorProfile.lastVisits[0].browser}"]`).append(`
+                        <ul class="details"></ul>
+                    `);
+
+                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails[profile-header-text="${response.visitorProfile.lastVisits[0].browser}"] ul.details`).append(`
+                        <li>Browser: ${response.visitorProfile.lastVisits[0].browser}</li>
+                        <li>Browser engine: ${response.visitorProfile.lastVisits[0].browserFamily}</li>
+                        <li id="pluginlist_modal${visitorId}" class="plugins">
+                            Plugins:
+                        </li>
+                    `);
+
                     $.each(response.visitorProfile.lastVisits[0].pluginsIcons,function(i,v){
                         $(`#pluginlist_modal${visitorId}`).append(`
                             <img width="16px" height="16px" src="${matomoUrl}/${v.pluginIcon}" alt="${v.pluginName}">
                         `);
                     });
+
+
+                    // visit summary operating system
                     $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`
                         <span class="visitorLogIconWithDetails" profile-header-text="${response.visitorProfile.lastVisits[0].operatingSystem}">
                             <img src="${matomoUrl}/${response.visitorProfile.lastVisits[0].operatingSystemIcon}">
@@ -716,6 +734,8 @@
                             </ul>
                         </span>
                     `);
+
+                    // visit summary resolution
                     $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`
                         <span class="visitorLogIconWithDetails" profile-header-text="${response.visitorProfile.lastVisits[0].resolution}">
                             <img src="${matomoUrl}/${response.visitorProfile.lastVisits[0].deviceTypeIcon}">
@@ -727,6 +747,7 @@
                             </ul>
                         </span>
                     `);
+                    
                     if(response.visitorProfile.totalDownloads > 0){
                         $('.modal-visitor-profile-info .visitor-profile-summary .summary').html(`
                             <p>
