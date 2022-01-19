@@ -301,276 +301,422 @@
                     value : convertedRange,
                 },
                 success:function(response){
+                    let response_log_length = response.lastVisitsDetails.length;
                     $('#visitoroverviewcards #visitoroverview').empty();
                     $('#visitorcards').empty();
-                    if(response.lastVisitsDetails.length > 0){
-                        $.each(response.lastVisitsDetails, function( index, value ) {
-                            let tts = 0;
-                            $.each(value.actionDetails,function(i,v){
-                                if("timeSpent" in v){
-                                    tts = parseInt(v.timeSpent, 10) + tts;
-                                }
-                            });
 
-                            $("#visitorcards").append(`<li class="card shadow my-3" data-log="${index}_${value.visitorId}">${response.htmlData}</li>`);
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] a.visitor-log-visitor-profile-link`).attr('data-visitor-id', value.visitorId);
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] strong.visitorLogTooltip`)
-                            .attr('title', `This visitor's last visit was ${parseInt(((value.secondsSinceLastVisit/60)/60)/24,10)} days ago.`);
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] strong.visitorLogTooltip`).text(`
-                                ${value.serverDatePretty}
-                                - ${value.serverTimePretty}
-                            `);
+                    if(response_log_length == 0) {
+                        $('#visitorcards').html('<h2>Data not available</h2>');
+                        $("#visitorcards ").siblings('nav').remove();
+                    }
+                    if(response_log_length > 0){
+                        $('.matomo-items ul#visitorcards').html(response.htmlData);
+                    }
+                    let logBlock = $('.matomo-items ul#visitorcards > li.card');
+                    $.each(response.lastVisitsDetails, function( index, value ) {
+                        let tts = 0;
+                        let flag = matomoUrl+'/'+value.countryFlag;
+                        let countryFlagIcon = $('<img>').attr({
+                            width: '16px',
+                            class: 'flag',
+                            src: flag
+                        });
+                        $.each(value.actionDetails,function(i,v){
+                            if("timeSpent" in v) tts = parseInt(v.timeSpent, 10) + tts;
+                        });
+                        $(logBlock).clone().appendTo('.matomo-items ul#visitorcards');
+                        let getLastLogBlock = $('.matomo-items ul#visitorcards').children('li.card').last();
+                        $(getLastLogBlock).attr('data-log', `${index}_${value.visitorId}`);
+                        let thisLogBlog = $(`#visitorcards li.card[data-log=${index}_${value.visitorId}]`);
+                        $(thisLogBlog).removeClass('d-none');
+                        $(thisLogBlog).find(`a.visitor-log-visitor-profile-link`).attr('data-visitor-id', value.visitorId);
+                        $(thisLogBlog).find(`strong.visitorLogTooltip`).attr('title', `This visitor's last visit was ${parseInt(((value.secondsSinceLastVisit/60)/60)/24,10)} days ago.`);
+                        $(thisLogBlog).find(`strong.visitorLogTooltip`).text(`${value.serverDatePretty} - ${value.serverTimePretty}`);
+                        $(thisLogBlog).find(`span.visitor-log-ip-location`).attr('title', `Visitor ID: ${value.visitorId} \n Visit ID: ${value.idVisit} \n ${value.location} \n GPS (lat/long): ${value.latitude},${value.longitude}`);
+                        $(thisLogBlog).find(`span.visitor-log-ip-location #visitip`).css({'font-size': "11px"});
+                        $(thisLogBlog).find('span.visitor-log-ip-location span#visitor_city_span').html('&nbsp;'+value.city);
+                        $(thisLogBlog).find('span.visitor-log-ip-location span#visitor_city_span').prepend(countryFlagIcon);
 
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] span.visitor-log-ip-location`)
-                            .attr('title', `Visitor ID: ${value.visitorId} \n Visit ID: ${value.idVisit} \n ${value.location} \n GPS (lat/long): ${value.latitude},${value.longitude}
-                            `);
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] span.visitor-log-ip-location #visitip`).text(`
-                                IP: ${value.visitIp}
-                            `);
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] span.visitor-log-ip-location #visitip`).css({
-                                'font-size': "11px"
-                            });
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] span.visitor-log-ip-location span#visitor_city_span`).html(`
-                                <img width="16" class="flag" src="${matomoUrl}/${value.countryFlag}"> &nbsp;
-                                ${value.city}
-                            `);
+                        switch(value.referrerType) {
+                            case 'search':
+                                let referrerSearchEngineIcon = matomoUrl+'/'+value.referrerSearchEngineIcon
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.direct').remove();
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.website').remove();
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.search').removeClass('d-none')
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.search span.referrerKeyword').attr('title', value.referrerKeyword);
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.search span.referrerKeyword img').attr('alt', value.referrerName);
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.search span.referrerKeyword img').attr('src', referrerSearchEngineIcon);
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.search span.referrerKeyword span').text(value.referrerName);
+                                break;
+                            case 'direct':
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.search').remove();
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.website').remove();
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.direct').removeClass('d-none');
+                                break;
+                            case 'website':
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.direct').remove();
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.search').remove();
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.website').removeClass('d-none');
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.website a.visitorLogTooltip').attr('title', value.referrerUrl);
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.website a.visitorLogTooltip').attr('href', value.referrerUrl);
+                                $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.website a.visitorLogTooltip').text(value.referrerUrl);
+                                break;
+                            default:
+                        }
 
-                            switch(value.referrerType) {
-                                case 'search':
-                                    $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .visitorreferencearea`).html(`
-                                        <div class="visitorReferrer search">
-                                            <span title="${value.referrerKeyword}">
-                                                <img 
-                                                    class="mr-2" 
-                                                    width="16" 
-                                                    src="${matomoUrl}/${value.referrerSearchEngineIcon}" 
-                                                    alt="${value.referrerName}">
-                                                <span>${value.referrerName}</span>
-                                            </span>
-                                        </div>
-                                    `);
-                                    break;
-                                case 'direct':
-                                    $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .visitorreferencearea`).html(`
-                                        <div class="visitorReferrer direct">Direct Entry</div>
-                                    `);
-                                    break;
-                                case 'website':
-                                    $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .visitorreferencearea`).html(`
-                                        <div class="visitorReferrer website">
-                                            <span>Website: </span>
-                                            <a 
-                                                href="${value.referrerUrl}" 
-                                                rel="noreferrer noopener" 
-                                                target="_blank" 
-                                                class="visitorLogTooltip" 
-                                                title="${value.referrerUrl}" 
-                                                style="text-decoration:underline;">
-                                                ${value.referrerName}
-                                            </a>
-                                        </div>
-                                    `);
+                        // visit log returning user icon
+                        let returningVisitorIcon = matomoUrl+'/'+value.visitorTypeIcon
+                        $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.visitorTypeIcon img').attr('src', returningVisitorIcon);
+                        if(value.visitorType == 'returning'){
+                            $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.visitorTypeIcon').removeClass('d-none');
+                        }
+                        $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.visitorTypeIcon ul.details li').html(`
+                            Returning Visitor - ${value.visitCount > 1 ? value.visitCount + ' visits': value.visitCount + ' visit'}
+                        `);
+
+                         // visit log flag icon
+                         let countryFlagIconLink = matomoUrl+'/'+value.countryFlag;
+                         $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.flag img').attr('src', countryFlagIconLink);
+
+                         $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.flag ul.details').html(`
+                            <li>Country: ${value.country}</li>
+                            <li>Region: ${value.region}</li>
+                            <li>City: ${value.city}</li> 
+                            <li>Browser language: ${value.language}</li>  
+                            <li>IP: ${value.visitIp}</li>
+                            <li>Visitor ID: ${value.visitorId}</li>
+                         `);
+
+                         // visit log browser icon
+                         let browserImageIcon = matomoUrl+'/'+value.browserIcon;
+                         $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.browser').attr('profile-header-text', value.browser);
+                         $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.browser img').attr('src', browserImageIcon);
+                         $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.browser ul.details').html(`
+                            <li>Browser: ${value.browser}</li>
+                            <li>Browser engine: ${value.browserFamily}</li>
+                            <li id="pluginlist_${index}" class="plugins">Plugins:</li>
+                         `);
+
+                        //  visit log operating system
+                        let operatingSystemIcon = matomoUrl+'/'+value.operatingSystemIcon;
+                         $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.operatingsystem').attr('profile-header-text', value.operatingSystem);
+                         $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.operatingsystem img').attr('src', operatingSystemIcon);
+                         $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.operatingsystem ul.details').html(`
+                            <li>Operating system: ${value.operatingSystemName} ${value.operatingSystemVersion}</li>
+                         `);
+
+                         //  visit log resolution
+                        let deviceTypeIcon = matomoUrl+'/'+value.deviceTypeIcon;
+                         $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.resolution').attr('profile-header-text', value.resolution);
+                         $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.resolution img').attr('src', deviceTypeIcon);
+                         $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.resolution ul.details').html(`
+                            <li>Device type: ${value.deviceType}</li>
+                            <li>Device brand: ${value.deviceBrand}</li>                
+                            <li>Device model: ${value.deviceModel}</li>                
+                            <li>Resolution: ${value.resolution}</li>  
+                         `); 
+                        let noOfActionsText =  value.actions > 1 ? value.actions + ' Actions' : value.actions + ' Action';
+                        let actionTimmingText = '';
+                        let min = Math.floor(tts / 60);
+                        let sec = tts - (Math.floor(tts / 60) * 60);
+                        actionTimmingText = min <= 0 ? ` - ${sec}s` : (sec > 0 ? ` - ${min} min ${sec}s` : ` - ${min} min`);
+                        $(thisLogBlog).find('.visitorActions > strong').text(noOfActionsText+actionTimmingText);
+                        if(value.actions > 0){
+                            $(thisLogBlog).find('.visitor-log-page-list .visitorLog.actionList').removeClass('d-none');
+                        }
+                        let actionList = $(thisLogBlog).find('.visitor-log-page-list .visitorLog.actionList');
+                        $.each(value.actionDetails, function(i,v){
+                            $(actionList).find('li.action').clone().appendTo(actionList);
+                            let getLastLogAction = $(actionList).children('li.action').last();
+                            $(getLastLogAction).attr('id', `logaction_${index}`);
+                            let thisLogAction = $(actionList).find(`.action#logaction_${index}`);
+                            $(thisLogAction).removeClass('d-none');
+                            $(thisLogAction).attr('title', `${v.serverTimePretty} \n ${v.subtitle} \n ${v.pageLoadTime !== undefined ? `Page load time: ${v.pageLoadTime}` : ''} \n ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}`);
+                            switch(v.type){
+                                case 'action':
+                                    $(thisLogAction).addClass('folder');
+                                    $(thisLogAction).find('.action_inner .truncated-text-line').text(v.title);
                                     break;
                                 default:
                             }
-
-                            // visit log returning user icon
-                            if(value.visitorType == 'returning'){
-                                $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails`).append('<span class="visitorLogIconWithDetails visitorTypeIcon"></span>');
-                            
-                                $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails`).append(`
-                                    <img src="${matomoUrl}/${value.visitorTypeIcon}">
-                                `);
-
-                                $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails`).append('<ul class="details"></ul>');
-
-                                $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails ul.details`).append(`
-                                    <li>Returning Visitor - ${value.visitCount > 1 ? value.visitCount + ' visits': value.visitCount + ' visit'}</li>
-                                `);
-                            }
-
-                            // visit log flag icon
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails`)
-                            .append(`<span class="visitorLogIconWithDetails flag" profile-header-text=""></span>`);
-
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.flag`)
-                            .append(`<img src='${matomoUrl}/${value.countryFlag}'>`);
-
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.flag`)
-                            .append(`<ul class="details"></ul>`);
-
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.flag ul.details`)
-                            .append(`
-                                <li>Country: ${value.country}</li>
-                                <li>Region: ${value.region}</li>
-                                <li>City: ${value.city}</li> 
-                                <li>Browser language: ${value.language}</li>  
-                                <li>IP: ${value.visitIp}</li>
-                                <li>Visitor ID: ${value.visitorId}</li>
-                            `);
-
-                            // visit log browser icon
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails`)
-                            .append(`<span class="visitorLogIconWithDetails" profile-header-text="${value.browser}"></span>`);
-
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.browser}"]`)
-                            .append(`<img src="${matomoUrl}/${value.browserIcon}">`);
-
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.browser}"]`)
-                            .append(`<ul class="details"></ul>`);
-
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.browser}"] ul.details`)
-                            .append(`
-                                <li>Browser: ${value.browser}</li>
-                                <li>Browser engine: ${value.browserFamily}</li>
-                                <li id="pluginlist_${index}" class="plugins">
-                                    Plugins:
-                                </li>
-                            `);
-
-                            // visit log operation system icon
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails`)
-                            .append(`<span class="visitorLogIconWithDetails" profile-header-text="${value.operatingSystem}"></span>`);
-
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.operatingSystem}"]`)
-                            .append(`<img src="${matomoUrl}/${value.operatingSystemIcon}">`);
-
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.operatingSystem}"]`)
-                            .append(`<ul class="details"></ul>`);
-
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.operatingSystem}"] ul.details`)
-                            .append(`
-                                <li>Operating system: ${value.operatingSystemName} ${value.operatingSystemVersion}</li>
-                            `);
-
-                            // visit log resolution icon
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails`)
-                            .append(`<span class="visitorLogIconWithDetails" profile-header-text="${value.resolution}"></span>`);
-
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.resolution}"]`)
-                            .append(`<img src="${matomoUrl}/${value.deviceTypeIcon}">`);
-
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.resolution}"]`)
-                            .append(`<ul class="details"></ul>`);
-
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.resolution}"] ul.details`)
-                            .append(`
-                                <li>Device type: ${value.deviceType}</li>
-                                <li>Device brand: ${value.deviceBrand}</li>                
-                                <li>Device model: ${value.deviceModel}</li>                
-                                <li>Resolution: ${value.resolution}</li>  
-                            `);
-
-
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .visitorActions`).attr('id', `visitorActions_${index}`);
-
-                            $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .visitorActions`).html(`
-                                <strong>${value.actions > 1 ? value.actions + ' Actions' : value.actions + ' Action'}</strong>
-                            `);
-                            
-                            $.each(value.pluginsIcons,function(i,v){
-                                $(`#visitorcards .card #pluginlist_${index}`).append(`
-                                    <img width="16px" height="16px" src="${matomoUrl}/${v.pluginIcon}" alt="${v.pluginName}">
-                                `);
-                            });
-                            if(tts > 0){
-                                let min = Math.floor(tts / 60);
-                                let sec = tts - (Math.floor(tts / 60) * 60);
-                                if(min <= 0){
-                                    $(`#visitorcards .card #visitorActions_${index} strong`).append(` - ${sec}s`);
-                                }else{
-                                    if(sec > 0 ){
-                                        $(`#visitorcards .card #visitorActions_${index} strong`).append(` - ${min} min ${sec}s`);
-                                    }else{
-                                        $(`#visitorcards .card #visitorActions_${index} strong`).append(` - ${min} min`);
-                                    }
-                                }
-                            }
-                            if(value.actions > 0){
-                                $(`#visitorcards .card #visitorActions_${index}`).append(`<div class="visitor-log-page-list"></div>`);
-                                $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list`).append('<ol class="visitorLog actionList"></ol>');
-
-                            }
-
-                            $.each(value.actionDetails, function(i,v){
-                                if(v.type == 'action'){
-                                    $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog`).append(`
-                                        <li id="visitor_action_folder_${i}"
-                                        class="action folder"
-                                        title="${v.serverTimePretty} \n ${v.subtitle} \n ${v.pageLoadTime !== undefined ? `Page load time: ${v.pageLoadTime}` : ''} \n ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}
-                                        "></li>
-                                    `);
-                                    $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog #visitor_action_folder_${i}`).append(`
-                                        <div class="action_folder_inner"><span class="truncated-text-line">${v.title}</span></div>
-                                    `);
-                                    $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog #visitor_action_folder_${i} .action_folder_inner`).append(`
-                                        <img src="${matomoUrl}/${v.iconSVG}" class="action-list-action-icon action">
-                                    `);
-                                    $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog #visitor_action_folder_${i} .action_folder_inner`).append(`
-                                        <p><a href="${v.url}" target="_blank" rel="noreferrer noopener" class="action-list-url truncated-text-line" >${v.url}</a></p>
-                                    `);
-                                }
-                                if(v.type != 'action' && $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog.actionList`).children('.action.folder').length > 0 && $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index}`).length > 0){
-                                    $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index} .actionList`).append(`
-                                        <li class="action outlink" title="${v.serverTimePretty} \n ${v.subtitle} \n ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}">
-                                            <div class="outlink_folder_inner">
-                                                <img src="${matomoUrl}/${v.iconSVG}" class="action-list-action-icon ${v.type}">
-                                                <a href="${v.url}" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line">
-                                                    ${v.url}
-                                                </a>
-                                            </div>
-                                        </li>
-                                    `);
-                                }
-                                if(v.type != 'action' && $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog.actionList`).children('.action.folder').length > 0 && $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index}`).length == 0){
-                                    // add action here from line 691
-                                    $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog`).append(`
-                                        <li id="pageviewActions_${index}" class="pageviewActions last-action" data-view-count="${v.pageviewPosition}">
-                                            <ol class="actionList p-0">
-                                            </ol>
-                                        </li>
-                                    `);
-                                    $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index} .actionList`).append(`
-                                        <li class="action" 
-                                            title="${v.serverTimePretty}
-                                                    ${v.subtitle}
-                                                    ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}">
-                                            <div>
-                                                <img src="${matomoUrl}/${v.iconSVG}" class="action-list-action-icon ${v.type}">
-                                                <a href="${v.url}" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line">
-                                                    ${v.url}
-                                                </a>
-                                            </div>
-                                        </li>
-                                    `);
-                                }
-                                if(v.type != 'action' && $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog.actionList`).children('.action.folder').length == 0) {
-                                    $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog.actionList`).append(`
-                                        <li class="action" 
-                                            title="${v.serverTimePretty}
-                                                    ${v.subtitle}
-                                                    ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}">
-                                            <div>
-                                                <img src="${matomoUrl}/${v.iconSVG}" class="action-list-action-icon ${v.type}">
-                                                <a href="${v.url}" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line">
-                                                    ${v.url}
-                                                </a>
-                                            </div>
-                                        </li>                                         
-                                    `)
-                                }
-                            });
-
-                            if($(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index}`).length > 0){
-                                let el = $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index} .actionList`);
-                                let lastchild = $(el).children('.action').last();
-                                $(lastchild).addClass('last-action');
-                            }
                         });
-                    }else{
-                        $("#visitorcards").append(`<h2>Data not available</h2>`);
-                        $("#visitorcards ").siblings('nav').remove();
-                    }
+
+                         
+                    });
+                    
+                    // $('#visitoroverviewcards #visitoroverview').empty();
+                    // $('#visitorcards').empty();
+                    // $('#visitorcards').html('<h2>Data not available</h2>');
+                    
+
+                    // if(response.lastVisitsDetails.length > 0){
+                    //     $.each(response.lastVisitsDetails, function( index, value ) {
+                    //         let tts = 0;
+                    //         $.each(value.actionDetails,function(i,v){
+                    //             if("timeSpent" in v){
+                    //                 tts = parseInt(v.timeSpent, 10) + tts;
+                    //             }
+                    //         });
+
+                    //         $("#visitorcards").append(`<li class="card shadow my-3" data-log="${index}_${value.visitorId}">${response.htmlData}</li>`);
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] a.visitor-log-visitor-profile-link`).attr('data-visitor-id', value.visitorId);
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] strong.visitorLogTooltip`)
+                    //         .attr('title', `This visitor's last visit was ${parseInt(((value.secondsSinceLastVisit/60)/60)/24,10)} days ago.`);
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] strong.visitorLogTooltip`).text(`
+                    //             ${value.serverDatePretty}
+                    //             - ${value.serverTimePretty}
+                    //         `);
+
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] span.visitor-log-ip-location`)
+                    //         .attr('title', `Visitor ID: ${value.visitorId} \n Visit ID: ${value.idVisit} \n ${value.location} \n GPS (lat/long): ${value.latitude},${value.longitude}
+                    //         `);
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] span.visitor-log-ip-location #visitip`).text(`
+                    //             IP: ${value.visitIp}
+                    //         `);
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] span.visitor-log-ip-location #visitip`).css({
+                    //             'font-size': "11px"
+                    //         });
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] span.visitor-log-ip-location span#visitor_city_span`).html(`
+                    //             <img width="16" class="flag" src="${matomoUrl}/${value.countryFlag}"> &nbsp;
+                    //             ${value.city}
+                    //         `);
+
+                    //         switch(value.referrerType) {
+                    //             case 'search':
+                    //                 $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .visitorreferencearea`).html(`
+                    //                     <div class="visitorReferrer search">
+                    //                         <span title="${value.referrerKeyword}">
+                    //                             <img 
+                    //                                 class="mr-2" 
+                    //                                 width="16" 
+                    //                                 src="${matomoUrl}/${value.referrerSearchEngineIcon}" 
+                    //                                 alt="${value.referrerName}">
+                    //                             <span>${value.referrerName}</span>
+                    //                         </span>
+                    //                     </div>
+                    //                 `);
+                    //                 break;
+                    //             case 'direct':
+                    //                 $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .visitorreferencearea`).html(`
+                    //                     <div class="visitorReferrer direct">Direct Entry</div>
+                    //                 `);
+                    //                 break;
+                    //             case 'website':
+                    //                 $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .visitorreferencearea`).html(`
+                    //                     <div class="visitorReferrer website">
+                    //                         <span>Website: </span>
+                    //                         <a 
+                    //                             href="${value.referrerUrl}" 
+                    //                             rel="noreferrer noopener" 
+                    //                             target="_blank" 
+                    //                             class="visitorLogTooltip" 
+                    //                             title="${value.referrerUrl}" 
+                    //                             style="text-decoration:underline;">
+                    //                             ${value.referrerName}
+                    //                         </a>
+                    //                     </div>
+                    //                 `);
+                    //                 break;
+                    //             default:
+                    //         }
+
+                    //         // visit log returning user icon
+                    //         if(value.visitorType == 'returning'){
+                    //             $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails`).append('<span class="visitorLogIconWithDetails visitorTypeIcon"></span>');
+                            
+                    //             $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails`).append(`
+                    //                 <img src="${matomoUrl}/${value.visitorTypeIcon}">
+                    //             `);
+
+                    //             $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails`).append('<ul class="details"></ul>');
+
+                    //             $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails ul.details`).append(`
+                    //                 <li>Returning Visitor - ${value.visitCount > 1 ? value.visitCount + ' visits': value.visitCount + ' visit'}</li>
+                    //             `);
+                    //         }
+
+                    //         // visit log flag icon
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails`)
+                    //         .append(`<span class="visitorLogIconWithDetails flag" profile-header-text=""></span>`);
+
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.flag`)
+                    //         .append(`<img src='${matomoUrl}/${value.countryFlag}'>`);
+
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.flag`)
+                    //         .append(`<ul class="details"></ul>`);
+
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.flag ul.details`)
+                    //         .append(`
+                    //             <li>Country: ${value.country}</li>
+                    //             <li>Region: ${value.region}</li>
+                    //             <li>City: ${value.city}</li> 
+                    //             <li>Browser language: ${value.language}</li>  
+                    //             <li>IP: ${value.visitIp}</li>
+                    //             <li>Visitor ID: ${value.visitorId}</li>
+                    //         `);
+
+                    //         // visit log browser icon
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails`)
+                    //         .append(`<span class="visitorLogIconWithDetails" profile-header-text="${value.browser}"></span>`);
+
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.browser}"]`)
+                    //         .append(`<img src="${matomoUrl}/${value.browserIcon}">`);
+
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.browser}"]`)
+                    //         .append(`<ul class="details"></ul>`);
+
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.browser}"] ul.details`)
+                    //         .append(`
+                    //             <li>Browser: ${value.browser}</li>
+                    //             <li>Browser engine: ${value.browserFamily}</li>
+                    //             <li id="pluginlist_${index}" class="plugins">
+                    //                 Plugins:
+                    //             </li>
+                    //         `);
+
+                    //         // visit log operation system icon
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails`)
+                    //         .append(`<span class="visitorLogIconWithDetails" profile-header-text="${value.operatingSystem}"></span>`);
+
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.operatingSystem}"]`)
+                    //         .append(`<img src="${matomoUrl}/${value.operatingSystemIcon}">`);
+
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.operatingSystem}"]`)
+                    //         .append(`<ul class="details"></ul>`);
+
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.operatingSystem}"] ul.details`)
+                    //         .append(`
+                    //             <li>Operating system: ${value.operatingSystemName} ${value.operatingSystemVersion}</li>
+                    //         `);
+
+                    //         // visit log resolution icon
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails`)
+                    //         .append(`<span class="visitorLogIconWithDetails" profile-header-text="${value.resolution}"></span>`);
+
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.resolution}"]`)
+                    //         .append(`<img src="${matomoUrl}/${value.deviceTypeIcon}">`);
+
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.resolution}"]`)
+                    //         .append(`<ul class="details"></ul>`);
+
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails[profile-header-text="${value.resolution}"] ul.details`)
+                    //         .append(`
+                    //             <li>Device type: ${value.deviceType}</li>
+                    //             <li>Device brand: ${value.deviceBrand}</li>                
+                    //             <li>Device model: ${value.deviceModel}</li>                
+                    //             <li>Resolution: ${value.resolution}</li>  
+                    //         `);
+
+
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .visitorActions`).attr('id', `visitorActions_${index}`);
+
+                    //         $(`#visitorcards li.card[data-log=${index}_${value.visitorId}] .visitorActions`).html(`
+                    //             <strong>${value.actions > 1 ? value.actions + ' Actions' : value.actions + ' Action'}</strong>
+                    //         `);
+                            
+                    //         $.each(value.pluginsIcons,function(i,v){
+                    //             $(`#visitorcards .card #pluginlist_${index}`).append(`
+                    //                 <img width="16px" height="16px" src="${matomoUrl}/${v.pluginIcon}" alt="${v.pluginName}">
+                    //             `);
+                    //         });
+                    //         if(tts > 0){
+                    //             let min = Math.floor(tts / 60);
+                    //             let sec = tts - (Math.floor(tts / 60) * 60);
+                    //             if(min <= 0){
+                    //                 $(`#visitorcards .card #visitorActions_${index} strong`).append(` - ${sec}s`);
+                    //             }else{
+                    //                 if(sec > 0 ){
+                    //                     $(`#visitorcards .card #visitorActions_${index} strong`).append(` - ${min} min ${sec}s`);
+                    //                 }else{
+                    //                     $(`#visitorcards .card #visitorActions_${index} strong`).append(` - ${min} min`);
+                    //                 }
+                    //             }
+                    //         }
+                    //         if(value.actions > 0){
+                    //             $(`#visitorcards .card #visitorActions_${index}`).append(`<div class="visitor-log-page-list"></div>`);
+                    //             $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list`).append('<ol class="visitorLog actionList"></ol>');
+
+                    //         }
+
+                    //         $.each(value.actionDetails, function(i,v){
+                    //             if(v.type == 'action'){
+                    //                 $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog`).append(`
+                    //                     <li id="visitor_action_folder_${i}"
+                    //                     class="action folder"
+                    //                     title="${v.serverTimePretty} \n ${v.subtitle} \n ${v.pageLoadTime !== undefined ? `Page load time: ${v.pageLoadTime}` : ''} \n ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}
+                    //                     "></li>
+                    //                 `);
+                    //                 $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog #visitor_action_folder_${i}`).append(`
+                    //                     <div class="action_folder_inner"><span class="truncated-text-line">${v.title}</span></div>
+                    //                 `);
+                    //                 $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog #visitor_action_folder_${i} .action_folder_inner`).append(`
+                    //                     <img src="${matomoUrl}/${v.iconSVG}" class="action-list-action-icon action">
+                    //                 `);
+                    //                 $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog #visitor_action_folder_${i} .action_folder_inner`).append(`
+                    //                     <p><a href="${v.url}" target="_blank" rel="noreferrer noopener" class="action-list-url truncated-text-line" >${v.url}</a></p>
+                    //                 `);
+                    //             }
+                    //             if(v.type != 'action' && $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog.actionList`).children('.action.folder').length > 0 && $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index}`).length > 0){
+                    //                 $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index} .actionList`).append(`
+                    //                     <li class="action outlink" title="${v.serverTimePretty} \n ${v.subtitle} \n ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}">
+                    //                         <div class="outlink_folder_inner">
+                    //                             <img src="${matomoUrl}/${v.iconSVG}" class="action-list-action-icon ${v.type}">
+                    //                             <a href="${v.url}" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line">
+                    //                                 ${v.url}
+                    //                             </a>
+                    //                         </div>
+                    //                     </li>
+                    //                 `);
+                    //             }
+                    //             if(v.type != 'action' && $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog.actionList`).children('.action.folder').length > 0 && $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index}`).length == 0){
+                    //                 // add action here from line 691
+                    //                 $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog`).append(`
+                    //                     <li id="pageviewActions_${index}" class="pageviewActions last-action" data-view-count="${v.pageviewPosition}">
+                    //                         <ol class="actionList p-0">
+                    //                         </ol>
+                    //                     </li>
+                    //                 `);
+                    //                 $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index} .actionList`).append(`
+                    //                     <li class="action" 
+                    //                         title="${v.serverTimePretty}
+                    //                                 ${v.subtitle}
+                    //                                 ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}">
+                    //                         <div>
+                    //                             <img src="${matomoUrl}/${v.iconSVG}" class="action-list-action-icon ${v.type}">
+                    //                             <a href="${v.url}" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line">
+                    //                                 ${v.url}
+                    //                             </a>
+                    //                         </div>
+                    //                     </li>
+                    //                 `);
+                    //             }
+                    //             if(v.type != 'action' && $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog.actionList`).children('.action.folder').length == 0) {
+                    //                 $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog.actionList`).append(`
+                    //                     <li class="action" 
+                    //                         title="${v.serverTimePretty}
+                    //                                 ${v.subtitle}
+                    //                                 ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}">
+                    //                         <div>
+                    //                             <img src="${matomoUrl}/${v.iconSVG}" class="action-list-action-icon ${v.type}">
+                    //                             <a href="${v.url}" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line">
+                    //                                 ${v.url}
+                    //                             </a>
+                    //                         </div>
+                    //                     </li>                                         
+                    //                 `)
+                    //             }
+                    //         });
+
+                    //         if($(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index}`).length > 0){
+                    //             let el = $(`#visitorcards .card #visitorActions_${index} .visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index} .actionList`);
+                    //             let lastchild = $(el).children('.action').last();
+                    //             $(lastchild).addClass('last-action');
+                    //         }
+                    //     });
+                    // }else{
+                    //     $("#visitorcards").append(`<h2>Data not available</h2>`);
+                    //     $("#visitorcards ").siblings('nav').remove();
+                    // }
                 },
                 complete: function(){
                     let numberOfItems = $("#visitorcards .card").length;
@@ -924,8 +1070,6 @@
 
                         
                     });
-
-
 
                     $(`#${visitorId}`).modal({
                         show: true

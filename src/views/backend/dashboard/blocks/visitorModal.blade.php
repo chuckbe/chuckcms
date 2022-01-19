@@ -145,71 +145,9 @@
                       </p>
                     </div>
                   </li>
-                  {{--  <li class="action d-none" title="">
-                    <div>
-                      <span class="truncated-text-line"></span>
-                      <img src="plugins/Morpheus/images/action.svg" class="action-list-action-icon action">
-                      <p>
-                        <a href="" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line"></a>
-                      </p>
-                    </div>
-                  </li>  --}}
                 </ol>
               </div>
             </div>
-
-						{{--  <div class="visitor-profile-visit-title row"> Visit # <span class="counter">1</span>
-							<span class="visitor-profile-date" title="Tuesday, January 18, 2022 18:40:17"> Tuesday, January 18, 2022 18:40:17 </span>
-						</div>
-						<div class="visitor-profile-visit-details" id="visit1">
-							<span class="visitorDetails">
-								<span class="visitorLogIconWithDetails" profile-header-text="Firefox 96.0">
-									<img src="plugins/Morpheus/icons/dist/browsers/FF.png">
-									<ul class="details">
-										<li>Browser: Firefox 96.0</li>
-										<li>Browser engine: Gecko</li>
-										<li id="pluginlist_modalc7ce53b0c216a28d_1" class="plugins"> Plugins: <img width="16px" height="16px" src="plugins/Morpheus/icons/dist/plugins/cookie.png" alt="cookie">
-										</li>
-									</ul>
-								</span>
-								<span class="visitorLogIconWithDetails" profile-header-text="Windows 10">
-									<img src="plugins/Morpheus/icons/dist/os/WIN.png">
-									<ul class="details">
-										<li>Operating system: Windows 10</li>
-									</ul>
-								</span>
-								<span class="visitorLogIconWithDetails" profile-header-text="1366x768">
-									<img src="plugins/Morpheus/icons/dist/devices/desktop.png">
-									<ul class="details">
-										<li>Device type: Desktop</li>
-										<li>Device brand: Unknown</li>
-										<li>Device model: Generic Desktop</li>
-										<li>Resolution: 1366x768</li>
-									</ul>
-								</span>
-							</span>
-							<a href="#" class="visitor-profile-show-actions ml-auto"> 2 actions in 40s </a>
-							<ol class="visitorLog visitor-profile-actions actionList">
-								<li class="action folder" title="">
-									<div>
-										<span class="truncated-text-line"></span>
-										<img src="plugins/Morpheus/images/action.svg" class="action-list-action-icon action">
-										<p>
-											<a href="" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line"></a>
-										</p>
-									</div>
-								</li>
-								<li class="action folder" title="">
-									<div>
-										<span class="truncated-text-line"></span>
-										<img src="plugins/Morpheus/images/action.svg" class="action-list-action-icon action">
-										<p>
-											<a href="" rel="noreferrer noopener" target="_blank" class="action-list-url truncated-text-line"></a>
-										</p>
-									</div>
-								</li>
-							</ol>
-						</div>  --}}
 					</div>
 				</div>
 			</div>
