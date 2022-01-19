@@ -697,13 +697,13 @@
                     $('.modal-visitor-profile-info').remove();
                     $('.matomodash').after(response.visitorModal);
                     $('.modal-visitor-profile-info').attr('id', visitorId);
-                    $('<span>', {text: visitorId+" "}).append('.visitor-profile-overview .visitor-profile-header .visitor-profile-id');
+                    $(`.modal-visitor-profile-info#${visitorId} .visitor-profile-overview .visitor-profile-avatar img`).attr('src', `${matomoUrl}/plugins/Live/images/unknown_avatar.png`);
+                    $(`.modal-visitor-profile-info#${visitorId} .visitor-profile-overview .visitor-profile-header .visitor-profile-id span`).text(`ID: ${visitorId}`);
                     
                     // visit summary flag 
-                    $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`<span class="visitorLogIconWithDetails flag" profile-header-text="${city}"></span>`);
-                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails.flag[profile-header-text="${city}"]`).append(`<img src="${flag}">`)
-                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails.flag[profile-header-text="${city}"]`).append(`<ul class="details"></ul>`);
-                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails.flag[profile-header-text="${city}"] ul.details`).append(`
+                    $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails .visitorLogIconWithDetails.flag').attr('profile-header-text', city);
+                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails.flag[profile-header-text="${city}"] img`).attr('src', flag);
+                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails.flag[profile-header-text="${city}"] ul.details`).html(`
                         <li>Country: ${country}</li>
                         <li>City: ${city}</li>                
                         <li>Browser language: ${lang}</li>                                
@@ -712,41 +712,29 @@
                     `);
 
                     // visit summary browser
-                    $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`<span class="visitorLogIconWithDetails" profile-header-text="${browser}"></span>`);
-                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails[profile-header-text="${browser}"]`).append(`<img src="${browserIcon}">`);
-                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails[profile-header-text="${browser}"]`).append(`<ul class="details"></ul>`);
-                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails span.visitorLogIconWithDetails[profile-header-text="${browser}"] ul.details`).append(`
+                    $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails .visitorLogIconWithDetails.browser').attr('profile-header-text', browser);
+                    $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails .visitorLogIconWithDetails.browser img').attr('src', browserIcon);
+                    $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails .visitorLogIconWithDetails.browser ul.details').html(`
                         <li>Browser: ${browser}</li>
                         <li>Browser engine: ${browserFamily}</li>
                         <li id="pluginlist_modal${visitorId}" class="plugins">Plugins:</li>
                     `);
+
                     $.each(pluginIcons,function(i,v){
                         let icon = matomoUrl+'/'+v.pluginIcon;
-                        $(`#pluginlist_modal${visitorId}`).append(`<img width="16px" height="16px" src="${icon}" alt="${v.pluginName}">`);
+                        $(`.visitorLogIconWithDetails.browser ul.details #pluginlist_modal${visitorId}`).append(`<img width="16px" height="16px" src="${icon}" alt="${v.pluginName}">`);
                     });
 
                     // visit summary operating system
-                    $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`
-                        <span class="visitorLogIconWithDetails" profile-header-text="${operatingSystem}">
-                            <img src=${operatingSystemIcon}>
-                            <ul class="details">
-                                <li>Operating system: ${operatingSystem}</li>
-                            </ul>
-                        </span>
-                    `);
+                    $('.modal-visitor-profile-info .visitorLogIcons .visitorLogIconWithDetails.operatingsystem').attr('profile-header-text', operatingSystem);
+                    $('.modal-visitor-profile-info .visitorLogIcons .visitorLogIconWithDetails.operatingsystem img').attr('src', operatingSystemIcon);
+                    $('.modal-visitor-profile-info .visitorLogIcons .visitorLogIconWithDetails.operatingsystem ul.details li').text(`Operating system: ${operatingSystem}`);
+
 
                     // visit summary resolution
-                    $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails').append(`
-                        <span class="visitorLogIconWithDetails" profile-header-text="${resolution}"></span>
-                    `);
-                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails .visitorLogIconWithDetails[profile-header-text="${resolution}"]`).append(`
-                        <img src="${deviceTypeIcon}">
-                    `);
-                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails .visitorLogIconWithDetails[profile-header-text="${resolution}"]`).append(`
-                        <ul class="details"></ul>
-                    `);
-
-                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails .visitorLogIconWithDetails[profile-header-text="${resolution}"] ul.details`).append(`
+                    $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails .visitorLogIconWithDetails.resolution').attr('profile-header-text', resolution);
+                    $('.modal-visitor-profile-info .visitorLogIcons .visitorDetails .visitorLogIconWithDetails.resolution img').attr('src', deviceTypeIcon);
+                    $(`.modal-visitor-profile-info .visitorLogIcons .visitorDetails .visitorLogIconWithDetails.resolution ul.details`).html(`
                             <li>Device type: ${deviceType}</li>
                             <li>Device brand: ${deviceBrand}</li> 
                             <li>Device model: ${deviceModel}</li>
@@ -763,35 +751,32 @@
                         let totalActions = response.visitorProfile.totalActions;
                         let totalDownloads = response.visitorProfile.totalDownloads;
                         let totalOutlinks = response.visitorProfile.totalOutlinks > 0 ? response.visitorProfile.totalOutlinks == 1 ? response.visitorProfile.totalOutlinks+' Outlink' : response.visitorProfile.totalOutlinks+' Outlinks' : ''
-                        
-                        $('.modal-visitor-profile-info .visitor-profile-summary .summary').html(`
-                            <p>
-                                Spent a total of <strong>${totalVisitDurationPretty}</strong> on the website, and performed 
-                                <strong>${totalActions} ${totalActions == 1  ? 'action' : 'actions'}</strong> 
-                                (
+                        let summary_text = `
+                            Spent a total of <strong>${totalVisitDurationPretty}</strong> on the website, and performed 
+                            <strong>${totalActions} ${totalActions == 1  ? 'action' : 'actions'}</strong> 
+                            (
                                      ${totalPageViews} ${totalPageViews == 1 ? 'Pageview' : 'Pageviews'} 
                                      ${totalDownloads} ${totalDownloads == 1 ? 'Download' : 'Downloads'}, 
                                      ${totalOutlinks} 
-                                 )
-                                 in ${totalVisits} ${totalVisits == 1  ? 'visit' : 'visits'}.
-                                 <br>
-                                 converted ${totalGoalConversions == 1 ? totalGoalConversions+' Goal' : totalGoalConversions+' Goals'}
-                                 ${averagePageLoadTime !== undefined ? '<br>Each page took on average'+averagePageLoadTime+'s to load for this visitor.' : ''}
-                            </p>
-                        `);
+                            )
+                            in ${totalVisits} ${totalVisits == 1  ? 'visit' : 'visits'}.
+                            <br>
+                            converted ${totalGoalConversions == 1 ? totalGoalConversions+' Goal' : totalGoalConversions+' Goals'}
+                            ${averagePageLoadTime !== undefined ? '<br>Each page took on average '+averagePageLoadTime+'s to load for this visitor.' : ''}
+                        `;
+                        $('.modal-visitor-profile-info .visitor-profile-summary .summary p').html(summary_text);
                     }
 
                     if(response.visitorProfile.totalDownloads == 0) {
-                        $('.modal-visitor-profile-info .visitor-profile-summary .summary').html(`
-                            <p>
-                                Spent a total of <strong>${totalVisitDurationPretty}</strong> on the website, and viewed 
-                                ${totalPageViews} ${totalPageViews == 1 ? 'Page' : 'Pages'}
-                                in ${totalVisits} ${totalVisits == 1  ? 'visit' : 'visits'}.
-                                <br>
-                                converted ${totalGoalConversions == 1 ? totalGoalConversions+' Goal' : totalGoalConversions+' Goals'}
-                                ${ averagePageLoadTime !== undefined ? '<br>Each page took on average '+averagePageLoadTime+'s to load for this visitor.' : ''}
-                            </p>
-                        `);
+                        let summary_text = `
+                            Spent a total of <strong>${totalVisitDurationPretty}</strong> on the website, and viewed 
+                            ${totalPageViews} ${totalPageViews == 1 ? 'Page' : 'Pages'}
+                            in ${totalVisits} ${totalVisits == 1  ? 'visit' : 'visits'}.
+                            <br>
+                            converted ${totalGoalConversions == 1 ? totalGoalConversions+' Goal' : totalGoalConversions+' Goals'}
+                            ${ averagePageLoadTime !== undefined ? '<br>Each page took on average '+averagePageLoadTime+'s to load for this visitor.' : ''}
+                        `;
+                        $('.modal-visitor-profile-info .visitor-profile-summary .summary p').html(summary_text);
                     }
 
                     let totalEcommerceRevenue = response.visitorProfile.totalEcommerceRevenue;
@@ -799,7 +784,6 @@
                     let totalEcommerceConversions = response.visitorProfile.totalEcommerceConversions;
 
                     $('.modal-visitor-profile-info .visitor-profile-summary .ecommerce').html(`<p>Generated a Life Time Revenue of €${totalEcommerceRevenue}. Purchased ${totalEcommerceItems} items in ${totalEcommerceConversions} ecommerce orders.</p>`);
-                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit').html('');
 
                     let first_visit_date = response.visitorProfile.firstVisit.prettyDate;
                     let first_visit_days_ago = response.visitorProfile.firstVisit.daysAgo;
@@ -807,78 +791,138 @@
                     let last_visit_date = response.visitorProfile.lastVisit.prettyDate;
                     let last_visit_days_ago = response.visitorProfile.lastVisit.daysAgo;
                     let last_visit_referralSummary = response.visitorProfile.lastVisit.referralSummary;
-
-                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit').append(`<div class="col-6 first_visit_outer"></div><div class="col-6 last_visit_outer"></div>`);
-                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit .first_visit_outer').append(`<h2>First Visit</h2>`);
-                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit .first_visit_outer').append(`<div class="firstvisit"></div>`);
-                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit .first_visit_outer .firstvisit').append(`<p>${first_visit_date} <span class="text-muted">- ${first_visit_days_ago} days ago</span> <br> from <strong>${first_visit_referralSummary}</strong></p>`);
-
-                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit .last_visit_outer').append(`<h2>Last Visit</h2>`);
-                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit .last_visit_outer').append(`<div class="lastvisit"></div>`);
-                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit .last_visit_outer .lastvisit').append(`<p>${last_visit_date} <span class="text-muted">- ${last_visit_days_ago} days ago</span> <br> from <strong>${last_visit_referralSummary}</strong></p>`);
+                    
+                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit .first_visit_outer .firstvisit').html(`<p>${first_visit_date} <span class="text-muted">- ${first_visit_days_ago} days ago</span> from <strong>${first_visit_referralSummary}</strong></p>`);
+                    $('.modal-visitor-profile-info .visitor-profile-summary .firstlastvisit .last_visit_outer .lastvisit').html(`<p>${last_visit_date} <span class="text-muted">- ${last_visit_days_ago} days ago</span> from <strong>${last_visit_referralSummary}</strong></p>`);
 
                     let devices = response.visitorProfile.devices;
 
-                    $('.modal-visitor-profile-info .visitor-profile-summary .devices').html(``);
                     $(devices).each(function(i, v){
                         let apparaten = '';
                         let icon = matomoUrl+'/'+v.icon;
                         $(v.devices).each(function(index, value) { 
                             apparaten += value.name+"("+value.count+"x)";
                         });
-                        $('.modal-visitor-profile-info .visitor-profile-summary .devices').append(`
-                            <p><img height="16" src="${icon}"><span>&nbsp;<strong>${v.count}</strong> visits from <strong>${v.type} devices: ${apparaten}</span></p>
-                        `);
+                        $('.modal-visitor-profile-info .visitor-profile-summary .devices p img').attr('src', icon);
+                        $('.modal-visitor-profile-info .visitor-profile-summary .devices p span').html(`&nbsp;<strong>${v.count}</strong> visits from <strong>${v.type} devices: ${apparaten}`);
                     });
 
                     let countries = response.visitorProfile.countries;
-                    $('.modal-visitor-profile-info .visitor-profile-summary .location').html(``);
                     $(countries).each(function(i,v) {
-                        let cities = '';
+                        let countryName = v.prettyName;
+                        let cities = v.cities;
                         let nb_visits = v.nb_visits == 1 ? v.nb_visits+" visit": v.nb_visits+" visits";
                         let flag = matomoUrl+'/'+v.flag;
-                        if($(v.cities).length > 1){
-                            $(v.cities).each(function(index, value){ cities +=  value+"," });
-                        }else{
-                            $(v.cities).each(function(index, value){ cities +=  value });
+                        let city_names = '';
+                        $(cities).each(function(index, value){ city_names = value});
+                        let cities_text = `<strong>${nb_visits}</strong> from <span>${cities}</span>, ${v.prettyName}&nbsp;`;
+                        if(Object.keys(cities).length > 1){
+                            city_names = '';
+                            for (let city in cities) {
+                                if (cities.hasOwnProperty(city)) {
+                                    city_names +=  cities[city]+"\n";
+                                }
+                            }
+                            cities_text = `<strong>${nb_visits}</strong> from <span title="${city_names}">different cities</span> in ${countryName}&nbsp;`;
                         }
-                        
-                        $('.modal-visitor-profile-info .visitor-profile-summary .location').append(`
-                            <p>
-                                <strong>${nb_visits}</strong> from <span title="${cities}">different cities</span>, ${v.prettyName}&nbsp;
-                                <img height="16px" src="${flag}" title="${v.prettyName}">
-                                <a class="visitor-profile-show-map" href="#">(show&nbsp;map)</a> 
-                            </p>
-                        `);
+                        $('.modal-visitor-profile-info .visitor-profile-summary .location p').html(`${cities_text} `);
+                        $('<img/>').attr({
+                            src: flag,
+                            height: '16px',
+                            title: countryName
+                        }).appendTo(".modal-visitor-profile-info .visitor-profile-summary .location p");
+                        // $('.modal-visitor-profile-info .visitor-profile-summary .location p').append(`
+                        //         <a class="visitor-profile-show-map d-none" href="#">(show&nbsp;map)</a> 
+                        // `);
                     });
-
                     let lastVisits = response.visitorProfile.lastVisits;
 
+                    let visitBlock = $('.visitor-profile-visits-info .visitblock');
 
-                    $('.modal-visitor-profile-info .visitor-profile-visits-info').html(``);
                     $(lastVisits).each(function(i,v){
-                        let visitCounter = `Visit #<span class="counter">${lastVisits.length - i}</span>`;
+                        $(visitBlock).clone().appendTo('.visitor-profile-visits-info');
+                        let getLastBlock = $('.visitor-profile-visits-info').children('.visitblock').last();
+                        $(getLastBlock).attr('id', `visitblock_no_${i}`);
+                        let thisBlock = $(`.visitor-profile-visits-info .visitblock#visitblock_no_${i}`);
+                        $(thisBlock).removeClass('d-none');
                         let browserIcon = matomoUrl+'/'+v.browserIcon;
-                        $(`.modal-visitor-profile-info .visitor-profile-visits-info`).append(`
-                            <div class="visitor-profile-visit-title row">
-                                ${visitCounter}
-                                <span class="visitor-profile-date" title="${v.serverDatePrettyFirstAction} ${v.serverTimePrettyFirstAction}">
-                                     ${v.serverDatePrettyFirstAction} ${v.serverTimePrettyFirstAction}
-                                </span>
-                            </div>
-                        `);
-                        $('.modal-visitor-profile-info .visitor-profile-visits-info').append(`
-                            <div class="visitor-profile-visit-details" id=${'visit'+(lastVisits.length - i)}></div>
+                        let deviceTypeIcon = matomoUrl+'/'+v.deviceTypeIcon;
+                        let pluginIcons = v.pluginIcons;
+                        let visitorProfileShowActionText = `${v.actions} ${v.actions == 1 ? 'action' : 'actions'} in ${v.visitDurationPretty}`;
+
+                        $(thisBlock).find('.visitor-profile-visit-title span.counter').text(lastVisits.length - i);
+                        $(thisBlock).find('.visitor-profile-visit-title .visitor-profile-visit-title visitor-profile-date').attr('title', (v.serverDatePrettyFirstAction+' '+v.serverTimePrettyFirstAction));
+                        $(thisBlock).find('.visitor-profile-visit-title .visitor-profile-visit-title visitor-profile-date').text(v.serverDatePrettyFirstAction+' '+v.serverTimePrettyFirstAction);
+                        $(thisBlock).find('.visitor-profile-visit-details').attr('id', 'visit'+(lastVisits.length - i));
+                        $(thisBlock).find(`.visitor-profile-visit-details#${'visit'+(lastVisits.length - i)} .visitorDetails .visitorLogIconWithDetails.browser`).attr('profile-header-text', v.browser);
+                        $(thisBlock).find(`.visitor-profile-visit-details#${'visit'+(lastVisits.length - i)} .visitorDetails .visitorLogIconWithDetails.operatingsystem`).attr('profile-header-text', v.operatingSystem);
+                        $(thisBlock).find(`.visitor-profile-visit-details#${'visit'+(lastVisits.length - i)} .visitorDetails .visitorLogIconWithDetails.resolution`).attr('profile-header-text', v.resolution);
+                        
+                        $(thisBlock).find(`.visitor-profile-visit-details#${'visit'+(lastVisits.length - i)} .visitorDetails .visitorLogIconWithDetails.browser img`).attr('src', browserIcon);
+                        $(thisBlock).find(`.visitor-profile-visit-details#${'visit'+(lastVisits.length - i)} .visitorDetails .visitorLogIconWithDetails.browser ul.details`).html(`
+                            <li>Browser: ${v.browser}</li>
+                            <li>Browser engine: ${v.browserFamily}</li>
+                            <li id="pluginlist_modal${visitorId}_${i}" class="plugins">Plugins:</li>
                         `);
 
-                        $(`.modal-visitor-profile-info .visitor-profile-visits-info .visitor-profile-visit-details#${'visit'+(lastVisits.length - i)}`).append(`
-                            <span class="visitorDetails">
-                                <span class="visitorLogIconWithDetails" profile-header-text="${v.browser}">
-                                    <img src="${browserIcon}">
-                                </span>
-                            </span>
+                        $(thisBlock).find(`.visitor-profile-visit-details#${'visit'+(lastVisits.length - i)} .visitorDetails .visitorLogIconWithDetails.operatingsystem img`).attr('src', operatingSystemIcon);
+                        $(thisBlock).find(`.visitor-profile-visit-details#${'visit'+(lastVisits.length - i)} .visitorDetails .visitorLogIconWithDetails.operatingsystem ul.details li`).html(`
+                            Operating system: ${v.operatingSystem}
                         `);
 
+                        $(thisBlock).find(`.visitor-profile-visit-details#${'visit'+(lastVisits.length - i)} .visitorDetails .visitorLogIconWithDetails.resolution img`).attr('src', deviceTypeIcon);
+                        $(thisBlock).find(`.visitor-profile-visit-details#${'visit'+(lastVisits.length - i)} .visitorDetails .visitorLogIconWithDetails.resolution ul.details`).html(`
+                            <li>Device type: ${v.deviceType}</li>
+                            <li>Device brand: ${v.deviceBrand}</li> 
+                            <li>Device model: ${v.deviceModel}</li> 
+                            <li>Resolution: ${v.resolution}</li> 
+                        `);
+
+                        $(thisBlock).find(`.visitor-profile-visit-details#${'visit'+(lastVisits.length - i)} a.visitor-profile-show-actions`).text(visitorProfileShowActionText);
+                        
+                        $(pluginIcons).each(function(index, value){
+                            $(thisBlock).find(`.visitor-profile-visit-details#${'visit'+(lastVisits.length - i)} .visitorDetails #pluginlist_modal${visitorId}_${i}`).append(`
+                                <img width="16px" height="16px" src="${matomoUrl}/${value.pluginIcon}" alt="${value.pluginName}">
+                            `);
+                        });
+                        let actionBlock = $(thisBlock).find(`.visitor-profile-visit-details#${'visit'+(lastVisits.length - i)} ol.visitor-profile-actions.actionList .action`);
+
+                        $(v.actionDetails).each(function(index, value){
+                            let svgIcon = matomoUrl+'/'+value.iconSVG;
+                            $(actionBlock).clone().appendTo($(thisBlock).find(`.visitor-profile-visit-details#${'visit'+(lastVisits.length - i)} ol.visitor-profile-actions.actionList`));
+                            let getLastActionBlock = $(thisBlock).find(`.visitor-profile-visit-details#${'visit'+(lastVisits.length - i)} ol.visitor-profile-actions.actionList`).children('.action').last();
+                            $(getLastActionBlock).attr('id', `actionBlock_${index}`);
+                            let thisActionBlock = $(thisBlock).find(`ol.visitor-profile-actions.actionList .action#actionBlock_${index}`);
+                            $(thisActionBlock).removeClass('d-none');
+                            let actionTitle = `
+                                ${value.serverTimePretty} \n
+                                ${value.subtitle} \n
+                                ${value.pageLoadTime !== undefined ? `Page load time: ${value.pageLoadTime} \n` : ''}
+                                ${value.timeSpentPretty !== undefined ? `Time on page: ${value.timeSpentPretty}` : ''}
+                            `;
+                            
+                            $(thisActionBlock).attr('title', actionTitle);
+                            $(thisActionBlock).find('.truncated-text-line').text(value.title);
+                            $(thisActionBlock).find('img').attr('src', svgIcon);
+                            $(thisActionBlock).find('a.action-list-url').attr('href', value.url);
+                            $(thisActionBlock).find('a.action-list-url').text(value.url);
+
+                            switch(value.type){
+                                case 'action':
+                                    $(thisActionBlock).addClass('folder');
+                                    break;
+                                case 'outlink':
+                                    $(thisActionBlock).addClass('outlink');
+                                    $(thisActionBlock).addClass('ml-3');
+                                case 'download':
+                                    $(thisActionBlock).addClass('download');
+                                    $(thisActionBlock).addClass('ml-3');
+                                    break;
+                                default:
+                            }
+                        });
+
+                        
                     });
 
 
