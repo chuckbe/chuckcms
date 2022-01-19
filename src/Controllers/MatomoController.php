@@ -78,8 +78,11 @@ class MatomoController extends BaseController
             ->execute()
             ->getResponse();
 
+        $view = view('chuckcms::backend.dashboard.blocks.visitorModal')->render();
+
         return response()->json([
-            'visitorProfile' => $visitorProfile
+            'visitorProfile' => $visitorProfile,
+            'visitorModal' => $view
         ]);
     }
 
@@ -206,47 +209,6 @@ class MatomoController extends BaseController
         
     }
 
-
-    // private function getDateOrPeriodFromRequest(Request $request, $periodCheck = false) 
-    // {
-    //     $data = $request->all()['value'];
-
-    //     $date = strtolower($data["range"]); //$data["value"]["range"]
-    //     $period = 'day';
-
-    //     if(!isset($data["y2"],$data["m2"],$data["d2"])){
-    //         return $periodCheck ? $period : $date;
-    //     }
-
-    //     $range = array(
-    //         'start' => $data["y2"].'-'.$data["m2"].'-'.$data["d2"],
-    //         'end'   => $data["y1"].'-'.$data["m1"].'-'.$data["d1"]
-    //     );
-        
-    //     $now = Carbon::now();
-    //     $start = Carbon::createFromFormat('Y-m-d', $range['start']);
-    //     $end = Carbon::createFromFormat('Y-m-d', $range['end']);
-        
-    //     $difference = $now->diffInDays($end);
-        
-    //     if ($difference > 0) {
-    //         $period = 'range';
-    //         $date = $range['start'].','.$range['end'];
-    //     }
-
-    //     $diffStartToEnd = $start->diffInDays($end);
-    //     if($diffStartToEnd == 6){
-    //         $period = 'week';
-    //         $date = 'last7';
-    //     }
-
-    //     if($diffStartToEnd == 29){
-    //         $period = 'month';
-    //         $date = 'last30';
-    //     }
-
-    //     return $periodCheck ? $period : $date;
-    // }
 
     private function getDateOrPeriodFromRequest(Request $request, $periodCheck = false) 
     {
