@@ -424,18 +424,19 @@
                         if(value.actions > 0){
                             $(thisLogBlog).find('.visitor-log-page-list .visitorLog.actionList').removeClass('d-none');
                         }
-                        let actionList = $(thisLogBlog).find('.visitor-log-page-list .visitorLog.actionList');
+                        let actionListblock = $(thisLogBlog).find('.visitor-log-page-list .visitorLog.actionList li.action');
                         $.each(value.actionDetails, function(i,v){
-                            $(actionList).find('li.action').clone().appendTo(actionList);
-                            let getLastLogAction = $(actionList).children('li.action').last();
+                            $(actionListblock).clone().appendTo($(thisLogBlog).find('.visitor-log-page-list .visitorLog.actionList'));
+                            let getLastLogAction = $(thisLogBlog).find('.visitor-log-page-list .visitorLog.actionList').children('li.action').last();
                             $(getLastLogAction).attr('id', `logaction_${index}`);
-                            let thisLogAction = $(actionList).find(`.action#logaction_${index}`);
+                            let thisLogAction = $(thisLogBlog).find(`.visitor-log-page-list .visitorLog.actionList li.action#logaction_${index}`);
                             $(thisLogAction).removeClass('d-none');
                             $(thisLogAction).attr('title', `${v.serverTimePretty} \n ${v.subtitle} \n ${v.pageLoadTime !== undefined ? `Page load time: ${v.pageLoadTime}` : ''} \n ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}`);
                             switch(v.type){
                                 case 'action':
                                     $(thisLogAction).addClass('folder');
                                     $(thisLogAction).find('.action_inner .truncated-text-line').text(v.title);
+                                    $(thisLogAction).find('.action_inner img').text(v.title);
                                     break;
                                 default:
                             }
