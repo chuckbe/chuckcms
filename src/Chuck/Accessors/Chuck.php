@@ -61,7 +61,6 @@ class Chuck
             Route::group(['middleware' => 'auth'], function () {
                 // Dashboard Routes...
                 Route::get('/dashboard', '\Chuckbe\Chuckcms\Controllers\DashboardController@index')->name('dashboard');
-                
                 // Matomo Routes
                 Route::post('/dashboard/matomo/api', '\Chuckbe\Chuckcms\Controllers\MatomoController@ReportingApi')->name('dashboard.api');
                 Route::post('/dashboard/matomo/api/livecounter', '\Chuckbe\Chuckcms\Controllers\MatomoController@getLiveCounter')->name('dashboard.apilivecounter');
