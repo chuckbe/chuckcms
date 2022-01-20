@@ -2,21 +2,23 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Chuckbe\Chuckcms\Models\Site;
+use Carbon\Carbon;
+use Chuckbe\Chuckcms\Chuck\Matomo\QueryFactory;
 use Chuckbe\Chuckcms\Chuck\SiteRepository;
+use Chuckbe\Chuckcms\Models\Site;
 use Chuckbe\Chuckcms\Models\User;
 use ChuckSite;
-use Chuckbe\Chuckcms\Chuck\Matomo\QueryFactory;
-use Carbon\Carbon;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 
 class MatomoController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     private $site;
     private $siteRepository;
@@ -62,7 +64,7 @@ class MatomoController extends BaseController
         return response()->json(
             [
                 'lastVisitsDetails' => $lastVisitsDetails,
-                'htmlData' => $view
+                'htmlData'          => $view,
             ]
         );
     }
@@ -84,7 +86,7 @@ class MatomoController extends BaseController
         return response()->json(
             [
                 'visitorProfile' => $visitorProfile,
-                'visitorModal' => $view
+                'visitorModal'   => $view,
             ]
         );
     }
@@ -103,7 +105,7 @@ class MatomoController extends BaseController
 
         return response()->json(
             [
-                'liveCounter' => $liveCounter
+                'liveCounter' => $liveCounter,
             ]
         );
     }
@@ -122,20 +124,20 @@ class MatomoController extends BaseController
 
             case 'week':
             case 'month':
-                $value = $request->all()["value"];
-                $range = array(
-                    'start' => $value["y2"] . '-' . $value["m2"] . '-' . $value["d2"],
-                    'end'   => $value["y1"] . '-' . $value["m1"] . '-' . $value["d1"]
-                );
-                $imgDate = $range['start'] . ',' . $range['end'];
+                $value = $request->all()['value'];
+                $range = [
+                    'start' => $value['y2'].'-'.$value['m2'].'-'.$value['d2'],
+                    'end'   => $value['y1'].'-'.$value['m1'].'-'.$value['d1'],
+                ];
+                $imgDate = $range['start'].','.$range['end'];
                 break;
 
             case 'day':
                 if ($date == 'today') {
-                    $imgDate = date('Y-m-d') . "," . date('Y-m-d', strtotime(date('Y-m-d') . " +2 day"));
+                    $imgDate = date('Y-m-d').','.date('Y-m-d', strtotime(date('Y-m-d').' 2 day'));
                 }
                 if ($date == 'yesterday') {
-                    $imgDate = date('Y-m-d') . "," . date('Y-m-d', strtotime(date('Y-m-d') . " +2 day"));
+                    $imgDate = date('Y-m-d').','.date('Y-m-d', strtotime(date('Y-m-d').' 2 day'));
                 }
                 break;
         }
@@ -155,16 +157,16 @@ class MatomoController extends BaseController
 
         return response()->json(
             [
-                'visitimg' => $matomoUrl . '/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite=' . $this->siteId . '&period=' . $period . '&date=' . $imgDate . '&segment=&showtitle=1&random=6179&columns=nb_visits%2Cnb_uniq_visitors&token_auth=' . $this->authToken,
-                'avgvisitimg' => $matomoUrl . '/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite=' . $this->siteId . '&period=' . $period . '&date=' . $imgDate . '&showtitle=1&random=6179&columns=avg_time_on_site&token_auth=' . $this->authToken,
-                'bouncerateimg' => $matomoUrl . '/index.php?forceView=1&viewDataTable=sparkline&module=API&idSite=' . $this->siteId . '&period=' . $period . '&date=' . $imgDate . '&columns=bounce_rate&token_auth=' . $this->authToken,
-                'actions_per_visit_img' => $matomoUrl . '/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite=' . $this->siteId . '&period=' . $period . '&date=' . $imgDate . '&columns=nb_actions_per_visit&token_auth=' . $this->authToken,
-                'pageviewimg' => $matomoUrl . '/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite=' . $this->siteId . '&period=' . $period . '&date=' . $imgDate . '&columns=nb_pageviews%2Cnb_uniq_pageviews&token_auth=' . $this->authToken,
-                'searchesandkeywordsimg' => $matomoUrl . '/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite=' . $this->siteId . '&period=' . $period . '&date=' . $imgDate . '&columns=nb_searches%2Cnb_keywords&token_auth=' . $this->authToken,
-                'downloadsimg' => $matomoUrl . '/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite=' . $this->siteId . '&period=' . $period . '&date=' . $imgDate . '&columns=nb_downloads%2Cnb_uniq_downloads&token_auth=' . $this->authToken,
-                'outlinksimg' => $matomoUrl . '/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite=' . $this->siteId . '&period=' . $period . '&date=' . $imgDate . '&columns=nb_outlinks%2Cnb_uniq_outlinks&token_auth=' . $this->authToken,
-                'maxactionsimg' => $matomoUrl . '/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite=' . $this->siteId . '&period=' . $period . '&date=' . $imgDate . '&columns=max_actions&token_auth=' . $this->authToken,
-                'data' => $data
+                'visitimg'               => $matomoUrl.'/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite='.$this->siteId.'&period='.$period.'&date='.$imgDate.'&segment=&showtitle=1&random=6179&columns=nb_visits%2Cnb_uniq_visitors&token_auth='.$this->authToken,
+                'avgvisitimg'            => $matomoUrl.'/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite='.$this->siteId.'&period='.$period.'&date='.$imgDate.'&showtitle=1&random=6179&columns=avg_time_on_site&token_auth='.$this->authToken,
+                'bouncerateimg'          => $matomoUrl.'/index.php?forceView=1&viewDataTable=sparkline&module=API&idSite='.$this->siteId.'&period='.$period.'&date='.$imgDate.'&columns=bounce_rate&token_auth='.$this->authToken,
+                'actions_per_visit_img'  => $matomoUrl.'/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite='.$this->siteId.'&period='.$period.'&date='.$imgDate.'&columns=nb_actions_per_visit&token_auth='.$this->authToken,
+                'pageviewimg'            => $matomoUrl.'/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite='.$this->siteId.'&period='.$period.'&date='.$imgDate.'&columns=nb_pageviews%2Cnb_uniq_pageviews&token_auth='.$this->authToken,
+                'searchesandkeywordsimg' => $matomoUrl.'/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite='.$this->siteId.'&period='.$period.'&date='.$imgDate.'&columns=nb_searches%2Cnb_keywords&token_auth='.$this->authToken,
+                'downloadsimg'           => $matomoUrl.'/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite='.$this->siteId.'&period='.$period.'&date='.$imgDate.'&columns=nb_downloads%2Cnb_uniq_downloads&token_auth='.$this->authToken,
+                'outlinksimg'            => $matomoUrl.'/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite='.$this->siteId.'&period='.$period.'&date='.$imgDate.'&columns=nb_outlinks%2Cnb_uniq_outlinks&token_auth='.$this->authToken,
+                'maxactionsimg'          => $matomoUrl.'/index.php?forceView=1&viewDataTable=sparkline&module=API&action=get&idSite='.$this->siteId.'&period='.$period.'&date='.$imgDate.'&columns=max_actions&token_auth='.$this->authToken,
+                'data'                   => $data,
             ]
         );
     }
@@ -188,7 +190,7 @@ class MatomoController extends BaseController
 
         return response()->json(
             [
-                'data' => $referrers
+                'data' => $referrers,
             ]
         );
     }
@@ -196,17 +198,17 @@ class MatomoController extends BaseController
     private function getDateOrPeriodFromRequest(Request $request, $periodCheck = false)
     {
         $data = $request->all()['value'];
-        $date = strtolower($data["range"]);
+        $date = strtolower($data['range']);
         $period = 'day';
 
-        if (!isset($data["y2"], $data["m2"], $data["d2"])) {
+        if (!isset($data['y2'], $data['m2'], $data['d2'])) {
             return $periodCheck ? $period : $date;
         }
 
-        $range = array(
-            'start' => $data["y2"] . '-' . $data["m2"] . '-' . $data["d2"],
-            'end'   => $data["y1"] . '-' . $data["m1"] . '-' . $data["d1"]
-        );
+        $range = [
+            'start' => $data['y2'].'-'.$data['m2'].'-'.$data['d2'],
+            'end'   => $data['y1'].'-'.$data['m1'].'-'.$data['d1'],
+        ];
 
         $now = Carbon::now();
         $start = Carbon::createFromFormat('Y-m-d', $range['start']);
@@ -227,7 +229,7 @@ class MatomoController extends BaseController
 
         if ($difference > 0) {
             $period = 'range';
-            $date = $range['start'] . ',' . $range['end'];
+            $date = $range['start'].','.$range['end'];
         }
 
         return $periodCheck ? $period : $date;

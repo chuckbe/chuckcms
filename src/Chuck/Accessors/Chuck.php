@@ -116,26 +116,26 @@ class Chuck
                 Route::group(['middleware' => ['permission:show menus']], function () {
                     $path = rtrim(config('menu.route_path'));
                     Route::get('/dashboard/menus', '\Chuckbe\Chuckcms\Controllers\MenuController@index')->name('dashboard.menus');
-                    Route::post($path . '/generatemenucontrol', ['as' => 'hgeneratemenucontrol', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@generatemenucontrol']);
+                    Route::post($path.'/generatemenucontrol', ['as' => 'hgeneratemenucontrol', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@generatemenucontrol']);
                 });
 
                 Route::group(['middleware' => ['permission:create menus']], function () {
                     $path = rtrim(config('menu.route_path'));
-                    Route::post($path . '/addcustommenu', ['as' => 'haddcustommenu', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@addcustommenu']);
-                    Route::post($path . '/addpagemenu', ['as' => 'haddpagemenu', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@addpagemenu']);
-                    Route::post($path . '/createnewmenu', ['as' => 'hcreatenewmenu', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@createnewmenu']);
+                    Route::post($path.'/addcustommenu', ['as' => 'haddcustommenu', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@addcustommenu']);
+                    Route::post($path.'/addpagemenu', ['as' => 'haddpagemenu', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@addpagemenu']);
+                    Route::post($path.'/createnewmenu', ['as' => 'hcreatenewmenu', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@createnewmenu']);
                 });
 
                 Route::group(['middleware' => ['permission:edit menus']], function () {
                     $path = rtrim(config('menu.route_path'));
-                    Route::post($path . '/generatemenucontrol', ['as' => 'hgeneratemenucontrol', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@generatemenucontrol']);
-                    Route::post($path . '/updateitem', ['as' => 'hupdateitem', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@updateitem']);
+                    Route::post($path.'/generatemenucontrol', ['as' => 'hgeneratemenucontrol', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@generatemenucontrol']);
+                    Route::post($path.'/updateitem', ['as' => 'hupdateitem', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@updateitem']);
                 });
 
                 Route::group(['middleware' => ['permission:delete menus']], function () {
                     $path = rtrim(config('menu.route_path'));
-                    Route::post($path . '/deleteitemmenu', ['as' => 'hdeleteitemmenu', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@deleteitemmenu']);
-                    Route::post($path . '/deletemenug', ['as' => 'hdeletemenug', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@deletemenug']);
+                    Route::post($path.'/deleteitemmenu', ['as' => 'hdeleteitemmenu', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@deleteitemmenu']);
+                    Route::post($path.'/deletemenug', ['as' => 'hdeletemenug', 'uses' => '\Chuckbe\Chuckcms\Controllers\MenuController@deletemenug']);
                 });
 
                 // Dashboard Redirects Routes...
