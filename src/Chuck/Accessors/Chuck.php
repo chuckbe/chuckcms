@@ -61,6 +61,19 @@ class Chuck
             Route::group(['middleware' => 'auth'], function () {
                 // Dashboard Routes...
                 Route::get('/dashboard', '\Chuckbe\Chuckcms\Controllers\DashboardController@index')->name('dashboard');
+                
+                // Matomo Routes
+                Route::post('/dashboard/matomo/api', '\Chuckbe\Chuckcms\Controllers\MatomoController@ReportingApi')->name('dashboard.api');
+                Route::post('/dashboard/matomo/api/livecounter', '\Chuckbe\Chuckcms\Controllers\MatomoController@getLiveCounter')->name('dashboard.apilivecounter');
+                Route::post('/dashboard/matomo/api/overview', '\Chuckbe\Chuckcms\Controllers\MatomoController@getVisitsData')->name('dashboard.apioverview');
+                Route::post('/dashboard/matomo/api/overview/referrers', '\Chuckbe\Chuckcms\Controllers\MatomoController@getReferrers')->name('dashboard.apioverview.referrers');
+                Route::get('/dashboard/matomo', '\Chuckbe\Chuckcms\Controllers\MatomoController@index')->name('dashboard.matomo');
+                Route::post('/dashboard/matomo/changerange', '\Chuckbe\Chuckcms\Controllers\MatomoController@matomo');
+                Route::get('/dashboard/matomo/livevisit', '\Chuckbe\Chuckcms\Controllers\MatomoController@counter')->name('dashboard.livevisits');
+                Route::post('/dashboard/matomo/submitmatomo', '\Chuckbe\Chuckcms\Controllers\MatomoController@submit')->name('dashboard.matomosubmit');
+                Route::post('/reportingApi/visitorsummary', '\Chuckbe\Chuckcms\Controllers\MatomoController@visitorSummary');
+                Route::get('/reportingApi', '\Chuckbe\Chuckcms\Controllers\MatomoController@reportingApi');
+
                 // Dashboard Pages Routes...
                 Route::group(['middleware' => ['permission:show pages']], function () {
                     Route::get('/dashboard/pages', '\Chuckbe\Chuckcms\Controllers\PageController@index')->name('dashboard.pages');

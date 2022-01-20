@@ -5,19 +5,6 @@
         }
     });
     let matomoUrl = '{{ChuckSite::getSetting('integrations.matomo-site-url')}}'
-    
-    function str_pad_left(string,pad,length) {
-        return (new Array(length+1).join(pad)+string).slice(-length);
-    }
-    function humanizeNumber(n) {
-        n = n.toString()
-        while (true) {
-            var n2 = n.replace(/(\d)(\d{3})($|,|\.)/g, '$1,$2$3')
-            if (n == n2) break
-            n = n2
-        }
-        return n
-    }
 
     function liveCounter(){
         $.ajax({
@@ -72,20 +59,20 @@
                 value : convertedRange
             },
             success:function(response){
-                let visits = humanizeNumber(response.data.nb_visits);
-                let uniquevisitors = humanizeNumber(response.data.nb_uniq_visitors);
+                let visits = humanize_number(response.data.nb_visits);
+                let uniquevisitors = humanize_number(response.data.nb_uniq_visitors);
                 let avgTimeSpend = moment.utc(response.data.avg_time_on_site*1000).format('mm:ss').split(":");
                 let bounceRate = response.data.bounce_rate;
                 let actionsPerVisit = response.data.nb_actions_per_visit;
-                let pageViews = humanizeNumber(response.data.nb_pageviews);
-                let uniquePageViews = humanizeNumber(response.data.nb_uniq_pageviews);
-                let totalSearches = humanizeNumber(response.data.nb_searches);
-                let uniqueKeywords = humanizeNumber(response.data.nb_keywords);
-                let downloads = humanizeNumber(response.data.nb_downloads);
-                let uniqueDownloads = humanizeNumber(response.data.nb_uniq_downloads);
-                let outlinks = humanizeNumber(response.data.nb_outlinks);
-                let uniqueOutlinks = humanizeNumber(response.data.nb_uniq_outlinks);
-                let maxActions = humanizeNumber(response.data.max_actions);
+                let pageViews = humanize_number(response.data.nb_pageviews);
+                let uniquePageViews = humanize_number(response.data.nb_uniq_pageviews);
+                let totalSearches = humanize_number(response.data.nb_searches);
+                let uniqueKeywords = humanize_number(response.data.nb_keywords);
+                let downloads = humanize_number(response.data.nb_downloads);
+                let uniqueDownloads = humanize_number(response.data.nb_uniq_downloads);
+                let outlinks = humanize_number(response.data.nb_outlinks);
+                let uniqueOutlinks = humanize_number(response.data.nb_uniq_outlinks);
+                let maxActions = humanize_number(response.data.max_actions);
                 
                 $('.menu-items-content #visitoroverviewcards #visitsoverview').empty();
                 $('.menu-items-content #visitoroverviewcards #visitsoverview').append(`
@@ -171,9 +158,6 @@
                         
                     </li>`)
                 });
-            },
-            complete: function(){
-                
             }
         });
     }
@@ -424,12 +408,15 @@
                         if(value.actions > 0){
                             $(thisLogBlog).find('.visitor-log-page-list .visitorLog.actionList').removeClass('d-none');
                         }
+
                         let actionListblock = $(thisLogBlog).find('.visitor-log-page-list .visitorLog.actionList li.action');
-                        $.each(value.actionDetails, function(i,v){
-                            $(actionListblock).clone().appendTo($(thisLogBlog).find('.visitor-log-page-list .visitorLog.actionList'));
-                            let getLastLogAction = $(thisLogBlog).find('.visitor-log-page-list .visitorLog.actionList').children('li.action').last();
-                            $(getLastLogAction).attr('id', `logaction_${index}`);
-                            let thisLogAction = $(thisLogBlog).find(`.visitor-log-page-list .visitorLog.actionList li.action#logaction_${index}`);
+
+                        $.each(value.actionDetails, function(i, v){
+                            let currentActionList = $(thisLogBlog).find('.visitor-log-page-list .visitorLog.actionList');
+                            $(actionListblock).clone().appendTo(currentActionList);
+                            let getLastLogAction = currentActionList.children('.action').last();
+                            $(getLastLogAction).attr('id', `logaction_${i}`);
+                            let thisLogAction = $(thisLogBlog).find(`.visitor-log-page-list .visitorLog.actionList li.action#logaction_${i}`);
                             $(thisLogAction).removeClass('d-none');
                             $(thisLogAction).attr('title', `${v.serverTimePretty} \n ${v.subtitle} \n ${v.pageLoadTime !== undefined ? `Page load time: ${v.pageLoadTime} \n ` : ''} ${v.timeSpentPretty !== undefined ? `Time on page: ${v.timeSpentPretty}` : ''}`);
                             let actionIcon = matomoUrl+'/'+v.iconSVG;
@@ -438,29 +425,27 @@
                                     $(thisLogAction).addClass('folder');
                                     $(thisLogAction).find('.action_inner .truncated-text-line').text(v.title);
                                     $(thisLogAction).find('.action_inner img').attr('src', actionIcon);
-                                    $(thisLogAction).find('.action_inner img').addClass(v.type);
+                                    $(thisLogAction).find('.action_inner img').addClass('action');
                                     $(thisLogAction).find('.action_inner a.action-list-url').attr('href', v.url);
                                     $(thisLogAction).find('.action_inner a.action-list-url').text(v.url);
                                     break;
                                 case 'outlink':
                                     $(thisLogAction).addClass('outlink');
+                                    $(thisLogAction).find('.action_inner .truncated-text-line').text(v.title);
                                     $(thisLogAction).find('.action_inner img').attr('src', actionIcon);
-                                    $(thisLogAction).find('.action_inner img').addClass(v.type);
+                                    $(thisLogAction).find('.action_inner img').addClass('outlink');
                                     $(thisLogAction).find('.action_inner a.action-list-url').attr('href', v.url);
                                     $(thisLogAction).find('.action_inner a.action-list-url').text(v.url);
                                     break;
                                 case 'download':
                                     $(thisLogAction).addClass('download');
+                                    $(thisLogAction).find('.action_inner .truncated-text-line').text(v.title);
                                     $(thisLogAction).find('.action_inner img').attr('src', actionIcon);
-                                    $(thisLogAction).find('.action_inner img').addClass(v.type);
+                                    $(thisLogAction).find('.action_inner img').addClass('download');
                                     $(thisLogAction).find('.action_inner a.action-list-url').attr('href', v.url);
                                     $(thisLogAction).find('.action_inner a.action-list-url').text(v.url);
                                     break;
                                 default:
-                            }
-                            if($(thisLogBlog).find(`.visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index}`).length > 0){
-                                let lastchild = $(thisLogBlog).find(`.visitor-log-page-list .visitorLog .pageviewActions#pageviewActions_${index} .actionList`).children('.action').last();
-                                $(lastchild).addClass('last-action');
                             }
                         });
                     });
@@ -836,4 +821,17 @@
         $('.menu-items-content div.matomo-items.active').show();
         $('.menu-items-content .loader').hide();
     });
+
+    function str_pad_left(string,pad,length) {
+        return (new Array(length+1).join(pad)+string).slice(-length);
+    }
+    function humanize_number(n) {
+        n = n.toString()
+        while (true) {
+            var n2 = n.replace(/(\d)(\d{3})($|,|\.)/g, '$1,$2$3')
+            if (n == n2) break
+            n = n2
+        }
+        return n
+    }
 </script>

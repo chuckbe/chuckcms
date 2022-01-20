@@ -30,7 +30,7 @@ class MatomoController extends BaseController
      *
      * @return void
      */
-     public function __construct(Site $site, SiteRepository $siteRepository, User $user)
+    public function __construct(Site $site, SiteRepository $siteRepository, User $user)
     {
         $this->site = $site;
         $this->siteId = ChuckSite::getSetting('integrations.matomo-site-id');
@@ -78,7 +78,7 @@ class MatomoController extends BaseController
             ->execute()
             ->getResponse();
 
-        $view = view('chuckcms::backend.dashboard.blocks.visitorModal')->render();
+        $view = view('chuckcms::backend.dashboard.blocks.visitor_modal')->render();
 
         return response()->json([
             'visitorProfile' => $visitorProfile,
@@ -179,34 +179,6 @@ class MatomoController extends BaseController
         return response()->json([
             'data'=> $referrers
         ]);
-    }
-
-    public function submit(Request $request)
-    {
-        $request->validate([
-            'siteId' => 'required',
-            'authtoken' => 'required'
-        ]);
-        $settings = [];
-        $settings['id'] = ChuckSite::getSite('id');
-        $settings['name'] = ChuckSite::getSite('name');
-        $settings['slug'] = ChuckSite::getSite('slug');
-        $settings['company'] =  ChuckSite::getSetting('company') ;
-        $settings['socialmedia'] =  ChuckSite::getSetting('socialmedia');
-        $settings['favicon'] = ChuckSite::getSetting('favicon');
-        $settings['logo'] =  ChuckSite::getSetting('logo');
-        $settings['lang'] = ChuckSite::getSetting('lang');
-        $settings['domain'] = ChuckSite::getSetting('domain');
-        $settings['integrations'] = [
-            'matomo-site-id' => $request->siteId,
-            'matomo-auth-key' => $request->authtoken
-        ];
-        // //update or create settings
-        $this->siteRepository->updateIntegrations($settings);
-
-        //redirect back
-        return redirect()->route('dashboard.matomo')->with('notification', 'Instellingen opgeslagen!');
-        
     }
 
 
