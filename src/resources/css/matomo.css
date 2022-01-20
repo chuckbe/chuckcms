@@ -402,25 +402,6 @@
     font-size: 13px;
     text-align: left;
 }
-#referrers {
-    min-height: 230px;
-}
-#referrers .referrerslist{
-    max-height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-}
-#referrers .referrerslist li{
-    width: 50%;
-}
-@media (max-width: 992px) {
-    #referrers .referrerslist li{
-        width: 100%;
-    }
-    .menu-items-content{
-        padding-top: 3rem;
-    }
-}
 a.visitor-log-visitor-profile-link {
     z-index: 2;
     position: absolute;
@@ -447,6 +428,10 @@ a.visitor-log-visitor-profile-link span, a.visitor-log-visitor-profile-link i {
 .visitorLogIcons {
     position: relative;
     display: block;
+}
+.referrerslist {
+    height: 185px;
+    overflow-y: scroll;
 }
 .own-visitor-column .visitorLogIcons .visitorDetails {
     margin-top: 0;
@@ -505,13 +490,20 @@ ol.visitorLog {
     margin-left: 8px;
     padding-left: 8px;
 }
-ol.actionList > li:not(.pageviewActions){
+
+ol.actionList > li{
     margin-bottom: 10px;
     line-height: 20px;
     position: relative;
     min-height: 30px;
 }
-ol.actionList > li:not(.pageviewActions):before {
+
+ol.actionList > li:not(.folder){
+    margin-bottom: 0px;
+    margin-left: 1rem;
+}
+
+ol.actionList > li:before {
     vertical-align: top;
     background-color: #424242;
     border: 5px solid #424242;
@@ -525,9 +517,8 @@ ol.actionList > li:not(.pageviewActions):before {
     left: -14px;
     z-index: 2;
 }
-ol.actionList > li:not(.pageviewActions):after,
-ol.actionList > li:not(.download):after,
-ol.actionList > li:not(.outlink):after {
+
+ol.actionList > li.folder:after {
     content: " ";
     border-left: 2px solid #d2d2d2;
     position: absolute;
@@ -536,9 +527,24 @@ ol.actionList > li:not(.outlink):after {
     margin-top: 20px;
     z-index: 1;
 }
-ol.actionList > li:not(.pageviewActions):last-of-type:after {
-    border-left: none;
+ol.actionList .action.lastfolder::after{
+    display: none;
 }
+
+ol.actionList .action.folder:nth-last-of-type(1)::after{
+    display: none;
+}
+
+ol.actionList .action.lastfolder {
+    margin-bottom: 0;;
+}
+
+ol.actionList .action.download .action_inner p,
+ol.actionList .action.outlink .action_inner p,
+ol.actionList .action.lastfolder .action_inner p{
+    margin-bottom: 5px;
+}
+
 .actionList > li > div {
     display: inline-block;
     width: 90%;
