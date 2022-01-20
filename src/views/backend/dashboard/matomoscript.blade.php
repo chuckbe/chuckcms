@@ -80,28 +80,28 @@
                         <span><strong>${visits}</strong> visits, <strong>${uniquevisitors}</strong> unique visitors</span>
                     </div>
                     <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.avgvisitimg}>
-                            <span><strong>${avgTimeSpend[0]} min ${avgTimeSpend[1]}s</strong> average visit duration</span>
+                        <span><strong>${avgTimeSpend[0]} min ${avgTimeSpend[1]}s</strong> average visit duration</span>
                     </div>
                     <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.avgvisitimg}>
-                            <span><strong>${bounceRate}</strong> visits have bounced (left the website after one page)</span>
+                        <span><strong>${bounceRate}</strong> visits have bounced (left the website after one page)</span>
                     </div>
                     <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.actions_per_visit_img}>
-                            <span><strong>${actionsPerVisit}</strong> actions (page views, downloads, outlinks and internal site searches) per visit</span>
+                        <span><strong>${actionsPerVisit}</strong> actions (page views, downloads, outlinks and internal site searches) per visit</span>
                     </div>
                     <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.pageviewimg}>
-                            <span><strong>${pageViews}</strong> pageviews, <strong>${uniquePageViews}</strong> unique pageviews</span>
+                        <span><strong>${pageViews}</strong> pageviews, <strong>${uniquePageViews}</strong> unique pageviews</span>
                     </div>
                     <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.searchesandkeywordsimg}>
-                            <span><strong>${totalSearches}</strong> total searches on your website, <strong>${uniqueKeywords}</strong> unique keywords</span>
+                        <span><strong>${totalSearches}</strong> total searches on your website, <strong>${uniqueKeywords}</strong> unique keywords</span>
                     </div>
                     <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.downloadsimg}>
-                            <span><strong>${downloads}</strong> downloads, <strong>${uniqueDownloads}</strong> unique downloads</span>
+                        <span><strong>${downloads}</strong> downloads, <strong>${uniqueDownloads}</strong> unique downloads</span>
                     </div>
                     <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.outlinksimg}>
-                            <span><strong>${outlinks}</strong> outlinks, <strong>${uniqueOutlinks}</strong> unique outlinks</span>
+                        <span><strong>${outlinks}</strong> outlinks, <strong>${uniqueOutlinks}</strong> unique outlinks</span>
                     </div>
                     <div class="py-3 col-6"><img class="mr-3" style="width: auto;height: 45px;" src=${response.maxactionsimg}>
-                            <span><strong>${maxActions}</strong> max actions in one visit</span>
+                        <span><strong>${maxActions}</strong> max actions in one visit</span>
                     </div>
                 `);
             }
@@ -349,7 +349,7 @@
                         }
 
                         // visit log returning user icon
-                        let returningVisitorIcon = matomoUrl+'/'+value.visitorTypeIcon
+                        let returningVisitorIcon = matomoUrl+'/'+value.visitorTypeIcon;
                         $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.visitorTypeIcon img').attr('src', returningVisitorIcon);
                         if(value.visitorType == 'returning'){
                             $(thisLogBlog).find('.own-visitor-column .visitorLogIcons span.visitorDetails .visitorLogIconWithDetails.visitorTypeIcon').removeClass('d-none');
@@ -449,7 +449,14 @@
                             }
                         });
                     });
-                    
+                    let download = $('.visitor-log-page-list .actionList li.action.download');
+                    let outlink = $('.visitor-log-page-list .actionList li.action.outlink');
+                    if($(download).prev('.folder')) {
+                        $(download).prev('.folder').addClass('lastfolder');
+                    }
+                    if($(outlink).prev('.folder')) {
+                        $(outlink).prev('.folder').addClass('lastfolder');
+                    }
                 },
                 complete: function(){
                     let numberOfItems = $("#visitorcards .card").length;
