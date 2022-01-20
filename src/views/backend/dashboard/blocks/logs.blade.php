@@ -9,12 +9,12 @@
 			<span class="visitor-log-ip-location visitorLogTooltip" title="">
 				<span id="visitip" style="font-size: 11px;"> </span>
 				<br>
-				<span id="visitor_city_span"><img width="16" class="flag" src="be.png"> &nbsp; Evere </span>
+				<span id="visitor_city_span"><img width="16" class="flag" src=""> &nbsp; Evere </span>
 			</span>
 			<div class="visitorreferencearea">
 				<div class="visitorReferrer search d-none">
 					<span title="Keyword not defined" class="referrerKeyword">
-						<img class="mr-2" width="16" src="google.com.png" alt="Google">
+						<img class="mr-2" width="16" src="" alt="Google">
 						<span>Google</span>
 					</span>
 				</div>
@@ -37,13 +37,13 @@
 			<span class="visitorLogIcons">
 				<span class="visitorDetails">
 					<span class="visitorLogIconWithDetails visitorTypeIcon d-none">
-						<img src="returningVisitor.png">
+						<img src="">
 						<ul class="details">
 							<li>Returning Visitor - 4 visits</li>
 						</ul>
 					</span>
 					<span class="visitorLogIconWithDetails flag" profile-header-text="">
-						<img src="flags/be.png">
+						<img src="">
 						<ul class="details">
 							<li>Country: Belgium</li>
 							<li>Region: null</li>
@@ -54,23 +54,23 @@
 						</ul>
 					</span>
 					<span class="visitorLogIconWithDetails browser" profile-header-text="Chrome 97.0">
-						<img src="CH.png">
+						<img src="">
 						<ul class="details">
 							<li>Browser: Chrome 97.0</li>
 							<li>Browser engine: Blink</li>
-							<li id="pluginlist_0" class="plugins"> Plugins: <img width="16px" height="16px" src="cookie.png" alt="cookie">
-								<img width="16px" height="16px" src="pdf.png" alt="pdf">
+							<li id="pluginlist_0" class="plugins"> Plugins: <img width="16px" height="16px" src="" alt="cookie">
+								<img width="16px" height="16px" src="" alt="pdf">
 							</li>
 						</ul>
 					</span>
 					<span class="visitorLogIconWithDetails operatingsystem" profile-header-text="Windows 7">
-						<img src="WIN.png">
+						<img src="">
 						<ul class="details">
 							<li>Operating system: Windows 7</li>
 						</ul>
 					</span>
 					<span class="visitorLogIconWithDetails resolution" profile-header-text="1536x864">
-						<img src="desktop.png">
+						<img src="">
 						<ul class="details">
 							<li>Device type: Desktop</li>
 							<li>Device brand: Unknown</li>
@@ -88,7 +88,7 @@
 					<li class="action d-none" title="">
 						<div class="action_inner">
 							<span class="truncated-text-line"></span>
-							<img src="action.svg" class="action-list-action-icon action">
+							<img src="" class="action-list-action-icon action">
 							<p>
 								<a href="" target="_blank" rel="noreferrer noopener" class="action-list-url truncated-text-line"></a>
 							</p>
