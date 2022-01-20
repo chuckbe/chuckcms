@@ -793,6 +793,7 @@
                                 case 'outlink':
                                     $(thisActionBlock).addClass('outlink');
                                     $(thisActionBlock).addClass('ml-3');
+                                    break;
                                 case 'download':
                                     $(thisActionBlock).addClass('download');
                                     $(thisActionBlock).addClass('ml-3');
@@ -800,8 +801,6 @@
                                 default:
                             }
                         });
-
-                        
                     });
 
                     $(`#${visitorId}`).modal({
@@ -822,6 +821,7 @@
         $('.menu-items-content .loader').hide();
     });
 
+    // helper functions starts
     function str_pad_left(string,pad,length) {
         return (new Array(length+1).join(pad)+string).slice(-length);
     }
@@ -834,4 +834,5 @@
         }
         return n
     }
+    // helper functions ends
 </script>
