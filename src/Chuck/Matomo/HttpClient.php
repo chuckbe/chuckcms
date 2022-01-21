@@ -47,10 +47,10 @@ class HttpClient implements HttpClientInterface
     /**
      * Constructs a new HttpClient object.
      *
-     * @param \GuzzleHttp\ClientInterface $httpClient
-     *   The Guzzle HTTP client.
+     * @param \GuzzleHttp\ClientInterface                            $httpClient
+     *                                                                               The Guzzle HTTP client.
      * @param \Chuckbe\Chuckcms\Chuck\Matomo\RequestFactoryInterface $requestFactory
-     *   The PSR7 request factory.
+     *                                                                               The PSR7 request factory.
      */
     public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory)
     {

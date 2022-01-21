@@ -24,10 +24,10 @@ class Query implements QueryInterface
     /**
      * Constructs a new Query object.
      *
-     * @param string $url
-     *   The URL of the Matomo server.
+     * @param string                                    $url
+     *                                                              The URL of the Matomo server.
      * @param \Chuckbe\Chuckcms\Chuck\Matomo\HttpClient $httpClient
-     *   The HTTP client wrapper.
+     *                                                              The HTTP client wrapper.
      */
     public function __construct($url, HttpClient $httpClient)
     {
@@ -73,6 +73,7 @@ class Query implements QueryInterface
         if (!array_key_exists($name, $this->parameters)) {
             throw new \InvalidArgumentException("Parameter '$name' is not set.");
         }
+
         return $this->parameters[$name];
     }
 
@@ -95,6 +96,7 @@ class Query implements QueryInterface
     {
         $this->prepareExecute();
         $response = $this->httpClient->setRequestParameters($this->parameters)->sendRequest();
+
         return new QueryResult($response);
     }
 }

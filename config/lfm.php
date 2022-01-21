@@ -16,7 +16,7 @@ return [
      */
 
     'use_package_routes'       => true,
-    'url_prefix' => 'dashboard/media',
+    'url_prefix'               => 'dashboard/media',
 
     /*
     |--------------------------------------------------------------------------
@@ -169,6 +169,3 @@ return [
         'memory_limit' => '256M',
     ],
 ];
-
-
-
