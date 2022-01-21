@@ -139,7 +139,7 @@
 @endsection
 
 @section('scripts')
-  <script src="{{ URL::to('vendor/laravel-filemanager/js/lfm.js') }}"></script>
+  <script src="{{ URL::to('vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
   <script>
     $( document ).ready(function() { 

@@ -18,8 +18,9 @@ composer require chuckbe/chuckcms
 ### Publish public assets
 ```
 php artisan vendor:publish --tag=chuckcms-public --force
-php artisan vendor:publish --tag=lfm_public //Laravel Filemanager by UniSharp
+php artisan vendor:publish --tag=lfm_public --force //Unisharp
 ```
+> When updating ChuckCMS to 0.2.5 or higher you need to republish the Laravel Filemanager public assets. When doing so you can change the 'stand-alone-button.js' file on line 13 into ```return item.url.split(window.location.protocol+'//'+window.location.hostname+'/')[1];``` Doing so will return the path of selected image instead of full url.
 
 ### Eventually publish config files
 ```

@@ -3,6 +3,8 @@
 namespace Chuckbe\Chuckcms\Chuck\Accessors;
 
 use Illuminate\Support\Facades\Route;
+use UniSharp\LaravelFilemanager\Middlewares\MultiUser;
+use UniSharp\LaravelFilemanager\Middlewares\CreateDefaultFolder;
 
 class Chuck
 {
@@ -294,96 +296,194 @@ class Chuck
             Route::post('/forms/validate', '\Chuckbe\Chuckcms\Controllers\FormController@postForm')->name('forms.validate');
         });
 
-        $middleware = array_merge(\Config::get('lfm.middlewares'), [
-            '\UniSharp\LaravelFilemanager\Middlewares\MultiUser',
-            '\UniSharp\LaravelFilemanager\Middlewares\CreateDefaultFolder',
-        ]);
+        // $middleware = array_merge(\Config::get('lfm.middlewares'), [
+        //     '\UniSharp\LaravelFilemanager\Middlewares\MultiUser',
+        //     '\UniSharp\LaravelFilemanager\Middlewares\CreateDefaultFolder',
+        // ]);
+        // $prefix = \Config::get('lfm.url_prefix', \Config::get('lfm.prefix', 'laravel-filemanager'));
+        // $as = 'unisharp.lfm.';
+        // $namespace = '\UniSharp\LaravelFilemanager\Controllers';
+
+        // // Routes for Package : Laravel Filemanager
+        // Route::group(compact('middleware', 'prefix', 'as', 'namespace'), function () {
+
+        //     // Show LFM
+        //     Route::get('/', [
+        //         'uses' => 'LfmController@show',
+        //         'as'   => 'show',
+        //     ]);
+
+        //     // Show integration error messages
+        //     Route::get('/errors', [
+        //         'uses' => 'LfmController@getErrors',
+        //         'as'   => 'getErrors',
+        //     ]);
+
+        //     // upload
+        //     Route::any('/upload', [
+        //         'uses' => 'UploadController@upload',
+        //         'as'   => 'upload',
+        //     ]);
+
+        //     // list images & files
+        //     Route::get('/jsonitems', [
+        //         'uses' => 'ItemsController@getItems',
+        //         'as'   => 'getItems',
+        //     ]);
+
+        //     // folders
+        //     Route::get('/newfolder', [
+        //         'uses' => 'FolderController@getAddfolder',
+        //         'as'   => 'getAddfolder',
+        //     ]);
+        //     Route::get('/deletefolder', [
+        //         'uses' => 'FolderController@getDeletefolder',
+        //         'as'   => 'getDeletefolder',
+        //     ]);
+        //     Route::get('/folders', [
+        //         'uses' => 'FolderController@getFolders',
+        //         'as'   => 'getFolders',
+        //     ]);
+
+        //     // crop
+        //     Route::get('/crop', [
+        //         'uses' => 'CropController@getCrop',
+        //         'as'   => 'getCrop',
+        //     ]);
+        //     Route::get('/cropimage', [
+        //         'uses' => 'CropController@getCropimage',
+        //         'as'   => 'getCropimage',
+        //     ]);
+        //     Route::get('/cropnewimage', [
+        //         'uses' => 'CropController@getNewCropimage',
+        //         'as'   => 'getCropimage',
+        //     ]);
+
+        //     // rename
+        //     Route::get('/rename', [
+        //         'uses' => 'RenameController@getRename',
+        //         'as'   => 'getRename',
+        //     ]);
+
+        //     // scale/resize
+        //     Route::get('/resize', [
+        //         'uses' => 'ResizeController@getResize',
+        //         'as'   => 'getResize',
+        //     ]);
+        //     Route::get('/doresize', [
+        //         'uses' => 'ResizeController@performResize',
+        //         'as'   => 'performResize',
+        //     ]);
+
+        //     // download
+        //     Route::get('/download', [
+        //         'uses' => 'DownloadController@getDownload',
+        //         'as'   => 'getDownload',
+        //     ]);
+
+        //     // delete
+        //     Route::get('/delete', [
+        //         'uses' => 'DeleteController@getDelete',
+        //         'as'   => 'getDelete',
+        //     ]);
+        // });
+        
+        $middleware = [ CreateDefaultFolder::class, MultiUser::class, 'auth' ];
         $prefix = \Config::get('lfm.url_prefix', \Config::get('lfm.prefix', 'laravel-filemanager'));
         $as = 'unisharp.lfm.';
-        $namespace = '\UniSharp\LaravelFilemanager\Controllers';
+        $namespace = '\\UniSharp\\LaravelFilemanager\\Controllers\\';
 
-        // Routes for Package : Laravel Filemanager
         Route::group(compact('middleware', 'prefix', 'as', 'namespace'), function () {
 
-            // Show LFM
+            // display main layout
             Route::get('/', [
                 'uses' => 'LfmController@show',
-                'as'   => 'show',
+                'as' => 'show',
             ]);
 
-            // Show integration error messages
+            // display integration error messages
             Route::get('/errors', [
                 'uses' => 'LfmController@getErrors',
-                'as'   => 'getErrors',
+                'as' => 'getErrors',
             ]);
 
             // upload
             Route::any('/upload', [
                 'uses' => 'UploadController@upload',
-                'as'   => 'upload',
+                'as' => 'upload',
             ]);
 
             // list images & files
             Route::get('/jsonitems', [
                 'uses' => 'ItemsController@getItems',
-                'as'   => 'getItems',
+                'as' => 'getItems',
+            ]);
+
+            Route::get('/move', [
+                'uses' => 'ItemsController@move',
+                'as' => 'move',
+            ]);
+
+            Route::get('/domove', [
+                'uses' => 'ItemsController@domove',
+                'as' => 'domove'
             ]);
 
             // folders
             Route::get('/newfolder', [
                 'uses' => 'FolderController@getAddfolder',
-                'as'   => 'getAddfolder',
+                'as' => 'getAddfolder',
             ]);
-            Route::get('/deletefolder', [
-                'uses' => 'FolderController@getDeletefolder',
-                'as'   => 'getDeletefolder',
-            ]);
+
+            // list folders
             Route::get('/folders', [
                 'uses' => 'FolderController@getFolders',
-                'as'   => 'getFolders',
+                'as' => 'getFolders',
             ]);
 
             // crop
             Route::get('/crop', [
                 'uses' => 'CropController@getCrop',
-                'as'   => 'getCrop',
+                'as' => 'getCrop',
             ]);
             Route::get('/cropimage', [
                 'uses' => 'CropController@getCropimage',
-                'as'   => 'getCropimage',
+                'as' => 'getCropimage',
             ]);
             Route::get('/cropnewimage', [
                 'uses' => 'CropController@getNewCropimage',
-                'as'   => 'getCropimage',
+                'as' => 'getCropnewimage',
             ]);
 
             // rename
             Route::get('/rename', [
                 'uses' => 'RenameController@getRename',
-                'as'   => 'getRename',
+                'as' => 'getRename',
             ]);
 
             // scale/resize
             Route::get('/resize', [
                 'uses' => 'ResizeController@getResize',
-                'as'   => 'getResize',
+                'as' => 'getResize',
             ]);
             Route::get('/doresize', [
                 'uses' => 'ResizeController@performResize',
-                'as'   => 'performResize',
+                'as' => 'performResize',
             ]);
 
             // download
             Route::get('/download', [
                 'uses' => 'DownloadController@getDownload',
-                'as'   => 'getDownload',
+                'as' => 'getDownload',
             ]);
 
             // delete
             Route::get('/delete', [
                 'uses' => 'DeleteController@getDelete',
-                'as'   => 'getDelete',
+                'as' => 'getDelete',
             ]);
+
+            Route::get('/demo', 'DemoController@index');
         });
     }
 

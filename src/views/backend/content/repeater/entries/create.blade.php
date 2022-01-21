@@ -133,25 +133,25 @@
 @endsection
 
 @section('scripts')
-  <script src="{{ URL::to('vendor/laravel-filemanager/js/lfm.js') }}"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
-  <script>
-    $( document ).ready(function() { 
-      
-      init();
+<script src="{{ URL::to('vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
+<script>
+  $( document ).ready(function() { 
+    
+    init();
 
-      function init () {
-        //init media manager inputs 
-        var domain = "{{ URL::to('dashboard/media')}}";
-        $('.img_lfm_link').filemanager('image', {prefix: domain});
+    function init () {
+      //init media manager inputs 
+      var domain = "{{ URL::to('dashboard/media')}}";
+      $('.img_lfm_link').filemanager('image', {prefix: domain});
 
-        $('.file_lfm_link').filemanager('file', {prefix: domain});
-      }
+      $('.file_lfm_link').filemanager('file', {prefix: domain});
+    }
 
-      $('.summernote-text-editor').summernote({
-        fontNames: ['Arial', 'Arial Black', 'Open Sans', 'Helvetica', 'Helvetica Neue', 'Lato']
-      });
-
+    $('.summernote-text-editor').summernote({
+      fontNames: ['Arial', 'Arial Black', 'Open Sans', 'Helvetica', 'Helvetica Neue', 'Lato']
     });
-  </script>
+
+  });
+</script>
 @endsection

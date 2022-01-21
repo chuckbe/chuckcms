@@ -74,7 +74,7 @@
 @section('scripts')
 <script src="https://cdn.chuck.be/assets/plugins/sweetalert2.all.js"></script>
 <script src="https://cdn.chuck.be/assets/plugins/ace/ace.js"></script>
-<script src="{{ URL::to('vendor/laravel-filemanager/js/lfm.js') }}"></script>
+<script src="{{ URL::to('vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
 <script>
 $('#pagebuilder_iframe').on('load', function(){
   var iframe = $('#pagebuilder_iframe').contents();
