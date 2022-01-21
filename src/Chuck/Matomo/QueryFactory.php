@@ -30,10 +30,10 @@ class QueryFactory implements QueryFactoryInterface
     /**
      * Constructs a new QueryFactory.
      *
-     * @param string $url
-     *   The URL of the Matomo server.
+     * @param string             $url
+     *                                       The URL of the Matomo server.
      * @param \GuzzleHttp\Client $httpClient
-     *   The Guzzle HTTP client.
+     *                                       The Guzzle HTTP client.
      */
     public function __construct($url, Client $httpClient)
     {
@@ -105,7 +105,7 @@ class QueryFactory implements QueryFactoryInterface
      * Returns the HTTP client wrapper.
      *
      * @return \Chuckbe\Chuckcms\Chuck\Matomo\HttpClient
-     *   The HTTP client wrapper.
+     *                                                   The HTTP client wrapper.
      */
     public function getHttpClient()
     {

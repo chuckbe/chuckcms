@@ -11,10 +11,10 @@ interface HttpClientInterface
      * Sets the request parameters.
      *
      * @param array $requestParams
-     *   The request parameters array.
+     *                             The request parameters array.
      *
      * @return \Chuckbe\Chuckcms\Chuck\Matomo\HttpClient
-     *   The object itself for chain calls.
+     *                                                   The object itself for chain calls.
      */
     public function setRequestParameters(array $requestParams);
 
@@ -22,7 +22,7 @@ interface HttpClientInterface
      * Returns the request parameters.
      *
      * @return array
-     *   The request parameters.
+     *               The request parameters.
      */
     public function getRequestParameters();
 
@@ -30,7 +30,7 @@ interface HttpClientInterface
      * Returns the request method.
      *
      * @return string
-     *   The request method.
+     *                The request method.
      */
     public function getMethod();
 
@@ -38,13 +38,13 @@ interface HttpClientInterface
      * Sets the request method.
      *
      * @param string $method
-     *   The request method.
-     *
-     * @return \Chuckbe\Chuckcms\Chuck\Matomo\HttpClient
-     *   The object itself for chain calls.
+     *                       The request method.
      *
      * @throws \InvalidArgumentException
-     *   Thrown if the method passed is not supported.
+     *                                   Thrown if the method passed is not supported.
+     *
+     * @return \Chuckbe\Chuckcms\Chuck\Matomo\HttpClient
+     *                                                   The object itself for chain calls.
      */
     public function setMethod($method);
 
@@ -52,7 +52,7 @@ interface HttpClientInterface
      * Returns the request url.
      *
      * @return string
-     *   The request url.
+     *                The request url.
      */
     public function getUrl();
 
@@ -60,24 +60,24 @@ interface HttpClientInterface
      * Sets the url of the request.
      *
      * @param string $url
-     *   The url of the request.
-     *
-     * @return \Chuckbe\Chuckcms\Chuck\Matomo\HttpClient
-     *   The object itself for chain calls.
+     *                    The url of the request.
      *
      * @throws \InvalidArgumentException
-     *   Thrown when the url passed is not a valid url.
+     *                                   Thrown when the url passed is not a valid url.
+     *
+     * @return \Chuckbe\Chuckcms\Chuck\Matomo\HttpClient
+     *                                                   The object itself for chain calls.
      */
     public function setUrl($url);
 
     /**
      * Sends the request and returns the results.
      *
-     * @return \GuzzleHttp\Psr7\Response
-     *   A response that the request generated.
-     *
      * @throws \Exception
-     *   Thrown when the url is not set yet.
+     *                    Thrown when the url is not set yet.
+     *
+     * @return \GuzzleHttp\Psr7\Response
+     *                                   A response that the request generated.
      */
     public function sendRequest();
 }

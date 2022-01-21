@@ -7,15 +7,14 @@ namespace Chuckbe\Chuckcms\Chuck\Matomo;
  */
 interface QueryFactoryInterface
 {
-
     /**
      * Returns a new QueryFactory using default settings.
      *
      * @param string $url
-     *   The URL of the Matomo server.
+     *                    The URL of the Matomo server.
      *
      * @return \Chuckbe\Chuckcms\Chuck\Matomo\QueryFactoryInterface
-     *   The new QueryFactory object.
+     *                                                              The new QueryFactory object.
      */
     public static function create($url);
 
@@ -23,10 +22,10 @@ interface QueryFactoryInterface
      * Sets the URL of the Matomo server.
      *
      * @param string $url
-     *   The URL of the Matomo server.
+     *                    The URL of the Matomo server.
      *
      * @return $this
-     *   The updated query factory object.
+     *               The updated query factory object.
      */
     public function setUrl($url);
 
@@ -34,12 +33,12 @@ interface QueryFactoryInterface
      * Sets a default parameter.
      *
      * @param string $name
-     *   The name of the parameter to set.
-     * @param mixed $value
-     *   The value to set
+     *                      The name of the parameter to set.
+     * @param mixed  $value
+     *                      The value to set
      *
      * @return $this
-     *   The updated query factory object.
+     *               The updated query factory object.
      */
     public function set($name, $value);
 
@@ -47,7 +46,7 @@ interface QueryFactoryInterface
      * Returns whether or not the default parameter with the given name is set.
      *
      * @return bool
-     *   TRUE if the parameter has been set, FALSE otherwise.
+     *              TRUE if the parameter has been set, FALSE otherwise.
      */
     public function has($name);
 
@@ -55,10 +54,10 @@ interface QueryFactoryInterface
      * Removes the default parameter with the given name.
      *
      * @param string $name
-     *   The name of the parameter to unset.
+     *                     The name of the parameter to unset.
      *
      * @return $this
-     *   The updated query factory object.
+     *               The updated query factory object.
      */
     public function remove($name);
 
@@ -66,11 +65,11 @@ interface QueryFactoryInterface
      * Returns a query object for the given Matomo API method.
      *
      * @param string $method
-     *   The name of the method for which to return a query object, in the format
-     *   'ModuleName.methodName'.
+     *                       The name of the method for which to return a query object, in the format
+     *                       'ModuleName.methodName'.
      *
      * @return \Chuckbe\Chuckcms\Chuck\Matomo\Query
-     *   The query object.
+     *                                              The query object.
      */
     public function getQuery($method);
 
@@ -78,7 +77,7 @@ interface QueryFactoryInterface
      * Returns the HTTP client wrapper.
      *
      * @return \Chuckbe\Chuckcms\Chuck\Matomo\HttpClient
-     *   The HTTP client wrapper.
+     *                                                   The HTTP client wrapper.
      */
     public function getHttpClient();
 }

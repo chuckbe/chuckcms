@@ -27,7 +27,7 @@ class QueryResult
      * Constructs a QueryResult object.
      *
      * @param \GuzzleHttp\Psr7\Response $response
-     *   The HTTP response from the Matomo server that contains the query result.
+     *                                            The HTTP response from the Matomo server that contains the query result.
      */
     public function __construct(Response $response)
     {
@@ -38,14 +38,15 @@ class QueryResult
      * Returns the decoded response that was returned by the Matomo server.
      *
      * @return mixed
-     *   The response. Can be an object, or an array of objects in case multiple
-     *   results are returned.
+     *               The response. Can be an object, or an array of objects in case multiple
+     *               results are returned.
      */
     public function getResponse()
     {
         if (empty($this->decodedResponse)) {
             $this->decodedResponse = json_decode($this->response->getBody());
         }
+
         return $this->decodedResponse;
     }
 
@@ -55,7 +56,7 @@ class QueryResult
      * Use this if you need to inspect the HTTP headers, or other data.
      *
      * @return \GuzzleHttp\Psr7\Response
-     *   The HTTP response.
+     *                                   The HTTP response.
      */
     public function getRawResponse()
     {
@@ -66,7 +67,7 @@ class QueryResult
      * Returns whether or not an error occurred in the request.
      *
      * @return bool
-     *   TRUE if an error occurred.
+     *              TRUE if an error occurred.
      */
     public function hasError()
     {
@@ -84,7 +85,7 @@ class QueryResult
      * Returns the error message if one is available.
      *
      * @return string|null
-     *   The error message, or NULL if no error message is available.
+     *                     The error message, or NULL if no error message is available.
      */
     public function getErrorMessage()
     {
@@ -97,14 +98,14 @@ class QueryResult
      * Returns the value that corresponds with the given parameter name.
      *
      * @param string $name
-     *   The parameter name for which to return the value.
-     *
-     * @return mixed
-     *   The value.
+     *                     The parameter name for which to return the value.
      *
      * @throws \InvalidArgumentException
-     *   Thrown when no parameter with the given name exists, or if the response
-     *   is not an object.
+     *                                   Thrown when no parameter with the given name exists, or if the response
+     *                                   is not an object.
+     *
+     * @return mixed
+     *               The value.
      */
     public function get($name)
     {
@@ -123,16 +124,17 @@ class QueryResult
      * Checks whether the parameter with the given name exists.
      *
      * @param string $name
-     *   The name of the parameter to check.
+     *                     The name of the parameter to check.
      *
      * @return bool
-     *   TRUE if the parameter exists.
+     *              TRUE if the parameter exists.
      */
     public function parameterExists($name)
     {
         if (!$this->isObject()) {
             throw new \InvalidArgumentException("Cannot check if '$name' exists, the response is not an object.");
         }
+
         return property_exists($this->getResponse(), $name);
     }
 
@@ -140,7 +142,7 @@ class QueryResult
      * Checks whether an object was returned.
      *
      * @return bool
-     *   TRUE if the response is an object, FALSE if it is something else.
+     *              TRUE if the response is an object, FALSE if it is something else.
      */
     public function isObject()
     {
@@ -151,7 +153,7 @@ class QueryResult
      * Checks whether an array was returned.
      *
      * @return bool
-     *   TRUE if the response is an array, FALSE if it is something else.
+     *              TRUE if the response is an array, FALSE if it is something else.
      */
     public function isArray()
     {
@@ -161,17 +163,18 @@ class QueryResult
     /**
      * Returns the number of results that are present in the response.
      *
-     * @return int
-     *   The number of results.
-     *
      * @throws \DomainException
-     *   Thrown when the response that was returned by Matomo was not an array.
+     *                          Thrown when the response that was returned by Matomo was not an array.
+     *
+     * @return int
+     *             The number of results.
      */
     public function getResultCount()
     {
         if (!$this->isArray()) {
             throw new \DomainException('Cannot get result count, the response is not an array.');
         }
+
         return count($this->getResponse());
     }
 }

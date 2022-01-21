@@ -12,16 +12,16 @@ use Psr\Http\Message\UriInterface;
 interface RequestFactoryInterface
 {
     /**
-     * @param string $method
-     *   The HTTP method to use.
-     * @param string|UriInterface $uri
-     *   The URI to use.
-     * @param array $headers
-     *   Optional request headers.
+     * @param string                               $method
+     *                                                      The HTTP method to use.
+     * @param string|UriInterface                  $uri
+     *                                                      The URI to use.
+     * @param array                                $headers
+     *                                                      Optional request headers.
      * @param string|null|resource|StreamInterface $body
-     *   Optional request body.
-     * @param string $version
-     *   Optional protocol version.
+     *                                                      Optional request body.
+     * @param string                               $version
+     *                                                      Optional protocol version.
      *
      * @return RequestInterface
      */
