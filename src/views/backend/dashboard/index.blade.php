@@ -1,7 +1,46 @@
 @extends('chuckcms::backend.layouts.base')
 
+@section('meta')
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
+@endsection
+
 @section('title')
 	Dashboard
+@endsection
+
+@section('css')
+  @if(ChuckSite::getSetting('integrations.matomo-site-id') !== null && ChuckSite::getSetting('integrations.matomo-auth-key') !== null)
+    <link href="{{ asset('chuckbe/chuckcms/css/matomo.css') }}" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.core.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <style>
+    .heatmapcard:not(.active){
+      display: none
+    }
+    .heatmapcard iframe{
+      border: none;
+      width: 100%;
+      min-height: 525px;
+    }
+    .heatmapcard iframe html{
+      width: 100%;
+      overflow: scroll;
+    }
+    .heatmapVis{
+      width: 100%;
+    }
+    .legendOuter{
+      display: block !important;
+    }
+    #ng-app .heatmapVis iframe,
+    #ng-app .hsrLoadingOuter,
+    #ng-app .iframeRecordingContainer,
+    #ng-app #recordingPlayer {
+      width: 100% !important;
+    }
+
+    </style>
+  @endif
 @endsection
 
 @section('breadcrumbs')
@@ -12,98 +51,105 @@
 
 @section('content')
 <div class="container p3 min-height">
-  <div class="row mb-3">
-    <div class="col-sm-12">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb mt-3">
-          <li class="breadcrumb-item active" aria-current="Overzicht">DASHBOARD</li>
-        </ol>
-      </nav>
-      <div class="card-block">
-				<header>
-          <div class="row">
-            <div class="col-12 mb-2">
-					    <div id="embed-api-auth-container"></div>
-              <div id="view-name"></div>
+  @if(ChuckSite::getSetting('integrations.matomo-site-id') !== null && ChuckSite::getSetting('integrations.matomo-auth-key') !== null)
+  @include('chuckcms::backend.dashboard.matomo')
+  @else
+    <div class="row mb-3">
+      <div class="col-sm-12">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mt-3">
+            <li class="breadcrumb-item active" aria-current="Overzicht">DASHBOARD</li>
+          </ol>
+        </nav>
+        <div class="card-block">
+          <header>
+            <div class="row">
+              <div class="col-12 mb-2">
+                <div id="embed-api-auth-container"></div>
+                <div id="view-name"></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div id="view-selector-container"></div>
+              </div>
+              <div class="col-sm-6">
+                <div id="active-users-container" class="h-100 pt-3 pb-4 text-center"></div>
+              </div>
+            </div>
+          </header>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-lg-6 mb-3">
+        <div class="card card-default">
+          <div class="breadcrumb separator">
+            <div class="breadcrumb-item">This Week vs Last Week (by sessions)</div>
+          </div>
+          <div class="card-block">
+            <div class="Chartjs">
+              <figure class="Chartjs-figure" id="chart-1-container"></figure>
+              <ol class="Chartjs-legend" id="legend-1-container"></ol>
             </div>
           </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <div id="view-selector-container"></div>
-            </div>
-            <div class="col-sm-6">
-              <div id="active-users-container" class="h-100 pt-3 pb-4 text-center"></div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card card-default">
+          <div class="breadcrumb separator">
+            <div class="breadcrumb-item">This Year vs Last Year (by users)</div>
+          </div>
+          <div class="card-block">
+            <div class="Chartjs">
+              <figure class="Chartjs-figure" id="chart-2-container"></figure>
+              <ol class="Chartjs-legend" id="legend-2-container"></ol>
             </div>
           </div>
-				</header>
-			</div>
-    </div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-lg-6 mb-3">
-			<div class="card card-default">
-				<div class="breadcrumb separator">
-					<div class="breadcrumb-item">This Week vs Last Week (by sessions)</div>
-				</div>
-				<div class="card-block">
-					<div class="Chartjs">
-					  <figure class="Chartjs-figure" id="chart-1-container"></figure>
-					  <ol class="Chartjs-legend" id="legend-1-container"></ol>
-				  </div>
-			  </div>
-		  </div>
+        </div>
+      </div>
     </div>
 
-    <div class="col-lg-6">
-			<div class="card card-default">
-				<div class="breadcrumb separator">
-					<div class="breadcrumb-item">This Year vs Last Year (by users)</div>
-				</div>
-				<div class="card-block">
-					<div class="Chartjs">
-					  <figure class="Chartjs-figure" id="chart-2-container"></figure>
-					  <ol class="Chartjs-legend" id="legend-2-container"></ol>
-				  </div>
-			  </div>
-		  </div>
-    </div>
-  </div>
+    <div class="row mb-3">
+      <div class="col-lg-6 mb-3">
+        <div class="card card-default">
+          <div class="breadcrumb separator">
+            <div class="breadcrumb-item">Top Browsers (by pageview)</div>
+          </div>
+          <div class="card-block">
+            <div class="Chartjs">
+              <figure class="Chartjs-figure" id="chart-3-container"></figure>
+              <ol class="Chartjs-legend" id="legend-3-container"></ol>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <div class="row mb-3">
-    <div class="col-lg-6 mb-3">
-			<div class="card card-default">
-				<div class="breadcrumb separator">
-					<div class="breadcrumb-item">Top Browsers (by pageview)</div>
-				</div>
-				<div class="card-block">
-					<div class="Chartjs">
-					  <figure class="Chartjs-figure" id="chart-3-container"></figure>
-					  <ol class="Chartjs-legend" id="legend-3-container"></ol>
-				  </div>
-			  </div>
-		  </div>
+      <div class="col-lg-6">
+        <div class="card card-default">
+          <div class="breadcrumb separator">
+            <div class="breadcrumb-item">Top Countries (by sessions)</div>
+          </div>
+          <div class="card-block">
+            <div class="Chartjs">
+              <figure class="Chartjs-figure" id="chart-4-container"></figure>
+              <ol class="Chartjs-legend" id="legend-4-container"></ol>
+            </div>
+          </div>
+        </div>
+      </div>
+      
     </div>
-
-    <div class="col-lg-6">
-			<div class="card card-default">
-				<div class="breadcrumb separator">
-					<div class="breadcrumb-item">Top Countries (by sessions)</div>
-				</div>
-				<div class="card-block">
-					<div class="Chartjs">
-					  <figure class="Chartjs-figure" id="chart-4-container"></figure>
-					  <ol class="Chartjs-legend" id="legend-4-container"></ol>
-				  </div>
-			  </div>
-		  </div>
-    </div>
-    
-  </div>
+  @endif
 </div>
 @endsection
 
 @section('scripts')
+@if(ChuckSite::getSetting('integrations.matomo-site-id') !== null && ChuckSite::getSetting('integrations.matomo-auth-key') !== null)
+    @include('chuckcms::backend.dashboard.matomoscript')
+@else
 <script>
 (function(w,d,s,g,js,fs){
   g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f);}};
@@ -483,4 +529,10 @@ gapi.analytics.ready(function() {
 
 });
 </script>
+@endif
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.core.min.js"></script>
+
 @endsection
