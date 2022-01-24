@@ -338,7 +338,6 @@
                                 $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.direct').removeClass('d-none');
                                 break;
                             case 'website':
-                                console.log(value.referrerUrl);
                                 $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.direct').remove();
                                 $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.search').remove();
                                 $(thisLogBlog).find('.visitorreferencearea .visitorReferrer.website').removeClass('d-none');
