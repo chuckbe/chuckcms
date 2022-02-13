@@ -10,57 +10,67 @@ ChuckCMS was created to add CMS functionality to an existing Laravel project. Th
 
 ## Installation guide
 
-### Install with composer
+### Requirements
+This package can be used with Laravel 6.20.26 or higher. 
+
+### Composer
+You can install the package via composer:
 ```
 composer require chuckbe/chuckcms
 ```
 
-### Publish public assets
+### Publish assets and config
+You can now publish all assets and config files this package needs:
 ```
-php artisan vendor:publish --tag=chuckcms-public --force
-php artisan vendor:publish --tag=lfm_public --force //Unisharp
-```
-> When updating ChuckCMS to 0.2.5 or higher you need to republish the Laravel Filemanager public assets. When doing so you can change the 'stand-alone-button.js' file on line 13 into ```return item.url.split(window.location.protocol+'//'+window.location.hostname+'/')[1];``` Doing so will return the path of selected image instead of full url.
-
-### Eventually publish config files
-```
-php artisan vendor:publish --tag=chuckcms-config --force
+php artisan vendor:publish --provider="Chuckbe\Chuckcms\ChuckcmsServiceProvider"
 ```
 
-### Add Permission middleware from the Spatie package
-```php
-// App\Http\Kernel.php
-
-
-protected $routeMiddleware = [
-    ...
-    'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
-    'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
-    'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
-];
+### Packages
+#### ```unisharp/laravel-filemanager``` package
+You can now publish assets for ```unisharp/laravel-filemanager```:
+```
+php artisan vendor:publish --tag=lfm_public
 ```
 
-### Migrate the database
+#### ```spatie/laravel-permission``` package
+You can now publish migrations and config file for ```spatie/laravel-permission```:
+```
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+```
+> There is no need to add the middleware for this package. It is already being loaded by ChuckCMS.
+
+### Migration
+You can now run migrations:
 ```
 php artisan migrate
 ```
+> Make sure you've added DB credentials to your ```.env``` file.
 
-### Generate a new site with following command
+### Routes
+You can now add the routes for this package:
+```php
+Chuck::auth();
+Chuck::routes();
+Chuck::frontend();
+```
+
+### New site
+You can now generate a new site with the following command:
 ```
 php artisan chuckcms:generate-site
 ```
 
-### Generate all default roles and permission
+### Generate default roles and permission
 ```
 php artisan chuckcms:generate-roles-permissions
 ```
 
-### Make a new super admin with following command
+### Generate super admin
 ```
 php artisan chuckcms:generate-super-admin
 ```
 
-### Go to http://yourapp.local/dashboard/pages
+### Visit http://yourapp.local/dashboard/pages
 
 ### Create a new page
 
@@ -68,3 +78,11 @@ php artisan chuckcms:generate-super-admin
 ```
 php artisan chuckcms:generate-sitemap
 ```
+
+## License
+
+Licensed under [MIT license](http://opensource.org/licenses/MIT).
+
+## Author
+
+**Written by [Karel Brijs](https://twitter.com/karelbrijs) in Antwerp.**

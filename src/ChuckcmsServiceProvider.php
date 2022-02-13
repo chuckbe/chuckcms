@@ -2,11 +2,19 @@
 
 namespace Chuckbe\Chuckcms;
 
-use Chuckbe\Chuckcms\Commands\GenerateRolesPermissions;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Collection;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\ServiceProvider;
+
 use Chuckbe\Chuckcms\Commands\GenerateSite;
 use Chuckbe\Chuckcms\Commands\GenerateSitemap;
 use Chuckbe\Chuckcms\Commands\GenerateSuperAdmin;
-use Illuminate\Support\ServiceProvider;
+use Chuckbe\Chuckcms\Commands\GenerateRolesPermissions;
+
+use Spatie\Permission\Middlewares\RoleMiddleware;
+use Spatie\Permission\Middlewares\PermissionMiddleware;
+use Spatie\Permission\Middlewares\RoleOrPermissionMiddleware;
 
 class ChuckcmsServiceProvider extends ServiceProvider
 {
@@ -17,18 +25,14 @@ class ChuckcmsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->doPublishing();
+
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
-        $this->publishes([
-            __DIR__.'/resources' => public_path('chuckbe/chuckcms'),
-        ], 'chuckcms-public');
-
-        $this->publishes([
-            __DIR__.'/../config/chuckcms.php' => config_path('chuckcms.php'),
-            __DIR__.'/../config/menu.php'     => config_path('menu.php'),
-            __DIR__.'/../config/lfm.php'      => config_path('lfm.php'),
-            __DIR__.'/../config/lang.php'     => config_path('lang.php'),
-        ], 'chuckcms-config');
+        $router = $this->app->make(Router::class);
+        $router->aliasMiddleware('role', RoleMiddleware::class);
+        $router->aliasMiddleware('permission', PermissionMiddleware::class);
+        $router->aliasMiddleware('role_or_permission', RoleOrPermissionMiddleware::class);
 
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -49,34 +53,20 @@ class ChuckcmsServiceProvider extends ServiceProvider
     {
         $this->app['App\User'] = $this->app['Chuckbe\Chuckcms\Models\User'];
 
-        $this->app->make('Chuckbe\Chuckcms\Controllers\PageController');
-        $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\ForgotPasswordController');
-        $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\LoginController');
-        $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\RegisterController');
-        $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\ResetPasswordController');
+        // $this->app->make('Chuckbe\Chuckcms\Controllers\PageController');
+        // $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\ForgotPasswordController');
+        // $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\LoginController');
+        // $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\RegisterController');
+        // $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\ResetPasswordController');
 
         $this->loadViewsFrom(__DIR__.'/views', 'chuckcms');
         // publish error views + publish updated lfm views
 
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/chuckcms.php',
-            'chuckcms'
-        );
 
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/menu.php',
-            'menu'
-        );
-
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/lfm.php',
-            'lfm'
-        );
-
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/lang.php',
-            'lang'
-        );
+        $this->mergeConfigFrom(__DIR__.'/../config/chuckcms.php', 'chuckcms');
+        $this->mergeConfigFrom(__DIR__.'/../config/menu.php', 'menu');
+        $this->mergeConfigFrom(__DIR__.'/../config/lfm.php', 'lfm');
+        $this->mergeConfigFrom(__DIR__.'/../config/lang.php', 'lang');
 
         $this->app->register(
             'Chuckbe\Chuckcms\Providers\ChuckSiteServiceProvider'
@@ -117,5 +107,43 @@ class ChuckcmsServiceProvider extends ServiceProvider
         $loader->alias('ChuckTemplate', 'Chuckbe\Chuckcms\Facades\Template');
         $loader->alias('ChuckMenu', 'Chuckbe\Chuckcms\Facades\Menu');
         $loader->alias('Honeypot', 'Msurguy\Honeypot\HoneypotFacade');
+    }
+
+    public function doPublishing()
+    {
+        if (!function_exists('config_path')) {
+            // function not available and 'publish' not relevant in Lumen (credit: Spatie)
+            return;
+        }
+
+        $this->publishes([
+            __DIR__.'/resources' => public_path('chuckbe/chuckcms'),
+        ], 'chuckcms-public');
+
+        $this->publishes([
+            __DIR__.'/../config/chuckcms.php' => config_path('chuckcms.php'),
+            __DIR__.'/../config/menu.php'     => config_path('menu.php'),
+            __DIR__.'/../config/lfm.php'      => config_path('lfm.php'),
+            __DIR__.'/../config/lang.php'     => config_path('lang.php'),
+        ], 'chuckcms-config');
+    }
+
+    /**
+     * Returns existing migration file if found, else uses the current timestamp.
+     *
+     * @return string
+     */
+    public function getMigrationFileName($migrationFileName): string
+    {
+        $timestamp = date('Y_m_d_His');
+
+        $filesystem = $this->app->make(Filesystem::class);
+
+        return Collection::make($this->app->databasePath().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR)
+            ->flatMap(function ($path) use ($filesystem, $migrationFileName) {
+                return $filesystem->glob($path.'*_'.$migrationFileName);
+            })
+            ->push($this->app->databasePath()."/migrations/{$timestamp}_{$migrationFileName}")
+            ->first();
     }
 }

@@ -16,8 +16,11 @@ class CreateRepeatersTable extends Migration
         Schema::create('repeaters', function (Blueprint $table) {
             $table->increments('id');
             $table->string('slug');
+            $table->string('url')->nullable()->default(null);
+            $table->string('page')->nullable()->default('default');
             $table->longText('json');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

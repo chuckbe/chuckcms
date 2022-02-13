@@ -16,24 +16,31 @@ nav_order: 2
 {:toc}
 
 ---
+ 
+### Requirements
+This package can be used with Laravel 6.20.26 or higher. 
 
-### Install with composer
+### Composer
+You can install the package via composer:
 ```
 composer require chuckbe/chuckcms
 ```
 
-### Publish public assets
+### Assets
+You can now publish all assets this package needs.
 ```
 php artisan vendor:publish --tag=chuckcms-public --force
 php artisan vendor:publish --tag=lfm_public //Laravel Filemanager by UniSharp
 ```
 
-### Eventually publish config files
+### Configuration
+You can now publish the config file for this package.
 ```
 php artisan vendor:publish --tag=chuckcms-config --force
 ```
 
-### Add Permission middleware from the Spatie package
+### ```spatie/laravel-permission``` package
+You can now add the necessary middleware for ```spatie/laravel-permission```:
 ```php
 // App\Http\Kernel.php
 
@@ -42,15 +49,24 @@ protected $routeMiddleware = [
     ...
     'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
     'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+    'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
 ];
 ```
 
-### Migrate the database
+You can now publish migrations and config file for ```spatie/laravel-permission```:
+```
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+```
+
+### Migration
+You can now migrate the database:
 ```
 php artisan migrate
 ```
+> Make sure you've added DB credentials to your ```.env``` file.
 
-### Generate a new site
+### New site
+You can now generate a new site with the following command:
 ```
 php artisan chuckcms:generate-site
 ```

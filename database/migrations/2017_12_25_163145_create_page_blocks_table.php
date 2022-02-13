@@ -20,6 +20,7 @@ class CreatePageBlocksTable extends Migration
             $table->string('slug');
             $table->longText('body');
             $table->integer('order')->default(1);
+            $table->string('lang')->nullable()->default(null);
             $table->timestamps();
         });
     }
