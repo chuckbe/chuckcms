@@ -53,52 +53,23 @@ class ChuckcmsServiceProvider extends ServiceProvider
     {
         $this->app['App\User'] = $this->app['Chuckbe\Chuckcms\Models\User'];
 
-        // $this->app->make('Chuckbe\Chuckcms\Controllers\PageController');
-        // $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\ForgotPasswordController');
-        // $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\LoginController');
-        // $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\RegisterController');
-        // $this->app->make('Chuckbe\Chuckcms\Controllers\Auth\ResetPasswordController');
-
         $this->loadViewsFrom(__DIR__.'/views', 'chuckcms');
         // publish error views + publish updated lfm views
-
 
         $this->mergeConfigFrom(__DIR__.'/../config/chuckcms.php', 'chuckcms');
         $this->mergeConfigFrom(__DIR__.'/../config/menu.php', 'menu');
         $this->mergeConfigFrom(__DIR__.'/../config/lfm.php', 'lfm');
         $this->mergeConfigFrom(__DIR__.'/../config/lang.php', 'lang');
 
-        $this->app->register(
-            'Chuckbe\Chuckcms\Providers\ChuckSiteServiceProvider'
-        );
-
-        $this->app->register(
-            'Chuckbe\Chuckcms\Providers\ChuckTemplateServiceProvider'
-        );
-
-        $this->app->register(
-            'Chuckbe\Chuckcms\Providers\ChuckConfigServiceProvider'
-        );
-
-        $this->app->register(
-            'Chuckbe\Chuckcms\Providers\ChuckServiceProvider'
-        );
-
-        $this->app->register(
-            'Chuckbe\Chuckcms\Providers\ChuckMenuServiceProvider'
-        );
-
-        $this->app->register(
-            'Chuckbe\Chuckcms\Providers\ChuckRepeaterServiceProvider'
-        );
-
-        $this->app->register(
-            'Chuckbe\Chuckcms\Providers\ChuckDashboardSidebarViewComposerServiceProvider'
-        );
-
-        $this->app->register(
-            'Msurguy\Honeypot\HoneypotServiceProvider'
-        );
+        $this->app->register('Chuckbe\Chuckcms\Providers\ChuckSiteServiceProvider');
+        $this->app->register('Chuckbe\Chuckcms\Providers\ChuckTemplateServiceProvider');
+        $this->app->register('Chuckbe\Chuckcms\Providers\ChuckConfigServiceProvider');
+        $this->app->register('Chuckbe\Chuckcms\Providers\ChuckServiceProvider');
+        $this->app->register('Chuckbe\Chuckcms\Providers\ChuckMenuServiceProvider');
+        $this->app->register('Chuckbe\Chuckcms\Providers\ChuckRepeaterServiceProvider');
+        $this->app->register('Chuckbe\Chuckcms\Providers\ChuckDashboardSidebarViewComposerServiceProvider');
+        
+        $this->app->register('Msurguy\Honeypot\HoneypotServiceProvider');
 
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
         $loader->alias('ChuckSite', 'Chuckbe\Chuckcms\Facades\Site');

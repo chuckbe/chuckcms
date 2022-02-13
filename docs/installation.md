@@ -26,44 +26,40 @@ You can install the package via composer:
 composer require chuckbe/chuckcms
 ```
 
-### Assets
-You can now publish all assets this package needs.
+### Publish assets and config
+You can now publish all assets and config files this package needs:
 ```
-php artisan vendor:publish --tag=chuckcms-public --force
-php artisan vendor:publish --tag=lfm_public //Laravel Filemanager by UniSharp
-```
-
-### Configuration
-You can now publish the config file for this package.
-```
-php artisan vendor:publish --tag=chuckcms-config --force
+php artisan vendor:publish --provider="Chuckbe\Chuckcms\ChuckcmsServiceProvider"
 ```
 
-### ```spatie/laravel-permission``` package
-You can now add the necessary middleware for ```spatie/laravel-permission```:
-```php
-// App\Http\Kernel.php
-
-
-protected $routeMiddleware = [
-    ...
-    'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
-    'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
-    'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
-];
+### Packages
+#### ```unisharp/laravel-filemanager``` package
+You can now publish assets for ```unisharp/laravel-filemanager```:
+```
+php artisan vendor:publish --tag=lfm_public
 ```
 
+#### ```spatie/laravel-permission``` package
 You can now publish migrations and config file for ```spatie/laravel-permission```:
 ```
 php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
 ```
+> There is no need to add the middleware for this package. It is already being loaded by ChuckCMS.
 
 ### Migration
-You can now migrate the database:
+You can now run migrations:
 ```
 php artisan migrate
 ```
 > Make sure you've added DB credentials to your ```.env``` file.
+
+### Routes
+You can now add the routes for this package:
+```php
+Chuck::auth();
+Chuck::routes();
+Chuck::frontend();
+```
 
 ### New site
 You can now generate a new site with the following command:
