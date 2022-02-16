@@ -1,4 +1,4 @@
-<footer class="container-fluid bg-light px-0">
+<footer class="container-fluid bg-light px-0 mt-auto">
     <div class="container py-5">
         <div class="copyright sm-text-center">
             <p class="small no-margin pull-left sm-pull-reset">

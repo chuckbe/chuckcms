@@ -50,7 +50,7 @@
 @endsection
 
 @section('content')
-<div class="container p3 min-height">
+<div class="container p3">
   @if(ChuckSite::getSetting('integrations.matomo-site-id') !== null && ChuckSite::getSetting('integrations.matomo-auth-key') !== null)
   @include('chuckcms::backend.dashboard.matomo')
   @else

@@ -1,7 +1,7 @@
 @extends('chuckcms::backend.layouts.base')
 
 @section('content')
-<div class="container p-3 min-height">
+<div class="container p-3">
   <div class="row">
     <div class="col-sm-12">
       <nav aria-label="breadcrumb">

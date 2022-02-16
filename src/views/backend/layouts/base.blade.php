@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="h-100">
 <head>
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 @yield('meta')
@@ -15,24 +15,24 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-touch-fullscreen" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta content="Karel Brijs — Chuck | digital agency" name="author" />
+<meta content="Karel Brijs — Chuck | digital agency" name="author" />
 
 <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900" rel="stylesheet" type="text/css">
 <link href="https://cdn.chuck.be/chuckcms/bootstrap-4.5.0-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.chuck.be/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="https://cdn.chuck.be/chuckcms/css/dashboard.css" rel="stylesheet" type="text/css" />
 <link href="https://cdn.chuck.be/chuckcms/css/table.css" rel="stylesheet" type="text/css" />
-{{-- <link href="https://cdn.chuck.be/chuckcms/css/Datatables.css" rel="stylesheet" type="text/css" /> --}}
 <link href="{{ URL::to('chuckbe/chuckcms/css/font-awesome/css/font-awesome.css') }}" rel="stylesheet" type="text/css" />
-{{-- <link href="{{ URL::to('chuckbe/chuckcms/css/pages-icons.css') }}" rel="stylesheet" type="text/css" />  --}}
-<link href="https://cdn.chuck.be/chuckcms/css/min-height.css" rel="stylesheet" type="text/css" />
+
 @yield('css')
 </head>
-<body class="light-version">
+<body class="d-flex flex-column h-100 light-version">
 
-@include('chuckcms::backend.includes.navigation')
+<main role="main" class="flex-shrink-0">
+	@include('chuckcms::backend.includes.navigation')
 
-@yield('content')
+	@yield('content')
+</main>
 
 @include('chuckcms::backend.includes.footer')
     
@@ -46,7 +46,7 @@
 <script src="https://cdn.chuck.be/chuckcms/bootstrap-4.5.0-dist/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-<script type="text/javascript" src="https://cdn.chuck.be/assets/plugins/select2/js/select2.full.min.js"></script>
+<script src="https://cdn.chuck.be/assets/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
 <script src="https://cdn.chuck.be/chuckcms/js/dashboard.js" type="text/javascript"></script>
 <script src="https://cdn.chuck.be/chuckcms/js/table.js" type="text/javascript"></script>
 @yield('scripts')
