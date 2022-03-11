@@ -13,6 +13,8 @@ ChuckCMS was created to add CMS functionality to an existing Laravel project. Th
 ### Requirements
 This package can be used with Laravel 6.20.26 or higher. 
 
+For Laravel 7 and higher the ```laravel/ui``` package is required.
+
 ### Composer
 You can install the package via composer:
 ```
