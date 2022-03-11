@@ -2,18 +2,16 @@
 
 namespace Chuckbe\Chuckcms;
 
-use Illuminate\Routing\Router;
-use Illuminate\Support\Collection;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\ServiceProvider;
-
+use Chuckbe\Chuckcms\Commands\GenerateRolesPermissions;
 use Chuckbe\Chuckcms\Commands\GenerateSite;
 use Chuckbe\Chuckcms\Commands\GenerateSitemap;
 use Chuckbe\Chuckcms\Commands\GenerateSuperAdmin;
-use Chuckbe\Chuckcms\Commands\GenerateRolesPermissions;
-
-use Spatie\Permission\Middlewares\RoleMiddleware;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Collection;
+use Illuminate\Support\ServiceProvider;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
+use Spatie\Permission\Middlewares\RoleMiddleware;
 use Spatie\Permission\Middlewares\RoleOrPermissionMiddleware;
 
 class ChuckcmsServiceProvider extends ServiceProvider
@@ -68,7 +66,7 @@ class ChuckcmsServiceProvider extends ServiceProvider
         $this->app->register('Chuckbe\Chuckcms\Providers\ChuckMenuServiceProvider');
         $this->app->register('Chuckbe\Chuckcms\Providers\ChuckRepeaterServiceProvider');
         $this->app->register('Chuckbe\Chuckcms\Providers\ChuckDashboardSidebarViewComposerServiceProvider');
-        
+
         $this->app->register('Msurguy\Honeypot\HoneypotServiceProvider');
 
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
