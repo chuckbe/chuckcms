@@ -2,6 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
+use Chuckbe\Chuckcms\Chuck\PageRepository;
 use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\PageBlock;
@@ -26,6 +27,7 @@ class PageController extends BaseController
     use ValidatesRequests;
 
     private $page;
+    private $pageRepository;
     private $pageblock;
     private $pageBlockRepository;
     private $redirect;
@@ -42,6 +44,7 @@ class PageController extends BaseController
      */
     public function __construct(
         Page $page,
+        PageRepository $pageRepository,
         PageBlock $pageblock,
         PageBlockRepository $pageBlockRepository,
         Redirect $redirect,
@@ -52,6 +55,7 @@ class PageController extends BaseController
         User $user
     ) {
         $this->page = $page;
+        $this->pageRepository = $pageRepository;
         $this->pageblock = $pageblock;
         $this->pageBlockRepository = $pageBlockRepository;
         $this->redirect = $redirect;
@@ -76,21 +80,6 @@ class PageController extends BaseController
     }
 
     /**
-     * Show the dashboard -> page edit.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function edit($page_id)
-    {
-        $templates = $this->template->where('active', 1)->get();
-        $page = $this->page->getByIdWithBlocks($page_id);
-        $pageViews = $this->template->getPageViews();
-        $roles = Role::all();
-
-        return view('chuckcms::backend.pages.edit', compact('templates', 'page', 'pageViews', 'roles'));
-    }
-
-    /**
      * Show the dashboard -> page create.
      *
      * @return \Illuminate\View\View
@@ -106,6 +95,21 @@ class PageController extends BaseController
     /**
      * Show the dashboard -> page edit.
      *
+     * @return \Illuminate\View\View
+     */
+    public function edit($page_id)
+    {
+        $templates = $this->template->where('active', 1)->get();
+        $page = $this->page->getByIdWithBlocks($page_id);
+        $pageViews = $this->template->getPageViews();
+        $roles = Role::all();
+
+        return view('chuckcms::backend.pages.edit', compact('templates', 'page', 'pageViews', 'roles'));
+    }
+
+    /**
+     * Show the dashboard -> page edit.
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function save(Request $request)
@@ -114,10 +118,10 @@ class PageController extends BaseController
             'page_title' => 'max:185',
         ]);
         if ($request['create']) {
-            $this->page->create($request);
+            $this->pageRepository->create($request);
         }
         if ($request['update']) {
-            $this->page->updatePage($request);
+            $this->pageRepository->updatePage($request);
         }
 
         return redirect()->route('dashboard.pages');

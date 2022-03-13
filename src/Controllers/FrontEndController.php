@@ -128,4 +128,20 @@ class FrontEndController extends BaseController
 
         return view($template->hintpath.'::templates.'.$template->slug.'.page', compact('template', 'page', 'pageblocks'));
     }
+
+    public function css(Page $page)
+    {
+        $response = response()->make($page->css);
+        $response->header('Content-Type', 'text/css');
+        
+        return $response;
+    }
+
+    public function js(Page $page)
+    {
+        $response = response()->make($page->js);
+        $response->header('Content-Type', 'text/javascript');
+        
+        return $response;
+    }
 }

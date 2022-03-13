@@ -26,6 +26,16 @@
                         </a>
                     </li>
                     @endforeach
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="css_page-tab" data-target="#tab_resource_css" data-toggle="tab" href="#" role="tab" aria-controls="#css_page" aria-selected="false">
+                            <span>CSS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="js_page-tab" data-target="#tab_resource_js" data-toggle="tab" href="#" role="tab" aria-controls="#js_page" aria-selected="false">
+                            <span>JS</span>
+                        </a>
+                    </li>
                 </ul>
           
                 <div class="tab-content bg-light shadow-sm rounded p-3 mb-3 mx-1" id="pageTabContent">
@@ -104,6 +114,20 @@
                         </div>
                     </div>
                     @endforeach
+
+                    <div class="col-sm-12 tab-pane fade show tab_page_wrapper" role="tabpanel" id="tab_resource_css">
+                        <div class="form-group" style="position:relative;height:500px;">
+                            <div id="ace_css_editor" style="position: absolute;width: 100%;height: 500px;"></div>
+                            <textarea name="css" style="display: none;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 tab-pane fade show tab_page_wrapper" role="tabpanel" id="tab_resource_js">
+                        <div class="form-group" style="position:relative;height:500px;">
+                            <div id="ace_js_editor" style="position: absolute;width: 100%;height: 500px;"></div>
+                            <textarea name="js" style="display: none;"></textarea>
+                        </div>
+                    </div>
 
                     <div class="col-sm-12 tab-pane fade show active" id="fade1">
                         <div class="row column-separation">
@@ -219,55 +243,80 @@
     color: #000 !important;
     line-height: 20px !important;
   }
+
+    .ace_editor_height_null{height:0px;visibility:hidden;}
+    .ace_editor_height_full{height:500px;visibility: visible;}
   </style>
 @endsection
 
 @section('scripts')
-  <script>
-    $( document ).ready(function() { 
-    init(); 
+<script src="https://cdn.chuck.be/assets/plugins/ace/ace.js"></script>
+<script>
+$( document ).ready(function() { 
+    init();
+
+
+
+    var css_editor = ace.edit('ace_css_editor');
+    css_editor.setTheme("ace/theme/monokai");
+    css_editor.session.setMode("ace/mode/css");
+
+    var css_textarea = $('textarea[name="css"]');
+    css_editor.getSession().on("change", function () {
+        css_textarea.val(css_editor.getSession().getValue());
+    });
+
+    var js_editor = ace.edit('ace_js_editor');
+    js_editor.setTheme("ace/theme/monokai");
+    js_editor.session.setMode("ace/mode/javascript");
+
+    var js_textarea = $('textarea[name="js"]');
+    js_editor.getSession().on("change", function () {
+        js_textarea.val(js_editor.getSession().getValue());
+    });
+
+
+    
     $(".select2").select2();
     function init() {
-      $(".resource_slug_input").keyup(function(){
-          var text = $(this).val();
-          slug_text = text.toLowerCase().replace(/[^\w  .\-]+/g,'').replace(/ +/g,'');
-          $(".resource_slug_input").val(slug_text);   
-      });
+        $(".resource_slug_input").keyup(function(){
+            var text = $(this).val();
+            slug_text = text.toLowerCase().replace(/[^\w  .\-]+/g,'').replace(/ +/g,'');
+            $(".resource_slug_input").val(slug_text);   
+        });
 
-      $(".meta_key").keyup(function(){
-          console.log('This is the index of the element : ',$('.meta_field_row').index($(this)));
-          var text = $(this).val();
-          var iOrder = $(this).attr('data-order');
-          slug_text = text.toLowerCase().replace(/[^\w  .\-]+/g,'').replace(/ +/g,'');
-          $(".meta_key[data-order="+iOrder+"]").val(slug_text);   
-          
-      });
+        $(".meta_key").keyup(function(){
+            console.log('This is the index of the element : ',$('.meta_field_row').index($(this)));
+            var text = $(this).val();
+            var iOrder = $(this).attr('data-order');
+            slug_text = text.toLowerCase().replace(/[^\w  .\-]+/g,'').replace(/ +/g,'');
+            $(".meta_key[data-order="+iOrder+"]").val(slug_text);   
+        });
     }
-      $('.add_meta_field_btn').click(function(){
+    $('.add_meta_field_btn').click(function(){
         $('.meta_field_row:first').clone().appendTo('.meta_field_wrapper');
 
         $('.meta_field_wrapper').each(function() {
-          var lang = $(this).attr('data-lang');
-          var order = $(this).find('.meta_field_row').attr('data-order') + 1;
+            var lang = $(this).attr('data-lang');
+            var order = $(this).find('.meta_field_row').attr('data-order') + 1;
 
-          $( this ).find('#meta_key').attr('name', 'meta_key[' + lang + '][]');
-          $( this ).find('#meta_value').attr('name', 'meta_value[' + lang + '][]');
+            $( this ).find('#meta_key').attr('name', 'meta_key[' + lang + '][]');
+            $( this ).find('#meta_value').attr('name', 'meta_value[' + lang + '][]');
 
-          $( this ).find('.meta_field_row').attr('data-order', order);
-          $( this ).find('.meta_key:last').attr('data-order', order);
-          $( this ).find('.meta_value:last').attr('data-order', order);
-          
+            $( this ).find('.meta_field_row').attr('data-order', order);
+            $( this ).find('.meta_key:last').attr('data-order', order);
+            $( this ).find('.meta_value:last').attr('data-order', order);
         });
 
         if( $('.meta_field_row').length > 1){
-          $('.remove_meta_field_btn').show();
+            $('.remove_meta_field_btn').show();
         }
 
         init();
-      });
+    });
 
-      $('.remove_meta_field_btn').click(function(){
-        
+    $('.remove_meta_field_btn').click(function(){
+    
         $('.meta_field_wrapper').each(function() {
           
           if($( this ).find('.meta_field_row').length > 1){
@@ -280,9 +329,9 @@
 
         });
 
-      });
+    });
 
-      $('.tab_page_wrapper').each(function() {
+    $('.tab_page_wrapper').each(function() {
         $('.page_title').keyup(function(){
             var text = $(this).val();
             var lang = $(this).attr('data-lang');
@@ -315,7 +364,7 @@
             var lang = $(this).attr('data-lang');
             $('.serp_desc_'+lang).text(text);
         });
-      });
     });
-  </script>
+});
+</script>
 @endsection

@@ -26,6 +26,16 @@
                         </a>
                     </li>
                     @endforeach
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="css_page-tab" data-target="#tab_resource_css" data-toggle="tab" href="#" role="tab" aria-controls="#css_page" aria-selected="false">
+                            <span>CSS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="js_page-tab" data-target="#tab_resource_js" data-toggle="tab" href="#" role="tab" aria-controls="#js_page" aria-selected="false">
+                            <span>JS</span>
+                        </a>
+                    </li>
                 </ul>
 
                 <div class="tab-content bg-light shadow-sm rounded p-3 mb-3 mx-1" id="pageTabContent">
@@ -82,6 +92,20 @@
                         </div>
                     </div>
                     @endforeach
+
+                    <div class="col-sm-12 tab-pane fade show tab_page_wrapper" role="tabpanel" id="tab_resource_css">
+                        <div class="form-group" style="position:relative;height:500px;">
+                            <div id="ace_css_editor" style="position: absolute;width: 100%;height: 500px;">{{ $page->css }}</div>
+                            <textarea name="css" style="display: none;">{{ $page->css }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 tab-pane fade show tab_page_wrapper" role="tabpanel" id="tab_resource_js">
+                        <div class="form-group" style="position:relative;height:500px;">
+                            <div id="ace_js_editor" style="position: absolute;width: 100%;height: 500px;">{{ $page->js }}</div>
+                            <textarea name="js" style="display: none;">{{ $page->js }}</textarea>
+                        </div>
+                    </div>
 
                     <hr>
 
@@ -175,27 +199,6 @@
 @endsection
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @section('css')
 	<style>
   .serp-preview {
@@ -231,14 +234,41 @@
     color: #000 !important;
     line-height: 20px !important;
   }
+
+    .ace_editor_height_null{height:0px;visibility:hidden;}
+    .ace_editor_height_full{height:500px;visibility: visible;}
   </style>
 @endsection
 
 @section('scripts')
-	<script>
-    $( document ).ready(function() { 
+<script src="https://cdn.chuck.be/assets/plugins/ace/ace.js"></script>
+<script>
+$( document ).ready(function() { 
     init(); 
-     $(".select2").select2();
+
+
+
+    var css_editor = ace.edit('ace_css_editor');
+    css_editor.setTheme("ace/theme/monokai");
+    css_editor.session.setMode("ace/mode/css");
+
+    var css_textarea = $('textarea[name="css"]');
+    css_editor.getSession().on("change", function () {
+        css_textarea.val(css_editor.getSession().getValue());
+    });
+
+    var js_editor = ace.edit('ace_js_editor');
+    js_editor.setTheme("ace/theme/monokai");
+    js_editor.session.setMode("ace/mode/javascript");
+
+    var js_textarea = $('textarea[name="js"]');
+    js_editor.getSession().on("change", function () {
+        js_textarea.val(js_editor.getSession().getValue());
+    });
+
+
+
+    $(".select2").select2();
 
     if( $('.meta_field_row').length > 1){
       $('.remove_meta_field_btn').show();
@@ -336,6 +366,6 @@
         });
       });
 
-    });
-  </script>
+});
+</script>
 @endsection
