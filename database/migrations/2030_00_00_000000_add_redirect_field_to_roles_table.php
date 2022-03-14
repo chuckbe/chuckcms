@@ -13,9 +13,11 @@ class AddRedirectFieldToRolesTable extends Migration
      */
     public function up()
     {
-        Schema::table('roles', function (Blueprint $table) {
-            $table->string('redirect')->default('dashboard')->after('guard_name');
-        });
+        if (!Schema::hasColumn('roles', 'redirect')) {
+            Schema::table('roles', function (Blueprint $table) {
+                $table->string('redirect')->default('dashboard')->after('guard_name');
+            });
+        }
     }
 
     /**
