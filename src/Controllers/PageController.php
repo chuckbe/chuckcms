@@ -2,8 +2,8 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
-use Chuckbe\Chuckcms\Chuck\PageRepository;
 use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
+use Chuckbe\Chuckcms\Chuck\PageRepository;
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\PageBlock;
 use Chuckbe\Chuckcms\Models\Redirect;

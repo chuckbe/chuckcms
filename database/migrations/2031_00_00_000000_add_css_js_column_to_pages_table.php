@@ -13,13 +13,13 @@ class AddCssJsColumnToPagesTable extends Migration
      */
     public function up()
     {
-        if (! Schema::hasColumn('pages', 'css') ) {
+        if (!Schema::hasColumn('pages', 'css')) {
             Schema::table('pages', function (Blueprint $table) {
                 $table->longText('css')->nullable()->after('meta');
             });
         }
 
-        if (! Schema::hasColumn('pages', 'js') ) {
+        if (!Schema::hasColumn('pages', 'js')) {
             Schema::table('pages', function (Blueprint $table) {
                 $table->longText('js')->nullable()->after('css');
             });
