@@ -43,7 +43,7 @@
                     <div class="col-sm-12 tab-pane fade show{{ $loop->iteration == 1 ? ' active' : '' }} tab_page_wrapper" role="tabpanel" id="tab_resource_{{ $langKey }}">
                         <div class="form-group">
                             <label>Titel *</label>
-                            <input type="text" class="form-control page_title" placeholder="Titel" name="page_title[{{ $langKey }}]" data-lang="{{ $langKey }}" data-url="http://package.local" required>
+                            <input type="text" class="form-control page_title" placeholder="Titel" name="page_title[{{ $langKey }}]" data-lang="{{ $langKey }}" data-url="{{ URL::to('/') }}" required>
                         </div>
                         <div class="form-group">
                             <label>Slug *</label>
@@ -68,10 +68,10 @@
                             <textarea name="meta_description[{{ $langKey }}]" placeholder="Meta Beschrijving" rows="2" class="form-control meta_description_{{ $langKey }} meta_description" data-lang="{{ $langKey }}" required></textarea>
                         </div>
                         <div class="form-group">
-                            <label>Meta Sleutelwoorden *</label>
-                            <textarea name="meta_keywords[{{ $langKey }}]" placeholder="Meta Sleutelwoorden" rows="2" class="form-control" required></textarea>
+                            <label>Meta Sleutelwoorden</label>
+                            <textarea name="meta_keywords[{{ $langKey }}]" placeholder="Meta Sleutelwoorden" rows="2" class="form-control"></textarea>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-1">
                             <label for="meta_robots_index[{{ $langKey }}]">
                                 <input type="hidden" name="meta_robots_index[{{ $langKey }}]" value="0">
                                 <input type="checkbox" name="meta_robots_index[{{ $langKey }}]" id="meta_robots_index[{{ $langKey }}]" value="1" checked/>
@@ -89,27 +89,24 @@
                         <hr>
                         <div class="meta_field_wrapper" data-lang="{{ $langKey }}">
                             <div class="row meta_field_row" data-order="1">
-                                <div class="col-lg-4">
-                                    <div class="form-group form-group-default ">
+                                <div class="col-sm-6 col-lg-4">
+                                    <div class="form-group">
                                         <label>Meta Key</label>
                                         <input type="text" class="form-control meta_key" placeholder="key" id="meta_key" name="meta_key[{{ $langKey }}][]" data-order="1">
                                     </div>
                                 </div>
-                                <div class="col-lg-8">
-                                    <div class="form-group form-group-default ">
+                                <div class="col-sm-6 col-lg-8">
+                                    <div class="form-group">
                                         <label>Meta Waarde</label>
                                         <input type="text" class="form-control meta_value" placeholder="waarde" id="meta_value" name="meta_value[{{ $langKey }}][]" data-order="1">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <hr>
                         <div class="row">
-                            <div class="col-lg-6">
-                                <button type="button" class="btn btn-primary add_meta_field_btn">+ Toevoegen</button>
-                            </div>
-                            <div class="col-lg-6">
-                                <button type="button" class="btn btn-warning remove_meta_field_btn" style="display:none;">- Verwijderen</button>
+                            <div class="col-12 text-right text-end">
+                                <button type="button" class="btn btn-sm btn-danger mr-2 remove_meta_field_btn" style="display:none;">-</button>
+                                <button type="button" class="btn btn-sm btn-success add_meta_field_btn">+</button>
                             </div>
                         </div>
                     </div>
@@ -130,7 +127,24 @@
                     </div>
 
                     <div class="col-sm-12 tab-pane fade show active" id="fade1">
-                        <div class="row column-separation">
+                        <hr>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>OpenGraph Afbeelding (1200 x 630 pixels)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                          <a id="ogImage" data-input="ogImageInput" data-preview="ogImageHolder" class="btn btn-primary" style="color:#FFF">
+                                            <i class="fa fa-picture-o"></i> Kies
+                                          </a>
+                                        </span>
+                                        <input id="ogImageInput" class="form-control" type="text" name="meta_image">
+                                    </div>
+                                    <img id="ogImageHolder" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" style="margin-top:15px;max-height:100px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-12">
                                 <hr>
                                 <div class="row">
@@ -185,64 +199,62 @@
                             </div>
                         </div>
                     </div>
-          </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
     <div class="row">
-      <div class="col-sm-12">
-        <div class="my-3">
-          <p class="pull-right">
-            <input type="hidden" name="_token" value="{{ Session::token() }}">
-            <button type="submit" name="create" class="btn btn-success btn-cons pull-right m-1" value="1">Opslaan</button>
-            <a href="{{ route('dashboard.pages') }}" class="pull-right m-1"><button type="button" class="btn btn-info btn-cons">Annuleren</button></a>
-          </p>
+        <div class="col-sm-12">
+            <div class="my-3">
+                <p class="pull-right">
+                    <input type="hidden" name="_token" value="{{ Session::token() }}">
+                    <button type="submit" name="create" class="btn btn-success btn-cons pull-right m-1" value="1">Opslaan</button>
+                    <a href="{{ route('dashboard.pages') }}" class="pull-right m-1"><button type="button" class="btn btn-info btn-cons">Annuleren</button></a>
+                </p>
+            </div>
         </div>
-      </div>
     </div>
-  </form>
+    </form>
 </div>
 <!-- END CONTAINER FLUID -->
-
-
 @endsection
 
 @section('css')
   <style>
-  .serp-preview {
-    font-family: arial, sans-serif  !important;
-    line-height: 15px !important;
-    font-size: 13px !important;
-    font-style: normal  !important;
-    width: 540px !important;
-    clear: both  !important;
-    /* codepen styling */
-    margin: 40px 15px !important
-  }
+    .serp-preview {
+        font-family: arial, sans-serif  !important;
+        line-height: 15px !important;
+        font-size: 13px !important;
+        font-style: normal  !important;
+        width: 540px !important;
+        clear: both  !important;
+        /* codepen styling */
+        margin: 40px 15px !important
+    }
 
-  .serp-preview .serp-title {
-    color: #11c !important;
-    font-size: 18px !important;
-    line-height: 24px !important;
-    text-decoration: none !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-    margin-bottom: 2px !important;
-  }
+    .serp-preview .serp-title {
+        color: #11c !important;
+        font-size: 18px !important;
+        line-height: 24px !important;
+        text-decoration: none !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        margin-bottom: 2px !important;
+    }
 
-  .serp-preview .serp-url {
-    font-size: 15px !important;
-    color: #282 !important;
-    line-height: 18px !important;
-    text-decoration: none !important;
-  }
+    .serp-preview .serp-url {
+        font-size: 15px !important;
+        color: #282 !important;
+        line-height: 18px !important;
+        text-decoration: none !important;
+    }
 
-  .serp-preview .serp-desc {
-    font-size: 15px !important;
-    color: #000 !important;
-    line-height: 20px !important;
-  }
+    .serp-preview .serp-desc {
+        font-size: 15px !important;
+        color: #000 !important;
+        line-height: 20px !important;
+    }
 
     .ace_editor_height_null{height:0px;visibility:hidden;}
     .ace_editor_height_full{height:500px;visibility: visible;}
@@ -251,12 +263,9 @@
 
 @section('scripts')
 <script src="https://cdn.chuck.be/assets/plugins/ace/ace.js"></script>
+<script src="{{ URL::to('/vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
 <script>
 $( document ).ready(function() { 
-    init();
-
-
-
     var css_editor = ace.edit('ace_css_editor');
     css_editor.setTheme("ace/theme/monokai");
     css_editor.session.setMode("ace/mode/css");
@@ -275,25 +284,28 @@ $( document ).ready(function() {
         js_textarea.val(js_editor.getSession().getValue());
     });
 
-
-    
     $(".select2").select2();
-    function init() {
-        $(".resource_slug_input").keyup(function(){
-            var text = $(this).val();
-            slug_text = text.toLowerCase().replace(/[^\w  .\-]+/g,'').replace(/ +/g,'');
-            $(".resource_slug_input").val(slug_text);   
-        });
 
-        $(".meta_key").keyup(function(){
-            console.log('This is the index of the element : ',$('.meta_field_row').index($(this)));
-            var text = $(this).val();
-            var iOrder = $(this).attr('data-order');
-            slug_text = text.toLowerCase().replace(/[^\w  .\-]+/g,'').replace(/ +/g,'');
-            $(".meta_key[data-order="+iOrder+"]").val(slug_text);   
-        });
-    }
-    $('.add_meta_field_btn').click(function(){
+    var domain = "{{ URL::to('dashboard/media')}}";
+    $('#ogImage').filemanager('image', {prefix: domain});
+
+
+    $('body').on('keyup', '.meta_key', function (event) {
+        let iOrder = $(this).attr('data-order');
+        let slug = $(this).val()
+            .toLowerCase()
+            .replace(/\\+/g,'')
+            .replace(/\(+/g,'')
+            .replace(/\)+/g,'')
+            .replace(/\{+/g,'')
+            .replace(/\}+/g,'')
+            .replace(/\“+/g,'')
+            .replace(/"+/g,'');
+
+        $(".meta_key[data-order="+iOrder+"]").val(slug);
+    });
+
+    $('body').on('click', '.add_meta_field_btn', function (event) {
         $('.meta_field_row:first').clone().appendTo('.meta_field_wrapper');
 
         $('.meta_field_wrapper').each(function() {
@@ -311,59 +323,51 @@ $( document ).ready(function() {
         if( $('.meta_field_row').length > 1){
             $('.remove_meta_field_btn').show();
         }
-
-        init();
     });
 
-    $('.remove_meta_field_btn').click(function(){
-    
+    $('body').on('click', '.remove_meta_field_btn', function (event) {
         $('.meta_field_wrapper').each(function() {
-          
-          if($( this ).find('.meta_field_row').length > 1){
-            
-            $( this ).find('.meta_field_row:last').remove();
-            if($( this ).find('.meta_field_row').length == 1){
-              $('.remove_meta_field_btn').hide();
+            if($( this ).find('.meta_field_row').length > 1){
+                $( this ).find('.meta_field_row:last').remove();
+                
+                if($( this ).find('.meta_field_row').length == 1){
+                    $('.remove_meta_field_btn').hide();
+                }
             }
-          }
-
         });
-
     });
 
-    $('.tab_page_wrapper').each(function() {
-        $('.page_title').keyup(function(){
-            var text = $(this).val();
-            var lang = $(this).attr('data-lang');
-            var url_path = $(this).attr('data-url');
-            slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
-            $('.page_slug_'+lang).val(slug_text);
-            $('.page_slug_hidden_'+lang).val(slug_text);
-            $('.meta_title_'+lang).val(text).change();
-            $('.serp_title_'+lang).text(text); 
-            $('.serp_url_'+lang).text(url_path+'/'+slug_text);
-        });
+    $('body').on('keyup', '.page_title', function (event) {
+        var text = $(this).val();
+        var lang = $(this).attr('data-lang');
+        var url_path = $(this).attr('data-url');
+        slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
+        $('.page_slug_'+lang).val(slug_text);
+        $('.page_slug_hidden_'+lang).val(slug_text);
+        $('.meta_title_'+lang).val(text).change();
+        $('.serp_title_'+lang).text(text); 
+        $('.serp_url_'+lang).text(url_path+'/'+slug_text);
+    });
 
-        $('.page_slug').keyup(function(){
-            var text = $(this).val();
-            var lang = $(this).attr('data-lang');
-            var url_path = $(this).attr('data-url');
-            slug_text = text.toLowerCase().replace(/ +/g,'-');
-            $('.page_slug_hidden_'+lang).val(slug_text);
-            $('.serp_url_'+lang).text(url_path+'/'+slug_text);
-        });
+    $('body').on('keyup', '.page_slug', function (event) {
+        var text = $(this).val();
+        var lang = $(this).attr('data-lang');
+        var url_path = $(this).attr('data-url');
+        slug_text = text.toLowerCase().replace(/ +/g,'-');
+        $('.page_slug_hidden_'+lang).val(slug_text);
+        $('.serp_url_'+lang).text(url_path+'/'+slug_text);
+    });
 
-        $('.meta_title').keyup(function(){
-            var text = $(this).val();
-            var lang = $(this).attr('data-lang');
-            $('.serp_title_'+lang).text(text);
-        });
+    $('body').on('keyup', '.meta_title', function (event) {
+        var text = $(this).val();
+        var lang = $(this).attr('data-lang');
+        $('.serp_title_'+lang).text(text);
+    });
 
-        $('.meta_description').keyup(function(){
-            var text = $(this).val();
-            var lang = $(this).attr('data-lang');
-            $('.serp_desc_'+lang).text(text);
-        });
+    $('body').on('keyup', '.meta_description', function (event) {
+        var text = $(this).val();
+        var lang = $(this).attr('data-lang');
+        $('.serp_desc_'+lang).text(text);
     });
 });
 </script>

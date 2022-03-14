@@ -61,33 +61,84 @@
                         </div>
                         <hr>
 
+                        <div class="form-group">
+                            <label>Meta Titel *</label>
+                            <input type="text" class="form-control meta_title meta_title_{{ $langKey }}" placeholder="Meta Titel" name="meta_title[{{ $langKey }}]" value="{{ $page->meta[$langKey]['title'] }}" data-lang="{{ $langKey }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Meta Beschrijving *</label>
+                            <textarea name="meta_description[{{ $langKey }}]" placeholder="Meta Beschrijving" rows="2" class="form-control meta_description_{{ $langKey }} meta_description" data-lang="{{ $langKey }}" required>{{ $page->meta[$langKey]['description'] }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Meta Sleutelwoorden</label>
+                            <textarea name="meta_keywords[{{ $langKey }}]" placeholder="Meta Sleutelwoorden" rows="2" class="form-control">{{ $page->meta[$langKey]['keywords'] }}</textarea>
+                        </div>
+                        <div class="form-group mb-1">
+                            <label for="meta_robots_index[{{ $langKey }}]">
+                                <input type="hidden" name="meta_robots_index[{{ $langKey }}]" value="0">
+                                <input type="checkbox" name="meta_robots_index[{{ $langKey }}]" id="meta_robots_index[{{ $langKey }}]" value="1" @if(!(strpos($page->meta[$langKey]['robots'], 'noindex') !== false)) checked @endif/>
+                                Meta Robots Indexeren
+                            </label>
+                            
+                        </div>
+                        <div class="form-group">
+                            <label for="meta_robots_follow[{{ $langKey }}]">
+                                <input type="hidden" name="meta_robots_follow[{{ $langKey }}]" value="0">
+                                <input type="checkbox" name="meta_robots_follow[{{ $langKey }}]" id="meta_robots_follow[{{ $langKey }}]" value="1" @if(!(strpos($page->meta[$langKey]['robots'], 'nofollow') !== false)) checked @endif/>
+                                Meta Robots Volgen
+                            </label>
+                        </div>
+                        <hr>
+
                         <div class="meta_field_wrapper" data-lang="{{ $langKey }}">
+                            @php
+                            $metaLoop = 0;
+                            @endphp
                             @foreach($page->meta[$langKey] as $mKey => $mValue)
+                            @if(!in_array($mKey, ['title', 'description', 'keywords', 'og:url', 'og:type', 'og:title', 'og:description', 'og:site_name', 'og:image', 'robots', 'googlebots', 'og-url', 'og-type', 'og-title', 'og-description', 'og-site_name']))
                             <div class="row meta_field_row" data-order="{{ $loop->iteration }}">
                                 <div class="col-lg-4">
-                                    <div class="form-group form-group-default required ">
+                                    <div class="form-group">
                                         <label>Meta Key</label>
-                                        <input type="text" class="form-control meta_key" placeholder="key" id="meta_key" name="meta_key[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="{{ $mKey }}" required>
+                                        <input type="text" class="form-control meta_key" placeholder="key" id="meta_key" name="meta_key[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="{{ $mKey }}">
                                     </div>
                                 </div>
                                 <div class="col-lg-8">
-                                    <div class="form-group form-group-default required ">
+                                    <div class="form-group">
                                         <label>Meta Waarde</label>
-                                        <input type="text" class="form-control meta_value @if($mKey == 'title') meta_title @endif  @if($mKey == 'description') meta_description @endif" placeholder="waarde" id="meta_value" name="meta_value[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="{{ $mValue }}" data-lang="{{ $langKey }}" required>
+                                        <input type="text" class="form-control meta_value @if($mKey == 'title') meta_title @endif  @if($mKey == 'description') meta_description @endif" placeholder="waarde" id="meta_value" name="meta_value[{{ $langKey }}][]" data-order="{{ $loop->iteration }}" value="{{ $mValue }}" data-lang="{{ $langKey }}">
                                     </div>
                                 </div>
                             </div>
+                            @php
+                            $metaLoop++;
+                            @endphp
+                            @endif
                             @endforeach
+                            @if($metaLoop == 0)
+                            <div class="row meta_field_row" data-order="1">
+                                <div class="col-sm-6 col-lg-4">
+                                    <div class="form-group">
+                                        <label>Meta Key</label>
+                                        <input type="text" class="form-control meta_key" placeholder="key" id="meta_key" name="meta_key[{{ $langKey }}][]" data-order="1">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-lg-8">
+                                    <div class="form-group">
+                                        <label>Meta Waarde</label>
+                                        <input type="text" class="form-control meta_value" placeholder="waarde" id="meta_value" name="meta_value[{{ $langKey }}][]" data-order="1">
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
                         </div>
                         
                         <hr>
                         
                         <div class="row">
-                            <div class="col-lg-6">
-                                <button type="button" class="btn btn-primary add_meta_field_btn" id="add_meta_field_btn">+ Toevoegen</button>
-                            </div>
-                            <div class="col-lg-6">
-                                <button type="button" class="btn btn-warning remove_meta_field_btn" id="remove_meta_field_btn" style="display:none;">- Verwijderen</button>
+                            <div class="col-12 text-right text-end">
+                                <button type="button" class="btn btn-sm btn-danger mr-2 remove_meta_field_btn" style="display:none;">-</button>
+                                <button type="button" class="btn btn-sm btn-success add_meta_field_btn">+</button>
                             </div>
                         </div>
                     </div>
@@ -110,7 +161,23 @@
                     <hr>
 
                     <div class="col-sm-12 tab-pane fade show active">
-                        
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>OpenGraph Afbeelding (1200 x 630 pixels)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                          <a id="ogImage" data-input="ogImageInput" data-preview="ogImageHolder" class="btn btn-primary" style="color:#FFF">
+                                            <i class="fa fa-picture-o"></i> Kies
+                                          </a>
+                                        </span>
+                                        <input id="ogImageInput" class="form-control" type="text" name="meta_image" value="{{ array_key_exists('og:image', $page->meta[ChuckSite::getFeaturedLocale()]) && !is_null($page->meta[ChuckSite::getFeaturedLocale()]['og:image']) ? $page->meta[ChuckSite::getFeaturedLocale()]['og:image'] : '' }}">
+                                    </div>
+                                    <img id="ogImageHolder" src="{{ array_key_exists('og:image', $page->meta[ChuckSite::getFeaturedLocale()]) && !is_null($page->meta[ChuckSite::getFeaturedLocale()]['og:image']) ? ChuckSite::getSite('domain').'/'.$page->meta[ChuckSite::getFeaturedLocale()]['og:image'] : 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' }}" style="margin-top:15px;max-height:100px;">
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -242,12 +309,9 @@
 
 @section('scripts')
 <script src="https://cdn.chuck.be/assets/plugins/ace/ace.js"></script>
+<script src="{{ URL::to('/vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
 <script>
 $( document ).ready(function() { 
-    init(); 
-
-
-
     var css_editor = ace.edit('ace_css_editor');
     css_editor.setTheme("ace/theme/monokai");
     css_editor.session.setMode("ace/mode/css");
@@ -266,105 +330,93 @@ $( document ).ready(function() {
         js_textarea.val(js_editor.getSession().getValue());
     });
 
-
-
     $(".select2").select2();
 
+    var domain = "{{ URL::to('dashboard/media')}}";
+    $('#ogImage').filemanager('image', {prefix: domain});
+
     if( $('.meta_field_row').length > 1){
-      $('.remove_meta_field_btn').show();
+        $('.remove_meta_field_btn').show();
     }
 
-    function init() {
-      $(".resource_slug_input").keyup(function(){
-          var text = $(this).val();  
-          slug_text = text.toLowerCase().replace(/[^\w  .\-]+/g,'').replace(/ +/g,'');
-          $(".resource_slug_input").val(slug_text);   
-      });
+    $('body').on('keyup', '.meta_key', function (event) {
+        var text = $(this).val();
+        var iOrder = $(this).attr('data-order');
+        slug_text = text.toLowerCase()
+            .replace(/\\+/g,'')
+            .replace(/\(+/g,'')
+            .replace(/\)+/g,'')
+            .replace(/\{+/g,'')
+            .replace(/\}+/g,'')
+            .replace(/\“+/g,'')
+            .replace(/"+/g,'');
 
-      $(".meta_key").keyup(function(){
-          console.log('This is the index of the element : ',$('.meta_field_row').index($(this)));
-          var text = $(this).val();
-          var iOrder = $(this).attr('data-order');
-          slug_text = text.toLowerCase().replace(/[^\w  .\-]+/g,'').replace(/ +/g,'');
-          $(".meta_key[data-order="+iOrder+"]").val(slug_text);   
-          
-      });
-    }
-      $('.add_meta_field_btn').click(function(){
+        $(".meta_key[data-order="+iOrder+"]").val(slug_text);
+    });
+
+    $('body').on('click', '.add_meta_field_btn', function (event) {
         $('.meta_field_row:first').clone().appendTo('.meta_field_wrapper');
 
         $('.meta_field_wrapper').each(function() {
-          var lang = $(this).attr('data-lang');
-          var order = $(this).find('.meta_field_row').attr('data-order') + 1;
+            var lang = $(this).attr('data-lang');
+            var order = $(this).find('.meta_field_row').attr('data-order') + 1;
 
-          $( this ).find('#meta_key').attr('name', 'meta_key[' + lang + '][]');
-          $( this ).find('#meta_value').attr('name', 'meta_value[' + lang + '][]');
+            $( this ).find('#meta_key').attr('name', 'meta_key[' + lang + '][]');
+            $( this ).find('#meta_value').attr('name', 'meta_value[' + lang + '][]');
 
-          $( this ).find('.meta_field_row').attr('data-order', order);
-          $( this ).find('.meta_key:last').attr('data-order', order);
-          $( this ).find('.meta_value:last').attr('data-order', order);
-          
+            $( this ).find('.meta_field_row').attr('data-order', order);
+            $( this ).find('.meta_key:last').attr('data-order', order);
+            $( this ).find('.meta_value:last').attr('data-order', order);
         });
 
         if( $('.meta_field_row').length > 1){
-          $('.remove_meta_field_btn').show();
+            $('.remove_meta_field_btn').show();
         }
+    });
 
-        init();
-      });
-
-
-
-      $('.remove_meta_field_btn').click(function(){
-        
+    $('body').on('click', '.remove_meta_field_btn', function (event) {
         $('.meta_field_wrapper').each(function() {
-          
-          if($( this ).find('.meta_field_row').length > 1){
-            
-            $( this ).find('.meta_field_row:last').remove();
-            if($( this ).find('.meta_field_row').length == 1){
-              $('.remove_meta_field_btn').hide();
+            if($( this ).find('.meta_field_row').length > 1){
+                $( this ).find('.meta_field_row:last').remove();
+                if($( this ).find('.meta_field_row').length == 1){
+                    $('.remove_meta_field_btn').hide();
+                }
             }
-          }
-
         });
+    });
 
-      });
+    $('body').on('keyup', '.page_title', function (event) {
+        var text = $(this).val();
+        var lang = $(this).attr('data-lang');
+        var url_path = $(this).attr('data-url');
+        slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
+        $('.page_slug_'+lang).val(slug_text);
+        $('.page_slug_hidden_'+lang).val(slug_text);
+        $('.meta_title_'+lang).val(text).change();
+        $('.serp_title_'+lang).text(text); 
+        $('.serp_url_'+lang).text(url_path+'/'+slug_text);
+    });
 
-      $('.tab_page_wrapper').each(function() {
-        $('.page_title').keyup(function(){
-            var text = $(this).val();
-            var lang = $(this).attr('data-lang');
-            var url_path = $(this).attr('data-url');
-            slug_text = text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
-            $('.page_slug_'+lang).val(slug_text);
-            $('.page_slug_hidden_'+lang).val(slug_text);
-            $('.meta_title_'+lang).val(text).change();
-            $('.serp_title_'+lang).text(text); 
-            $('.serp_url_'+lang).text(url_path+'/'+slug_text);
-        });
+    $('body').on('keyup', '.page_slug', function (event) {
+        var text = $(this).val();
+        var lang = $(this).attr('data-lang');
+        var url_path = $(this).attr('data-url');
+        slug_text = text.toLowerCase().replace(/ +/g,'-');
+        $('.page_slug_hidden_'+lang).val(slug_text);
+        $('.serp_url_'+lang).text(url_path+'/'+slug_text);
+    });
 
-        $('.page_slug').keyup(function(){
-            var text = $(this).val();
-            var lang = $(this).attr('data-lang');
-            var url_path = $(this).attr('data-url');
-            slug_text = text.toLowerCase().replace(/ +/g,'-');
-            $('.page_slug_hidden_'+lang).val(slug_text);
-            $('.serp_url_'+lang).text(url_path+'/'+slug_text);
-        });
+    $('body').on('keyup', '.meta_title', function (event) {
+        var text = $(this).val();
+        var lang = $(this).attr('data-lang');
+        $('.serp_title_'+lang).text(text);
+    });
 
-        $('.meta_title').keyup(function(){
-            var text = $(this).val();
-            var lang = $(this).attr('data-lang');
-            $('.serp_title_'+lang).text(text);
-        });
-
-        $('.meta_description').keyup(function(){
-            var text = $(this).val();
-            var lang = $(this).attr('data-lang');
-            $('.serp_desc_'+lang).text(text);
-        });
-      });
+    $('body').on('keyup', '.meta_description', function (event) {
+        var text = $(this).val();
+        var lang = $(this).attr('data-lang');
+        $('.serp_desc_'+lang).text(text);
+    });
 
 });
 </script>
