@@ -24,8 +24,8 @@ class CreatePagesTable extends Migration
             $table->integer('active');
             $table->string('roles')->nullable()->default(null);
             $table->longText('meta');
-            $table->longText('css');
-            $table->longText('js');
+            $table->longText('css')->nullable();
+            $table->longText('js')->nullable();
             $table->timestamps();
         });
     }
