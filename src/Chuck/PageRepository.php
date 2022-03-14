@@ -3,12 +3,12 @@
 namespace Chuckbe\Chuckcms\Chuck;
 
 use Chuckbe\Chuckcms\Models\Page;
-use Illuminate\Http\Request;
 use ChuckSite;
+use Illuminate\Http\Request;
 
 class PageRepository
 {
-	protected $page;
+    protected $page;
 
     public function __construct(Page $page)
     {
@@ -17,12 +17,12 @@ class PageRepository
 
     public function find(string $id)
     {
-    	return $this->page->where('id', $id)->first();
+        return $this->page->where('id', $id)->first();
     }
 
     public function create(Request $request)
     {
-    	$page = new Page();
+        $page = new Page();
 
         $meta = [];
         foreach (ChuckSite::getSupportedLocales() as $langKey => $langValue) {
@@ -32,14 +32,14 @@ class PageRepository
             $meta[$langKey]['title'] = $request->get('meta_title')[$langKey];
             $meta[$langKey]['description'] = $request->get('meta_description')[$langKey];
             $meta[$langKey]['keywords'] = $request->get('meta_keywords')[$langKey];
-            
+
             $meta[$langKey]['og:url'] = $request->get('page_slug')[$langKey];
             $meta[$langKey]['og:type'] = 'website';
             $meta[$langKey]['og:title'] = $request->get('meta_title')[$langKey];
             $meta[$langKey]['og:description'] = $request->get('meta_description')[$langKey];
             $meta[$langKey]['og:site_name'] = $request->get('meta_title')[$langKey];
             $meta[$langKey]['og:image'] = $request->get('meta_image');
-            
+
             if ($request->get('meta_robots_index')[$langKey] == '1') {
                 $index = 'index, ';
             } else {
@@ -54,7 +54,7 @@ class PageRepository
 
             $meta[$langKey]['robots'] = $index.$follow;
             $meta[$langKey]['googlebots'] = $index.$follow;
-            
+
             $count = count($request->get('meta_key')[$langKey]);
             for ($i = 0; $i < $count; $i++) {
                 $meta[$langKey][$request->get('meta_key')[$langKey][$i]] = $request->get('meta_value')[$langKey][$i];
@@ -86,14 +86,14 @@ class PageRepository
             $meta[$langKey]['title'] = $request->get('meta_title')[$langKey];
             $meta[$langKey]['description'] = $request->get('meta_description')[$langKey];
             $meta[$langKey]['keywords'] = $request->get('meta_keywords')[$langKey];
-            
+
             $meta[$langKey]['og:url'] = $request->get('page_slug')[$langKey];
             $meta[$langKey]['og:type'] = 'website';
             $meta[$langKey]['og:title'] = $request->get('meta_title')[$langKey];
             $meta[$langKey]['og:description'] = $request->get('meta_description')[$langKey];
             $meta[$langKey]['og:site_name'] = $request->get('meta_title')[$langKey];
             $meta[$langKey]['og:image'] = $request->get('meta_image');
-            
+
             if ($request->get('meta_robots_index')[$langKey] == '1') {
                 $index = 'index, ';
             } else {
@@ -111,9 +111,9 @@ class PageRepository
 
             $count = count($request->get('meta_key')[$langKey]);
             for ($i = 0; $i < $count; $i++) {
-            	if (!is_null($request->get('meta_value')[$langKey][$i])) {
-            		$meta[$langKey][$request->get('meta_key')[$langKey][$i]] = $request->get('meta_value')[$langKey][$i];
-            	}
+                if (!is_null($request->get('meta_value')[$langKey][$i])) {
+                    $meta[$langKey][$request->get('meta_key')[$langKey][$i]] = $request->get('meta_value')[$langKey][$i];
+                }
             }
         }
         $page->meta = $meta;

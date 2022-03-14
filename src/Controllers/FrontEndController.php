@@ -133,7 +133,7 @@ class FrontEndController extends BaseController
     {
         $response = response()->make($page->css);
         $response->header('Content-Type', 'text/css');
-        
+
         return $response;
     }
 
@@ -141,7 +141,7 @@ class FrontEndController extends BaseController
     {
         $response = response()->make($page->js);
         $response->header('Content-Type', 'text/javascript');
-        
+
         return $response;
     }
 }
