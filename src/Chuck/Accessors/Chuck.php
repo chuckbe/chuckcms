@@ -419,7 +419,7 @@ class Chuck
                 'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter',
                 'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath',
                 'web',
-                'auth'
+                'auth',
             ],
         ], function () {
             Route::any('/concept/{slug?}', '\Chuckbe\Chuckcms\Controllers\FrontEndController@concept')->where('slug', '(.*)')->name('concept');

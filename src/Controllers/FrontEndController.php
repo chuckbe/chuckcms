@@ -104,7 +104,7 @@ class FrontEndController extends BaseController
     {
         if ($slug == null) {
             return redirect('/');
-        } 
+        }
 
         $page = $this->page->where('slug->'.app()->getLocale(), $slug)->first();
         if ($page == null) {
