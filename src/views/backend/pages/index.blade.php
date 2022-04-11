@@ -34,6 +34,7 @@
 						<tr>
 							<th scope="col">ID</th>
 							<th scope="col">Page</th>
+							<th scope="col">Slug</th>
 							<th scope="col">Status</th>
 							<th scope="col" style="min-width:170px">Actions</th>
 						</tr>
@@ -43,11 +44,16 @@
 						<tr class="page_line" data-id="{{ $page->id }}">
 							<td>{{ $page->order }}</td>
 					    	<td class="semi-bold">{{ $page->title }}</td>
+							@if($page->active == 1)
+					    	<td class="semi-bold"><a class="text-dark" href="{{ route('page', ['slug' => $page->slug]) }}" target="_blank"><u>{{ $page->slug }}</u></a></td>
+					    	@else
+					    	<td class="semi-bold"><a class="text-dark" href="{{ route('concept', ['slug' => $page->slug]) }}" target="_blank"><u>{{ $page->slug }}</u></a></td>
+					    	@endif
 					    	<td>
 					    		@if($page->active == 1)
-									<span class="label label-inverse">Actief</span>
+								<span class="badge badge-pill badge-success">Actief</span>
 					        	@else
-					        		<span class="label">Concept</span>
+				        		<span class="badge badge-pill badge-info">Concept</span>
 					        	@endif 
 					    	</td>
 					    	<td class="v-align-middle semi-bold">

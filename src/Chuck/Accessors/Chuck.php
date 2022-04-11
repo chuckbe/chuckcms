@@ -419,6 +419,19 @@ class Chuck
                 'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter',
                 'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath',
                 'web',
+                'auth'
+            ],
+        ], function () {
+            Route::any('/concept/{slug?}', '\Chuckbe\Chuckcms\Controllers\FrontEndController@concept')->where('slug', '(.*)')->name('concept');
+        });
+
+        Route::group([
+            'prefix'     => \LaravelLocalization::setLocale(),
+            'middleware' => [
+                'Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect',
+                'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter',
+                'Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath',
+                'web',
             ],
         ], function () {
             Route::any('/{slug?}', '\Chuckbe\Chuckcms\Controllers\FrontEndController@index')->where('slug', '(.*)')->name('page')->fallback();

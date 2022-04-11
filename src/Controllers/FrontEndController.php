@@ -100,6 +100,41 @@ class FrontEndController extends BaseController
         return $this->getView($page);
     }
 
+    public function concept($slug = null)
+    {
+        if ($slug == null) {
+            return redirect('/');
+        } 
+
+        $page = $this->page->where('slug->'.app()->getLocale(), $slug)->first();
+        if ($page == null) {
+            foreach (\LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
+                $page = $this->page->where('slug->'.$localeCode, $slug)->first();
+                if ($page !== null && $localeCode == app()->getLocale()) {
+                    break;
+                }
+
+                if ($page !== null && $localeCode !== app()->getLocale()) {
+                    //dd(app()->getLocale());
+                    app()->setLocale($localeCode);
+                    \LaravelLocalization::setLocale($localeCode);
+
+                    return redirect($localeCode.'/concept/'.$slug);
+                }
+            }
+        }
+
+        if ($page == null) {
+            abort(404);
+        }
+
+        if ($page->roles !== null) {
+            return $this->authorizedIndex($page);
+        }
+
+        return $this->getView($page);
+    }
+
     public function authorizedIndex(Page $page)
     {
         if (!Auth::check()) {
