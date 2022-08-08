@@ -15,6 +15,7 @@ class CreateRepeatersTable extends Migration
     {
         Schema::create('repeaters', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('site_id');
             $table->string('slug');
             $table->string('url')->nullable()->default(null);
             $table->string('page')->nullable()->default('default');

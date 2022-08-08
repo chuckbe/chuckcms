@@ -20,6 +20,16 @@ class PageRepository
         return $this->page->where('id', $id)->first();
     }
 
+    public function homepage()
+    {
+        return $this->page->where('isHp', 1)->firstOrFail();
+    }
+
+    public function query()
+    {
+        return $this->page;
+    }
+
     public function create(Request $request)
     {
         $page = new Page();
@@ -62,6 +72,7 @@ class PageRepository
         }
         $page->meta = $meta;
 
+        $page->site_id = ChuckSite::currentSite()->id;
         $page->template_id = $request['template_id'];
         $page->page = $request['page'];
         $page->active = $request['active'];
@@ -118,6 +129,7 @@ class PageRepository
         }
         $page->meta = $meta;
 
+        $page->site_id = ChuckSite::currentSite()->id;
         $page->template_id = $request['template_id'];
         $page->page = $request['page'];
         $page->active = $request['active'];

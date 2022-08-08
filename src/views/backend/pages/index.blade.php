@@ -45,9 +45,9 @@
 							<td>{{ $page->order }}</td>
 					    	<td class="semi-bold">{{ $page->title }}</td>
 							@if($page->active == 1)
-					    	<td class="semi-bold"><a class="text-dark" href="{{ route('page', ['slug' => $page->slug]) }}" target="_blank"><u>{{ $page->slug }}</u></a></td>
+					    	<td class="semi-bold"><a class="text-dark" href="{{ $page->url() }}" target="_blank"><u>{{ $page->slug }}</u></a></td>
 					    	@else
-					    	<td class="semi-bold"><a class="text-dark" href="{{ route('concept', ['slug' => $page->slug]) }}" target="_blank"><u>{{ $page->slug }}</u></a></td>
+					    	<td class="semi-bold"><a class="text-dark" href="{{ $page->concept() }}" target="_blank"><u>{{ $page->slug }}</u></a></td>
 					    	@endif
 					    	<td>
 					    		@if($page->active == 1)

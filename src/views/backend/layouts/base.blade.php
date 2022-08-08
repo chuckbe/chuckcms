@@ -35,6 +35,7 @@
 </main>
 
 @include('chuckcms::backend.includes.footer')
+@include('chuckcms::backend.includes.switcher')
     
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
 {{ csrf_field() }}

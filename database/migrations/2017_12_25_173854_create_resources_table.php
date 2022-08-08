@@ -15,6 +15,7 @@ class CreateResourcesTable extends Migration
     {
         Schema::create('resources', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('site_id');
             $table->string('slug')->unique();
             $table->longText('json');
             $table->timestamps();

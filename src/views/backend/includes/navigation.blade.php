@@ -2,12 +2,15 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-none">
         <a class="navbar-brand" href="{{ ChuckSite::getSite('domain') }}"><img src="{{ ChuckSite::getSite('domain') }}{{ ChuckSite::getSetting('logo.href') }}" alt="{{ config('app.name', 'Laravel') }}" height="30"></a>
         <span class="navbar-text ml-auto d-inline-block d-lg-none mr-3">
+            <small>{{ ChuckSite::currentSite()->host }}</small>
             <div class="dropdown">
                 <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" role="button" id="userMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}" alt="" data-src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}" data-src-retina="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}" width="32" height="32" class="rounded-circle"> {{ Auth::user()->name }} <span class="caret"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenuLink">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#siteSwitcherModal">Switch site</a>
+                    <hr>
                     <a class="dropdown-item" href="https://support.chuck.be" target="_blank">Support</a>
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
                 </div>
@@ -63,11 +66,13 @@
             </ul>
             <span class="navbar-text ml-auto d-none d-lg-inline-block">
                 <div class="dropdown">
-                    <a class="btn btn-sm btn-outline-secondary dropdown-toggle" href="#" role="button" id="userMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}" alt="" data-src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}" data-src-retina="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}" width="32" height="32" class="rounded-circle"> <small>{{ Auth::user()->name }} <span class="caret"></span></small>
+                    <a class="btn btn-sm btn-outline-secondary dropdown-toggle text-left" href="#" role="button" id="userMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}" alt="" data-src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}" data-src-retina="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}" width="32" height="32" class="rounded-circle"> <small>{{ Auth::user()->name }} <br> <small>{{ ChuckSite::currentSite()->host }}</small></small>
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenuLink">
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#siteSwitcherModal">Switch site</a>
+                        <hr>
                         <a class="dropdown-item" href="https://support.chuck.be" target="_blank">Support</a>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Logout</a>
                     </div>

@@ -3,6 +3,7 @@
 namespace Chuckbe\Chuckcms\Chuck\Accessors;
 
 use Chuckbe\Chuckcms\Chuck\ModuleRepository;
+use Chuckbe\Chuckcms\Chuck\PageRepository;
 use Chuckbe\Chuckcms\Chuck\SiteRepository;
 use Chuckbe\Chuckcms\Models\Site as SiteModel;
 
@@ -121,8 +122,30 @@ class Site
         return null;
     }
 
+    public function currentSite()
+    {
+        return $this->currentSite;
+    }
+
+    public function allSites()
+    {
+        return cache()->store('file')->get('chuck_sites', function () {
+            return SiteModel::all();
+        });
+    }
+
+    public function page()
+    {
+        return \App::make(PageRepository::class);
+    }
+
     public function module(string $slug)
     {
         return $this->moduleRepository->get($slug);
+    }
+
+    public function site()
+    {
+        return \App::make(SiteRepository::class);
     }
 }

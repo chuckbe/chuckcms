@@ -94,4 +94,11 @@ class SiteController extends BaseController
 
         return redirect()->route('login');
     }
+
+    public function switch(Site $site)
+    {
+        cache()->store('file')->put('chuck_current_site', $site);
+
+        return redirect()->to(url()->previous());
+    }
 }

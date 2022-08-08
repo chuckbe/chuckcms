@@ -2,6 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
+use Chuckbe\Chuckcms\Models\Scopes\SiteScope;
 use Eloquent;
 
 /**
@@ -19,4 +20,16 @@ class Redirect extends Eloquent
     protected $fillable = [
         'slug', 'to', 'type',
     ];
+    
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+ 
+        static::addGlobalScope(new SiteScope);
+    }
 }

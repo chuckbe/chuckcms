@@ -3,10 +3,23 @@
 namespace Chuckbe\Chuckcms\Models;
 
 use Eloquent;
+use Chuckbe\Chuckcms\Models\Scopes\SiteScope;
 use Illuminate\Http\Request;
 
 class Template extends Eloquent
 {
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+ 
+        static::addGlobalScope(new SiteScope);
+    }
+
     public function pages()
     {
         return $this->hasMany('Chuckbe\Chuckcms\Models\Page');

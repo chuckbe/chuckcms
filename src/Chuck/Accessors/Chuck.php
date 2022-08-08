@@ -59,6 +59,12 @@ class Chuck
 
     public static function routes()
     {
+        $domain = request()->getHost();
+
+        if ( !in_array($domain, [config('chuckcms.admin_url')])) {
+            return;
+        }
+
         Route::group(['middleware' => ['web']], function () {
             Route::group(['middleware' => 'auth'], function () {
                 // Dashboard Routes...
@@ -299,16 +305,11 @@ class Chuck
                 });
 
                 Route::group(['middleware' => ['permission:edit settings']], function () {
+                    Route::get('/switch/site/{site}', '\Chuckbe\Chuckcms\Controllers\SiteController@switch')->name('switch.site');
+
                     Route::post('/dashboard/settings/save', '\Chuckbe\Chuckcms\Controllers\SiteController@save')->name('dashboard.settings.save');
                 });
             });
-            Route::get('/activate/user/{token}', '\Chuckbe\Chuckcms\Controllers\UserController@activateIndex')->name('activate.user.index');
-            Route::post('/activate/user', '\Chuckbe\Chuckcms\Controllers\UserController@activate')->name('activate.user');
-
-            Route::post('/forms/validate', '\Chuckbe\Chuckcms\Controllers\FormController@postForm')->name('forms.validate');
-
-            Route::get('/page/{page}/styles.css', '\Chuckbe\Chuckcms\Controllers\FrontEndController@css')->name('page.css');
-            Route::get('/page/{page}/scripts.js', '\Chuckbe\Chuckcms\Controllers\FrontEndController@js')->name('page.js');
         });
 
         $middleware = [CreateDefaultFolder::class, MultiUser::class, 'auth'];
@@ -412,6 +413,16 @@ class Chuck
 
     public static function frontend()
     {
+        Route::group(['middleware' => ['web']], function () {
+            Route::get('/activate/user/{token}', '\Chuckbe\Chuckcms\Controllers\UserController@activateIndex')->name('activate.user.index');
+            Route::post('/activate/user', '\Chuckbe\Chuckcms\Controllers\UserController@activate')->name('activate.user');
+
+            Route::post('/forms/validate', '\Chuckbe\Chuckcms\Controllers\FormController@postForm')->name('forms.validate');
+
+            Route::get('/page/{page}/styles.css', '\Chuckbe\Chuckcms\Controllers\FrontEndController@css')->name('page.css');
+            Route::get('/page/{page}/scripts.js', '\Chuckbe\Chuckcms\Controllers\FrontEndController@js')->name('page.js');
+        });
+
         Route::group([
             'prefix'     => \LaravelLocalization::setLocale(),
             'middleware' => [

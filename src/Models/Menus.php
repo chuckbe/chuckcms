@@ -2,6 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
+use Chuckbe\Chuckcms\Models\Scopes\SiteScope;
 use Eloquent;
 
 /**
@@ -10,7 +11,7 @@ use Eloquent;
  */
 class Menus extends Eloquent
 {
-    protected $table = 'menus';
+    protected $table = 'chck_menus';
 
     /**
      * The attributes that are mass assignable.
@@ -20,11 +21,17 @@ class Menus extends Eloquent
     protected $fillable = [
         'name',
     ];
-
-    public function __construct(array $attributes = [])
+    
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
     {
-        //parent::construct( $attributes );
-        $this->table = config('menu.table_prefix').config('menu.table_name_menus');
+        parent::boot();
+ 
+        static::addGlobalScope(new SiteScope);
     }
 
     public static function byName($name)

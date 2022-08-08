@@ -2,6 +2,8 @@
 
 return [
 
+    'admin_url' => env('ADMIN_URL', 'admin.chuckcms.test'),
+
     'auth' => [
         'get_login' => [
             'controller' => '\Chuckbe\Chuckcms\Controllers\Auth\LoginController',

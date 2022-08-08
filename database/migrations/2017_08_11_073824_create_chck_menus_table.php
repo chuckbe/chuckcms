@@ -15,6 +15,7 @@ class CreateChckMenusTable extends Migration
     {
         Schema::create(config('menu.table_prefix').config('menu.table_name_menus'), function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('site_id');
             $table->string('name');
             $table->timestamps();
         });

@@ -15,6 +15,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use Spatie\Permission\Models\Role;
+use ChuckSite;
 
 class FrontEndController extends BaseController
 {
@@ -54,9 +55,13 @@ class FrontEndController extends BaseController
 
     public function index($slug = null)
     {
+        //$page = ChuckSite::page()->homepage();
+
         if ($slug == null) {
-            $page = $this->page->where('isHp', 1)->firstOrFail();
-        } elseif ($slug !== null) {
+            $page = ChuckSite::page()->homepage();
+        } 
+
+        if ($slug !== null) {
             $redirect = $this->redirect->where('slug', $slug)->first();
             if ($redirect !== null) {
                 return redirect($redirect->to, $redirect->type);

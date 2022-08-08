@@ -54,7 +54,7 @@
   @if(ChuckSite::getSetting('integrations.matomo-site-id') !== null && ChuckSite::getSetting('integrations.matomo-auth-key') !== null)
   @include('chuckcms::backend.dashboard.matomo')
   @else
-    <div class="row mb-3">
+    <div class="row mb-0">
       <div class="col-sm-12">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mt-3">
@@ -64,7 +64,7 @@
         <div class="card-block">
           <header>
             <div class="row">
-              <div class="col-12 mb-2">
+              <div class="col-12 mb-0">
                 <div id="embed-api-auth-container"></div>
                 <div id="view-name"></div>
               </div>
@@ -78,6 +78,25 @@
               </div>
             </div>
           </header>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ ChuckSite::page()->query()->count() }}</h5>
+            <p class="card-text">Pages</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ ChuckSite::page()->query()->count() }}</h5>
+            <p class="card-text">Forms</p>
+          </div>
         </div>
       </div>
     </div>

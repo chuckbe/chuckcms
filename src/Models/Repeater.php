@@ -3,6 +3,7 @@
 namespace Chuckbe\Chuckcms\Models;
 
 use Eloquent;
+use Chuckbe\Chuckcms\Models\Scopes\SiteScope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -27,6 +28,18 @@ class Repeater extends Eloquent
     protected $casts = [
         'json' => 'array',
     ];
+    
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+ 
+        static::addGlobalScope(new SiteScope);
+    }
 
     public function getJson(string $string)
     {

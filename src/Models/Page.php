@@ -3,6 +3,7 @@
 namespace Chuckbe\Chuckcms\Models;
 
 use ChuckSite;
+use Chuckbe\Chuckcms\Models\Scopes\SiteScope;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
@@ -12,6 +13,18 @@ class Page extends Eloquent implements Sortable
 {
     use SortableTrait;
     use HasTranslations;
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+ 
+        static::addGlobalScope(new SiteScope);
+    }
 
     public $sortable = [
         'order_column_name'  => 'order',
@@ -41,6 +54,16 @@ class Page extends Eloquent implements Sortable
     public static function getUrl($id)
     {
         return ChuckSite::getSetting('domain').'/'.self::where('id', $id)->first()->slug;
+    }
+
+    public function url()
+    {
+        return ChuckSite::getSetting('domain').'/'.$this->slug;
+    }
+
+    public function concept()
+    {
+        return ChuckSite::getSetting('domain').'/concept/'.$this->slug;
     }
 
     public function deleteById($id)

@@ -2,6 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
+use Chuckbe\Chuckcms\Models\Scopes\SiteScope;
 use Eloquent;
 
 /**
@@ -28,6 +29,18 @@ class Content extends Eloquent
      * @var array
      */
     protected $hidden = ['id', 'created_at', 'updated_at'];
+    
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+ 
+        static::addGlobalScope(new SiteScope);
+    }
 
     public function getBySlug($slug)
     {
@@ -68,7 +81,8 @@ class Content extends Eloquent
 
         Repeater::updateOrCreate(
             ['id' => $input->get('repeater_id')],
-            ['slug'    => $slug,
+            ['site_id' => ChuckSite::currentSite()->id,
+                'slug' => $slug,
                 'url'  => $url,
                 'page' => $page,
                 'json' => $json,

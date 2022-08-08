@@ -32,6 +32,7 @@ class SiteRepository
             ['id' => $req->get('site_id')],
             ['name'        => $req->get('site_name'),
                 'slug'     => $req->get('site_slug'),
+                'host'     => $req->get('site_host'),
                 'domain'   => $req->get('site_domain'),
                 'settings' => $settings, ]
         );

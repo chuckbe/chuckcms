@@ -15,6 +15,7 @@ class CreatePagesTable extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('site_id');
             $table->integer('template_id');
             $table->string('page')->nullable()->default(null);
             $table->integer('order')->default(1);

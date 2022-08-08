@@ -2,6 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
+use Chuckbe\Chuckcms\Models\Scopes\SiteScope;
 use Eloquent;
 
 /**
@@ -21,6 +22,18 @@ class Form extends Eloquent
     protected $casts = [
         'form' => 'array',
     ];
+    
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+ 
+        static::addGlobalScope(new SiteScope);
+    }
 
     public function getBySlug($slug)
     {

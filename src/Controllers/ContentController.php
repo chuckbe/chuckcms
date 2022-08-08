@@ -70,6 +70,7 @@ class ContentController extends BaseController
         ]);
 
         $resource = Resource::firstOrNew(['slug' => $request->get('slug')[0]]);
+        $resource->site_id = ChuckSite::currentSite()->id;
         $resource->slug = $request->get('slug')[0];
         $json = [];
         foreach (ChuckSite::getSupportedLocales() as $langKey => $langValue) {
@@ -170,7 +171,8 @@ class ContentController extends BaseController
 
         Content::updateOrCreate(
             ['id' => $request->get('content_id')],
-            ['slug'       => $request->get('content_slug'),
+            ['site_id'    => ChuckSite::currentSite()->id,
+                'slug'    => $request->get('content_slug'),
                 'type'    => $request->get('content_type'),
                 'content' => $content, ]
         );
@@ -225,7 +227,8 @@ class ContentController extends BaseController
 
         Content::updateOrCreate(
             ['id' => null],
-            ['slug'       => $new_slug,
+            ['site_id'    => ChuckSite::currentSite()->id,
+                'slug'    => $new_slug,
                 'type'    => $json_file_array['type'],
                 'content' => $json_file_array['content'], ]
         );
