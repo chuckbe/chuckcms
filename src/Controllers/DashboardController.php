@@ -2,6 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
+use ChuckSite;
 use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\PageBlock;
@@ -66,7 +67,7 @@ class DashboardController extends BaseController
     public function settings()
     {
         $pages = $this->page->get();
-        $site = $this->site->first(); //change method to get active site
+        $site = ChuckSite::currentSite();
 
         return view('chuckcms::backend.settings.index', compact('pages', 'site'));
     }
