@@ -59,6 +59,35 @@ class Site
         return $locales;
     }
 
+    private function resolveSetting($var, $settings)
+    {
+        $split = explode('.', $var);
+        foreach ($split as $value) {
+            if (array_key_exists($value, $settings)) {
+                $settings = $settings[$value];
+            } else {
+                return null;
+            }
+        }
+
+        return $settings;
+    }
+
+    private function resolveSiteAttribute($var, $currentSite)
+    {
+        if ($var == 'domain') {
+            return $currentSite->domain;
+        }
+        if ($var == 'name') {
+            return $currentSite->name;
+        }
+        if ($var == 'slug') {
+            return $currentSite->slug;
+        }
+
+        return null;
+    }
+
     public function getSettings()
     {
         $settings = $this->siteSettings;
@@ -90,35 +119,6 @@ class Site
     public function getFeaturedLocale()
     {
         return config('lang.featuredLocale');
-    }
-
-    private function resolveSetting($var, $settings)
-    {
-        $split = explode('.', $var);
-        foreach ($split as $value) {
-            if (array_key_exists($value, $settings)) {
-                $settings = $settings[$value];
-            } else {
-                return null;
-            }
-        }
-
-        return $settings;
-    }
-
-    private function resolveSiteAttribute($var, $currentSite)
-    {
-        if ($var == 'domain') {
-            return $currentSite->domain;
-        }
-        if ($var == 'name') {
-            return $currentSite->name;
-        }
-        if ($var == 'slug') {
-            return $currentSite->slug;
-        }
-
-        return null;
     }
 
     public function module(string $slug)
