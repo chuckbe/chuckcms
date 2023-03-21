@@ -317,7 +317,6 @@ class Chuck
         $namespace = '\\UniSharp\\LaravelFilemanager\\Controllers\\';
 
         Route::group(compact('middleware', 'prefix', 'as', 'namespace'), function () {
-
             // display main layout
             Route::get('/', [
                 'uses' => 'LfmController@show',

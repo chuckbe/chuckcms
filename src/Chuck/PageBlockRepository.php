@@ -206,7 +206,7 @@ class PageBlockRepository
     {
         $pageblock = $this->pageblock->find($id);
         $og_order = $pageblock->order;
-        $target_pb = $this->pageblock->where('page_id', $pageblock->page_id)->where('lang', $pageblock->lang)->where('order', ($og_order - 1))->first();
+        $target_pb = $this->pageblock->where('page_id', $pageblock->page_id)->where('lang', $pageblock->lang)->where('order', $og_order - 1)->first();
 
         $pageblock->order = $og_order - 1;
         $target_pb->order = $og_order;
@@ -221,7 +221,7 @@ class PageBlockRepository
     {
         $pageblock = $this->pageblock->find($id);
         $og_order = $pageblock->order;
-        $target_pb = $this->pageblock->where('page_id', $pageblock->page_id)->where('lang', $pageblock->lang)->where('order', ($og_order + 1))->first();
+        $target_pb = $this->pageblock->where('page_id', $pageblock->page_id)->where('lang', $pageblock->lang)->where('order', $og_order + 1)->first();
 
         $pageblock->order = $og_order + 1;
         $target_pb->order = $og_order;
