@@ -2,21 +2,28 @@
 
 [![Latest Stable Version](https://poser.pugx.org/chuckbe/chuckcms/version.png)](https://packagist.org/packages/chuckbe/chuckcms) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/chuckbe/chuckcms/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/chuckbe/chuckcms/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/chuckbe/chuckcms/badges/build.png?b=master)](https://scrutinizer-ci.com/g/chuckbe/chuckcms/build-status/master) [![Total Downloads](https://poser.pugx.org/chuckbe/chuckcms/d/total.png)](https://packagist.org/packages/chuckbe/chuckcms)
 
-## Instructions
+## Features
 
-### How to use these instructions?
+ChuckCMS is an opinionated way of building websites and webshops in Laravel. ChuckCMS provides out-of-the-box ui and features by packages in the Laravel eco-system.
 
-ChuckCMS was created to add CMS functionality to an existing Laravel project. The package will take over all incoming routes except for existing one you might have for custom functionality. ChuckCMS will work best in a fresh installation, this package is not created for adding it to existing projects.
+- Dashboard with analytics by GA or Matomo.
+- Menus, navigation and redirects.
+- Page management with Pagebuilder.
+- User, role and permission management.
+- File management.
+- Form management.
+- Repeaters and resources, a way to create data objects.
+- Settings and configuration management.
 
-## Installation guide
+## Docs
 
 ### Requirements
-This package can be used with Laravel 6.20.26 or higher. 
+- PHP 8
+- Laravel 9 / 10 
 
-For Laravel 7 and higher the ```laravel/ui``` package is required.
-
-### Composer
-You can install the package via composer:
+### Installation
+> ChuckCMS will work best in a fresh installation.
+Install ChuckCMS in a freshly scaffolded Laravel project via Composer:
 ```
 composer require chuckbe/chuckcms
 ```
