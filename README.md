@@ -23,6 +23,7 @@ ChuckCMS is an opinionated way of building websites and webshops in Laravel. Chu
 
 ### Installation
 > ChuckCMS will work best in a fresh installation.
+
 Install ChuckCMS in a freshly scaffolded Laravel project via Composer:
 ```
 composer require chuckbe/chuckcms
