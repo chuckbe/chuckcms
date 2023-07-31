@@ -58,7 +58,7 @@ class Form extends Eloquent
                             $random = str_random(8);
                             $filename = time().'_'.$random.'.'.$avatar->getClientOriginalExtension();
                             if (!file_exists(public_path('/files/uploads/'))) {
-                                mkdir(public_path('/files/uploads/'), 0777, true);
+                                mkdir(public_path('/files/uploads/'), 0755, true);
                             }
                             $avatar->move(public_path('/files/uploads/'), $filename);
                             $filepath = '/files/uploads/'.$filename;
