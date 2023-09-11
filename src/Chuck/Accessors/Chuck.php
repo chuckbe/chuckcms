@@ -311,7 +311,7 @@ class Chuck
             Route::get('/page/{page}/scripts.js', '\Chuckbe\Chuckcms\Controllers\FrontEndController@js')->name('page.js');
         });
 
-        $middleware = [CreateDefaultFolder::class, MultiUser::class, 'auth'];
+        $middleware = [CreateDefaultFolder::class, MultiUser::class, 'auth', 'permission:show media', 'permission:create media', 'permission:edit media', 'permission:delete media'];
         $prefix = \Config::get('lfm.url_prefix', \Config::get('lfm.prefix', 'laravel-filemanager'));
         $as = 'unisharp.lfm.';
         $namespace = '\\UniSharp\\LaravelFilemanager\\Controllers\\';

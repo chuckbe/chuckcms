@@ -21,12 +21,12 @@ return [
         'get_register' => [
             'controller' => '\Chuckbe\Chuckcms\Controllers\Auth\RegisterController',
             'action'     => 'showRegistrationForm',
-            'active'     => true,
+            'active'     => false,
         ],
         'post_register' => [
             'controller' => '\Chuckbe\Chuckcms\Controllers\Auth\RegisterController',
             'action'     => 'register',
-            'active'     => true,
+            'active'     => false,
         ],
         'get_password_reset' => [
             'controller' => '\Chuckbe\Chuckcms\Controllers\Auth\ForgotPasswordController',
