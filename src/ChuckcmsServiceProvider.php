@@ -6,9 +6,7 @@ use Chuckbe\Chuckcms\Commands\GenerateRolesPermissions;
 use Chuckbe\Chuckcms\Commands\GenerateSite;
 use Chuckbe\Chuckcms\Commands\GenerateSitemap;
 use Chuckbe\Chuckcms\Commands\GenerateSuperAdmin;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Routing\Router;
-use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
 use Spatie\Permission\Middlewares\RoleMiddleware;
@@ -49,8 +47,6 @@ class ChuckcmsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['App\User'] = $this->app['Chuckbe\Chuckcms\Models\User'];
-
         $this->loadViewsFrom(__DIR__.'/views', 'chuckcms');
         // publish error views + publish updated lfm views
 
@@ -95,24 +91,5 @@ class ChuckcmsServiceProvider extends ServiceProvider
             __DIR__.'/../config/lfm.php'      => config_path('lfm.php'),
             __DIR__.'/../config/lang.php'     => config_path('lang.php'),
         ], 'chuckcms-config');
-    }
-
-    /**
-     * Returns existing migration file if found, else uses the current timestamp.
-     *
-     * @return string
-     */
-    public function getMigrationFileName($migrationFileName): string
-    {
-        $timestamp = date('Y_m_d_His');
-
-        $filesystem = $this->app->make(Filesystem::class);
-
-        return Collection::make($this->app->databasePath().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR)
-            ->flatMap(function ($path) use ($filesystem, $migrationFileName) {
-                return $filesystem->glob($path.'*_'.$migrationFileName);
-            })
-            ->push($this->app->databasePath()."/migrations/{$timestamp}_{$migrationFileName}")
-            ->first();
     }
 }
