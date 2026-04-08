@@ -2,13 +2,16 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
+use Chuckbe\Chuckcms\Actions\Redirects\CreateRedirectAction;
+use Chuckbe\Chuckcms\Actions\Redirects\DeleteRedirectAction;
+use Chuckbe\Chuckcms\Actions\Redirects\UpdateRedirectAction;
 use Chuckbe\Chuckcms\Models\Redirect;
 use Chuckbe\Chuckcms\Requests\Redirects\CreateRedirectRequest;
+use Chuckbe\Chuckcms\Requests\Redirects\DeleteRedirectRequest;
 use Chuckbe\Chuckcms\Requests\Redirects\UpdateRedirectRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
 class RedirectController extends BaseController
@@ -36,42 +39,24 @@ class RedirectController extends BaseController
         return view('chuckcms::backend.redirects.index', compact('redirects'));
     }
 
-    public function create(CreateRedirectRequest $request)
+    public function create(CreateRedirectRequest $request, CreateRedirectAction $createRedirect)
     {
-        //$request['slug'] = str_slug($request->slug, '-');
-
-        $redirect = Redirect::firstOrNew(
-            ['slug' => $request['slug']],
-            ['to'      => $request['to'],
-                'type' => $request['type'], ]
-        );
-
-        if ($redirect->save()) {
-            return redirect()->route('dashboard.redirects');
-        }
-    }
-
-    public function update(UpdateRedirectRequest $request)
-    {
-        //$request['slug'] = str_slug($request->slug, '-');
-
-        $redirect = Redirect::where('id', $request['id'])->update([
-            'slug' => $request['slug'],
-            'to'   => $request['to'],
-            'type' => $request['type'],
-        ]);
+        $createRedirect($request);
 
         return redirect()->route('dashboard.redirects');
     }
 
-    public function delete(Request $request)
+    public function update(UpdateRedirectRequest $request, UpdateRedirectAction $updateRedirect)
     {
-        $this->validate($request, ['id' => 'required']);
+        $updateRedirect($request);
 
-        $redirect = Redirect::where('id', $request['id'])->first();
+        return redirect()->route('dashboard.redirects');
+    }
 
-        if ($redirect->delete()) {
-            return redirect()->route('dashboard.redirects');
-        }
+    public function delete(DeleteRedirectRequest $request, DeleteRedirectAction $deleteRedirect)
+    {
+        $deleteRedirect($request);
+
+        return redirect()->route('dashboard.redirects');
     }
 }
