@@ -3,9 +3,9 @@
 namespace Chuckbe\Chuckcms\Models;
 
 use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
-use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 
-class PageBlock extends Eloquent
+class PageBlock extends Model
 {
     public function page()
     {

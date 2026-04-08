@@ -4,10 +4,10 @@ namespace Chuckbe\Chuckcms\Controllers;
 
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\Template;
+use Chuckbe\Chuckcms\Requests\Templates\SaveTemplateRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
 class TemplateController extends BaseController
@@ -16,18 +16,13 @@ class TemplateController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    protected $page;
-    protected $template;
-
     /**
      * Create a TemplateController instance.
-     *
-     * @return void
      */
-    public function __construct(Page $page, Template $template)
-    {
-        $this->page = $page;
-        $this->template = $template;
+    public function __construct(
+        protected Page $page,
+        protected Template $template,
+    ) {
     }
 
     /**
@@ -65,12 +60,8 @@ class TemplateController extends BaseController
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function save(Request $request)
+    public function save(SaveTemplateRequest $request)
     {
-        $this->validate(request(), [//@todo create custom Request class for page validation
-            'template_id' => 'required',
-        ]);
-
         $this->template->updateFromRequest($request);
 
         return redirect()->route('dashboard.templates');

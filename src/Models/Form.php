@@ -2,12 +2,14 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use Eloquent;
+use Chuckbe\Chuckcms\Chuck\Support\TagParser;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * @property array $form
  */
-class Form extends Eloquent
+class Form extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -55,7 +57,7 @@ class Form extends Eloquent
                     if ($fieldValue['type'] == 'file') {
                         if ($input->hasFile($fieldKey)) {
                             $avatar = $input->file($fieldKey);
-                            $random = str_random(8);
+                            $random = Str::random(8);
                             $filename = time().'_'.$random.'.'.$avatar->getClientOriginalExtension();
                             if (!file_exists(public_path('/files/uploads/'))) {
                                 mkdir(public_path('/files/uploads/'), 0755, true);
@@ -114,7 +116,7 @@ class Form extends Eloquent
     {
         $mailData = [];
         foreach ($sendData as $sendKey => $sendValue) {
-            $findThis = $this->getResources($sendValue, '[', ']');
+            $findThis = TagParser::between($sendValue, '[', ']');
             if (count($findThis) > 0) {
                 foreach ($findThis as $founded) {
                     if (strpos($founded, $input->get('_form_slug')) !== false) {
@@ -138,26 +140,5 @@ class Form extends Eloquent
         }
 
         return $mailData;
-    }
-
-    public function getResources($str, $startDelimiter, $endDelimiter)
-    {
-        $contents = [];
-        $startDelimiterLength = strlen($startDelimiter);
-        $endDelimiterLength = strlen($endDelimiter);
-        $startFrom = 0;
-        $contentStart = 0;
-        $contentEnd = 0;
-        while (false !== ($contentStart = strpos($str, $startDelimiter, $startFrom))) {
-            $contentStart += $startDelimiterLength;
-            $contentEnd = strpos($str, $endDelimiter, $contentStart);
-            if (false === $contentEnd) {
-                break;
-            }
-            $contents[] = substr($str, $contentStart, $contentEnd - $contentStart);
-            $startFrom = $contentEnd + $endDelimiterLength;
-        }
-
-        return $contents;
     }
 }

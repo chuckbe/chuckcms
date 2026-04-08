@@ -20,25 +20,20 @@ class MatomoController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    private $site;
-    private $siteRepository;
-    private $user;
     private $siteId;
     private $authToken;
     private $matomoUrl;
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
-    public function __construct(Site $site, SiteRepository $siteRepository, User $user)
-    {
-        $this->site = $site;
+    public function __construct(
+        private Site $site,
+        private SiteRepository $siteRepository,
+        private User $user,
+    ) {
         $this->siteId = ChuckSite::getSetting('integrations.matomo-site-id');
         $this->authToken = ChuckSite::getSetting('integrations.matomo-auth-key');
-        $this->siteRepository = $siteRepository;
-        $this->user = $user;
         $this->matomoUrl = ChuckSite::getSetting('integrations.matomo-site-url');
     }
 

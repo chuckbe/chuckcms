@@ -20,20 +20,14 @@ class FormController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    private $form;
-    private $formEntry;
-    private $template;
-
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
-    public function __construct(Form $form, FormEntry $formEntry, Template $template)
-    {
-        $this->form = $form;
-        $this->formEntry = $formEntry;
-        $this->template = $template;
+    public function __construct(
+        private Form $form,
+        private FormEntry $formEntry,
+        private Template $template,
+    ) {
     }
 
     public function index()

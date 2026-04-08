@@ -7,6 +7,10 @@ use Chuckbe\Chuckcms\Models\Repeater;
 use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\User;
+use Chuckbe\Chuckcms\Requests\Content\DeleteRepeaterRequest;
+use Chuckbe\Chuckcms\Requests\Content\DeleteResourceRequest;
+use Chuckbe\Chuckcms\Requests\Content\ImportRepeaterRequest;
+use Chuckbe\Chuckcms\Requests\Content\SaveResourceRequest;
 use ChuckSite;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -21,24 +25,16 @@ class ContentController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    private $content;
-    private $resource;
-    private $repeater;
-    private $template;
-    private $user;
-
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
-    public function __construct(Content $content, Resource $resource, Repeater $repeater, Template $template, User $user)
-    {
-        $this->content = $content;
-        $this->resource = $resource;
-        $this->repeater = $repeater;
-        $this->template = $template;
-        $this->user = $user;
+    public function __construct(
+        private Content $content,
+        private Resource $resource,
+        private Repeater $repeater,
+        private Template $template,
+        private User $user,
+    ) {
     }
 
     public function resourceIndex()
@@ -60,15 +56,8 @@ class ContentController extends BaseController
         return view('chuckcms::backend.content.resource.edit', compact('resource'));
     }
 
-    public function resourceSave(Request $request)
+    public function resourceSave(SaveResourceRequest $request)
     {
-        //validate the request
-        $this->validate(request(), [//@todo create custom Request class for site validation
-            'slug'             => 'required',
-            'resource_key.*'   => 'required',
-            'resource_value.*' => 'required',
-        ]);
-
         $resource = Resource::firstOrNew(['slug' => $request->get('slug')[0]]);
         $resource->slug = $request->get('slug')[0];
         $json = [];
@@ -84,12 +73,8 @@ class ContentController extends BaseController
         return redirect()->route('dashboard.content.resources');
     }
 
-    public function resourceDelete(Request $request)
+    public function resourceDelete(DeleteResourceRequest $request)
     {
-        $this->validate(request(), [//@todo create custom Request class for site validation
-            'resource_id' => 'required',
-        ]);
-
         $resource = Resource::where('id', $request->get('resource_id'))->first();
 
         if ($resource->delete()) {
@@ -178,13 +163,8 @@ class ContentController extends BaseController
         return redirect()->route('dashboard.content.repeaters');
     }
 
-    public function repeaterImport(Request $request)
+    public function repeaterImport(ImportRepeaterRequest $request)
     {
-        $this->validate(request(), [//@todo create custom Request class for page validation
-            'slug' => 'required',
-            'file' => 'required|file|mimetypes:application/json,application/octet-stream,text/plain',
-        ]);
-
         $file_contents = file_get_contents($request->file('file'));
 
         $new_slug = $request->get('slug');
@@ -235,12 +215,8 @@ class ContentController extends BaseController
         return redirect()->route('dashboard.content.repeaters')->with('notification', $notification);
     }
 
-    public function repeaterDelete(Request $request)
+    public function repeaterDelete(DeleteRepeaterRequest $request)
     {
-        $this->validate(request(), [//@todo create custom Request class for site validation
-            'content_id' => 'required',
-        ]);
-
         $content = Content::where('id', $request->get('content_id'))->first();
         $repeaters = Repeater::where('slug', $content->slug)->delete();
 

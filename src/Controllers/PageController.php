@@ -4,6 +4,7 @@ namespace Chuckbe\Chuckcms\Controllers;
 
 use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
 use Chuckbe\Chuckcms\Chuck\PageRepository;
+use Chuckbe\Chuckcms\Chuck\Support\TemplateBlocks;
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\PageBlock;
 use Chuckbe\Chuckcms\Models\Redirect;
@@ -12,6 +13,8 @@ use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Site;
 use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\User;
+use Chuckbe\Chuckcms\Requests\Pages\DeletePageRequest;
+use Chuckbe\Chuckcms\Requests\Pages\SavePageRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -26,44 +29,21 @@ class PageController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    private $page;
-    private $pageRepository;
-    private $pageblock;
-    private $pageBlockRepository;
-    private $redirect;
-    private $resource;
-    private $repeater;
-    private $site;
-    private $template;
-    private $user;
-
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct(
-        Page $page,
-        PageRepository $pageRepository,
-        PageBlock $pageblock,
-        PageBlockRepository $pageBlockRepository,
-        Redirect $redirect,
-        Resource $resource,
-        Repeater $repeater,
-        Site $site,
-        Template $template,
-        User $user
+        private Page $page,
+        private PageRepository $pageRepository,
+        private PageBlock $pageblock,
+        private PageBlockRepository $pageBlockRepository,
+        private Redirect $redirect,
+        private Resource $resource,
+        private Repeater $repeater,
+        private Site $site,
+        private Template $template,
+        private User $user,
     ) {
-        $this->page = $page;
-        $this->pageRepository = $pageRepository;
-        $this->pageblock = $pageblock;
-        $this->pageBlockRepository = $pageBlockRepository;
-        $this->redirect = $redirect;
-        $this->resource = $resource;
-        $this->repeater = $repeater;
-        $this->site = $site;
-        $this->template = $template;
-        $this->user = $user;
         $this->middleware('auth');
     }
 
@@ -112,11 +92,8 @@ class PageController extends BaseController
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function save(Request $request)
+    public function save(SavePageRequest $request)
     {
-        $this->validate(request(), [//@todo create custom Request class for page validation
-            'page_title' => 'max:185',
-        ]);
         if ($request['create']) {
             $this->pageRepository->create($request);
         }
@@ -132,12 +109,8 @@ class PageController extends BaseController
      *
      * @return string $status
      */
-    public function delete(Request $request)
+    public function delete(DeletePageRequest $request)
     {
-        $this->validate(request(), [//@todo create custom Request class for page validation
-            'page_id' => 'required',
-        ]);
-
         $status = $this->page->deleteById($request->get('page_id'));
 
         return $status;
@@ -215,45 +188,9 @@ class PageController extends BaseController
         $template = $this->template->where('id', $page->template_id)->first();
         $pageblocks = $this->pageBlockRepository->getRenderedByPageBlocks($this->pageblock->getAllByPageId($page->id));
 
-        $block_dir = array_slice(scandir('chuckbe/'.$template->slug.'/blocks'), 2);
-        $blocks = $this->dirToArray($template->path.'/blocks');
+        $blocks = TemplateBlocks::scan($template->path.'/blocks');
 
         return view('chuckcms::backend.pages.pagebuilder.index', compact('template', 'page', 'pageblocks', 'blocks'));
-    }
-
-    public function dirToArray($dir)
-    {
-        $result = [];
-
-        $cdir = scandir($dir);
-        foreach ($cdir as $key => $value) {
-            if (!in_array($value, ['.', '..'])) {
-                if (is_dir($dir.DIRECTORY_SEPARATOR.$value)) {
-                    $result[$value] = $this->dirToArray($dir.DIRECTORY_SEPARATOR.$value);
-                } else {
-                    if ($value !== '.DS_Store' && (strpos($value, '.html') !== false)) {
-                        $blockKey = str_replace('.html', '', $value);
-                        $blockName = str_replace('-', ' ', $blockKey);
-                        if (file_exists($dir.DIRECTORY_SEPARATOR.$blockKey.'.jpg')) {
-                            $blockImage = $dir.DIRECTORY_SEPARATOR.$blockKey.'.jpg';
-                        } elseif (file_exists($dir.DIRECTORY_SEPARATOR.$blockKey.'.jpeg')) {
-                            $blockImage = $dir.DIRECTORY_SEPARATOR.$blockKey.'.jpeg';
-                        } elseif (file_exists($dir.DIRECTORY_SEPARATOR.$blockKey.'.png')) {
-                            $blockImage = $dir.DIRECTORY_SEPARATOR.$blockKey.'.png';
-                        } else {
-                            $blockImage = 'https://ui-avatars.com/api/?length=5&size=150&name=BLOCK&background=0D8ABC&color=fff&font-size=0.2';
-                        }
-                        $result[$blockKey] = [
-                            'name'     => $blockName,
-                            'location' => $dir.DIRECTORY_SEPARATOR.$value,
-                            'img'      => $blockImage,
-                        ];
-                    }
-                }
-            }
-        }
-
-        return $result;
     }
 
     /**
