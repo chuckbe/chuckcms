@@ -13,6 +13,8 @@ use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Site;
 use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\User;
+use Chuckbe\Chuckcms\Requests\Pages\DeletePageRequest;
+use Chuckbe\Chuckcms\Requests\Pages\SavePageRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -90,11 +92,8 @@ class PageController extends BaseController
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function save(Request $request)
+    public function save(SavePageRequest $request)
     {
-        $this->validate(request(), [//@todo create custom Request class for page validation
-            'page_title' => 'max:185',
-        ]);
         if ($request['create']) {
             $this->pageRepository->create($request);
         }
@@ -110,12 +109,8 @@ class PageController extends BaseController
      *
      * @return string $status
      */
-    public function delete(Request $request)
+    public function delete(DeletePageRequest $request)
     {
-        $this->validate(request(), [//@todo create custom Request class for page validation
-            'page_id' => 'required',
-        ]);
-
         $status = $this->page->deleteById($request->get('page_id'));
 
         return $status;

@@ -5,12 +5,12 @@ namespace Chuckbe\Chuckcms\Controllers;
 use Chuckbe\Chuckcms\Chuck\SiteRepository;
 use Chuckbe\Chuckcms\Models\Site;
 use Chuckbe\Chuckcms\Models\User;
+use Chuckbe\Chuckcms\Requests\Sites\SaveSiteRequest;
+use Chuckbe\Chuckcms\Requests\Users\ActivateUserRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Validation\Rules\Password;
 
 class SiteController extends BaseController
 {
@@ -28,22 +28,8 @@ class SiteController extends BaseController
     ) {
     }
 
-    public function save(Request $request)
+    public function save(SaveSiteRequest $request)
     {
-        //validate the request
-        $this->validate(request(), [//@todo create custom Request class for site validation
-            'site_name'      => 'max:185|required',
-            'site_slug'      => 'max:70',
-            'site_domain'    => 'required',
-            'company.*'      => 'string|nullable',
-            'socialmedia.*'  => 'string|nullable',
-            'favicon.*'      => 'string|nullable',
-            'logo.*'         => 'string|nullable',
-            'integrations.*' => 'string|nullable',
-            'lang'           => 'array',
-            'site_id'        => 'required|nullable',
-        ]);
-
         //update or create settings
         $this->siteRepository->updateOrCreateFromRequest($request);
 
@@ -64,15 +50,8 @@ class SiteController extends BaseController
         return view('chuckcms::backend.users._accept', compact('user', 'token'));
     }
 
-    public function activate(Request $request)
+    public function activate(ActivateUserRequest $request)
     {
-        $this->validate(request(), [//@todo create custom Request class for user password validation
-            'password'       => ['required', Password::min(8)->mixedCase()->letters()->numbers()->symbols()],
-            'password_again' => 'required|same:password',
-            '_user_token'    => 'required',
-            '_user_id'       => 'required',
-        ]);
-
         $token = $request->get('_user_token');
         $user_id = $request->get('_user_id');
 

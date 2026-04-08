@@ -4,6 +4,8 @@ namespace Chuckbe\Chuckcms\Controllers;
 
 use Chuckbe\Chuckcms\Chuck\UserRepository;
 use Chuckbe\Chuckcms\Models\User;
+use Chuckbe\Chuckcms\Requests\UserRoles\CreateRoleRequest;
+use Chuckbe\Chuckcms\Requests\UserRoles\SaveRoleRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -39,13 +41,8 @@ class UserRoleController extends BaseController
         return view('chuckcms::backend.users.roles.index', compact('roles'));
     }
 
-    public function create(Request $request)
+    public function create(CreateRoleRequest $request)
     {
-        $this->validate(request(), [//@todo create custom Request class for page validation
-            'role_name'     => 'max:185|required',
-            'role_redirect' => 'max:255|required',
-        ]);
-
         $role = Role::firstOrCreate(['name' => $request->role_name], ['redirect' => $request->role_redirect]);
 
         return redirect()->route('dashboard.users.roles.edit', ['role' => $role->id])->with('notification', 'Rol aangemaakt!');
@@ -63,16 +60,8 @@ class UserRoleController extends BaseController
         return view('chuckcms::backend.users.roles.edit', compact('role', 'permissions'));
     }
 
-    public function save(Request $request)
+    public function save(SaveRoleRequest $request)
     {
-        $this->validate(request(), [//@todo create custom Request class for page validation
-            'role_name'            => 'max:185|required',
-            'role_redirect'        => 'max:255|required',
-            'role_id'              => 'required',
-            'permissions_name.*'   => 'required',
-            'permissions_active.*' => 'required',
-        ]);
-
         $role = Role::findById($request->role_id);
         $role->name = $request->role_name;
         $role->redirect = $request->role_redirect;

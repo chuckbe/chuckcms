@@ -5,13 +5,15 @@ namespace Chuckbe\Chuckcms\Controllers;
 use Chuckbe\Chuckcms\Chuck\UserRepository;
 use Chuckbe\Chuckcms\Mail\UserActivationMail;
 use Chuckbe\Chuckcms\Models\User;
+use Chuckbe\Chuckcms\Requests\Users\ActivateUserRequest;
+use Chuckbe\Chuckcms\Requests\Users\InviteUserRequest;
+use Chuckbe\Chuckcms\Requests\Users\SaveUserRequest;
 use ChuckSite;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Validation\Rules\Password;
 use Mail;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -44,14 +46,8 @@ class UserController extends BaseController
         return view('chuckcms::backend.users.index', compact('users', 'roles'));
     }
 
-    public function invite(Request $request)
+    public function invite(InviteUserRequest $request)
     {
-        $this->validate(request(), [//@todo create custom Request class for page validation
-            'name'  => 'max:185|required',
-            'email' => 'email|required|unique:users',
-            'role'  => 'required|in:user,moderator,administrator,super-admin',
-        ]);
-
         // create the user
         $user = $this->user->create([
             'name'     => $request->get('name'),
@@ -94,15 +90,8 @@ class UserController extends BaseController
         return view('chuckcms::backend.users._accept', compact('user', 'token'));
     }
 
-    public function activate(Request $request)
+    public function activate(ActivateUserRequest $request)
     {
-        $this->validate(request(), [//@todo create custom Request class for user password validation
-            'password'       => ['required', Password::min(8)->mixedCase()->letters()->numbers()->symbols()],
-            'password_again' => 'required|same:password',
-            '_user_token'    => 'required',
-            '_user_id'       => 'required',
-        ]);
-
         $token = $request->get('_user_token');
         $user_id = $request->get('_user_id');
 
@@ -166,14 +155,8 @@ class UserController extends BaseController
         return 'success';
     }
 
-    public function save(Request $request)
+    public function save(SaveUserRequest $request)
     {
-        $this->validate(request(), [//@todo create custom Request class for page validation
-            'name'  => 'max:185|required',
-            'email' => 'email|required',
-            'role'  => 'required|in:user,moderator,administrator,super-admin',
-        ]);
-
         // update the user
         $user = $this->user->create([// TODO CHANGE TO UPDATE METHOD
             'name'     => $request->get('name'),
