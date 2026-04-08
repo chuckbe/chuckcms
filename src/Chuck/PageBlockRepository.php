@@ -23,47 +23,12 @@ class PageBlockRepository
     {
         $pageblocks = [];
         foreach ($ogpageblocks as $pageblock) {
-            $body = $pageblock->body;
-            $findUrlTags = TagParser::between($body, '[%', '%]');
-            $url = env('APP_URL', ChuckSite::getSetting('domain'));
-            if (count($findUrlTags) > 0) {
-                foreach ($findUrlTags as $foundUrlTag) {
-                    if (strpos($foundUrlTag, 'URL') !== false) {
-                        $body = str_replace('[%URL%]', $url, $body);
-                    }
-                }
-            }
-
-            $findThis = TagParser::between($body, '[', ']');
-
-            // THERE ARE DYNAMICS IN THIS PAGEBLOCK, LET'S RETRIEVE IT
-            if (count($findThis) > 0) {
-                //@todo LOOP OVER findThis variable and resolve order for rendering
-
-                // PAGEBLOCK CONTAINS A LOOP, LET'S RETRIEVE IT
-                if (strpos($findThis[0], 'LOOP') !== false) {
-                    $repeater_slug = implode(' ', TagParser::between($body, '[LOOP=', ']'));
-                    $repeater_body = implode(' ', TagParser::between($body, '[LOOP='.$repeater_slug.']', '[/LOOP]'));
-
-                    $newbody = str_replace('[LOOP='.$repeater_slug.']'.$repeater_body.'[/LOOP]', $this->getRepeaterContents($repeater_slug, $repeater_body), $body);
-
-                // THERE IS NO LOOP, CONTINUE
-                } elseif (strpos($findThis[0], 'FORM') !== false) {// PAGEBLOCK CONTAINS A FORM, LET'S RETRIEVE IT
-                    $form_slug = implode(' ', TagParser::between($body, '[FORM=', ']'));
-
-                    $newbody = $this->getFormHtml($form_slug, $body);
-                } else {// THERE IS NO FORM, SO JUST RETRIEVE THE DYNAMIC CONTENT
-                    $newbody = $this->getResourceContent($findThis, $pageblock->id, $body); //Maybe write a function in the model?
-                }
-            } else {
-                $newbody = $body;
-            }
             $pageblocks[] = [
                 'id'      => $pageblock->id,
                 'page_id' => $pageblock->page_id,
                 'name'    => $pageblock->name,
                 'slug'    => $pageblock->slug,
-                'body'    => $newbody,
+                'body'    => $this->renderBody($pageblock),
                 'raw'     => $pageblock->body,
                 'order'   => $pageblock->order,
             ];
@@ -74,7 +39,26 @@ class PageBlockRepository
 
     public function getRenderedByPageBlock($pageblock)
     {
+        return [
+            'id'      => $pageblock->id,
+            'page_id' => $pageblock->page_id,
+            'name'    => $pageblock->name,
+            'slug'    => $pageblock->slug,
+            'body'    => $this->renderBody($pageblock),
+            'raw'     => $pageblock->body,
+            'lang'    => $pageblock->lang,
+        ];
+    }
+
+    /**
+     * Resolve every dynamic tag inside a single page-block body and
+     * return the rendered HTML. Handles [%URL%], [LOOP=...], [FORM=...]
+     * and plain [resource+key] interpolation.
+     */
+    private function renderBody($pageblock)
+    {
         $body = $pageblock->body;
+
         $findUrlTags = TagParser::between($body, '[%', '%]');
         $url = env('APP_URL', ChuckSite::getSetting('domain'));
         if (count($findUrlTags) > 0) {
@@ -86,39 +70,31 @@ class PageBlockRepository
         }
 
         $findThis = TagParser::between($body, '[', ']');
-        // THERE ARE DYNAMICS IN THIS PAGEBLOCK, LET'S RETRIEVE IT
-        if (count($findThis) > 0) {
-            //@todo LOOP OVER findThis variable and resolve order for rendering
 
-            // PAGEBLOCK CONTAINS A LOOP, LET'S RETRIEVE IT
-            if (strpos($findThis[0], 'LOOP') !== false) {
-                $repeater_slug = implode(' ', TagParser::between($body, '[LOOP=', ']'));
-                $repeater_body = implode(' ', TagParser::between($body, '[LOOP='.$repeater_slug.']', '[/LOOP]'));
-
-                $newbody = str_replace('[LOOP='.$repeater_slug.']'.$repeater_body.'[/LOOP]', $this->getRepeaterContents($repeater_slug, $repeater_body), $body);
-
-            // THERE IS NO LOOP, CONTINUE
-            } elseif (strpos($findThis[0], 'FORM') !== false) {// PAGEBLOCK CONTAINS A FORM, LET'S RETRIEVE IT
-                $form_slug = implode(' ', TagParser::between($body, '[FORM=', ']'));
-
-                $newbody = $this->getFormHtml($form_slug, $body);
-            } else {// THERE IS NO FORM, SO JUST RETRIEVE THE DYNAMIC CONTENT
-                $newbody = $this->getResourceContent($findThis, $pageblock->id, $body); //Maybe write a function in the model?
-            }
-        } else {
-            $newbody = $body;
+        // No dynamics inside this pageblock, return body as-is.
+        if (count($findThis) === 0) {
+            return $body;
         }
-        $new_pageblock = [
-            'id'      => $pageblock->id,
-            'page_id' => $pageblock->page_id,
-            'name'    => $pageblock->name,
-            'slug'    => $pageblock->slug,
-            'body'    => $newbody,
-            'raw'     => $pageblock->body,
-            'lang'    => $pageblock->lang,
-        ];
 
-        return $new_pageblock;
+        //@todo LOOP OVER findThis variable and resolve order for rendering
+
+        // PAGEBLOCK CONTAINS A LOOP, LET'S RETRIEVE IT
+        if (strpos($findThis[0], 'LOOP') !== false) {
+            $repeater_slug = implode(' ', TagParser::between($body, '[LOOP=', ']'));
+            $repeater_body = implode(' ', TagParser::between($body, '[LOOP='.$repeater_slug.']', '[/LOOP]'));
+
+            return str_replace('[LOOP='.$repeater_slug.']'.$repeater_body.'[/LOOP]', $this->getRepeaterContents($repeater_slug, $repeater_body), $body);
+        }
+
+        // PAGEBLOCK CONTAINS A FORM, LET'S RETRIEVE IT
+        if (strpos($findThis[0], 'FORM') !== false) {
+            $form_slug = implode(' ', TagParser::between($body, '[FORM=', ']'));
+
+            return $this->getFormHtml($form_slug, $body);
+        }
+
+        // Plain dynamic resource interpolation.
+        return $this->getResourceContent($findThis, $pageblock->id, $body);
     }
 
     public function updateBody($pageblock, $html)
