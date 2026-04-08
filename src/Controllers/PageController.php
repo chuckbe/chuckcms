@@ -2,17 +2,15 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
+use Chuckbe\Chuckcms\Actions\Pages\CreatePageAction;
+use Chuckbe\Chuckcms\Actions\Pages\DeletePageAction;
+use Chuckbe\Chuckcms\Actions\Pages\MovePageAction;
+use Chuckbe\Chuckcms\Actions\Pages\UpdatePageAction;
 use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
-use Chuckbe\Chuckcms\Chuck\PageRepository;
 use Chuckbe\Chuckcms\Chuck\Support\TemplateBlocks;
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\PageBlock;
-use Chuckbe\Chuckcms\Models\Redirect;
-use Chuckbe\Chuckcms\Models\Repeater;
-use Chuckbe\Chuckcms\Models\Resource;
-use Chuckbe\Chuckcms\Models\Site;
 use Chuckbe\Chuckcms\Models\Template;
-use Chuckbe\Chuckcms\Models\User;
 use Chuckbe\Chuckcms\Requests\Pages\DeletePageRequest;
 use Chuckbe\Chuckcms\Requests\Pages\SavePageRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -34,15 +32,9 @@ class PageController extends BaseController
      */
     public function __construct(
         private Page $page,
-        private PageRepository $pageRepository,
         private PageBlock $pageblock,
         private PageBlockRepository $pageBlockRepository,
-        private Redirect $redirect,
-        private Resource $resource,
-        private Repeater $repeater,
-        private Site $site,
         private Template $template,
-        private User $user,
     ) {
         $this->middleware('auth');
     }
@@ -88,86 +80,67 @@ class PageController extends BaseController
     }
 
     /**
-     * Show the dashboard -> page edit.
+     * Create or update a page depending on which form field was
+     * submitted. Dispatches to CreatePageAction or UpdatePageAction.
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function save(SavePageRequest $request)
+    public function save(SavePageRequest $request, CreatePageAction $createPage, UpdatePageAction $updatePage)
     {
         if ($request['create']) {
-            $this->pageRepository->create($request);
+            $createPage($request);
         }
         if ($request['update']) {
-            $this->pageRepository->updatePage($request);
+            $updatePage($request);
         }
 
         return redirect()->route('dashboard.pages');
     }
 
     /**
-     * Delete the page and pageblocks.
-     *
-     * @return string $status
+     * Delete the page and its page-blocks.
      */
-    public function delete(DeletePageRequest $request)
+    public function delete(DeletePageRequest $request, DeletePageAction $deletePage): string
     {
-        $status = $this->page->deleteById($request->get('page_id'));
-
-        return $status;
+        return $deletePage($request);
     }
 
     /**
-     * Move up.
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function moveUp($page_id)
+    public function moveUp(MovePageAction $movePage, $page_id)
     {
-        $page = $this->page->getById($page_id);
-        $page->moveOrderUp();
-        $page->save();
+        $movePage((int) $page_id, MovePageAction::DIRECTION_UP);
 
         return redirect()->route('dashboard.pages');
     }
 
     /**
-     * Move first.
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function moveFirst($page_id)
+    public function moveFirst(MovePageAction $movePage, $page_id)
     {
-        $page = $this->page->getById($page_id);
-        $page->moveToStart();
-        $page->save();
+        $movePage((int) $page_id, MovePageAction::DIRECTION_FIRST);
 
         return redirect()->route('dashboard.pages');
     }
 
     /**
-     * Move down.
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function moveDown($page_id)
+    public function moveDown(MovePageAction $movePage, $page_id)
     {
-        $page = $this->page->getById($page_id);
-        $page->moveOrderDown();
-        $page->save();
+        $movePage((int) $page_id, MovePageAction::DIRECTION_DOWN);
 
         return redirect()->route('dashboard.pages');
     }
 
     /**
-     * Move last.
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function moveLast($page_id)
+    public function moveLast(MovePageAction $movePage, $page_id)
     {
-        $page = $this->page->getById($page_id);
-        $page->moveToEnd();
-        $page->save();
+        $movePage((int) $page_id, MovePageAction::DIRECTION_LAST);
 
         return redirect()->route('dashboard.pages');
     }

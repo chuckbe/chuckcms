@@ -3,7 +3,6 @@
 namespace Chuckbe\Chuckcms\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 
 class Template extends Model
 {
@@ -101,45 +100,5 @@ class Template extends Model
         }
 
         return $pageViews;
-    }
-
-    public function updateFromRequest(Request $request)
-    {
-        $template = $this->where('id', $request->template_id)->first();
-
-        $template->name = $request->template_name;
-
-        $fonts = [];
-        $fonts['raw'] = $request->template_fonts;
-        $template->fonts = $fonts;
-
-        $css = [];
-        $countCss = count($request->css_slug);
-        for ($i = 0; $i < $countCss; $i++) {
-            $css[$request->css_slug[$i]]['href'] = $request->css_href[$i];
-            $css[$request->css_slug[$i]]['asset'] = $request->css_asset[$i] == 1 ? 'true' : 'false';
-        }
-
-        $template->css = $css;
-
-        $js = [];
-        $countJs = count($request->js_slug);
-        for ($k = 0; $k < $countJs; $k++) {
-            $js[$request->js_slug[$k]]['href'] = $request->js_href[$k];
-            $js[$request->js_slug[$k]]['asset'] = $request->js_asset[$k] == 1 ? 'true' : 'false';
-        }
-
-        $template->js = $js;
-
-        $json = $template->json;
-        if (count($json) > 0) {
-            foreach ($request->json_slug as $jsonKey => $jsonValue) {
-                $json[$jsonKey]['value'] = $jsonValue;
-            }
-
-            $template->json = $json;
-        }
-
-        $template->update();
     }
 }

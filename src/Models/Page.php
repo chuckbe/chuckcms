@@ -28,11 +28,6 @@ class Page extends Model implements Sortable
         return $this->hasMany('Chuckbe\Chuckcms\Models\PageBlock')->orderBy('order');
     }
 
-    public function getById($id)
-    {
-        return $this->where('id', $id)->first();
-    }
-
     public function getByIdWithBlocks($id)
     {
         return $this->where('id', $id)->with('page_blocks')->first();
@@ -41,21 +36,6 @@ class Page extends Model implements Sortable
     public static function getUrl($id)
     {
         return ChuckSite::getSetting('domain').'/'.self::where('id', $id)->first()->slug;
-    }
-
-    public function deleteById($id)
-    {
-        $page = $this->where('id', $id)->first();
-        if ($page) {
-            PageBlock::where('page_id', $page->id)->delete();
-            if ($page->delete()) {
-                return 'success';
-            } else {
-                return 'error';
-            }
-        } else {
-            return 'false';
-        }
     }
 
     public $translatable = ['title', 'slug'];

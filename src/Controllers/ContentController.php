@@ -2,22 +2,28 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
+use Chuckbe\Chuckcms\Actions\Repeaters\DeleteRepeaterAction;
+use Chuckbe\Chuckcms\Actions\Repeaters\DeleteRepeaterEntryAction;
+use Chuckbe\Chuckcms\Actions\Repeaters\ImportRepeaterAction;
+use Chuckbe\Chuckcms\Actions\Repeaters\SaveRepeaterAction;
+use Chuckbe\Chuckcms\Actions\Repeaters\StoreRepeaterEntryAction;
+use Chuckbe\Chuckcms\Actions\Resources\DeleteResourceAction;
+use Chuckbe\Chuckcms\Actions\Resources\SaveResourceAction;
 use Chuckbe\Chuckcms\Models\Content;
 use Chuckbe\Chuckcms\Models\Repeater;
 use Chuckbe\Chuckcms\Models\Resource;
 use Chuckbe\Chuckcms\Models\Template;
-use Chuckbe\Chuckcms\Models\User;
 use Chuckbe\Chuckcms\Requests\Content\DeleteRepeaterRequest;
 use Chuckbe\Chuckcms\Requests\Content\DeleteResourceRequest;
 use Chuckbe\Chuckcms\Requests\Content\ImportRepeaterRequest;
 use Chuckbe\Chuckcms\Requests\Content\SaveResourceRequest;
-use ChuckSite;
+use Chuckbe\Chuckcms\Requests\Repeaters\DeleteRepeaterEntryRequest;
+use Chuckbe\Chuckcms\Requests\Repeaters\SaveRepeaterRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\View;
 
 class ContentController extends BaseController
 {
@@ -25,15 +31,11 @@ class ContentController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    /**
-     * Create a new controller instance.
-     */
     public function __construct(
         private Content $content,
         private Resource $resource,
         private Repeater $repeater,
         private Template $template,
-        private User $user,
     ) {
     }
 
@@ -56,32 +58,16 @@ class ContentController extends BaseController
         return view('chuckcms::backend.content.resource.edit', compact('resource'));
     }
 
-    public function resourceSave(SaveResourceRequest $request)
+    public function resourceSave(SaveResourceRequest $request, SaveResourceAction $saveResource)
     {
-        $resource = Resource::firstOrNew(['slug' => $request->get('slug')[0]]);
-        $resource->slug = $request->get('slug')[0];
-        $json = [];
-        foreach (ChuckSite::getSupportedLocales() as $langKey => $langValue) {
-            $count = count($request->get('resource_key')[$langKey]);
-            for ($i = 0; $i < $count; $i++) {
-                $json[$langKey][$request->get('resource_key')[$langKey][$i]] = $request->get('resource_value')[$langKey][$i];
-            }
-        }
-        $resource->json = $json;
-        $resource->save();
+        $saveResource($request);
 
         return redirect()->route('dashboard.content.resources');
     }
 
-    public function resourceDelete(DeleteResourceRequest $request)
+    public function resourceDelete(DeleteResourceRequest $request, DeleteResourceAction $deleteResource): string
     {
-        $resource = Resource::where('id', $request->get('resource_id'))->first();
-
-        if ($resource->delete()) {
-            return 'success';
-        } else {
-            return 'error';
-        }
+        return $deleteResource($request);
     }
 
     public function repeaterIndex()
@@ -114,117 +100,30 @@ class ContentController extends BaseController
         $handle = fopen($filename, 'w+');
         fputs($handle, $repeater->toJson(JSON_PRETTY_PRINT));
         fclose($handle);
-        $headers = ['Content-type'=> 'application/json'];
+        $headers = ['Content-type' => 'application/json'];
 
         return response()->download($filename, $filename, $headers)->deleteFileAfterSend();
-
-        //return view('chuckcms::backend.content.repeater.edit', compact('pageViews', 'repeater'));
     }
 
-    public function repeaterSave(Request $request)
+    public function repeaterSave(SaveRepeaterRequest $request, SaveRepeaterAction $saveRepeater)
     {
-        //add validation / move to repository...
-        $content = [];
-        $content_slug = $request->get('content_slug');
-        $fields_slug = $request->get('fields_slug');
-        $count = count($fields_slug);
-        for ($i = 0; $i < $count; $i++) {
-            $content['fields'][$content_slug.'_'.$fields_slug[$i]]['label'] = $request->get('fields_label')[$i];
-            $content['fields'][$content_slug.'_'.$fields_slug[$i]]['type'] = $request->get('fields_type')[$i];
-            $content['fields'][$content_slug.'_'.$fields_slug[$i]]['class'] = $request->get('fields_class')[$i];
-            $content['fields'][$content_slug.'_'.$fields_slug[$i]]['placeholder'] = $request->get('fields_placeholder')[$i];
-            $content['fields'][$content_slug.'_'.$fields_slug[$i]]['validation'] = $request->get('fields_validation')[$i];
-            $content['fields'][$content_slug.'_'.$fields_slug[$i]]['value'] = $request->get('fields_value')[$i];
-            $fieldsCount = count(explode(';', $request->get('fields_attributes_name')[$i]));
-            for ($k = 0; $k < $fieldsCount; $k++) {
-                $content['fields'][$content_slug.'_'.$fields_slug[$i]]['attributes'][explode(';', $request->get('fields_attributes_name')[$i])[$k]] = explode(';', $request->get('fields_attributes_value')[$i])[$k];
-            }
-            $content['fields'][$content_slug.'_'.$fields_slug[$i]]['required'] = $request->get('fields_required')[$i];
-            $content['fields'][$content_slug.'_'.$fields_slug[$i]]['table'] = $request->get('fields_table')[$i];
-        }
-
-        $content['actions']['store'] = $request->get('action_store');
-        if ($request->get('action_detail') == 'true') {
-            $content['actions']['detail']['url'] = $request->get('action_detail_url');
-            $content['actions']['detail']['page'] = $request->get('action_detail_page');
-        } else {
-            $content['actions']['detail'] = 'false';
-        }
-
-        $content['files'] = $request->get('files_allowed');
-
-        Content::updateOrCreate(
-            ['id' => $request->get('content_id')],
-            ['slug'       => $request->get('content_slug'),
-                'type'    => $request->get('content_type'),
-                'content' => $content, ]
-        );
+        $saveRepeater($request);
 
         return redirect()->route('dashboard.content.repeaters');
     }
 
-    public function repeaterImport(ImportRepeaterRequest $request)
+    public function repeaterImport(ImportRepeaterRequest $request, ImportRepeaterAction $importRepeater)
     {
-        $file_contents = file_get_contents($request->file('file'));
-
-        $new_slug = $request->get('slug');
-        $old_slug = json_decode($file_contents, true)['slug'];
-
-        $json_string = str_replace($old_slug, $new_slug, $file_contents);
-        $json_file_array = json_decode($json_string, true);
-
-        if (!array_key_exists('type', $json_file_array)) {
-            $notification = ['type' => 'error', 'message' => 'The "type" key was not present in the JSON file.'];
-
-            return redirect()->route('dashboard.content.repeaters')->with('notification', $notification);
-        }
-
-        if (!array_key_exists('content', $json_file_array)) {
-            $notification = ['type' => 'error', 'message' => 'The "content" key was not present in the JSON file.'];
-
-            return redirect()->route('dashboard.content.repeaters')->with('notification', $notification);
-        }
-
-        if (!array_key_exists('fields', $json_file_array['content'])) {
-            $notification = ['type' => 'error', 'message' => 'The "fields" key was not present in the JSON file.'];
-
-            return redirect()->route('dashboard.content.repeaters')->with('notification', $notification);
-        }
-
-        if (!array_key_exists('actions', $json_file_array['content'])) {
-            $notification = ['type' => 'error', 'message' => 'The "actions" key was not present in the JSON file.'];
-
-            return redirect()->route('dashboard.content.repeaters')->with('notification', $notification);
-        }
-
-        if (!array_key_exists('files', $json_file_array['content'])) {
-            $notification = ['type' => 'error', 'message' => 'The "files" key was not present in the JSON file.'];
-
-            return redirect()->route('dashboard.content.repeaters')->with('notification', $notification);
-        }
-
-        Content::updateOrCreate(
-            ['id' => null],
-            ['slug'       => $new_slug,
-                'type'    => $json_file_array['type'],
-                'content' => $json_file_array['content'], ]
-        );
+        $importRepeater($request);
 
         $notification = ['type' => 'success', 'message' => 'The JSON file was successfully imported.'];
 
         return redirect()->route('dashboard.content.repeaters')->with('notification', $notification);
     }
 
-    public function repeaterDelete(DeleteRepeaterRequest $request)
+    public function repeaterDelete(DeleteRepeaterRequest $request, DeleteRepeaterAction $deleteRepeater): string
     {
-        $content = Content::where('id', $request->get('content_id'))->first();
-        $repeaters = Repeater::where('slug', $content->slug)->delete();
-
-        if ($content->delete()) {
-            return 'success';
-        } else {
-            return 'error';
-        }
+        return $deleteRepeater($request);
     }
 
     public function repeaterEntriesIndex($slug)
@@ -242,40 +141,35 @@ class ContentController extends BaseController
         return view('chuckcms::backend.content.repeater.entries.create', compact('content'));
     }
 
-    public function repeaterEntriesSave(Request $request)
+    public function repeaterEntriesSave(Request $request, StoreRepeaterEntryAction $storeRepeaterEntry)
     {
-        $slug = $request->get('content_slug');
-        $content = $this->content->getBySlug($slug);
-        $rules = $content->getRules();
-        $this->validate(request(), $rules);
-        $store = $content->storeEntry($request);
-        if ($store == 'success') {
-            return redirect()->route('dashboard.content.repeaters.entries', ['slug' => $slug]);
-        } else {
-            // error catching ... ?
+        $slug = $request->input('content_slug');
+        $content = Content::where('slug', $slug)->firstOrFail();
+
+        // Dynamic rules come from the stored content definition; can't
+        // be moved into a FormRequest without recursive coupling back
+        // onto the Content model lookup that this action also does.
+        $rules = [];
+        foreach ($content->content['fields'] as $fieldKey => $fieldValue) {
+            $rules[$fieldKey] = $fieldValue['validation'];
         }
+        $this->validate($request, $rules);
+
+        $storeRepeaterEntry($request);
+
+        return redirect()->route('dashboard.content.repeaters.entries', ['slug' => $slug]);
     }
 
     public function repeaterEntriesEdit($slug, $id)
     {
         $content = Content::where('slug', $slug)->first();
-        $repeater = Repeater::where('id', $id)->first();
+        $repeater = Repeater::find($id);
 
         return view('chuckcms::backend.content.repeater.entries.edit', compact('content', 'repeater'));
     }
 
-    /**
-     * Delete the resource from the page.
-     *
-     * @param Request $request
-     *
-     * @return string $status
-     */
-    public function repeaterEntriesDelete(Request $request)
+    public function repeaterEntriesDelete(DeleteRepeaterEntryRequest $request, DeleteRepeaterEntryAction $deleteRepeaterEntry): string
     {
-        // AUTHORIZE ... COMES HERE
-        $status = $this->content->deleteById($request->get('repeater_id'));
-
-        return $status;
+        return $deleteRepeaterEntry($request);
     }
 }
