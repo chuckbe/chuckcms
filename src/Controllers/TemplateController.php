@@ -2,6 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
+use Chuckbe\Chuckcms\Actions\Templates\SaveTemplateAction;
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Requests\Templates\SaveTemplateRequest;
@@ -60,9 +61,9 @@ class TemplateController extends BaseController
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function save(SaveTemplateRequest $request)
+    public function save(SaveTemplateRequest $request, SaveTemplateAction $saveTemplate)
     {
-        $this->template->updateFromRequest($request);
+        $saveTemplate($request);
 
         return redirect()->route('dashboard.templates');
     }
