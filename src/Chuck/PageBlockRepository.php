@@ -2,6 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Chuck;
 
+use Chuckbe\Chuckcms\Chuck\Support\TagParser;
 use Chuckbe\Chuckcms\Models\Form;
 use Chuckbe\Chuckcms\Models\PageBlock;
 use Chuckbe\Chuckcms\Models\Repeater;
@@ -23,7 +24,7 @@ class PageBlockRepository
         $pageblocks = [];
         foreach ($ogpageblocks as $pageblock) {
             $body = $pageblock->body;
-            $findUrlTags = $this->getResources($body, '[%', '%]');
+            $findUrlTags = TagParser::between($body, '[%', '%]');
             $url = env('APP_URL', ChuckSite::getSetting('domain'));
             if (count($findUrlTags) > 0) {
                 foreach ($findUrlTags as $foundUrlTag) {
@@ -33,7 +34,7 @@ class PageBlockRepository
                 }
             }
 
-            $findThis = $this->getResources($body, '[', ']');
+            $findThis = TagParser::between($body, '[', ']');
 
             // THERE ARE DYNAMICS IN THIS PAGEBLOCK, LET'S RETRIEVE IT
             if (count($findThis) > 0) {
@@ -41,14 +42,14 @@ class PageBlockRepository
 
                 // PAGEBLOCK CONTAINS A LOOP, LET'S RETRIEVE IT
                 if (strpos($findThis[0], 'LOOP') !== false) {
-                    $repeater_slug = implode(' ', $this->getResources($body, '[LOOP=', ']'));
-                    $repeater_body = implode(' ', $this->getResources($body, '[LOOP='.$repeater_slug.']', '[/LOOP]'));
+                    $repeater_slug = implode(' ', TagParser::between($body, '[LOOP=', ']'));
+                    $repeater_body = implode(' ', TagParser::between($body, '[LOOP='.$repeater_slug.']', '[/LOOP]'));
 
                     $newbody = str_replace('[LOOP='.$repeater_slug.']'.$repeater_body.'[/LOOP]', $this->getRepeaterContents($repeater_slug, $repeater_body), $body);
 
                 // THERE IS NO LOOP, CONTINUE
                 } elseif (strpos($findThis[0], 'FORM') !== false) {// PAGEBLOCK CONTAINS A FORM, LET'S RETRIEVE IT
-                    $form_slug = implode(' ', $this->getResources($body, '[FORM=', ']'));
+                    $form_slug = implode(' ', TagParser::between($body, '[FORM=', ']'));
 
                     $newbody = $this->getFormHtml($form_slug, $body);
                 } else {// THERE IS NO FORM, SO JUST RETRIEVE THE DYNAMIC CONTENT
@@ -74,7 +75,7 @@ class PageBlockRepository
     public function getRenderedByPageBlock($pageblock)
     {
         $body = $pageblock->body;
-        $findUrlTags = $this->getResources($body, '[%', '%]');
+        $findUrlTags = TagParser::between($body, '[%', '%]');
         $url = env('APP_URL', ChuckSite::getSetting('domain'));
         if (count($findUrlTags) > 0) {
             foreach ($findUrlTags as $foundUrlTag) {
@@ -84,21 +85,21 @@ class PageBlockRepository
             }
         }
 
-        $findThis = $this->getResources($body, '[', ']');
+        $findThis = TagParser::between($body, '[', ']');
         // THERE ARE DYNAMICS IN THIS PAGEBLOCK, LET'S RETRIEVE IT
         if (count($findThis) > 0) {
             //@todo LOOP OVER findThis variable and resolve order for rendering
 
             // PAGEBLOCK CONTAINS A LOOP, LET'S RETRIEVE IT
             if (strpos($findThis[0], 'LOOP') !== false) {
-                $repeater_slug = implode(' ', $this->getResources($body, '[LOOP=', ']'));
-                $repeater_body = implode(' ', $this->getResources($body, '[LOOP='.$repeater_slug.']', '[/LOOP]'));
+                $repeater_slug = implode(' ', TagParser::between($body, '[LOOP=', ']'));
+                $repeater_body = implode(' ', TagParser::between($body, '[LOOP='.$repeater_slug.']', '[/LOOP]'));
 
                 $newbody = str_replace('[LOOP='.$repeater_slug.']'.$repeater_body.'[/LOOP]', $this->getRepeaterContents($repeater_slug, $repeater_body), $body);
 
             // THERE IS NO LOOP, CONTINUE
             } elseif (strpos($findThis[0], 'FORM') !== false) {// PAGEBLOCK CONTAINS A FORM, LET'S RETRIEVE IT
-                $form_slug = implode(' ', $this->getResources($body, '[FORM=', ']'));
+                $form_slug = implode(' ', TagParser::between($body, '[FORM=', ']'));
 
                 $newbody = $this->getFormHtml($form_slug, $body);
             } else {// THERE IS NO FORM, SO JUST RETRIEVE THE DYNAMIC CONTENT
@@ -126,25 +127,6 @@ class PageBlockRepository
         $pageblock->update();
 
         return $this->getRenderedByPageBlock($pageblock);
-    }
-
-    public function getResources($str, $startDelimiter, $endDelimiter)
-    {
-        $contents = [];
-        $startDelimiterLength = strlen($startDelimiter);
-        $endDelimiterLength = strlen($endDelimiter);
-        $startFrom = 0;
-        while (false !== ($contentStart = strpos($str, $startDelimiter, $startFrom))) {
-            $contentStart += $startDelimiterLength;
-            $contentEnd = strpos($str, $endDelimiter, $contentStart);
-            if (false === $contentEnd) {
-                break;
-            }
-            $contents[] = substr($str, $contentStart, $contentEnd - $contentStart);
-            $startFrom = $contentEnd + $endDelimiterLength;
-        }
-
-        return $contents;
     }
 
     public function getResourceContent($resources, $page_block_id, $page_block_body)
@@ -184,7 +166,7 @@ class PageBlockRepository
         } else {
             $contents = Repeater::where('slug', $slug)->get();
         }
-        $resources = $this->getResources($page_block_body, '['.$slug.'+', ']');
+        $resources = TagParser::between($page_block_body, '['.$slug.'+', ']');
         $new_body = [];
         $i = 0;
         foreach ($contents as $content) {

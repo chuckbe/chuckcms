@@ -2,6 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
+use Chuckbe\Chuckcms\Chuck\Support\TagParser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -115,7 +116,7 @@ class Form extends Model
     {
         $mailData = [];
         foreach ($sendData as $sendKey => $sendValue) {
-            $findThis = $this->getResources($sendValue, '[', ']');
+            $findThis = TagParser::between($sendValue, '[', ']');
             if (count($findThis) > 0) {
                 foreach ($findThis as $founded) {
                     if (strpos($founded, $input->get('_form_slug')) !== false) {
@@ -139,26 +140,5 @@ class Form extends Model
         }
 
         return $mailData;
-    }
-
-    public function getResources($str, $startDelimiter, $endDelimiter)
-    {
-        $contents = [];
-        $startDelimiterLength = strlen($startDelimiter);
-        $endDelimiterLength = strlen($endDelimiter);
-        $startFrom = 0;
-        $contentStart = 0;
-        $contentEnd = 0;
-        while (false !== ($contentStart = strpos($str, $startDelimiter, $startFrom))) {
-            $contentStart += $startDelimiterLength;
-            $contentEnd = strpos($str, $endDelimiter, $contentStart);
-            if (false === $contentEnd) {
-                break;
-            }
-            $contents[] = substr($str, $contentStart, $contentEnd - $contentStart);
-            $startFrom = $contentEnd + $endDelimiterLength;
-        }
-
-        return $contents;
     }
 }
