@@ -2,8 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
-use Chuckbe\Chuckcms\Chuck\SiteRepository;
-use Chuckbe\Chuckcms\Models\Site;
+use Chuckbe\Chuckcms\Actions\Sites\SaveSiteSettingsAction;
 use Chuckbe\Chuckcms\Models\User;
 use Chuckbe\Chuckcms\Requests\Sites\SaveSiteRequest;
 use Chuckbe\Chuckcms\Requests\Users\ActivateUserRequest;
@@ -21,19 +20,14 @@ class SiteController extends BaseController
     /**
      * Create a new controller instance.
      */
-    public function __construct(
-        private Site $site,
-        private SiteRepository $siteRepository,
-        private User $user,
-    ) {
+    public function __construct(private User $user)
+    {
     }
 
-    public function save(SaveSiteRequest $request)
+    public function save(SaveSiteRequest $request, SaveSiteSettingsAction $saveSiteSettings)
     {
-        //update or create settings
-        $this->siteRepository->updateOrCreateFromRequest($request);
+        $saveSiteSettings($request);
 
-        //redirect back
         return redirect()->route('dashboard.settings')->with('notification', 'Instellingen opgeslagen!');
     }
 
