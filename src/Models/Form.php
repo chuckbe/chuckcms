@@ -2,13 +2,13 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
  * @property array $form
  */
-class Form extends Eloquent
+class Form extends Model
 {
     /**
      * The attributes that are mass assignable.

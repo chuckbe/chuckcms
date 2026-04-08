@@ -2,13 +2,13 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property string $slug
  * @property array  $json
  */
-class Resource extends Eloquent
+class Resource extends Model
 {
     protected $casts = [
         'json' => 'array',

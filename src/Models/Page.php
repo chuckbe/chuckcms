@@ -3,12 +3,12 @@
 namespace Chuckbe\Chuckcms\Models;
 
 use ChuckSite;
-use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 use Spatie\Translatable\HasTranslations;
 
-class Page extends Eloquent implements Sortable
+class Page extends Model implements Sortable
 {
     use SortableTrait;
     use HasTranslations;

@@ -2,7 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $page
  * @property array  $json
  */
-class Repeater extends Eloquent
+class Repeater extends Model
 {
     use SoftDeletes;
 

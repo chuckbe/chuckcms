@@ -2,12 +2,12 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property array $content
  */
-class Content extends Eloquent
+class Content extends Model
 {
     /**
      * The attributes that are mass assignable.

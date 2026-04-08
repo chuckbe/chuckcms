@@ -2,14 +2,14 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property string $slug
  * @property string $to
  * @property int    $type
  */
-class Redirect extends Eloquent
+class Redirect extends Model
 {
     /**
      * The attributes that are mass assignable.
