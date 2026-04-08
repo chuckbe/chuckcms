@@ -32,6 +32,7 @@ class TemplateBlocks
 
             if (is_dir($fullPath)) {
                 $result[$value] = self::scan($fullPath);
+
                 continue;
             }
 

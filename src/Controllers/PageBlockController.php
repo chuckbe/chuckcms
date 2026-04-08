@@ -129,7 +129,7 @@ class PageBlockController extends BaseController
         $contents = File::get($this->resolveBlockLocation($request['location']));
         $page = $this->page->getById($request['page_id']);
         $this->pageblock->addBlockTop($contents, $page, $request['name']);
-        //return $pageblock;
+
         return 'success';
     }
 
@@ -150,7 +150,7 @@ class PageBlockController extends BaseController
         $contents = File::get($this->resolveBlockLocation($request['location']));
         $page = $this->page->getById($request['page_id']);
         $this->pageblock->addBlockBottom($contents, $page, $request['name']);
-        //return $pageblock;
+
         return 'success';
     }
 
