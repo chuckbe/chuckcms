@@ -3,6 +3,7 @@
 namespace Chuckbe\Chuckcms\Models;
 
 use Eloquent;
+use Illuminate\Support\Str;
 
 /**
  * @property array $form
@@ -55,7 +56,7 @@ class Form extends Eloquent
                     if ($fieldValue['type'] == 'file') {
                         if ($input->hasFile($fieldKey)) {
                             $avatar = $input->file($fieldKey);
-                            $random = str_random(8);
+                            $random = Str::random(8);
                             $filename = time().'_'.$random.'.'.$avatar->getClientOriginalExtension();
                             if (!file_exists(public_path('/files/uploads/'))) {
                                 mkdir(public_path('/files/uploads/'), 0755, true);
