@@ -22,26 +22,17 @@ class PageBlockController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    protected $template;
-    protected $page;
-    protected $pageblock;
-    protected $pageBlockRepository;
-    protected $resource;
-    protected $repeater;
-
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
-    public function __construct(Template $template, Page $page, PageBlock $pageblock, PageBlockRepository $pageBlockRepository, Resource $resource, Repeater $repeater)
-    {
-        $this->template = $template;
-        $this->page = $page;
-        $this->pageblock = $pageblock;
-        $this->pageBlockRepository = $pageBlockRepository;
-        $this->resource = $resource;
-        $this->repeater = $repeater;
+    public function __construct(
+        protected Template $template,
+        protected Page $page,
+        protected PageBlock $pageblock,
+        protected PageBlockRepository $pageBlockRepository,
+        protected Resource $resource,
+        protected Repeater $repeater,
+    ) {
     }
 
     /**

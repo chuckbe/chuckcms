@@ -17,12 +17,9 @@ class RedirectController extends BaseController
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
-    public function __construct(Redirect $redirect)
+    public function __construct(private Redirect $redirect)
     {
-        $this->redirect = $redirect;
     }
 
     /**

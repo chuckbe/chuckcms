@@ -16,18 +16,13 @@ class TemplateController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    protected $page;
-    protected $template;
-
     /**
      * Create a TemplateController instance.
-     *
-     * @return void
      */
-    public function __construct(Page $page, Template $template)
-    {
-        $this->page = $page;
-        $this->template = $template;
+    public function __construct(
+        protected Page $page,
+        protected Template $template,
+    ) {
     }
 
     /**

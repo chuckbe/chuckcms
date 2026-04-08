@@ -18,18 +18,13 @@ class UserRoleController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    private $user;
-    private $userRepository;
-
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
-    public function __construct(User $user, UserRepository $userRepository)
-    {
-        $this->user = $user;
-        $this->userRepository = $userRepository;
+    public function __construct(
+        private User $user,
+        private UserRepository $userRepository,
+    ) {
     }
 
     /**

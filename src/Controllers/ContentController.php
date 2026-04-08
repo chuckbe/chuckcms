@@ -21,24 +21,16 @@ class ContentController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    private $content;
-    private $resource;
-    private $repeater;
-    private $template;
-    private $user;
-
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
-    public function __construct(Content $content, Resource $resource, Repeater $repeater, Template $template, User $user)
-    {
-        $this->content = $content;
-        $this->resource = $resource;
-        $this->repeater = $repeater;
-        $this->template = $template;
-        $this->user = $user;
+    public function __construct(
+        private Content $content,
+        private Resource $resource,
+        private Repeater $repeater,
+        private Template $template,
+        private User $user,
+    ) {
     }
 
     public function resourceIndex()

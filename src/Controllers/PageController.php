@@ -27,44 +27,21 @@ class PageController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    private $page;
-    private $pageRepository;
-    private $pageblock;
-    private $pageBlockRepository;
-    private $redirect;
-    private $resource;
-    private $repeater;
-    private $site;
-    private $template;
-    private $user;
-
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct(
-        Page $page,
-        PageRepository $pageRepository,
-        PageBlock $pageblock,
-        PageBlockRepository $pageBlockRepository,
-        Redirect $redirect,
-        Resource $resource,
-        Repeater $repeater,
-        Site $site,
-        Template $template,
-        User $user
+        private Page $page,
+        private PageRepository $pageRepository,
+        private PageBlock $pageblock,
+        private PageBlockRepository $pageBlockRepository,
+        private Redirect $redirect,
+        private Resource $resource,
+        private Repeater $repeater,
+        private Site $site,
+        private Template $template,
+        private User $user,
     ) {
-        $this->page = $page;
-        $this->pageRepository = $pageRepository;
-        $this->pageblock = $pageblock;
-        $this->pageBlockRepository = $pageBlockRepository;
-        $this->redirect = $redirect;
-        $this->resource = $resource;
-        $this->repeater = $repeater;
-        $this->site = $site;
-        $this->template = $template;
-        $this->user = $user;
         $this->middleware('auth');
     }
 

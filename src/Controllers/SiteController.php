@@ -18,20 +18,14 @@ class SiteController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    private $site;
-    private $siteRepository;
-    private $user;
-
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
-    public function __construct(Site $site, SiteRepository $siteRepository, User $user)
-    {
-        $this->site = $site;
-        $this->siteRepository = $siteRepository;
-        $this->user = $user;
+    public function __construct(
+        private Site $site,
+        private SiteRepository $siteRepository,
+        private User $user,
+    ) {
     }
 
     public function save(Request $request)
