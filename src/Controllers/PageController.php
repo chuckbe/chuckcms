@@ -4,6 +4,7 @@ namespace Chuckbe\Chuckcms\Controllers;
 
 use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
 use Chuckbe\Chuckcms\Chuck\PageRepository;
+use Chuckbe\Chuckcms\Chuck\Support\TemplateBlocks;
 use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\PageBlock;
 use Chuckbe\Chuckcms\Models\Redirect;
@@ -215,45 +216,9 @@ class PageController extends BaseController
         $template = $this->template->where('id', $page->template_id)->first();
         $pageblocks = $this->pageBlockRepository->getRenderedByPageBlocks($this->pageblock->getAllByPageId($page->id));
 
-        $block_dir = array_slice(scandir('chuckbe/'.$template->slug.'/blocks'), 2);
-        $blocks = $this->dirToArray($template->path.'/blocks');
+        $blocks = TemplateBlocks::scan($template->path.'/blocks');
 
         return view('chuckcms::backend.pages.pagebuilder.index', compact('template', 'page', 'pageblocks', 'blocks'));
-    }
-
-    public function dirToArray($dir)
-    {
-        $result = [];
-
-        $cdir = scandir($dir);
-        foreach ($cdir as $key => $value) {
-            if (!in_array($value, ['.', '..'])) {
-                if (is_dir($dir.DIRECTORY_SEPARATOR.$value)) {
-                    $result[$value] = $this->dirToArray($dir.DIRECTORY_SEPARATOR.$value);
-                } else {
-                    if ($value !== '.DS_Store' && (strpos($value, '.html') !== false)) {
-                        $blockKey = str_replace('.html', '', $value);
-                        $blockName = str_replace('-', ' ', $blockKey);
-                        if (file_exists($dir.DIRECTORY_SEPARATOR.$blockKey.'.jpg')) {
-                            $blockImage = $dir.DIRECTORY_SEPARATOR.$blockKey.'.jpg';
-                        } elseif (file_exists($dir.DIRECTORY_SEPARATOR.$blockKey.'.jpeg')) {
-                            $blockImage = $dir.DIRECTORY_SEPARATOR.$blockKey.'.jpeg';
-                        } elseif (file_exists($dir.DIRECTORY_SEPARATOR.$blockKey.'.png')) {
-                            $blockImage = $dir.DIRECTORY_SEPARATOR.$blockKey.'.png';
-                        } else {
-                            $blockImage = 'https://ui-avatars.com/api/?length=5&size=150&name=BLOCK&background=0D8ABC&color=fff&font-size=0.2';
-                        }
-                        $result[$blockKey] = [
-                            'name'     => $blockName,
-                            'location' => $dir.DIRECTORY_SEPARATOR.$value,
-                            'img'      => $blockImage,
-                        ];
-                    }
-                }
-            }
-        }
-
-        return $result;
     }
 
     /**
