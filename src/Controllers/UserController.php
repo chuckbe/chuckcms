@@ -11,6 +11,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Validation\Rules\Password;
 use Mail;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -101,7 +102,7 @@ class UserController extends BaseController
     public function activate(Request $request)
     {
         $this->validate(request(), [//@todo create custom Request class for user password validation
-            'password'       => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\])(?=.*[!$#%]).*$/',
+            'password'       => ['required', Password::min(8)->mixedCase()->letters()->numbers()->symbols()],
             'password_again' => 'required|same:password',
             '_user_token'    => 'required',
             '_user_id'       => 'required',
