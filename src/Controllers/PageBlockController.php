@@ -14,6 +14,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PageBlockController extends BaseController
 {
@@ -134,7 +135,7 @@ class PageBlockController extends BaseController
         }
 
         // AUTHORIZE ... COMES HERE
-        $contents = File::get($request['location']);
+        $contents = File::get($this->resolveBlockLocation($request['location']));
         $page = $this->page->getById($request['page_id']);
         $this->pageblock->addBlockTop($contents, $page, $request['name']);
         //return $pageblock;
@@ -155,10 +156,40 @@ class PageBlockController extends BaseController
         }
 
         // AUTHORIZE ... COMES HERE
-        $contents = File::get($request['location']);
+        $contents = File::get($this->resolveBlockLocation($request['location']));
         $page = $this->page->getById($request['page_id']);
         $this->pageblock->addBlockBottom($contents, $page, $request['name']);
         //return $pageblock;
         return 'success';
+    }
+
+    /**
+     * Resolve a user-supplied block location to an absolute path inside one of
+     * the active templates' /blocks directories. This guards against path
+     * traversal: only .html files that physically live under an active
+     * template's blocks/ directory are accepted.
+     */
+    private function resolveBlockLocation(?string $location): string
+    {
+        if ($location === null || $location === '') {
+            throw new NotFoundHttpException('Invalid block location.');
+        }
+
+        $real = realpath($location);
+        if ($real === false || !is_file($real) || !str_ends_with($real, '.html')) {
+            throw new NotFoundHttpException('Invalid block location.');
+        }
+
+        foreach ($this->template->where('active', 1)->get() as $template) {
+            $allowed = realpath($template->path.DIRECTORY_SEPARATOR.'blocks');
+            if ($allowed === false) {
+                continue;
+            }
+            if (str_starts_with($real, $allowed.DIRECTORY_SEPARATOR)) {
+                return $real;
+            }
+        }
+
+        throw new NotFoundHttpException('Invalid block location.');
     }
 }
