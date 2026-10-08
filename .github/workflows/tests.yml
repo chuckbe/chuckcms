@@ -29,6 +29,15 @@ jobs:
           extensions: pdo_sqlite, gd, fileinfo
           coverage: none
 
+      # Every dompdf 2.x (via barryvdh/laravel-dompdf ^2) and the Laravel 10
+      # line have security advisories, and Composer >= 2.9 refuses to install
+      # those by default. Test the dependency set Laravel 10 sites actually
+      # get; remove this once Phase 3 moves to dompdf ^3 / Laravel 11+.
+      - name: Allow packages with security advisories
+        run: |
+          composer config --global audit.block-insecure false || true
+          composer config --global --json policy '{"advisories": {"block": false}}' || true
+
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
