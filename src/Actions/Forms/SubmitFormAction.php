@@ -17,30 +17,24 @@ class SubmitFormAction
     }
 
     /**
-     * Handle a public form submission: persist the entry and fire any
-     * configured email actions. Returns the redirect target string
-     * configured on the form, or null if the store step failed.
+     * Handle a public form submission: persist the entry (when the form
+     * stores entries) and fire any configured email actions. Mail is sent
+     * whether or not the entry was stored. Returns the redirect target
+     * configured on the form, which may be null.
      */
     public function __invoke(SubmitFormRequest $request): ?string
     {
-        $form = Form::where('slug', $request->input('_form_slug'))->first();
-        if ($form === null) {
-            return null;
-        }
+        $form = Form::where('slug', $request->input('_form_slug'))->firstOrFail();
 
         $store = ($this->storeFormEntry)($form, $request);
-        if ($store === 'error') {
-            return null;
-        }
+        abort_if($store === 'error', 500, 'Form entry could not be saved.');
 
-        if ($store instanceof FormEntry) {
-            $this->dispatchSendActions($form, $request, $store);
-        }
+        $this->dispatchSendActions($form, $request, $store instanceof FormEntry ? $store : null);
 
-        return $form->form['actions']['redirect'];
+        return $form->form['actions']['redirect'] ?? null;
     }
 
-    private function dispatchSendActions(Form $form, SubmitFormRequest $request, FormEntry $entry): void
+    private function dispatchSendActions(Form $form, SubmitFormRequest $request, ?FormEntry $entry): void
     {
         $sendActions = $form->form['actions']['send'] ?? false;
         if ($sendActions === false) {

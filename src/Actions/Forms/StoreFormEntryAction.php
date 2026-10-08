@@ -39,14 +39,18 @@ class StoreFormEntryAction
 
     private function storeEnabled(Form $form): bool
     {
+        // Loose comparison on purpose: the stored value is a bool, legacy
+        // forms may hold the string 'true'.
         $store = $form->form['actions']['store'] ?? false;
 
-        return $store === true || $store === 'true';
+        return $store == 'true' || $store == true;
     }
 
     private function filesEnabled(Form $form): bool
     {
-        return ($form->form['files'] ?? false) === 'true';
+        // Loose comparison on purpose: the form builder stores a bool and
+        // `true == 'true'` must hold, as it did in the legacy model method.
+        return ($form->form['files'] ?? false) == 'true';
     }
 
     private function collectFieldValues(Form $form, Request $request): array

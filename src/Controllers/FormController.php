@@ -62,12 +62,7 @@ class FormController extends BaseController
 
     public function postForm(SubmitFormRequest $request, SubmitFormAction $submitForm)
     {
-        $redirect = $submitForm($request);
-        if ($redirect === null) {
-            return redirect()->route('dashboard.forms');
-        }
-
-        return redirect()->to($redirect);
+        return redirect()->to($submitForm($request) ?? '/');
     }
 
     public function delete(DeleteFormRequest $request, DeleteFormAction $deleteForm): string

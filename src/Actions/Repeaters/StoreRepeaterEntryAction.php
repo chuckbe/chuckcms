@@ -51,8 +51,12 @@ class StoreRepeaterEntryAction
         return [$this->interpolateUrl($detail['url'], $request), $detail['page']];
     }
 
-    private function interpolateUrl(string $template, Request $request): string
+    private function interpolateUrl(?string $template, Request $request): ?string
     {
+        if ($template === null) {
+            return null;
+        }
+
         $fields = TagParser::between($template, '[', ']');
         foreach ($fields as $field) {
             $template = str_replace('['.$field.']', $request->input($field), $template);
