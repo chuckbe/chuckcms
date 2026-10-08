@@ -2,22 +2,21 @@
 
 namespace Chuckbe\Chuckcms\Actions\PageBlocks;
 
+use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\Template;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Validate a user-supplied block location against the active
- * templates' blocks/ directories and return the canonicalised path.
- *
- * Phase 1 introduced this guard inline on PageBlockController to
- * close the LFI via add-block. Phase 2 moves it into a dedicated
- * action so the Add Top / Add Bottom actions both consume it.
+ * Validate a user-supplied block location against the page's own
+ * template blocks/ directory and return the canonicalised path.
+ * Only .html files that physically live under that directory are
+ * accepted, which guards against path traversal.
  */
 class ResolveBlockLocationAction
 {
-    public function __invoke(?string $location): string
+    public function __invoke(mixed $location, Page $page): string
     {
-        if ($location === null || $location === '') {
+        if (!is_string($location) || $location === '') {
             throw new NotFoundHttpException('Invalid block location.');
         }
 
@@ -26,16 +25,12 @@ class ResolveBlockLocationAction
             throw new NotFoundHttpException('Invalid block location.');
         }
 
-        foreach (Template::where('active', 1)->get() as $template) {
-            $allowed = realpath($template->path.DIRECTORY_SEPARATOR.'blocks');
-            if ($allowed === false) {
-                continue;
-            }
-            if (str_starts_with($real, $allowed.DIRECTORY_SEPARATOR)) {
-                return $real;
-            }
+        $template = Template::where('id', $page->template_id)->first();
+        $allowed = $template ? realpath($template->path.DIRECTORY_SEPARATOR.'blocks') : false;
+        if ($allowed === false || !str_starts_with($real, $allowed.DIRECTORY_SEPARATOR)) {
+            throw new NotFoundHttpException('Invalid block location.');
         }
 
-        throw new NotFoundHttpException('Invalid block location.');
+        return $real;
     }
 }

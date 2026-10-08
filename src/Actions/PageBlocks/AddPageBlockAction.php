@@ -18,8 +18,8 @@ class AddPageBlockAction
 
     public function __invoke(AddPageBlockRequest $request, string $position): PageBlock
     {
-        $contents = File::get(($this->resolveBlockLocation)($request->input('location')));
         $page = Page::findOrFail($request->input('page_id'));
+        $contents = File::get(($this->resolveBlockLocation)($request->input('location'), $page));
         $name = $request->input('name');
 
         return match ($position) {

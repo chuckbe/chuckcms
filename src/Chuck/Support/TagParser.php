@@ -12,8 +12,9 @@ class TagParser
      *
      * @return string[]
      */
-    public static function between(string $str, string $startDelimiter, string $endDelimiter): array
+    public static function between(?string $str, string $startDelimiter, string $endDelimiter): array
     {
+        $str = (string) $str;
         $contents = [];
         $startDelimiterLength = strlen($startDelimiter);
         $endDelimiterLength = strlen($endDelimiter);
