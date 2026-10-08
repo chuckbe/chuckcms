@@ -22,7 +22,7 @@ class SaveSiteRequest extends FormRequest
             'favicon.*'      => 'string|nullable',
             'logo.*'         => 'string|nullable',
             'integrations.*' => 'string|nullable',
-            'lang'           => 'array',
+            'lang'           => 'required|array',
             'site_id'        => 'required|nullable',
         ];
     }
