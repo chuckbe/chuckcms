@@ -39,5 +39,17 @@
             }
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "require-dev": {
+        "orchestra/testbench": "^8.0"
+    },
+    "prefer-stable": true,
+    "autoload-dev": {
+        "psr-4": {
+            "Chuckbe\\Chuckcms\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
 }
