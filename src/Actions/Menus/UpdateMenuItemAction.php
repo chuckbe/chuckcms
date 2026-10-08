@@ -31,9 +31,12 @@ class UpdateMenuItemAction
             if ($menuItem === null) {
                 continue;
             }
+            // label and link are NOT NULL: an empty value keeps the current one
+            // (page items always post an empty link). class is nullable, so an
+            // emptied class field clears it.
             $menuItem->label = $item['label'] ?? $menuItem->label;
             $menuItem->link = $item['link'] ?? $menuItem->link;
-            $menuItem->class = $item['class'] ?? $menuItem->class;
+            $menuItem->class = $item['class'] ?? null;
             $menuItem->save();
         }
     }

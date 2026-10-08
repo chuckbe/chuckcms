@@ -15,7 +15,7 @@ class GenerateMenuControlRequest extends FormRequest
     {
         return [
             'idmenu'             => 'required|integer',
-            'menuname'           => 'required|string|max:185',
+            'menuname'           => 'required|string|max:255',
             'arraydata'          => 'nullable|array',
             'arraydata.*.id'     => 'required_with:arraydata|integer',
             'arraydata.*.parent' => 'present',

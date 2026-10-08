@@ -14,8 +14,8 @@ class AddCustomMenuItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'labelmenu' => 'required|string|max:185',
-            'linkmenu'  => 'required|string|max:2048',
+            'labelmenu' => 'required|string|max:255',
+            'linkmenu'  => 'required|string|max:255',
             'idmenu'    => 'required|integer',
         ];
     }

@@ -14,7 +14,7 @@ class CreateMenuRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'menuname' => 'required|string|max:185',
+            'menuname' => 'required|string|max:255',
         ];
     }
 }

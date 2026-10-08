@@ -14,7 +14,7 @@ class AddPageMenuItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'labelmenu' => 'required|string|max:185',
+            'labelmenu' => 'required|string|max:255',
             'linkmenu'  => 'required|integer',
             'idmenu'    => 'required|integer',
         ];

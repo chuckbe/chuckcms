@@ -22,9 +22,9 @@ class UpdateMenuItemRequest extends FormRequest
         return [
             'arraydata' => 'nullable|array',
             'id'        => 'nullable|integer',
-            'label'     => 'nullable|string|max:185',
-            'url'       => 'nullable|string|max:2048',
-            'clases'    => 'nullable|string|max:185',
+            'label'     => 'nullable|string|max:255',
+            'url'       => 'nullable|string|max:255',
+            'clases'    => 'nullable|string|max:255',
         ];
     }
 }
