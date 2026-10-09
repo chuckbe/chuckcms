@@ -3,6 +3,7 @@
     "description": "A lightweight Laravel CMS for easy control of a website.",
     "keywords": ["chuckbe", "chuckcms", "cms", "laravel", "php"],
     "homepage": "https://github.com/chuckbe/chuckcms",
+    "license": "MIT",
     "require": {
         "php": "^8.2",
         "laravel/framework": "^10.0||^11.0||^12.0",

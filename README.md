@@ -18,8 +18,10 @@ ChuckCMS is an opinionated way of building websites and webshops in Laravel. Chu
 ## Docs
 
 ### Requirements
-- PHP 8
-- Laravel 9 / 10 
+- PHP 8.2 or higher
+- Laravel 10, 11 or 12
+
+Upgrading an existing site from 0.2? See [UPGRADING.md](UPGRADING.md).
 
 ### Installation
 > ChuckCMS will work best in a fresh installation.
@@ -48,6 +50,13 @@ You can now publish migrations and config file for ```spatie/laravel-permission`
 php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
 ```
 > There is no need to add the middleware for this package. It is already being loaded by ChuckCMS.
+
+#### ```spatie/laravel-honeypot``` package
+Forms are protected against spam by ```spatie/laravel-honeypot```. It works without configuration; to change the field names or timing, publish its config:
+```
+php artisan vendor:publish --tag=honeypot-config
+```
+In your own templates, render the honeypot fields inside every form that posts to ChuckCMS with ```<x-honeypot />```.
 
 ### Migration
 You can now run migrations:
