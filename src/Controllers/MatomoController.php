@@ -4,7 +4,6 @@ namespace Chuckbe\Chuckcms\Controllers;
 
 use Carbon\Carbon;
 use Chuckbe\Chuckcms\Chuck\Matomo\QueryFactory;
-use Chuckbe\Chuckcms\Chuck\SiteRepository;
 use Chuckbe\Chuckcms\Models\Site;
 use Chuckbe\Chuckcms\Models\User;
 use ChuckSite;
@@ -29,7 +28,6 @@ class MatomoController extends BaseController
      */
     public function __construct(
         private Site $site,
-        private SiteRepository $siteRepository,
         private User $user,
     ) {
         $this->siteId = ChuckSite::getSetting('integrations.matomo-site-id');

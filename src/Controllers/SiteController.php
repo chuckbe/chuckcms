@@ -2,8 +2,8 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
-use Chuckbe\Chuckcms\Chuck\SiteRepository;
-use Chuckbe\Chuckcms\Models\Site;
+use Chuckbe\Chuckcms\Actions\Sites\SaveSiteSettingsAction;
+use Chuckbe\Chuckcms\Actions\Users\ActivateUserAction;
 use Chuckbe\Chuckcms\Models\User;
 use Chuckbe\Chuckcms\Requests\Sites\SaveSiteRequest;
 use Chuckbe\Chuckcms\Requests\Users\ActivateUserRequest;
@@ -21,19 +21,14 @@ class SiteController extends BaseController
     /**
      * Create a new controller instance.
      */
-    public function __construct(
-        private Site $site,
-        private SiteRepository $siteRepository,
-        private User $user,
-    ) {
+    public function __construct(private User $user)
+    {
     }
 
-    public function save(SaveSiteRequest $request)
+    public function save(SaveSiteRequest $request, SaveSiteSettingsAction $saveSiteSettings)
     {
-        //update or create settings
-        $this->siteRepository->updateOrCreateFromRequest($request);
+        $saveSiteSettings($request);
 
-        //redirect back
         return redirect()->route('dashboard.settings')->with('notification', 'Instellingen opgeslagen!');
     }
 
@@ -50,21 +45,11 @@ class SiteController extends BaseController
         return view('chuckcms::backend.users._accept', compact('user', 'token'));
     }
 
-    public function activate(ActivateUserRequest $request)
+    public function activate(ActivateUserRequest $request, ActivateUserAction $activateUser)
     {
-        $token = $request->get('_user_token');
-        $user_id = $request->get('_user_id');
-
-        // Look up the user
-        if (!$user = $this->user->where('token', $token)->where('id', $user_id)->where('active', 0)->first()) {
-            //if the user doesn't exist do something more graceful than this
+        if (!$activateUser($request)) {
             return redirect()->route('page');
         }
-
-        $this->user->where('token', $token)->where('id', $user_id)->where('active', 0)->update([
-            'active'   => 1,
-            'password' => bcrypt($request->get('password')),
-        ]);
 
         return redirect()->route('login');
     }

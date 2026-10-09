@@ -2,12 +2,25 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
-use Chuckbe\Chuckcms\Models\MenuItems;
-use Chuckbe\Chuckcms\Models\Menus;
+use Chuckbe\Chuckcms\Actions\Menus\AddCustomMenuItemAction;
+use Chuckbe\Chuckcms\Actions\Menus\AddPageMenuItemAction;
+use Chuckbe\Chuckcms\Actions\Menus\CreateMenuAction;
+use Chuckbe\Chuckcms\Actions\Menus\DeleteMenuAction;
+use Chuckbe\Chuckcms\Actions\Menus\DeleteMenuItemAction;
+use Chuckbe\Chuckcms\Actions\Menus\GenerateMenuControlAction;
+use Chuckbe\Chuckcms\Actions\Menus\UpdateMenuItemAction;
 use Chuckbe\Chuckcms\Models\Page;
+use Chuckbe\Chuckcms\Requests\Menus\AddCustomMenuItemRequest;
+use Chuckbe\Chuckcms\Requests\Menus\AddPageMenuItemRequest;
+use Chuckbe\Chuckcms\Requests\Menus\CreateMenuRequest;
+use Chuckbe\Chuckcms\Requests\Menus\DeleteMenuItemRequest;
+use Chuckbe\Chuckcms\Requests\Menus\DeleteMenuRequest;
+use Chuckbe\Chuckcms\Requests\Menus\GenerateMenuControlRequest;
+use Chuckbe\Chuckcms\Requests\Menus\UpdateMenuItemRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
 
 class MenuController extends BaseController
@@ -16,9 +29,6 @@ class MenuController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    /**
-     * Create a new controller instance.
-     */
     public function __construct(protected Page $page)
     {
     }
@@ -35,90 +45,56 @@ class MenuController extends BaseController
         return view('chuckcms::backend.menus.index', compact('pages'));
     }
 
-    public function createnewmenu()
+    public function createnewmenu(CreateMenuRequest $request, CreateMenuAction $createMenu): JsonResponse
     {
-        $menu = new Menus();
-        $menu->name = request()->input('menuname');
-        $menu->save();
+        $menu = $createMenu($request);
 
-        return json_encode(['resp' => $menu->id]);
+        return response()->json(['resp' => $menu->id]);
     }
 
-    public function deleteitemmenu()
+    public function deleteitemmenu(DeleteMenuItemRequest $request, DeleteMenuItemAction $deleteMenuItem): JsonResponse
     {
-        $menuitem = MenuItems::find(request()->input('id'));
+        $deleteMenuItem($request);
 
-        $menuitem->delete();
+        return response()->json(['resp' => 'ok']);
     }
 
-    public function deletemenug()
+    public function deletemenug(DeleteMenuRequest $request, DeleteMenuAction $deleteMenu): JsonResponse
     {
-        $menus = new MenuItems();
-        $getall = $menus->getall(request()->input('id'));
-        if (count($getall) == 0) {
-            $menudelete = Menus::find(request()->input('id'));
-            $menudelete->delete();
+        $result = $deleteMenu($request);
 
-            return json_encode(['resp' => 'you delete this item']);
-        } else {
-            return json_encode(['resp' => 'You have to delete all items first', 'error' => 1]);
-        }
+        return match ($result) {
+            DeleteMenuAction::RESULT_DELETED   => response()->json(['resp' => 'you delete this item']),
+            DeleteMenuAction::RESULT_HAS_ITEMS => response()->json(['resp' => 'You have to delete all items first', 'error' => 1]),
+            default                            => response()->json(['resp' => 'not found', 'error' => 1]),
+        };
     }
 
-    public function updateitem()
+    public function updateitem(UpdateMenuItemRequest $request, UpdateMenuItemAction $updateMenuItem): JsonResponse
     {
-        $arraydata = request()->input('arraydata');
-        if (is_array($arraydata)) {
-            foreach ($arraydata as $value) {
-                $menuitem = MenuItems::find($value['id']);
-                $menuitem->label = $value['label'];
-                $menuitem->link = $value['link'];
-                $menuitem->class = $value['class'];
-                $menuitem->save();
-            }
-        } else {
-            $menuitem = MenuItems::find(request()->input('id'));
-            $menuitem->label = request()->input('label');
-            $menuitem->link = request()->input('url');
-            $menuitem->class = request()->input('clases');
-            $menuitem->save();
-        }
+        $updateMenuItem($request);
+
+        return response()->json(['resp' => 'ok']);
     }
 
-    public function addcustommenu()
+    public function addcustommenu(AddCustomMenuItemRequest $request, AddCustomMenuItemAction $addCustomMenuItem): JsonResponse
     {
-        $menuitem = new MenuItems();
-        $menuitem->label = request()->input('labelmenu');
-        $menuitem->link = request()->input('linkmenu');
-        $menuitem->menu = request()->input('idmenu');
-        $menuitem->sort = MenuItems::getNextSortRoot(request()->input('idmenu'));
-        $menuitem->save();
+        $addCustomMenuItem($request);
+
+        return response()->json(['resp' => 'ok']);
     }
 
-    public function addpagemenu()
+    public function addpagemenu(AddPageMenuItemRequest $request, AddPageMenuItemAction $addPageMenuItem): JsonResponse
     {
-        $menuitem = new MenuItems();
-        $menuitem->label = request()->input('labelmenu');
-        $menuitem->link = 'page:'.request()->input('linkmenu');
-        $menuitem->menu = request()->input('idmenu');
-        $menuitem->sort = MenuItems::getNextSortRoot(request()->input('idmenu'));
-        $menuitem->save();
+        $addPageMenuItem($request);
+
+        return response()->json(['resp' => 'ok']);
     }
 
-    public function generatemenucontrol()
+    public function generatemenucontrol(GenerateMenuControlRequest $request, GenerateMenuControlAction $generateMenuControl): JsonResponse
     {
-        $menu = Menus::find(request()->input('idmenu'));
-        $menu->name = request()->input('menuname');
-        $menu->save();
-        if (is_array(request()->input('arraydata'))) {
-            foreach (request()->input('arraydata') as $value) {
-                $menuitem = MenuItems::find($value['id']);
-                $menuitem->parent = $value['parent'];
-                $menuitem->sort = $value['sort'];
-                $menuitem->depth = $value['depth'];
-                $menuitem->save();
-            }
-        }
-        echo json_encode(['resp' => 1]);
+        $generateMenuControl($request);
+
+        return response()->json(['resp' => 1]);
     }
 }

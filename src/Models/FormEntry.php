@@ -10,11 +10,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 class FormEntry extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'slug', 'entry',
     ];
@@ -22,14 +17,4 @@ class FormEntry extends Model
     protected $casts = [
         'entry' => 'array',
     ];
-
-    public function getBySlug($slug)
-    {
-        return $this->where('slug', $slug)->get();
-    }
-
-    public function getById($id)
-    {
-        return $this->where('id', $id)->first();
-    }
 }

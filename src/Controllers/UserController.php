@@ -2,19 +2,21 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
-use Chuckbe\Chuckcms\Chuck\UserRepository;
-use Chuckbe\Chuckcms\Mail\UserActivationMail;
+use Chuckbe\Chuckcms\Actions\Users\ActivateUserAction;
+use Chuckbe\Chuckcms\Actions\Users\DeleteUserAction;
+use Chuckbe\Chuckcms\Actions\Users\InviteUserAction;
+use Chuckbe\Chuckcms\Actions\Users\ResendInvitationAction;
+use Chuckbe\Chuckcms\Actions\Users\SaveUserAction;
 use Chuckbe\Chuckcms\Models\User;
 use Chuckbe\Chuckcms\Requests\Users\ActivateUserRequest;
+use Chuckbe\Chuckcms\Requests\Users\DeleteUserRequest;
 use Chuckbe\Chuckcms\Requests\Users\InviteUserRequest;
+use Chuckbe\Chuckcms\Requests\Users\ResendInvitationRequest;
 use Chuckbe\Chuckcms\Requests\Users\SaveUserRequest;
-use ChuckSite;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Mail;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -24,13 +26,8 @@ class UserController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    /**
-     * Create a new controller instance.
-     */
-    public function __construct(
-        private User $user,
-        private UserRepository $userRepository,
-    ) {
+    public function __construct(private User $user)
+    {
     }
 
     /**
@@ -46,65 +43,29 @@ class UserController extends BaseController
         return view('chuckcms::backend.users.index', compact('users', 'roles'));
     }
 
-    public function invite(InviteUserRequest $request)
+    public function invite(InviteUserRequest $request, InviteUserAction $inviteUser)
     {
-        // create the user
-        $user = $this->user->create([
-            'name'     => $request->get('name'),
-            'email'    => $request->get('email'),
-            'token'    => $this->userRepository->createToken(),
-            'password' => bcrypt($this->userRepository->createToken()),
-        ]);
-        // add role
-        $user->assignRole($request->get('role'));
+        $inviteUser($request);
 
-        //send the email
-        $mailData = [];
-        $mailData['from'] = 'no-reply@chuckcms.com';
-        $mailData['from_name'] = 'No Reply | ChuckCMS';
-        $mailData['to'] = $user->email;
-        $mailData['to_name'] = $user->name;
-        $mailData['token'] = $user->token;
-        $mailData['user'] = \Auth::user();
-
-        $settings = ChuckSite::getSettings();
-
-        //dd($mailData);
-
-        Mail::send(new UserActivationMail($mailData, $settings));
-
-        //redirect back
         return redirect()->back()->with('notification', 'Gebruiker uitgenodigd!');
     }
 
     public function activateIndex($token)
     {
-        // Look up the user
         $user = $this->user->where('token', $token)->where('active', 0)->first();
 
         if (!$user) {
-            //if the invite doesn't exist do something more graceful than this
             return redirect()->route('page');
         }
 
         return view('chuckcms::backend.users._accept', compact('user', 'token'));
     }
 
-    public function activate(ActivateUserRequest $request)
+    public function activate(ActivateUserRequest $request, ActivateUserAction $activateUser)
     {
-        $token = $request->get('_user_token');
-        $user_id = $request->get('_user_id');
-
-        // Look up the user
-        if (!$user = $this->user->where('token', $token)->where('id', $user_id)->where('active', 0)->first()) {
-            //if the user doesn't exist do something more graceful than this
+        if (!$activateUser($request)) {
             return redirect()->route('page');
         }
-
-        $this->user->where('token', $token)->where('id', $user_id)->where('active', 0)->update([
-            'active'   => 1,
-            'password' => bcrypt($request->get('password')),
-        ]);
 
         return redirect()->route('login');
     }
@@ -122,83 +83,22 @@ class UserController extends BaseController
         return view('chuckcms::backend.users.edit', compact('user', 'roles', 'permissions'));
     }
 
-    public function resendInvitation(Request $request)
+    public function resendInvitation(ResendInvitationRequest $request, ResendInvitationAction $resendInvitation): string
     {
-        $this->validate(request(), [
-            'user_id' => 'required',
-        ]);
+        $resendInvitation($request);
 
-        // get the user
-        $user = $this->user->find($request->user_id);
-
-        $user->update([
-            'active' => 0,
-            'token'  => $this->userRepository->createToken(),
-        ]);
-
-        //send the email
-        $mailData = [];
-        $mailData['from'] = 'no-reply@chuckcms.com';
-        $mailData['from_name'] = 'No Reply | ChuckCMS';
-        $mailData['to'] = $user->email;
-        $mailData['to_name'] = $user->name;
-        $mailData['token'] = $user->token;
-        $mailData['user'] = \Auth::user();
-
-        $settings = ChuckSite::getSettings();
-
-        //dd($mailData);
-
-        Mail::send(new UserActivationMail($mailData, $settings));
-
-        //redirect back
         return 'success';
     }
 
-    public function save(SaveUserRequest $request)
+    public function save(SaveUserRequest $request, SaveUserAction $saveUser)
     {
-        // update the user
-        $user = $this->user->create([// TODO CHANGE TO UPDATE METHOD
-            'name'     => $request->get('name'),
-            'email'    => $request->get('email'),
-            'token'    => $this->userRepository->createToken(),
-            'password' => bcrypt($this->userRepository->createToken()),
-        ]);
-        // add role
-        $user->assignRole($request->get('role'));
+        $saveUser($request);
 
-        //send the email
-        $mailData = [];
-        $mailData['from'] = 'no-reply@chuckcms.com';
-        $mailData['from_name'] = 'No Reply | ChuckCMS';
-        $mailData['to'] = $user->email;
-        $mailData['to_name'] = $user->name;
-        $mailData['token'] = $user->token;
-        $mailData['user'] = \Auth::user();
-
-        $settings = ChuckSite::getSettings();
-
-        //dd($mailData);
-
-        Mail::send(new UserActivationMail($mailData, $settings));
-
-        //redirect back
         return redirect()->back()->with('notification', 'Gebruiker uitgenodigd!');
     }
 
-    /**
-     * Delete the user.
-     *
-     * @return string $status
-     */
-    public function delete(Request $request)
+    public function delete(DeleteUserRequest $request, DeleteUserAction $deleteUser): string
     {
-        $this->validate(request(), [
-            'user_id' => 'required',
-        ]);
-
-        $status = $this->user->deleteById($request->get('user_id'));
-
-        return $status;
+        return $deleteUser($request);
     }
 }

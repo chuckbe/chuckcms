@@ -2,19 +2,18 @@
 
 namespace Chuckbe\Chuckcms\Controllers;
 
-use Chuckbe\Chuckcms\Chuck\PageBlockRepository;
-use Chuckbe\Chuckcms\Models\Page;
-use Chuckbe\Chuckcms\Models\PageBlock;
-use Chuckbe\Chuckcms\Models\Repeater;
-use Chuckbe\Chuckcms\Models\Resource;
-use Chuckbe\Chuckcms\Models\Template;
-use File;
+use Chuckbe\Chuckcms\Actions\PageBlocks\AddPageBlockAction;
+use Chuckbe\Chuckcms\Actions\PageBlocks\DeletePageBlockAction;
+use Chuckbe\Chuckcms\Actions\PageBlocks\MovePageBlockAction;
+use Chuckbe\Chuckcms\Actions\PageBlocks\RenderPageBlockAction;
+use Chuckbe\Chuckcms\Actions\PageBlocks\UpdatePageBlockBodyAction;
+use Chuckbe\Chuckcms\Requests\PageBlocks\AddPageBlockRequest;
+use Chuckbe\Chuckcms\Requests\PageBlocks\PageBlockIdRequest;
+use Chuckbe\Chuckcms\Requests\PageBlocks\UpdatePageBlockBodyRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PageBlockController extends BaseController
 {
@@ -22,160 +21,50 @@ class PageBlockController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    /**
-     * Create a new controller instance.
-     */
-    public function __construct(
-        protected Template $template,
-        protected Page $page,
-        protected PageBlock $pageblock,
-        protected PageBlockRepository $pageBlockRepository,
-        protected Resource $resource,
-        protected Repeater $repeater,
-    ) {
-    }
-
-    /**
-     * Get rendered pageblock html as a string.
-     *
-     * @param Request $request
-     *
-     * @return array $pageblock
-     */
-    public function show(Request $request)
+    public function show(PageBlockIdRequest $request, RenderPageBlockAction $renderPageBlock): array
     {
-        // AUTHORIZE ... COMES HERE
-        $pb = $this->pageblock->where('id', $request->get('pageblock_id'))->first();
-        $pageblock = $this->pageBlockRepository->getRenderedByPageBlock($pageblock);
-
-        return $pageblock;
+        return $renderPageBlock($request);
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @param Request $request
-     *
-     * @return array $pageblock
-     */
-    public function update(Request $request)
+    public function update(UpdatePageBlockBodyRequest $request, UpdatePageBlockBodyAction $updateBody): array
     {
-        // AUTHORIZE ... COMES HERE
-        $pageblock = $this->pageblock->getById($request->get('pageblock_id'));
-        $pageblock = $this->pageBlockRepository->updateBody($pageblock, $request->get('html'));
-
-        return $pageblock;
+        return $updateBody($request);
     }
 
-    /**
-     * Move the resource one place up.
-     *
-     * @param Request $request
-     *
-     * @return array $pageblock
-     */
-    public function moveUp(Request $request)
+    public function moveUp(PageBlockIdRequest $request, MovePageBlockAction $movePageBlock): array
     {
-        // AUTHORIZE ... COMES HERE
-        $pageblock = $this->pageBlockRepository->moveUpById($request->get('pageblock_id'));
-
-        return $pageblock;
+        return $movePageBlock($request, MovePageBlockAction::DIRECTION_UP);
     }
 
-    /**
-     * Move the resource one place down.
-     *
-     * @param Request $request
-     *
-     * @return array $pageblock
-     */
-    public function moveDown(Request $request)
+    public function moveDown(PageBlockIdRequest $request, MovePageBlockAction $movePageBlock): array
     {
-        // AUTHORIZE ... COMES HERE
-        $pageblock = $this->pageBlockRepository->moveDownById($request->get('pageblock_id'));
-
-        return $pageblock;
+        return $movePageBlock($request, MovePageBlockAction::DIRECTION_DOWN);
     }
 
-    /**
-     * Delete the resource from the page.
-     *
-     * @param Request $request
-     *
-     * @return string $tatus
-     */
-    public function delete(Request $request)
+    public function delete(PageBlockIdRequest $request, DeletePageBlockAction $deletePageBlock): string
     {
-        // AUTHORIZE ... COMES HERE
-        $status = $this->pageBlockRepository->deleteById($request->get('pageblock_id'));
-
-        return $status;
+        return $deletePageBlock($request);
     }
 
-    /**
-     * Add Block From Location To Top of Page and Store to Database.
-     *
-     * @param Request $request
-     *
-     * @return string
-     */
-    public function addBlockTop(Request $request)
+    public function addBlockTop(AddPageBlockRequest $request, AddPageBlockAction $addPageBlock): string
     {
         if ($request->has('lang')) {
             app()->setLocale($request->get('lang'));
         }
 
-        // AUTHORIZE ... COMES HERE
-        $page = $this->page->getById($request['page_id']);
-        $contents = File::get($this->resolveBlockLocation($request['location'], $page));
-        $this->pageblock->addBlockTop($contents, $page, $request['name']);
+        $addPageBlock($request, AddPageBlockAction::POSITION_TOP);
 
         return 'success';
     }
 
-    /**
-     * Add Block From Location To Bottom of Page and Store to Database.
-     *
-     * @param Request $request
-     *
-     * @return string
-     */
-    public function addBlockBottom(Request $request)
+    public function addBlockBottom(AddPageBlockRequest $request, AddPageBlockAction $addPageBlock): string
     {
         if ($request->has('lang')) {
             app()->setLocale($request->get('lang'));
         }
 
-        // AUTHORIZE ... COMES HERE
-        $page = $this->page->getById($request['page_id']);
-        $contents = File::get($this->resolveBlockLocation($request['location'], $page));
-        $this->pageblock->addBlockBottom($contents, $page, $request['name']);
+        $addPageBlock($request, AddPageBlockAction::POSITION_BOTTOM);
 
         return 'success';
-    }
-
-    /**
-     * Resolve a user-supplied block location to an absolute path inside the
-     * page's template /blocks directory. This guards against path traversal:
-     * only .html files that physically live under that directory are accepted.
-     */
-    private function resolveBlockLocation(mixed $location, ?Page $page): string
-    {
-        if (!is_string($location) || $location === '' || $page === null) {
-            throw new NotFoundHttpException('Invalid block location.');
-        }
-
-        $real = realpath($location);
-        if ($real === false || !is_file($real) || !str_ends_with($real, '.html')) {
-            throw new NotFoundHttpException('Invalid block location.');
-        }
-
-        $template = $this->template->where('id', $page->template_id)->first();
-        $allowed = $template ? realpath($template->path.DIRECTORY_SEPARATOR.'blocks') : false;
-        if ($allowed === false || !str_starts_with($real, $allowed.DIRECTORY_SEPARATOR)) {
-            throw new NotFoundHttpException('Invalid block location.');
-        }
-
-        return $real;
     }
 }
