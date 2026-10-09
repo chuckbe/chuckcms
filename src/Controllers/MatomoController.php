@@ -207,8 +207,8 @@ class MatomoController extends BaseController
         $start = Carbon::createFromFormat('Y-m-d', $range['start']);
         $end = Carbon::createFromFormat('Y-m-d', $range['end']);
 
-        $difference = $now->diffInDays($end); // difference in days between end date and now
-        $diffStartToEnd = $start->diffInDays($end); //difference in days between start date and end date
+        $difference = (int) $now->diffInDays($end, true); // difference in days between end date and now
+        $diffStartToEnd = (int) $start->diffInDays($end, true); //difference in days between start date and end date
 
         if ($diffStartToEnd == 6) {
             $period = 'week';
