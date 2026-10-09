@@ -192,15 +192,6 @@ class Chuck
                     Route::get('/dashboard/forms/{slug}/entries', '\Chuckbe\Chuckcms\Controllers\FormController@entries')->name('dashboard.forms.entries');
                 });
 
-                Route::group(['middleware' => ['permission:create formentries']], function () {
-                });
-
-                Route::group(['middleware' => ['permission:edit formentries']], function () {
-                });
-
-                Route::group(['middleware' => ['permission:delete formentries']], function () {
-                });
-
                 // Dashboard Content Resource Routes...
                 Route::group(['middleware' => ['permission:show resource']], function () {
                     Route::get('/dashboard/content/resources', '\Chuckbe\Chuckcms\Controllers\ContentController@resourceIndex')->name('dashboard.content.resources');

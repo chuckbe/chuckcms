@@ -22,34 +22,17 @@ class FrontEndController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    private $page;
-    private $pageblock;
-    private $pageBlockRepository;
-    private $redirect;
-    private $repeater;
-    private $role;
-    private $template;
-
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct(
-        Page $page,
-        PageBlock $pageblock,
-        PageBlockRepository $pageBlockRepository,
-        Redirect $redirect,
-        Repeater $repeater,
-        Role $role,
-        Template $template
+        private Page $page,
+        private PageBlock $pageblock,
+        private PageBlockRepository $pageBlockRepository,
+        private Redirect $redirect,
+        private Repeater $repeater,
+        private Template $template,
     ) {
-        $this->page = $page;
-        $this->pageblock = $pageblock;
-        $this->pageBlockRepository = $pageBlockRepository;
-        $this->redirect = $redirect;
-        $this->repeater = $repeater;
-        $this->template = $template;
     }
 
     public function index($slug = null)

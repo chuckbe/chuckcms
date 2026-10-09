@@ -2,10 +2,10 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class Template extends Eloquent
+class Template extends Model
 {
     public function pages()
     {

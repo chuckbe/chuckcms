@@ -16,16 +16,11 @@ class MenuController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    protected $page;
-
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
-    public function __construct(Page $page)
+    public function __construct(protected Page $page)
     {
-        $this->page = $page;
     }
 
     /**

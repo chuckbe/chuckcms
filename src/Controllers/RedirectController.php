@@ -3,6 +3,8 @@
 namespace Chuckbe\Chuckcms\Controllers;
 
 use Chuckbe\Chuckcms\Models\Redirect;
+use Chuckbe\Chuckcms\Requests\Redirects\CreateRedirectRequest;
+use Chuckbe\Chuckcms\Requests\Redirects\UpdateRedirectRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -17,12 +19,9 @@ class RedirectController extends BaseController
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
-    public function __construct(Redirect $redirect)
+    public function __construct(private Redirect $redirect)
     {
-        $this->redirect = $redirect;
     }
 
     /**
@@ -37,15 +36,9 @@ class RedirectController extends BaseController
         return view('chuckcms::backend.redirects.index', compact('redirects'));
     }
 
-    public function create(Request $request)
+    public function create(CreateRedirectRequest $request)
     {
         //$request['slug'] = str_slug($request->slug, '-');
-
-        $this->validate($request, [//@todo create custom Request class for redirect validation
-            'slug' => 'max:185|required|unique:redirects',
-            'to'   => 'required|max:185',
-            'type' => 'required|numeric|in:301,302',
-        ]);
 
         $redirect = Redirect::firstOrNew(
             ['slug' => $request['slug']],
@@ -58,16 +51,9 @@ class RedirectController extends BaseController
         }
     }
 
-    public function update(Request $request)
+    public function update(UpdateRedirectRequest $request)
     {
         //$request['slug'] = str_slug($request->slug, '-');
-
-        $this->validate($request, [//@todo create custom Request class for redirect validation
-            'id'   => 'required',
-            'slug' => 'required|max:185',
-            'to'   => 'required|max:185',
-            'type' => 'required|numeric|in:301,302',
-        ]);
 
         $redirect = Redirect::where('id', $request['id'])->update([
             'slug' => $request['slug'],

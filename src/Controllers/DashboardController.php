@@ -21,30 +21,19 @@ class DashboardController extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
-    protected $template;
-    protected $site;
-    protected $page;
-    protected $pageblock;
-    protected $pageBlockRepository;
-    protected $resource;
-    protected $repeater;
-    protected $user;
-
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
-    public function __construct(Template $template, Site $site, Page $page, PageBlock $pageblock, PageBlockRepository $pageBlockRepository, Resource $resource, Repeater $repeater, User $user)
-    {
-        $this->template = $template;
-        $this->site = $site;
-        $this->page = $page;
-        $this->pageblock = $pageblock;
-        $this->pageBlockRepository = $pageBlockRepository;
-        $this->resource = $resource;
-        $this->repeater = $repeater;
-        $this->user = $user;
+    public function __construct(
+        protected Template $template,
+        protected Site $site,
+        protected Page $page,
+        protected PageBlock $pageblock,
+        protected PageBlockRepository $pageBlockRepository,
+        protected Resource $resource,
+        protected Repeater $repeater,
+        protected User $user,
+    ) {
         $this->middleware('auth');
     }
 

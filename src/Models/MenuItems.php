@@ -2,7 +2,7 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int    $id
@@ -14,7 +14,7 @@ use Eloquent;
  * @property int    $parent
  * @property int    $depth
  */
-class MenuItems extends Eloquent
+class MenuItems extends Model
 {
     protected $table = null;
 

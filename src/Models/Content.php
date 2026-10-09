@@ -2,12 +2,13 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use Eloquent;
+use Chuckbe\Chuckcms\Chuck\Support\TagParser;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property array $content
  */
-class Content extends Eloquent
+class Content extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -91,31 +92,12 @@ class Content extends Eloquent
 
     public function getUrlFromInput($url, $input)
     {
-        $fields = $this->getContents($url, '[', ']');
+        $fields = TagParser::between($url, '[', ']');
         $finalUrl = $url;
         foreach ($fields as $field) {
             $finalUrl = str_replace('['.$field.']', $input->get($field), $finalUrl);
         }
 
         return $finalUrl;
-    }
-
-    public function getContents($str, $startDelimiter, $endDelimiter)
-    {
-        $contents = [];
-        $startDelimiterLength = strlen($startDelimiter);
-        $endDelimiterLength = strlen($endDelimiter);
-        $startFrom = 0;
-        while (false !== ($contentStart = strpos($str, $startDelimiter, $startFrom))) {
-            $contentStart += $startDelimiterLength;
-            $contentEnd = strpos($str, $endDelimiter, $contentStart);
-            if (false === $contentEnd) {
-                break;
-            }
-            $contents[] = substr($str, $contentStart, $contentEnd - $contentStart);
-            $startFrom = $contentEnd + $endDelimiterLength;
-        }
-
-        return $contents;
     }
 }

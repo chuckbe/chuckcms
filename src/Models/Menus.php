@@ -2,13 +2,13 @@
 
 namespace Chuckbe\Chuckcms\Models;
 
-use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int    $id
  * @property string $name
  */
-class Menus extends Eloquent
+class Menus extends Model
 {
     protected $table = 'menus';
 

@@ -3,6 +3,7 @@
 namespace Chuckbe\Chuckcms\Providers;
 
 use Chuckbe\Chuckcms\Models\Template as TemplateModel;
+use Exception;
 use Illuminate\Support\ServiceProvider;
 
 class ChuckTemplateServiceProvider extends ServiceProvider
