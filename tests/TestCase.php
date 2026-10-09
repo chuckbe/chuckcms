@@ -24,6 +24,7 @@ abstract class TestCase extends Orchestra
             \Spatie\Translatable\TranslatableServiceProvider::class,
             \UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
             \Laravel\Ui\UiServiceProvider::class,
+            \Spatie\Sitemap\SitemapServiceProvider::class,
         ];
     }
 
