@@ -7,7 +7,7 @@
         "php": "^8.2",
         "laravel/framework": "^10.0",
         "laravel/ui": "^4.2",
-        "barryvdh/laravel-dompdf": "^2.0.1",
+        "barryvdh/laravel-dompdf": "^3.0",
         "mcamara/laravel-localization": "^2.0",
         "msurguy/honeypot": "^1.2",
         "spatie/eloquent-sortable": "^4.0",
