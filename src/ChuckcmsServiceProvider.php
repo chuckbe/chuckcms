@@ -63,7 +63,7 @@ class ChuckcmsServiceProvider extends ServiceProvider
         $this->app->register('Chuckbe\Chuckcms\Providers\ChuckRepeaterServiceProvider');
         $this->app->register('Chuckbe\Chuckcms\Providers\ChuckDashboardSidebarViewComposerServiceProvider');
 
-        $this->app->register('Msurguy\Honeypot\HoneypotServiceProvider');
+        $this->app->register(\Spatie\Honeypot\HoneypotServiceProvider::class);
 
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
         $loader->alias('ChuckSite', 'Chuckbe\Chuckcms\Facades\Site');
@@ -71,7 +71,7 @@ class ChuckcmsServiceProvider extends ServiceProvider
         $loader->alias('ChuckRepeater', 'Chuckbe\Chuckcms\Facades\Repeater');
         $loader->alias('ChuckTemplate', 'Chuckbe\Chuckcms\Facades\Template');
         $loader->alias('ChuckMenu', 'Chuckbe\Chuckcms\Facades\Menu');
-        $loader->alias('Honeypot', 'Msurguy\Honeypot\HoneypotFacade');
+        $loader->alias('Honeypot', 'Chuckbe\Chuckcms\Chuck\Support\Honeypot');
     }
 
     public function doPublishing()

@@ -25,6 +25,7 @@ abstract class TestCase extends Orchestra
             \UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
             \Laravel\Ui\UiServiceProvider::class,
             \Spatie\Sitemap\SitemapServiceProvider::class,
+            \Spatie\Honeypot\HoneypotServiceProvider::class,
         ];
     }
 
