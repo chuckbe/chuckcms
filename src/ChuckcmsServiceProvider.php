@@ -8,9 +8,9 @@ use Chuckbe\Chuckcms\Commands\GenerateSitemap;
 use Chuckbe\Chuckcms\Commands\GenerateSuperAdmin;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
-use Spatie\Permission\Middlewares\PermissionMiddleware;
-use Spatie\Permission\Middlewares\RoleMiddleware;
-use Spatie\Permission\Middlewares\RoleOrPermissionMiddleware;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
+use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 
 class ChuckcmsServiceProvider extends ServiceProvider
 {
