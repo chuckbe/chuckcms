@@ -11,7 +11,7 @@ class DeleteUserAction
      * Delete a user after first revoking any roles/permissions they
      * held directly. Preserves the legacy tri-state string return
      * contract the frontend JS depends on:
-     *   'success' / 'error' / 'false'
+     *   'success' / 'error' / 'false'.
      */
     public function __invoke(DeleteUserRequest $request): string
     {

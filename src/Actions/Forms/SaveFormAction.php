@@ -22,7 +22,7 @@ class SaveFormAction
                 'send'     => $this->buildSendActions($request),
                 'redirect' => $request->input('action_redirect'),
             ],
-            'files' => $this->toBool($request->input('files_allowed')),
+            'files'  => $this->toBool($request->input('files_allowed')),
             'button' => [
                 'class' => $request->input('button_class'),
                 'label' => $request->input('button_label'),
