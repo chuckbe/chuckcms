@@ -30,6 +30,7 @@ Install ChuckCMS in a freshly scaffolded Laravel project via Composer:
 ```
 composer require chuckbe/chuckcms
 ```
+> On Laravel 13 with PHP 8.3, add `-W` (`composer require chuckbe/chuckcms -W`). New Laravel 13 apps ship with Guzzle 8, and on PHP 8.3 the sitemap package ChuckCMS uses still needs Guzzle 7; `-W` lets Composer switch it. PHP 8.4 needs no flag.
 
 ### Publish assets and config
 You can now publish all assets and config files this package needs:
