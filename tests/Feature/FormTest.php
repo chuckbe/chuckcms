@@ -8,9 +8,9 @@ use Chuckbe\Chuckcms\Models\FormEntry;
 use Chuckbe\Chuckcms\Models\User;
 use Chuckbe\Chuckcms\Tests\TestCase;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
+use Spatie\Honeypot\EncryptedTime;
 
 class FormTest extends TestCase
 {
@@ -125,14 +125,37 @@ class FormTest extends TestCase
         $form = $this->savedForm();
 
         // Filled-in hidden field.
-        $this->submit($form, ['contact_name' => 'Bot', 'contact_email' => 'bot@example.test', 'chuck_telephone' => '123'])
-            ->assertSessionHasErrors('chuck_telephone');
+        $this->submit($form, ['contact_name' => 'Bot', 'contact_email' => 'bot@example.test', 'my_name_x1' => 'spam'])
+            ->assertOk()
+            ->assertContent('');
 
-        // Submitted faster than the 12 second honeytime.
-        $this->submit($form, ['contact_name' => 'Bot', 'contact_email' => 'bot@example.test', 'chuck_email' => Crypt::encrypt(time())])
-            ->assertSessionHasErrors('chuck_email');
+        // Submitted before the form's valid-from time.
+        $this->submit($form, ['contact_name' => 'Bot', 'contact_email' => 'bot@example.test', 'valid_from' => EncryptedTime::create(now()->addMinute())])
+            ->assertOk()
+            ->assertContent('');
 
         $this->assertSame(0, FormEntry::count());
+        Mail::assertNothingSent();
+    }
+
+    public function test_rendered_form_contains_the_honeypot_fields(): void
+    {
+        $form = $this->savedForm();
+
+        $html = app(\Chuckbe\Chuckcms\Chuck\PageBlockRepository::class)
+            ->getRenderedByPageBlock((object) ['id' => 1, 'page_id' => 1, 'name' => 'f', 'slug' => 'f', 'lang' => 'nl', 'body' => '[FORM='.$form->slug.']'])['body'];
+
+        $this->assertStringContainsString('name="my_name_', $html);
+        $this->assertStringContainsString('name="valid_from"', $html);
+    }
+
+    public function test_legacy_honeypot_generate_call_renders_the_new_fields(): void
+    {
+        // Templates written for msurguy/honeypot still call this.
+        $html = (string) \Honeypot::generate('chuck_telephone', 'chuck_email');
+
+        $this->assertStringContainsString('name="my_name_', $html);
+        $this->assertStringContainsString('name="valid_from"', $html);
     }
 
     public function test_form_can_be_deleted_with_its_entries(): void
@@ -163,9 +186,9 @@ class FormTest extends TestCase
     private function submit(Form $form, array $fields)
     {
         return $this->post('/forms/validate', array_replace([
-            '_form_slug'      => $form->slug,
-            'chuck_telephone' => '',
-            'chuck_email'     => Crypt::encrypt(time() - 60),
+            '_form_slug' => $form->slug,
+            'my_name_x1' => '',
+            'valid_from' => EncryptedTime::create(now()->subMinute()),
         ], $fields));
     }
 

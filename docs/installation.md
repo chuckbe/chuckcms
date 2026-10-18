@@ -18,7 +18,7 @@ nav_order: 2
 ---
  
 ### Requirements
-This package can be used with Laravel 6.20.26 or higher. 
+This package requires PHP 8.2 or higher and Laravel 10, 11 or 12.
 
 ### Composer
 You can install the package via composer:

@@ -14,8 +14,8 @@ class SubmitFormRequest extends FormRequest
 
     /**
      * Dynamic rules — loaded from the form's stored field validation
-     * config. Includes the honeypot-package rules that were previously
-     * injected inline.
+     * config. Spam is handled by the ProtectAgainstSpam middleware on the
+     * route, before this request is validated.
      */
     public function rules(): array
     {
@@ -28,8 +28,6 @@ class SubmitFormRequest extends FormRequest
         foreach ($form->form['fields'] as $fieldKey => $fieldValue) {
             $rules[$fieldKey] = $fieldValue['validation'];
         }
-        $rules['chuck_telephone'] = 'honeypot';
-        $rules['chuck_email'] = 'required|honeytime:12';
 
         return $rules;
     }

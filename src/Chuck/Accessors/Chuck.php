@@ -296,7 +296,9 @@ class Chuck
             Route::get('/activate/user/{token}', '\Chuckbe\Chuckcms\Controllers\UserController@activateIndex')->name('activate.user.index');
             Route::post('/activate/user', '\Chuckbe\Chuckcms\Controllers\UserController@activate')->name('activate.user');
 
-            Route::post('/forms/validate', '\Chuckbe\Chuckcms\Controllers\FormController@postForm')->name('forms.validate');
+            Route::post('/forms/validate', '\Chuckbe\Chuckcms\Controllers\FormController@postForm')
+                ->middleware(\Spatie\Honeypot\ProtectAgainstSpam::class)
+                ->name('forms.validate');
 
             Route::get('/page/{page}/styles.css', '\Chuckbe\Chuckcms\Controllers\FrontEndController@css')->name('page.css');
             Route::get('/page/{page}/scripts.js', '\Chuckbe\Chuckcms\Controllers\FrontEndController@js')->name('page.js');
