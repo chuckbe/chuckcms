@@ -64,6 +64,7 @@ class ImportRepeaterAction
         foreach (self::REQUIRED_KEYS as $dottedKey) {
             if (!$this->hasDotted($payload, $dottedKey)) {
                 $leaf = explode('.', $dottedKey);
+
                 throw ValidationException::withMessages([
                     'file' => sprintf('The "%s" key was not present in the JSON file.', end($leaf)),
                 ]);

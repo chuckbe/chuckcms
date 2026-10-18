@@ -2,7 +2,6 @@
 
 namespace Chuckbe\Chuckcms\Tests\Feature;
 
-use Chuckbe\Chuckcms\Models\Content;
 use Chuckbe\Chuckcms\Models\Redirect;
 use Chuckbe\Chuckcms\Models\Repeater;
 use Chuckbe\Chuckcms\Models\Resource;
@@ -96,24 +95,24 @@ class ContentTest extends TestCase
     private function saveRepeater(array $overrides = [])
     {
         return $this->actingAs($this->admin)->post('/dashboard/content/repeaters/save', array_replace([
-            'content_slug'       => 'team',
-            'content_type'       => 'repeater',
-            'fields_slug'        => ['name', 'role'],
-            'fields_label'       => ['Name', 'Role'],
-            'fields_type'        => ['text', 'text'],
-            'fields_class'       => ['form-control', 'form-control'],
-            'fields_placeholder' => ['', ''],
-            'fields_validation'  => ['required', 'nullable'],
-            'fields_value'       => ['', ''],
+            'content_slug'            => 'team',
+            'content_type'            => 'repeater',
+            'fields_slug'             => ['name', 'role'],
+            'fields_label'            => ['Name', 'Role'],
+            'fields_type'             => ['text', 'text'],
+            'fields_class'            => ['form-control', 'form-control'],
+            'fields_placeholder'      => ['', ''],
+            'fields_validation'       => ['required', 'nullable'],
+            'fields_value'            => ['', ''],
             'fields_attributes_name'  => ['', ''],
             'fields_attributes_value' => ['', ''],
-            'fields_required'    => ['true', 'false'],
-            'fields_table'       => ['true', 'false'],
-            'action_store'       => 'true',
-            'action_detail'      => 'true',
-            'action_detail_url'  => 'team/[team_name]',
-            'action_detail_page' => 'chuck-fixture::templates.fixture.page',
-            'files_allowed'      => 'false',
+            'fields_required'         => ['true', 'false'],
+            'fields_table'            => ['true', 'false'],
+            'action_store'            => 'true',
+            'action_detail'           => 'true',
+            'action_detail_url'       => 'team/[team_name]',
+            'action_detail_page'      => 'chuck-fixture::templates.fixture.page',
+            'files_allowed'           => 'false',
         ], $overrides))->assertRedirect();
     }
 

@@ -74,6 +74,7 @@ class QueryResult
         if ($this->getRawResponse()->getStatusCode() != 200) {
             return true;
         }
+
         // If an error occurs the Matomo server still returns a 200 OK response,
         // but the body of the response will contain the string "error" in the
         // "result" parameter.

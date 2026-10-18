@@ -52,11 +52,11 @@ class SettingsTest extends TestCase
                 'template_id'    => $template->id,
                 'template_name'  => 'Fixture Template',
                 'template_fonts' => 'Inter:400,700',
-                'css_slug'    => ['main'],
-                'css_href'    => ['css/main.css'],
-                'css_asset'   => ['1'],
-                'js_slug'     => [],
-                'json_slug'   => [],
+                'css_slug'       => ['main'],
+                'css_href'       => ['css/main.css'],
+                'css_asset'      => ['1'],
+                'js_slug'        => [],
+                'json_slug'      => [],
             ])
             ->assertRedirect();
 
