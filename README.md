@@ -38,6 +38,9 @@ You can now publish all assets and config files this package needs:
 php artisan vendor:publish --provider="Chuckbe\Chuckcms\ChuckcmsServiceProvider"
 ```
 
+### Default language
+The site's default language is `featuredLocale` in `config/lang.php` (`nl` unless you change it). It must be one of the site's languages. With `hideDefaultLocaleInURL` the default language has no URL prefix, so changing it moves the other languages under `/{locale}/...`. With `useAcceptLanguageHeader` enabled, a first-time visitor is sent to the language their browser asks for instead.
+
 ### Packages
 #### ```unisharp/laravel-filemanager``` package
 You can now publish assets for ```unisharp/laravel-filemanager```:

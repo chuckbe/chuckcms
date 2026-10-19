@@ -17,7 +17,8 @@ class ChuckConfigServiceProvider extends ServiceProvider
     public function boot()
     {
         config([
-            'app.locale'          => 'nl',
+            // The site's default language is the featured locale from config/lang.php.
+            'app.locale'          => config('lang.featuredLocale', 'nl'),
             'app.fallback_locale' => 'en',
 
             // UniSharp/laravel-filemanager

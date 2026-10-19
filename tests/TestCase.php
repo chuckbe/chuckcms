@@ -3,6 +3,7 @@
 namespace Chuckbe\Chuckcms\Tests;
 
 use Chuckbe\Chuckcms\ChuckcmsServiceProvider;
+use Chuckbe\Chuckcms\Models\Page;
 use Chuckbe\Chuckcms\Models\Template;
 use Chuckbe\Chuckcms\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -101,6 +102,25 @@ abstract class TestCase extends Orchestra
         $admin->assignRole('super-admin');
 
         return $admin;
+    }
+
+    /**
+     * A homepage on the fixture template with a Dutch and an English title.
+     */
+    protected function createHomepage(): Page
+    {
+        $page = new Page();
+        $page->template_id = Template::firstOrFail()->id;
+        $page->setTranslation('title', 'nl', 'Welkom');
+        $page->setTranslation('title', 'en', 'Welcome');
+        $page->setTranslation('slug', 'nl', 'home');
+        $page->setTranslation('slug', 'en', 'home');
+        $page->active = 1;
+        $page->isHp = 1;
+        $page->meta = [];
+        $page->save();
+
+        return $page;
     }
 
     protected function templatePath(): string
